@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import AxisInterpreter from "./calculators/AxisInterpreter";
+import BMICalculator from "./calculators/BMICalculator";
+import ECGInterpreter from "./calculators/ECGInterpreter";
+import FluidCorrection from "./calculators/FluidCorrection";
+import GCSCalculator from "./calculators/GCSCalculator";
+import GlucoseConverter from "./calculators/GlucoseConverter";
+import HeartFailureFramingham from "./calculators/HeartFailureCalculator";
+import MapCalculator from "./calculators/MAPCalculator";
+import WeightEstimator from "./calculators/WeightEstimator";
+import HypokalemiaCorrection from "./calculators/HypokalemiaCorrection";
+
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <WeightEstimator/>
+      <AxisInterpreter/>
+      <BMICalculator/>
+      <ECGInterpreter/>
+      <GCSCalculator/>
+      <GlucoseConverter/>
+      <HeartFailureFramingham/>
+      <MapCalculator/>
+      <FluidCorrection/>
+      <HypokalemiaCorrection/>
     </div>
   );
 }
