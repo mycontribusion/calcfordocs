@@ -28,7 +28,7 @@ export default function BmiCalculator() {
     } else if (heightUnit === "inch") {
       heightM = heightM * 0.0254;
     } else if (heightUnit === "m") {
-      heightM = heightM; // already meters
+      heightM = heightM / 1; // already meters
     }
 
     let bmi = weightKg / (heightM * heightM);
