@@ -45,13 +45,21 @@ function CalcForDocs() {
             case 'e':
                 return <MapCalculator />;
             case 'f':
-                return <ECGInterpreter />;
+                return <EstimatedBloodVolume />;
             case 'g':
                 return <FluidCorrection />;
             case 'h':
                 return <HeartFailureFramingham />;
             case 'i':
-                return <ECGInterpreter />;
+                return <GCSCalculator />;
+            case 'j':
+                return <HypokalemiaCorrection />;
+            case 'k':
+                return <MilestoneAgeEstimator />;
+            case 'l':
+                return <PediatricTransfusionCalculator />;
+            case 'm':
+                return <WeightEstimator />;
             default:
                 return (
                     <div className="p-8 text-center text-gray-500">
