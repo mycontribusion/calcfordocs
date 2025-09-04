@@ -1,0 +1,39 @@
+[
+    {
+        "name" : "BMI Calc",
+        "id" : "a"
+    },
+    {
+        "name" : "Axis Calc",
+        "id" : "b"
+    },
+    {
+        "name" : "ECG Int",
+        "id" : "c"
+    },
+    {
+        "name" : "Glucose Conv",
+        "id" : "d"
+    },
+    {
+        "name" : "MAP Calc",
+        "id" : "e"
+    },
+    {
+        "name" : "Est Blood Vol",
+        "id" : "f"
+    },
+    {
+        "name" : "Fluid Cor",
+        "id" : "g"
+    },
+    {
+        "name" : "Heart Fail",
+        "id" : "h"
+    },
+    {
+        "name" : "GCS Cal",
+        "id" : "i"
+    }
+
+]
