@@ -1,4 +1,4 @@
-import CalcForDocs from "./calculators/CalcForDocs";
+import CalcForDocs from "./CalcForDocs";
 
 
 function App(){
