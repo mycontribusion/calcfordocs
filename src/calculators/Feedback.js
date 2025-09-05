@@ -1,35 +1,42 @@
-// Feedback.js
-import "./calculator.css";
+import "./Feedback.css";
 
 function Feedback() {
   return (
-    <div className="calculator">
+    <div className="feedback-container">
       <h2>Feedback & Support</h2>
-      <p>
-        Have suggestions, found a bug, or want to request a new calculator?  
+      <p className="feedback-intro">
+        💡 Found a bug? Have suggestions? Share your thoughts below.  
         We’d love to hear from you!
-      </p>
-      <p>
-        📧 Email:{" "}
-        <a href="mailto:ahmadmusa1114@gmail.com">
-          ahmadmusa1114@gmail.com
-        </a>
       </p>
 
       <form
         action="mailto:ahmadmusa1114@gmail.com"
         method="POST"
         encType="text/plain"
+        className="feedback-form"
       >
+        <label>Subject (optional)</label>
+        <input
+          type="text"
+          name="subject"
+          placeholder="Enter subject (optional)"
+        />
+
         <label>Your Message</label>
         <textarea
           name="message"
-          rows="4"
+          rows="5"
           placeholder="Type your feedback here..."
           required
         ></textarea>
-        <button type="submit">Send Feedback</button>
+
+        <button type="submit">📨 Send Feedback</button>
       </form>
+
+      <p className="feedback-email">
+        Or email us directly at{" "}
+        <a href="mailto:ahmadmusa1114@gmail.com">ahmadmusa1114@gmail.com</a>
+      </p>
     </div>
   );
 }
