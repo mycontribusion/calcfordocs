@@ -42,11 +42,6 @@ function Feedback() {
 
         <button type="submit">📨 Send Feedback</button>
       </form>
-
-      <p className="feedback-email">
-        Or email us directly at{" "}
-        <a href="mailto:ahmadmusa1114@gmail.com">ahmadmusa1114@gmail.com</a>
-      </p>
     </div>
   );
 }
