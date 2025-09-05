@@ -15,6 +15,7 @@ import HypokalemiaCorrection from "./HypokalemiaCorrection";
 import EstimatedBloodVolume from "./EstimatedBloodVolume";
 import PediatricTransfusionCalculator from "./PediatricTransfusionCalculator";
 import MilestoneAgeEstimator from "./MilestoneAgeEstimator";
+import Feedback from "./Feedback";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -66,6 +67,7 @@ function CalcForDocs() {
           </>
         ))}
       </div>
+      <Feedback/>
     </div>
   );
 }
