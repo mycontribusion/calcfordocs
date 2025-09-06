@@ -50,6 +50,11 @@
     {
         "name" : "Wt Est",
         "id" : "m"
+    },
+    {
+        "name" : "eGFR Calc",
+        "id" : "n"
     }
+
 
 ]

@@ -16,6 +16,7 @@ import EstimatedBloodVolume from "./calculators/EstimatedBloodVolume";
 import PediatricTransfusionCalculator from "./calculators/PediatricTransfusionCalculator";
 import MilestoneAgeEstimator from "./calculators/MilestoneAgeEstimator";
 import Feedback from "./Feedback";
+import EGFRCalculator from "./calculators/EGFRCalculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -44,6 +45,7 @@ function CalcForDocs() {
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
+      case "n": return <EGFRCalculator />;
       default: return null;
     }
   };
