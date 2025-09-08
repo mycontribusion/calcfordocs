@@ -15,9 +15,16 @@ import HypokalemiaCorrection from "./calculators/HypokalemiaCorrection";
 import EstimatedBloodVolume from "./calculators/EstimatedBloodVolume";
 import PediatricTransfusionCalculator from "./calculators/PediatricTransfusionCalculator";
 import MilestoneAgeEstimator from "./calculators/MilestoneAgeEstimator";
+import EGFRCalculator from "./calculators/EGFRCalculator";
+import Feedback from "./Feedback";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  const toggleFeedback = () => {
+    setShowFeedback(!showFeedback);
+  };
 
   const toggleCalc = (id) => {
     setActiveCalc((prev) => (prev === id ? null : id));
@@ -38,13 +45,31 @@ function CalcForDocs() {
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
+      case "n": return <EGFRCalculator/>;
       default: return null;
     }
   };
 
   return (
     <div className="calcfordocs">
+      <div className="head-contact">
       <h1 className="title">CalcForDocs</h1>
+      <div className="contactus" onClick={toggleFeedback}>
+          Contact-us
+        </div>
+
+      {/* Feedback overlay */}
+      {showFeedback && (
+        <div className="feedback-overlay">
+          <div className="feedback-popup">
+            <Feedback />
+            <button className="close-btn" onClick={toggleFeedback}>
+              ✖ Close
+            </button>
+          </div>
+        </div>
+      )}
+      </div>
 
       <div className="button-grid">
         {calcinfo.map((item) => (

@@ -11,7 +11,17 @@
     font-size: 24px;
     color: #333;
   }
+
+  .head-contact {
+    display: flex;
+    justify-content: space-between;
+  }
   
+  .contactus {
+    display: flex;
+    align-items: center;
+  }
+
   /* grid for buttons */
   .button-grid {
     display: grid;
@@ -55,4 +65,20 @@
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   }
+
+  
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .contactus {
+    font-weight: bold;
+    color: #4f46e5;
+    cursor: pointer;
+  }
+  
+
   
