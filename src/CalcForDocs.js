@@ -15,19 +15,12 @@ import HypokalemiaCorrection from "./calculators/HypokalemiaCorrection";
 import EstimatedBloodVolume from "./calculators/EstimatedBloodVolume";
 import PediatricTransfusionCalculator from "./calculators/PediatricTransfusionCalculator";
 import MilestoneAgeEstimator from "./calculators/MilestoneAgeEstimator";
-import Feedback from "./Feedback";
-import EGFRCalculator from "./calculators/EGFRCalculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
-  const [feedbackState, setFeedbackState] = useState(false);
 
   const toggleCalc = (id) => {
     setActiveCalc((prev) => (prev === id ? null : id));
-  };
-
-  const toggleContact = () => {
-    setFeedbackState(!feedbackState);
   };
 
   const renderCalc = (id) => {
@@ -45,48 +38,34 @@ function CalcForDocs() {
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
-      case "n": return <EGFRCalculator />;
       default: return null;
     }
   };
 
   return (
     <div className="calcfordocs">
-      <div className="twoheader">
-        <h1 className="title">CalcForDocs</h1>
-        <div className="contactus" onClick={toggleContact}>
-          Contact us
-        </div>
-      </div>
+      <h1 className="title">CalcForDocs</h1>
 
       <div className="button-grid">
         {calcinfo.map((item) => (
-          <div key={item.id} className="button-wrapper">
-            <button
-              className={`calc-btn ${activeCalc === item.id ? "active" : ""}`}
-              onClick={() => toggleCalc(item.id)}
-            >
-              {item.name}
-            </button>
+          <>
+            {/* button in grid cell */}
+            <div key={item.id} className="button-wrapper">
+              <button
+                className={`calc-btn ${activeCalc === item.id ? "active" : ""}`}
+                onClick={() => toggleCalc(item.id)}
+              >
+                {item.name}
+              </button>
+            </div>
 
+            {/* ✅ calculator gets its own full-width row */}
             {activeCalc === item.id && (
               <div className="calc-row">{renderCalc(item.id)}</div>
             )}
-          </div>
+          </>
         ))}
       </div>
-
-      {/* Feedback overlay */}
-      {feedbackState && (
-        <div className="feedback-overlay">
-          <div className="feedback-popup">
-            <Feedback />
-            <button className="close-btn" onClick={toggleContact}>
-              ✖ Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
