@@ -54,6 +54,18 @@
     {
         "name" : "eGFR Calc",
         "id" : "n"
+    },
+    {
+        "name" : "Dosage Calc",
+        "id" : "o"
+    },
+    {
+        "name" : "Infusion Rate",
+        "id" : "p"
+    },
+    {
+        "name" : "Osm Calc",
+        "id" : "q"
     }
 
 

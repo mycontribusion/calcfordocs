@@ -17,6 +17,9 @@ import PediatricTransfusionCalculator from "./calculators/PediatricTransfusionCa
 import MilestoneAgeEstimator from "./calculators/MilestoneAgeEstimator";
 import EGFRCalculator from "./calculators/EGFRCalculator";
 import Feedback from "./Feedback";
+import DrugDosageCalculator from "./calculators/DrugDosageCalculator";
+import IVInfusionCalculator from "./calculators/IVInfusionCalculator";
+import SerumOsmolalityCalculator from "./calculators/SerumOsmolalityCalculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -46,6 +49,9 @@ function CalcForDocs() {
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
       case "n": return <EGFRCalculator/>;
+      case "o": return <DrugDosageCalculator/>;
+      case "p": return <IVInfusionCalculator/>;
+      case "q": return <SerumOsmolalityCalculator/>;
       default: return null;
     }
   };
@@ -75,7 +81,7 @@ function CalcForDocs() {
         {calcinfo.map((item) => (
           <>
             {/* button in grid cell */}
-            <div key={item.id} className="button-wrapper">
+            <div id={item.id} key={item.id} className="button-wrapper">
               <button
                 className={`calc-btn ${activeCalc === item.id ? "active" : ""}`}
                 onClick={() => toggleCalc(item.id)}
