@@ -66,6 +66,18 @@
     {
         "name" : "Osm Calc",
         "id" : "q"
+    },
+    {
+        "name" : "EGA Calc",
+        "id" : "r"
+    },
+    {
+        "name" : "USS GA",
+        "id" : "s"
+    },
+    {
+        "name" : "USSLMP Calc",
+        "id" : "t"
     }
 
 

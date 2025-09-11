@@ -20,6 +20,9 @@ import Feedback from "./Feedback";
 import DrugDosageCalculator from "./calculators/DrugDosageCalculator";
 import IVInfusionCalculator from "./calculators/IVInfusionCalculator";
 import SerumOsmolalityCalculator from "./calculators/SerumOsmolalityCalculator";
+import ExpectedGestationalAge from "./calculators/ExpectedGestationalAge";
+import USSBasedGestationalAge from "./calculators/USSBasedGestationalAge";
+import LMPFromUSS from "./calculators/LMPFromUSS";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -52,6 +55,9 @@ function CalcForDocs() {
       case "o": return <DrugDosageCalculator/>;
       case "p": return <IVInfusionCalculator/>;
       case "q": return <SerumOsmolalityCalculator/>;
+      case "r": return <ExpectedGestationalAge/>;
+      case "s": return <USSBasedGestationalAge/>;
+      case "t": return <LMPFromUSS/>;
       default: return null;
     }
   };
