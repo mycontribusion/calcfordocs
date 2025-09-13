@@ -23,6 +23,7 @@ import SerumOsmolalityCalculator from "./calculators/SerumOsmolalityCalculator";
 import ExpectedGestationalAge from "./calculators/ExpectedGestationalAge";
 import USSBasedGestationalAge from "./calculators/USSBasedGestationalAge";
 import LMPFromUSS from "./calculators/LMPFromUSS";
+import TapCounter from "./calculators/TapCounter";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -58,6 +59,7 @@ function CalcForDocs() {
       case "r": return <ExpectedGestationalAge/>;
       case "s": return <USSBasedGestationalAge/>;
       case "t": return <LMPFromUSS/>;
+      case "u": return <TapCounter/>;
       default: return null;
     }
   };

@@ -78,6 +78,10 @@
     {
         "name" : "USSLMP Calc",
         "id" : "t"
+    },
+    {
+        "name" : "Tap Calc",
+        "id" : "u"
     }
 
 
