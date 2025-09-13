@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function TapCounter() {
+function RateCounter() {
   const [taps, setTaps] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
@@ -59,4 +59,4 @@ function TapCounter() {
   );
 }
 
-export default TapCounter;
+export default RateCounter;
