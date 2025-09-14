@@ -1,62 +1,92 @@
 import { useState, useEffect } from "react";
 
-function RateCounter() {
+function TapCounter() {
   const [taps, setTaps] = useState(0);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
   const [durationSec, setDurationSec] = useState(0);
+  const [selectedDuration, setSelectedDuration] = useState(30); // default 30 sec
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
   const handleTap = () => {
-    const now = Date.now();
-
-    if (taps === 0) {
-      setStartTime(now);
-      setEndTime(null);
-      setDurationSec(0);
-    } else {
-      setEndTime(now);
+    if (isRunning) {
+      setTaps((prev) => prev + 1);
     }
-
-    setTaps((prev) => prev + 1);
   };
 
-  const resetCounter = (e) => {
-    e.stopPropagation(); // ✅ prevents reset from being counted as tap
+  const startCounter = () => {
     setTaps(0);
-    setStartTime(null);
-    setEndTime(null);
     setDurationSec(0);
+    setTimeLeft(selectedDuration);
+    setIsRunning(true);
   };
 
-  // ⏱ Update duration as time passes
+  const resetCounter = () => {
+    setTaps(0);
+    setDurationSec(0);
+    setTimeLeft(0);
+    setIsRunning(false);
+  };
+
+  // Countdown timer
   useEffect(() => {
     let timer;
-    if (taps > 0 && !endTime) {
+    if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
-        setDurationSec((Date.now() - startTime) / 1000);
-      }, 200);
-    } else if (endTime && startTime) {
-      setDurationSec((endTime - startTime) / 1000);
+        setTimeLeft((prev) => prev - 1);
+        setDurationSec((d) => d + 1);
+      }, 1000);
+    } else if (isRunning && timeLeft === 0) {
+      setIsRunning(false); // stop when finished
     }
-
     return () => clearInterval(timer);
-  }, [taps, startTime, endTime]);
+  }, [isRunning, timeLeft]);
 
   const ratePerMin =
-    taps > 1 && durationSec > 0 ? (taps / durationSec) * 60 : 0;
+    taps > 0 && durationSec > 0 ? (taps / durationSec) * 60 : 0;
 
   return (
-    <div className="tap-area" onClick={handleTap}>
-      <h2>Tap Counter</h2>
-      <p><strong>Taps:</strong> {taps}</p>
-      <p><strong>Duration:</strong> {durationSec.toFixed(1)} sec</p>
-      <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} per min</p>
+    <div
+      className="calculator-card"
+      onClick={handleTap}
+      style={{ cursor: isRunning ? "pointer" : "default" }}
+    >
+      <h3>Tap Counter</h3>
 
-      <button className="button" onClick={resetCounter}>
-        Reset
-      </button>
+      {!isRunning && (
+        <div style={{ marginBottom: "0.5rem" }}>
+          <label>
+            Duration (seconds):{" "}
+            <select
+              value={selectedDuration}
+              onChange={(e) => setSelectedDuration(Number(e.target.value))}
+            >
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+              <option value={60}>60</option>
+            </select>
+          </label>
+        </div>
+      )}
+
+      <p><strong>Taps:</strong> {taps}</p>
+      <p><strong>Time left:</strong> {timeLeft} sec</p>
+      <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} /min</p>
+
+      <div style={{ marginTop: "0.5rem" }}>
+        {!isRunning ? (
+          <button onClick={startCounter}>Start</button>
+        ) : (
+          <button onClick={resetCounter}>Stop & Reset</button>
+        )}
+      </div>
+
+      <small style={{ display: "block", marginTop: "0.5rem", color: "#555" }}>
+        Tap inside this card while timer is running
+      </small>
     </div>
   );
 }
 
-export default RateCounter;
+export default TapCounter;
