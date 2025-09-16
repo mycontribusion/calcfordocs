@@ -1,42 +1,42 @@
 [
     {
-        "name" : "BMI Calc",
+        "name" : "BMI",
         "id" : "a"
     },
     {
-        "name" : "Axis Calc",
+        "name" : "Cardiac Axis",
         "id" : "b"
     },
     {
-        "name" : "ECG Int",
+        "name" : "ECG Waveforms",
         "id" : "c"
     },
     {
-        "name" : "Glucose Conv",
+        "name" : "Glucose Unit",
         "id" : "d"
     },
     {
-        "name" : "MAP Calc",
+        "name" : "MAP",
         "id" : "e"
     },
     {
-        "name" : "Est Blood Vol",
+        "name" : "Estimated Blood Vol",
         "id" : "f"
     },
     {
-        "name" : "Fluid Cor",
+        "name" : "Fluid Correction",
         "id" : "g"
     },
     {
-        "name" : "Heart Fail",
+        "name" : "Framingham Criteria",
         "id" : "h"
     },
     {
-        "name" : "GCS Cal",
+        "name" : "GCS",
         "id" : "i"
     },
     {
-        "name" : "HypoK",
+        "name" : "Hypokalemia Correction",
         "id" : "j"
     },
     {

@@ -1,4 +1,3 @@
-// src/calculators/HeartFailureFramingham.js
 import { useState } from "react";
 
 export default function HeartFailureFramingham() {
@@ -34,54 +33,57 @@ export default function HeartFailureFramingham() {
     let majorCount = majorCriteria.filter((c) => selected[c.id]).length;
     let minorCount = minorCriteria.filter((c) => selected[c.id]).length;
 
-    let diagnosis = "No Heart Failure";
+    let diagnosis = "No Heart Failure (criteria not met)";
     if (majorCount >= 2) {
-      diagnosis = "Heart Failure Present";
+      diagnosis = "Heart Failure Present (≥2 Major criteria)";
     } else if (majorCount === 1 && minorCount >= 2) {
-      diagnosis = "Possible Heart Failure";
+      diagnosis = "Heart Failure Present (1 Major + ≥2 Minor)";
     }
 
-    setResult(`Diagnosis: ${diagnosis}`);
+    setResult(
+      `Diagnosis: ${diagnosis}`
+    );
   }
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">Heart Failure (Framingham Criteria)</h2>
+    <div>
+      <h2>Heart Failure (Framingham Criteria)</h2>
 
-      <h3 className="font-medium mt-2">Major Criteria</h3>
+      <h3>Major Criteria</h3>
       {majorCriteria.map((c) => (
-        <label key={c.id} className="block">
+        <label key={c.id}>
           <input
             type="checkbox"
             checked={!!selected[c.id]}
             onChange={() => toggleCheck(c.id)}
-            className="mr-2"
           />
           {c.label}
+          <br />
         </label>
       ))}
 
-      <h3 className="font-medium mt-3">Minor Criteria</h3>
+      <h3>Minor Criteria</h3>
       {minorCriteria.map((c) => (
-        <label key={c.id} className="block">
+        <label key={c.id}>
           <input
             type="checkbox"
             checked={!!selected[c.id]}
             onChange={() => toggleCheck(c.id)}
-            className="mr-2"
           />
           {c.label}
+          <br />
         </label>
       ))}
 
-      <button
-        onClick={calculateHeartFailure}
-        className="mt-3 bg-red-500 text-white px-3 py-1 rounded"
-      >
-        Diagnose
-      </button>
+      <button onClick={calculateHeartFailure}>Diagnose</button>
 
-      {result && <p className="mt-3 font-medium">{result}</p>}
+      {result && (
+        <div style={{ marginTop: "1rem" }}>
+          {result.split("\n").map((line, idx) => (
+            <p key={idx}>{line}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

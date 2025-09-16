@@ -1,17 +1,16 @@
-// src/calculators/FluidCorrection.js
 import { useState } from "react";
 
 export default function FluidCorrection() {
   const [weight, setWeight] = useState("");
   const [weightUnit, setWeightUnit] = useState("kg");
   const [severity, setSeverity] = useState("mild");
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
 
   function calculateFluids() {
     let weightKg = parseFloat(weight);
 
     if (isNaN(weightKg) || weightKg <= 0) {
-      setResult("Please enter a valid weight.");
+      setResult({ error: "Please enter a valid weight." });
       return;
     }
 
@@ -22,13 +21,9 @@ export default function FluidCorrection() {
 
     // Assign % dehydration based on severity
     let dehydrationPercent = 0;
-    if (severity === "mild") {
-      dehydrationPercent = 5;
-    } else if (severity === "moderate") {
-      dehydrationPercent = 10;
-    } else if (severity === "severe") {
-      dehydrationPercent = 15;
-    }
+    if (severity === "mild") dehydrationPercent = 5;
+    else if (severity === "moderate") dehydrationPercent = 10;
+    else if (severity === "severe") dehydrationPercent = 15;
 
     // Deficit calculation
     const deficit = dehydrationPercent * weightKg * 10;
@@ -45,47 +40,41 @@ export default function FluidCorrection() {
 
     const totalFluids = deficit + maintenance;
 
-    setResult(
-      `Deficit (${dehydrationPercent}%): ${deficit.toFixed(
-        0
-      )} mL | Maintenance: ${maintenance.toFixed(
-        0
-      )} mL | Total: ${totalFluids.toFixed(0)} mL (24h)`
-    );
+    setResult({
+      deficit: deficit.toFixed(0),
+      maintenance: maintenance.toFixed(0),
+      total: totalFluids.toFixed(0),
+      percent: dehydrationPercent,
+    });
   }
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">Fluid Correction Calculator</h2>
+    <div>
+      <h2>Fluid Correction Calculator</h2>
 
       {/* Weight Input */}
-      <div className="mb-2">
-        <label className="block mb-1">Weight:</label>
-        <div className="flex gap-2">
-          <input
-            type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            className="border px-2 py-1 rounded w-full"
-          />
-          <select
-            value={weightUnit}
-            onChange={(e) => setWeightUnit(e.target.value)}
-            className="border px-2 py-1 rounded"
-          >
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
-        </div>
+      <div>
+        <label>Weight: </label>
+        <input
+          type="number"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+        <select
+          value={weightUnit}
+          onChange={(e) => setWeightUnit(e.target.value)}
+        >
+          <option value="kg">kg</option>
+          <option value="lb">lb</option>
+        </select>
       </div>
 
       {/* Severity Input */}
-      <div className="mb-2">
-        <label className="block mb-1">Dehydration Severity:</label>
+      <div>
+        <label>Dehydration Severity: </label>
         <select
           value={severity}
           onChange={(e) => setSeverity(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
         >
           <option value="mild">Mild (~5%)</option>
           <option value="moderate">Moderate (~10%)</option>
@@ -93,14 +82,32 @@ export default function FluidCorrection() {
         </select>
       </div>
 
-      <button
-        onClick={calculateFluids}
-        className="bg-blue-500 text-white px-3 py-1 rounded"
-      >
-        Calculate
-      </button>
+      <button onClick={calculateFluids}>Calculate</button>
 
-      {result && <p className="mt-3 font-medium">{result}</p>}
+      {result && (
+        <div style={{ marginTop: "15px" }}>
+          {result.error ? (
+            <p>{result.error}</p>
+          ) : (
+            <>
+              <p><strong>Deficit ({result.percent}%):</strong> {result.deficit} mL</p>
+              <p><strong>Maintenance:</strong> {result.maintenance} mL</p>
+              <p><strong>Total (24h):</strong> {result.total} mL</p>
+
+              <hr />
+
+              <p><strong>Formulas Used:</strong></p>
+              <p>Deficit = % dehydration × Weight (kg) × 10</p>
+              <p>Maintenance:</p>
+              <ul>
+                <li>First 10 kg → 100 mL/kg</li>
+                <li>Next 10 kg → 50 mL/kg</li>
+                <li>Above 20 kg → 20 mL/kg</li>
+              </ul>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

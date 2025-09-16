@@ -5,6 +5,7 @@ export default function MapCalculator() {
   const [sbp, setSbp] = useState("");
   const [dbp, setDbp] = useState("");
   const [result, setResult] = useState("");
+  const [formula, setFormula] = useState("");
 
   function calculateMAP() {
     let sbpVal = parseFloat(sbp);
@@ -18,6 +19,7 @@ export default function MapCalculator() {
       sbpVal < dbpVal
     ) {
       setResult("Please enter valid SBP and DBP values.");
+      setFormula("");
       return;
     }
 
@@ -32,7 +34,8 @@ export default function MapCalculator() {
       category = "High MAP - May indicate hypertension risk";
     }
 
-    setResult(`Mean Arterial Pressure (MAP): ${map.toFixed(2)} mmHg - ${category}`);
+    setFormula(`Formula: MAP = DBP + (SBP - DBP) / 3`);
+    setResult(`Mean Arterial Pressure (MAP): ${map.toFixed(2)} mmHg — ${category}`);
   }
 
   return (
@@ -66,7 +69,8 @@ export default function MapCalculator() {
         Calculate
       </button>
 
-      {result && <p className="mt-3 font-medium">{result}</p>}
+      {formula && <p className="mt-3 text-sm italic">{formula}</p>}
+      {result && <p className="mt-2 font-medium">{result}</p>}
     </div>
   );
 }

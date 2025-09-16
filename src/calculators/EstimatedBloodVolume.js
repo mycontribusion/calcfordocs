@@ -1,9 +1,10 @@
+// src/calculators/EstimatedBloodVolume.js
 import { useState } from "react";
 
 export default function EstimatedBloodVolume() {
   const [weight, setWeight] = useState("");
   const [unit, setUnit] = useState("kg");
-  const [ageGroup, setAgeGroup] = useState("adultMale");
+  const [ageGroup, setAgeGroup] = useState("neonate");
   const [result, setResult] = useState("");
 
   const validatePositiveNumber = (n) => {
@@ -20,33 +21,36 @@ export default function EstimatedBloodVolume() {
     // Convert weight to kg
     let weightKg = unit === "lb" ? Number(weight) * 0.453592 : Number(weight);
 
-    let multiplier = 70; // default
+    let range = [70, 70]; // default for adult male
     switch (ageGroup) {
       case "neonate":
-        multiplier = 85;
+        range = [85, 90];
         break;
       case "infant":
-        multiplier = 80;
+        range = [75, 80];
         break;
       case "child":
-        multiplier = 75;
+        range = [70, 75];
         break;
       case "adultMale":
-        multiplier = 70;
+        range = [70, 70];
         break;
       case "adultFemale":
-        multiplier = 65;
+        range = [65, 65];
         break;
       default:
-        multiplier = 70;
+        range = [70, 70];
     }
 
-    const ebv = weightKg * multiplier;
-    setResult(
-      `Estimated Blood Volume: ${ebv.toFixed(0)} mL (${multiplier} mL/kg × ${weightKg.toFixed(
-        2
-      )} kg)`
-    );
+    const ebvLow = weightKg * range[0];
+    const ebvHigh = weightKg * range[1];
+
+    let output =
+      ebvLow === ebvHigh
+        ? `Estimated Blood Volume: ${ebvLow.toFixed(0)} mL`
+        : `Estimated Blood Volume: ${ebvLow.toFixed(0)} – ${ebvHigh.toFixed(0)} mL`;
+
+    setResult(output);
   };
 
   return (
