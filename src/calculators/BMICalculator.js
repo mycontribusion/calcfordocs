@@ -102,6 +102,9 @@ export default function BmiCalculator() {
       </button>
 
       {result && <p className="mt-3 font-medium">{result}</p>}
+      <p className="text-sm text-gray-600 mt-2">
+            Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
+          </p>
     </div>
   );
 }

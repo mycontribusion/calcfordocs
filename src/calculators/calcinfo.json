@@ -82,6 +82,10 @@
     {
         "name" : "Rate Calc",
         "id" : "u"
+    },
+    {
+        "name" : "Ballard Calc",
+        "id" : "v"
     }
 
 

@@ -24,6 +24,7 @@ import ExpectedGestationalAge from "./calculators/ExpectedGestationalAge";
 import USSBasedGestationalAge from "./calculators/USSBasedGestationalAge";
 import LMPFromUSS from "./calculators/LMPFromUSS";
 import RateCounter from "./calculators/RateCounter";
+import BallardScore from "./calculators/BallardScore";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -60,6 +61,7 @@ function CalcForDocs() {
       case "s": return <USSBasedGestationalAge/>;
       case "t": return <LMPFromUSS/>;
       case "u": return <RateCounter/>;
+      case "v": return <BallardScore/>;
       default: return null;
     }
   };

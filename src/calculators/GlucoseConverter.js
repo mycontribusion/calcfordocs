@@ -14,47 +14,59 @@ export default function GlucoseConverter() {
       return;
     }
 
-    let convertedValue = val;
-    let convertedUnit = unit;
-
-    // Conversion
-    if (unit === "mmol") {
-      convertedValue = val * 18.0182;
-      convertedUnit = "mg/dL";
-    } else {
-      convertedValue = val / 18.0182;
-      convertedUnit = "mmol/L";
-    }
-
-    // Category determination
+    const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
+    let convertedValue = 0;
+    let displayUnit = "";
+    let normalRange = "";
     let category = "";
+
     if (unit === "mg") {
+      // convert to mmol/L
+      let valMmol = val / factor;
+      convertedValue = valMmol;
+      displayUnit = "mmol/L";
+
+      // Normal ranges in mmol/L
       if (type === "fasting") {
-        if (val < 70) category = "(Low - Hypoglycemia)";
-        else if (val < 100) category = "(Normal)";
-        else if (val < 126) category = "(Impaired Fasting Glucose - Prediabetes)";
+        normalRange = "3.9 – 5.6 mmol/L";
+        if (valMmol < 3.9) category = "(Low - Hypoglycemia)";
+        else if (valMmol < 5.6) category = "(Normal)";
+        else if (valMmol < 7.0) category = "(Prediabetes)";
         else category = "(Diabetes)";
       } else {
-        if (val < 140) category = "(Normal)";
-        else if (val < 200) category = "(Impaired Glucose Tolerance - Prediabetes)";
+        normalRange = "< 7.8 mmol/L";
+        if (valMmol < 7.8) category = "(Normal)";
+        else if (valMmol < 11.1) category = "(Prediabetes)";
         else category = "(Diabetes)";
       }
+
     } else {
+      // input mmol/L, convert to mg/dL
+      let valMg = val * factor;
+      convertedValue = valMg;
+      displayUnit = "mg/dL";
+
+      // Normal ranges in mg/dL
       if (type === "fasting") {
-        if (val < 3.9) category = "(Low - Hypoglycemia)";
-        else if (val < 5.6) category = "(Normal)";
-        else if (val < 7.0) category = "(Impaired Fasting Glucose - Prediabetes)";
+        normalRange = "70 – 100 mg/dL";
+        if (valMg < 70) category = "(Low - Hypoglycemia)";
+        else if (valMg <= 100) category = "(Normal)";
+        else if (valMg < 126) category = "(Prediabetes)";
         else category = "(Diabetes)";
       } else {
-        if (val < 7.8) category = "(Normal)";
-        else if (val < 11.1) category = "(Impaired Glucose Tolerance - Prediabetes)";
+        normalRange = "< 140 mg/dL";
+        if (valMg < 140) category = "(Normal)";
+        else if (valMg < 200) category = "(Prediabetes)";
         else category = "(Diabetes)";
       }
     }
 
-    setResult(
-      `Converted Value: ${convertedValue.toFixed(2)} ${convertedUnit} ${category}`
-    );
+    setResult([
+      `Conversion Formula: 1 mmol/L = 18.0182 mg/dL`,
+      `Converted Value: ${convertedValue.toFixed(2)} ${displayUnit} ${category}`,
+      `Normal Range (${type === "fasting" ? "Fasting" : "Random/OGTT"}): ${normalRange}`
+    ]);
+    
   }
 
   return (
@@ -102,7 +114,13 @@ export default function GlucoseConverter() {
         Convert
       </button>
 
-      {result && <p className="mt-3 text-sm font-medium">{result}</p>}
+      {Array.isArray(result) &&
+  result.map((line, idx) => (
+    <p key={idx} className="mb-2 text-sm font-medium">
+      {line}
+    </p>
+  ))}
+
     </div>
   );
 }

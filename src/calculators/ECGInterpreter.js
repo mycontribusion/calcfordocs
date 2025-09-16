@@ -8,61 +8,90 @@ export default function ECGInterpreter() {
   const [numericalValue, setNumericalValue] = useState("");
   const [result, setResult] = useState("");
 
+  // Conversion factors
+  const durationFactors = {
+    seconds: 1,
+    smallSquares: 1 / 0.04, // 1 sec = 25 small squares
+    largeSquares: 1 / 0.2,  // 1 sec = 5 large squares
+  };
+
+  const voltageFactors = {
+    millivolts: 1,
+    smallSquares: 1 / 0.1, // 1 small square = 0.1 mV
+    largeSquares: 1 / 0.5, // 1 large square = 0.5 mV
+  };
+
+  // Normal ranges in SECONDS or MILLIVOLTS
+  const normalRanges = {
+    duration: {
+      pWave: [0.08, 0.12],
+      prInterval: [0.12, 0.20],
+      qrsWave: [0.06, 0.10],
+      qtInterval: [0.36, 0.44],
+      stSegment: [0.08, 0.12],
+    },
+    voltage: {
+      pWave: [0.1, 0.3],
+      qrsWave: [0.5, 2.0],
+      tWave: [0.1, 0.3],
+    },
+  };
+
   function interpretECG() {
     let val = parseFloat(numericalValue);
-
     if (isNaN(val) || val <= 0) {
       setResult("Please enter a valid numerical value.");
       return;
     }
 
-    // Convert small & large squares
-    if (valueType === "smallSquares") {
-      if (measurementType === "duration") val *= 0.04;
-      if (measurementType === "voltage") val *= 0.1;
-    }
-    if (valueType === "largeSquares") {
-      if (measurementType === "duration") val *= 0.20;
-      if (measurementType === "voltage") val *= 0.5;
+    if (wave === "heartRate") {
+      // Heart Rate Calculation
+      let rrSeconds =
+        valueType === "seconds"
+          ? val
+          : valueType === "smallSquares"
+          ? val * 0.04
+          : val * 0.2;
+
+      let hr = 60 / rrSeconds;
+      let interpretation =
+        hr < 60
+          ? `Heart Rate: ${hr.toFixed(1)} bpm → Bradycardia`
+          : hr > 100
+          ? `Heart Rate: ${hr.toFixed(1)} bpm → Tachycardia`
+          : `Heart Rate: ${hr.toFixed(1)} bpm → Normal`;
+
+      setResult(interpretation);
+      return;
     }
 
-    let interpretation = "";
+    // For durations or voltages
+    let factor =
+      measurementType === "duration"
+        ? durationFactors[valueType]
+        : voltageFactors[valueType];
 
-    if (measurementType === "duration") {
-      if (wave === "pWave") {
-        interpretation =
-          val >= 0.08 && val <= 0.12
-            ? `P Wave Duration: Normal (0.08 - 0.12 sec)`
-            : "P Wave Duration: Abnormal";
-      } else if (wave === "qrsWave") {
-        interpretation =
-          val >= 0.06 && val <= 0.10
-            ? `QRS Duration: Normal (0.06 - 0.10 sec)`
-            : "QRS Duration: Abnormal";
-      } else if (wave === "qtInterval") {
-        interpretation =
-          val >= 0.36 && val <= 0.44
-            ? `QT Interval: Normal (0.36 - 0.44 sec)`
-            : "QT Interval: Abnormal";
-      }
-    } else if (measurementType === "voltage") {
-      if (wave === "pWave") {
-        interpretation =
-          val >= 0.1 && val <= 0.3
-            ? `P Wave Amplitude: Normal (0.1 - 0.3 mV)`
-            : "P Wave Amplitude: Abnormal";
-      } else if (wave === "qrsWave") {
-        interpretation =
-          val >= 0.5 && val <= 2.0
-            ? `QRS Amplitude: Normal (0.5 - 2.0 mV)`
-            : "QRS Amplitude: Abnormal";
-      } else if (wave === "tWave") {
-        interpretation =
-          val >= 0.1 && val <= 0.3
-            ? `T Wave Amplitude: Normal (0.1 - 0.3 mV)`
-            : "T Wave Amplitude: Abnormal";
-      }
+    // Convert input to base unit (sec or mV)
+    let baseValue = val / factor;
+
+    let range = normalRanges[measurementType][wave];
+    if (!range) {
+      setResult("No normal range defined for this measurement.");
+      return;
     }
+
+    // Convert normal range into selected unit
+    let displayLow = range[0] * factor;
+    let displayHigh = range[1] * factor;
+
+    let interpretation =
+      baseValue >= range[0] && baseValue <= range[1]
+        ? `${wave.toUpperCase()} is Normal (${displayLow.toFixed(
+            2
+          )} - ${displayHigh.toFixed(2)} ${valueType})`
+        : `${wave.toUpperCase()} is Abnormal (Normal: ${displayLow.toFixed(
+            2
+          )} - ${displayHigh.toFixed(2)} ${valueType})`;
 
     setResult(interpretation);
   }
@@ -72,30 +101,35 @@ export default function ECGInterpreter() {
       <h2 className="text-lg font-semibold mb-2">ECG Interpreter</h2>
 
       <div className="mb-2">
-        <label className="mr-2">Wave:</label>
+        <label className="mr-2">Wave/Interval:</label>
         <select
           value={wave}
           onChange={(e) => setWave(e.target.value)}
           className="border px-2 py-1 rounded"
         >
           <option value="pWave">P Wave</option>
+          <option value="prInterval">PR Interval</option>
           <option value="qrsWave">QRS Complex</option>
-          <option value="tWave">T Wave</option>
           <option value="qtInterval">QT Interval</option>
+          <option value="stSegment">ST Segment</option>
+          <option value="tWave">T Wave</option>
+          <option value="heartRate">Heart Rate (RR Interval)</option>
         </select>
       </div>
 
-      <div className="mb-2">
-        <label className="mr-2">Measurement Type:</label>
-        <select
-          value={measurementType}
-          onChange={(e) => setMeasurementType(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
-          <option value="duration">Duration</option>
-          <option value="voltage">Voltage</option>
-        </select>
-      </div>
+      {wave !== "heartRate" && (
+        <div className="mb-2">
+          <label className="mr-2">Measurement Type:</label>
+          <select
+            value={measurementType}
+            onChange={(e) => setMeasurementType(e.target.value)}
+            className="border px-2 py-1 rounded"
+          >
+            <option value="duration">Duration</option>
+            <option value="voltage">Voltage</option>
+          </select>
+        </div>
+      )}
 
       <div className="mb-2">
         <label className="mr-2">Unit:</label>
@@ -104,7 +138,7 @@ export default function ECGInterpreter() {
           onChange={(e) => setValueType(e.target.value)}
           className="border px-2 py-1 rounded"
         >
-          {measurementType === "duration" ? (
+          {wave === "heartRate" || measurementType === "duration" ? (
             <>
               <option value="seconds">Seconds</option>
               <option value="smallSquares">Small Squares</option>
