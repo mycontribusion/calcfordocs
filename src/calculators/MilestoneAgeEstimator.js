@@ -113,86 +113,65 @@ export default function MilestoneAgeEstimator() {
         break;
     }
 
-    setResult(
-      `Estimated Age Range: ${[...new Set(ageEstimates)].join(", ")}`
-    );
+    setResult(`Estimated Age Range: ${[...new Set(ageEstimates)].join(", ")}`);
   };
 
   return (
-    <div className="p-4 max-w-lg mx-auto border rounded-xl shadow-md">
-      <h2 className="text-lg font-bold mb-3">Pediatric Age Estimator (Milestones)</h2>
+    <div>
+      <h2>Pediatric Age Estimator (Milestones)</h2>
 
-      <label className="block mb-2">
-        Gross Motor:
-        <select
-          value={grossMotor}
-          onChange={(e) => setGrossMotor(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="">--Select--</option>
-          <option value="headControl">Head control</option>
-          <option value="sits">Sits without support</option>
-          <option value="crawls">Crawls</option>
-          <option value="walksSupport">Walks with support</option>
-          <option value="walksAlone">Walks alone</option>
-          <option value="runs">Runs</option>
-          <option value="tricycle">Rides tricycle</option>
-          <option value="hops">Hops on one foot</option>
-          <option value="skips">Skips</option>
-        </select>
-      </label>
+      <p><b>Gross Motor:</b></p>
+      <select value={grossMotor} onChange={(e) => setGrossMotor(e.target.value)}>
+        <option value="">--Select--</option>
+        <option value="headControl">Head control</option>
+        <option value="sits">Sits without support</option>
+        <option value="crawls">Crawls</option>
+        <option value="walksSupport">Walks with support</option>
+        <option value="walksAlone">Walks alone</option>
+        <option value="runs">Runs</option>
+        <option value="tricycle">Rides tricycle</option>
+        <option value="hops">Hops on one foot</option>
+        <option value="skips">Skips</option>
+      </select>
 
-      <label className="block mb-2">
-        Fine Motor:
-        <select
-          value={fineMotor}
-          onChange={(e) => setFineMotor(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="">--Select--</option>
-          <option value="reaches">Reaches for objects</option>
-          <option value="transfers">Transfers object hand-to-hand</option>
-          <option value="pincer">Pincer grasp</option>
-          <option value="blocks2">Stacks 2 blocks</option>
-          <option value="blocks4">Stacks 4 blocks</option>
-          <option value="blocks6">Stacks 6 blocks</option>
-          <option value="circle">Copies circle</option>
-          <option value="cross">Copies cross</option>
-          <option value="square">Copies square</option>
-        </select>
-      </label>
+      <p><b>Fine Motor:</b></p>
+      <select value={fineMotor} onChange={(e) => setFineMotor(e.target.value)}>
+        <option value="">--Select--</option>
+        <option value="reaches">Reaches for objects</option>
+        <option value="transfers">Transfers object hand-to-hand</option>
+        <option value="pincer">Pincer grasp</option>
+        <option value="blocks2">Stacks 2 blocks</option>
+        <option value="blocks4">Stacks 4 blocks</option>
+        <option value="blocks6">Stacks 6 blocks</option>
+        <option value="circle">Copies circle</option>
+        <option value="cross">Copies cross</option>
+        <option value="square">Copies square</option>
+      </select>
 
-      <label className="block mb-2">
-        Language/Verbal:
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="">--Select--</option>
-          <option value="cooing">Cooing</option>
-          <option value="babbling">Babbling</option>
-          <option value="mama">Mama/Dada</option>
-          <option value="firstWords">First words</option>
-          <option value="words20">10–20 words</option>
-          <option value="phrases2">2-word phrases</option>
-          <option value="sentences3">3-word sentences</option>
-          <option value="story">Tells story</option>
-          <option value="fluent">Fluent conversation</option>
-        </select>
-      </label>
+      <p><b>Language/Verbal:</b></p>
+      <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+        <option value="">--Select--</option>
+        <option value="cooing">Cooing</option>
+        <option value="babbling">Babbling</option>
+        <option value="mama">Mama/Dada</option>
+        <option value="firstWords">First words</option>
+        <option value="words20">10–20 words</option>
+        <option value="phrases2">2-word phrases</option>
+        <option value="sentences3">3-word sentences</option>
+        <option value="story">Tells story</option>
+        <option value="fluent">Fluent conversation</option>
+      </select>
 
-      <button
-        onClick={estimateAge}
-        className="mt-3 px-4 py-2 bg-green-500 text-white rounded"
-      >
-        Estimate Age
-      </button>
+      <br /><br />
+      <button onClick={estimateAge}>Estimate Age</button>
 
-      {result && <p className="mt-4 font-semibold">{result}</p>}
+      {result && (
+        <p>
+          <b>{result}</b>
+        </p>
+      )}
 
-      <p className="mt-3 text-sm text-gray-600">
-        ⚠️ This is an **approximation**. Children develop at different rates. Use alongside clinical judgment.
+      <p>
       </p>
     </div>
   );

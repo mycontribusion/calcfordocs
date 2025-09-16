@@ -53,6 +53,7 @@ export default function MapCalculator() {
       </div>
 
       <div className="mb-2">
+        <p></p>
         <label className="block mb-1">Diastolic BP (mmHg):</label>
         <input
           type="number"
@@ -61,6 +62,7 @@ export default function MapCalculator() {
           className="border px-2 py-1 rounded w-full"
         />
       </div>
+      <p></p>
 
       <button
         onClick={calculateMAP}

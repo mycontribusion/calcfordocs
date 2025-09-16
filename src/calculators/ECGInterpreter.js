@@ -119,6 +119,7 @@ export default function ECGInterpreter() {
 
       {wave !== "heartRate" && (
         <div className="mb-2">
+          <p></p>
           <label className="mr-2">Measurement Type:</label>
           <select
             value={measurementType}
@@ -132,6 +133,7 @@ export default function ECGInterpreter() {
       )}
 
       <div className="mb-2">
+        <p></p>
         <label className="mr-2">Unit:</label>
         <select
           value={valueType}
@@ -155,6 +157,7 @@ export default function ECGInterpreter() {
       </div>
 
       <div className="mb-2">
+        <p></p>
         <input
           type="number"
           placeholder="Enter value"
@@ -163,6 +166,7 @@ export default function ECGInterpreter() {
           className="border px-2 py-1 rounded"
         />
       </div>
+      <p></p>
 
       <button
         onClick={interpretECG}

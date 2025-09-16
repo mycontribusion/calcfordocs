@@ -74,6 +74,7 @@ export default function HeartFailureFramingham() {
           <br />
         </label>
       ))}
+      <p></p>
 
       <button onClick={calculateHeartFailure}>Diagnose</button>
 

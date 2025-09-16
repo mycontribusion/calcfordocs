@@ -70,6 +70,7 @@ export default function FluidCorrection() {
       </div>
 
       {/* Severity Input */}
+      <p></p>
       <div>
         <label>Dehydration Severity: </label>
         <select
@@ -81,6 +82,7 @@ export default function FluidCorrection() {
           <option value="severe">Severe (~15%)</option>
         </select>
       </div>
+      <p></p>
 
       <button onClick={calculateFluids}>Calculate</button>
 

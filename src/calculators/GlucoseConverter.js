@@ -84,6 +84,7 @@ export default function GlucoseConverter() {
       </div>
 
       <div className="mb-2">
+        <p></p>
         <label className="block mb-1">Unit:</label>
         <select
           value={unit}
@@ -96,6 +97,7 @@ export default function GlucoseConverter() {
       </div>
 
       <div className="mb-2">
+        <p></p>
         <label className="block mb-1">Type:</label>
         <select
           value={type}
@@ -106,7 +108,7 @@ export default function GlucoseConverter() {
           <option value="random">Random/OGTT</option>
         </select>
       </div>
-
+<p></p>
       <button
         onClick={convertGlucose}
         className="bg-blue-500 text-white px-3 py-1 rounded"

@@ -70,7 +70,6 @@ export default function EstimatedBloodVolume() {
       </label>
 
       <label className="block mb-2">
-        Unit:
         <select
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
@@ -80,6 +79,7 @@ export default function EstimatedBloodVolume() {
           <option value="lb">lb</option>
         </select>
       </label>
+      <p></p>
 
       <label className="block mb-2">
         Age Group:
@@ -95,6 +95,7 @@ export default function EstimatedBloodVolume() {
           <option value="adultFemale">Adult Female (~65 mL/kg)</option>
         </select>
       </label>
+      <p></p>
 
       <button
         onClick={calculateEBV}
