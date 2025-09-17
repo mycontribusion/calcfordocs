@@ -3,106 +3,125 @@ import { useState } from "react";
 export default function PediatricTransfusionCalculator() {
   const [weight, setWeight] = useState("");
   const [weightUnit, setWeightUnit] = useState("kg");
-  const [inputType, setInputType] = useState("pcv"); // "pcv" or "hb"
-  const [observed, setObserved] = useState("");
-  const [target, setTarget] = useState("");
-  const [rbcPcv, setRbcPcv] = useState(""); // optional
+  const [observedValue, setObservedValue] = useState("");
+  const [targetValue, setTargetValue] = useState("");
+  const [method, setMethod] = useState("pcv"); // pcv or hb
+  const [pcvOfRBC, setPcvOfRBC] = useState(""); // optional
+  const [factor, setFactor] = useState(3); // default factor
   const [result, setResult] = useState("");
 
-  const validatePositiveNumber = (n) => Number.isFinite(Number(n)) && Number(n) > 0;
+  const formulaUsed =
+    "Formula: Weight (kg) × Increment in Hb × 3 ÷ Hct/PCV of RBCs (optional)";
 
   const calculateTransfusion = () => {
-    if (!validatePositiveNumber(weight) || !validatePositiveNumber(observed) || !validatePositiveNumber(target)) {
-      setResult("⚠️ Please enter valid positive numbers for weight, observed, and target values.");
+    const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
+    const observed = Number(observedValue);
+    const target = Number(targetValue);
+    const pcv = pcvOfRBC ? Number(pcvOfRBC) : null;
+    const f = Number(factor);
+
+    if (!w || !observed || !target || target <= observed || !f) {
+      setResult("✅ No transfusion needed or invalid input.");
       return;
     }
 
-    let weightKg = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
-    let obsVal = Number(observed);
-    let tgtVal = Number(target);
+    let transfusionVolume = w * (target - observed) * f;
+    if (pcv && f === 3) transfusionVolume = transfusionVolume / pcv;
 
-    if (inputType === "pcv") {
-      obsVal = obsVal / 3;
-      tgtVal = tgtVal / 3;
-    }
-
-    if (tgtVal <= obsVal) {
-      setResult("✅ No transfusion needed (target ≤ observed).");
-      return;
-    }
-
-    const deltaHb = tgtVal - obsVal;
-    const pcvFactor = validatePositiveNumber(rbcPcv) ? Number(rbcPcv) / 100 : 1;
-    const volume = (deltaHb * weightKg * 3) / pcvFactor;
-
-    setResult(
-      `Transfusion Volume: ${volume.toFixed(0)} mL of PRBC\n\n` +
-      `Formula used:\n` +
-      `Volume = Weight (kg) × (Target Hb − Observed Hb) × 3 ÷ PCV of transfused blood\n\n` +
-      `Notes:\n` +
-      `- Usual pediatric transfusion: 10–15 mL/kg PRBC over 3–4 hours\n` +
-      `- Monitor vitals to avoid fluid overload`
-    );
+    setResult(`Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`);
   };
 
   return (
-    <div style={{ padding: "1rem", border: "1px solid #ccc", maxWidth: "500px" }}>
-      <h2>Pediatric Blood Transfusion (Anemia)</h2>
+    <div>
+      <h2>Pediatric Transfusion Calculator</h2>
 
-      {/* Always visible note */}
-      
-
-      <div>
-        <label>
-          Weight:
-          <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
-        </label>
-        <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)}>
+      {/* Weight Input */}
+      <label>
+        Weight:
+        <input
+          type="number"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+      </label>
+      <label>
+        <select
+          value={weightUnit}
+          onChange={(e) => setWeightUnit(e.target.value)}
+        >
           <option value="kg">kg</option>
           <option value="lb">lb</option>
         </select>
-      </div>
+      </label>
+      <p></p>
 
-      <div>
-        <p></p>
-        <label>
-          Input Type:
-          <select value={inputType} onChange={(e) => setInputType(e.target.value)}>
-            <option value="pcv">PCV (%)</option>
-            <option value="hb">Hb (g/dL)</option>
-          </select>
-        </label>
-      </div>
+      {/* Method */}
+      <label>
+        Method:
+        <select value={method} onChange={(e) => setMethod(e.target.value)}>
+          <option value="pcv">PCV</option>
+          <option value="hb">Hb</option>
+        </select>
+      </label>
+      <p></p>
 
-      <div>
-        <p></p>
-        <label>
-          Observed {inputType === "pcv" ? "PCV (%)" : "Hb (g/dL)"}:
-          <input type="number" value={observed} onChange={(e) => setObserved(e.target.value)} />
-        </label>
-      </div>
+      {/* Observed */}
+      <label>
+        Observed {method.toUpperCase()}:
+        <input
+          type="number"
+          value={observedValue}
+          onChange={(e) => setObservedValue(e.target.value)}
+        />
+      </label>
+      <p></p>
 
-      <div><p></p>
-        <label>
-          Target {inputType === "pcv" ? "PCV (%)" : "Hb (g/dL)"}:
-          <input type="number" value={target} onChange={(e) => setTarget(e.target.value)} />
-        </label>
-      </div>
+      {/* Target */}
+      <label>
+        Target {method.toUpperCase()}:
+        <input
+          type="number"
+          value={targetValue}
+          onChange={(e) => setTargetValue(e.target.value)}
+        />
+      </label>
+      <p></p>
 
-      <div><p></p>
-        <label>
-          HCT of RBC [optional]:
-          <input type="number" value={rbcPcv} onChange={(e) => setRbcPcv(e.target.value)} />
-        </label>
-      </div><p></p>
+      {/* Factor */}
+      <label>
+        Factor:
+        <input
+          type="number"
+          value={factor}
+          onChange={(e) => setFactor(e.target.value)}
+        />
+      </label>
+      <p></p>
 
+      {/* Hct of RBC */}
+      <label>
+        Hct of RBCs (optional):
+        <input
+          type="number"
+          placeholder="100% = 1, 50% = 0.5"
+          value={pcvOfRBC}
+          onChange={(e) => setPcvOfRBC(e.target.value)}
+        />
+      </label>
+      <p></p>
+
+      {/* Calculate Button */}
       <button onClick={calculateTransfusion}>Calculate</button>
+      <p></p>
 
-      <p style={{ marginBottom: "1rem", fontStyle: "italic" }}>
-        HCT of RBCs also means PCV of transfused blood
+      {/* Result */}
+      {result && <p>{result}</p>}
+
+      {/* Formula */}
+      <p style={{ fontWeight: "bold" }}>{formulaUsed}</p>
+      <p style={{ fontSize: "0.9em", color: "gray" }}>
+        Hct of RBCs represents the PCV of the blood to be transfused in decimal form (e.g., 100% = 1, 50% = 0.5). Only used if Factor = 3. In some low-resource settings, instead of dividing by Hct/PCV, the Factor alone is used: 3 for packed cells, 4 for sedimented cells, and 6 for whole blood.
       </p>
-
-      {result && <p style={{ whiteSpace: "pre-line", marginTop: "1rem" }}>{result}</p>}
     </div>
   );
 }
