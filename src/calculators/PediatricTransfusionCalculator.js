@@ -8,27 +8,42 @@ export default function PediatricTransfusionCalculator() {
   const [method, setMethod] = useState("pcv"); // pcv or hb
   const [pcvOfRBC, setPcvOfRBC] = useState(""); // optional
   const [factor, setFactor] = useState(3); // default factor
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
 
   const formulaUsed =
-    "Transfusion Blood Volumes= Weight (kg) × (Target hb - Observed hb) × 3 ÷ Hct of RBCs";
+    "Transfusion Volume = Weight (kg) × (Target Hb – Observed Hb) × 3 ÷ Hct of RBCs";
 
   const calculateTransfusion = () => {
     const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
-    const observed = Number(observedValue);
-    const target = Number(targetValue);
+    let observed = Number(observedValue);
+    let target = Number(targetValue);
     const pcv = pcvOfRBC ? Number(pcvOfRBC) : null;
     const f = Number(factor);
 
     if (!w || !observed || !target || target <= observed || !f) {
-      setResult("invalid input.");
+      setResult({ error: "invalid input." });
       return;
+    }
+
+    let conversionNote = "";
+
+    // Convert PCV → Hb if method = pcv
+    if (method === "pcv") {
+      observed = observed / 3;
+      target = target / 3;
+      conversionNote = `Converted PCV to Hb: Observed Hb = ${observed.toFixed(
+        1
+      )}, Target Hb = ${target.toFixed(1)}`;
     }
 
     let transfusionVolume = w * (target - observed) * f;
     if (pcv && f === 3) transfusionVolume = transfusionVolume / pcv;
 
-    setResult(`Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`);
+    setResult({
+      volume: `Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`,
+      note: conversionNote,
+      formula: formulaUsed,
+    });
   };
 
   return (
@@ -95,7 +110,6 @@ export default function PediatricTransfusionCalculator() {
           value={factor}
           onChange={(e) => {
             setFactor(e.target.value);
-            // Reset pcv input if factor is not 3
             if (Number(e.target.value) !== 3) setPcvOfRBC("");
           }}
         />
@@ -123,12 +137,26 @@ export default function PediatricTransfusionCalculator() {
       <p></p>
 
       {/* Result */}
-      {result && <p>{result}</p>}
+      {result && (
+        <div>
+          {result.error ? (
+            <p>{result.error}</p>
+          ) : (
+            <>
+              <p>{result.volume}</p>
+              {result.note && <p>{result.note}</p>}
+              <p>{result.formula}</p>
+            </>
+          )}
+        </div>
+      )}
 
-      {/* Formula */}
-      <p style={{ fontSize: "0.9em" }}>{formulaUsed}</p>
+      {/* Extra Note */}
       <p style={{ fontSize: "0.9em", color: "gray" }}>
-        Hct of RBCs represents the PCV of the blood to be transfused in decimal form. In some low-resource settings, instead of dividing 3 by Hct, the Weight and Increment are multiplied by 3 for packed cells, by 4 for sedimented cells, and 6 for whole blood.
+        Hct of RBCs represents the PCV of the blood to be transfused in decimal
+        form. In some low-resource settings, instead of dividing 3 by Hct, the
+        Weight and Increment are multiplied by 3 for packed cells, by 4 for
+        sedimented cells, and 6 for whole blood.
       </p>
     </div>
   );
