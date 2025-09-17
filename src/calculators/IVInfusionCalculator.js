@@ -63,6 +63,7 @@ export default function IVInfusionCalculator() {
           onChange={(e) => setVolume(e.target.value)}
           placeholder="e.g., 500"
         />
+        <p></p>
 
         <label className="label">Time</label>
         <div className="flex-container">
@@ -82,7 +83,7 @@ export default function IVInfusionCalculator() {
             <option value="hours">hours</option>
           </select>
         </div>
-
+<p></p>
         <label className="label">Giving Set Type</label>
         <select
           className="select-field"
@@ -92,13 +93,13 @@ export default function IVInfusionCalculator() {
           <option value="iv">IV giving set (20 gtt/mL)</option>
           <option value="blood">Blood giving set (15 gtt/mL)</option>
           <option value="soluset">Soluset (60 gtt/mL)</option>
-        </select>
+        </select><p></p>
 
         <div className="actions">
           <button type="submit" className="button">Calculate</button>
           <button type="button" className="button secondary" onClick={handleReset}>Reset</button>
         </div>
-      </form>
+      </form><p></p>
 
       {error && <div className="result-box danger">{error}</div>}
 

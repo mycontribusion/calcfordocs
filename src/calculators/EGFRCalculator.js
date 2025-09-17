@@ -48,7 +48,7 @@ function EGFRCalculator() {
       <select value={unit} onChange={(e) => setUnit(e.target.value)}>
         <option value="umol">µmol/L</option>
         <option value="mgdl">mg/dL</option>
-      </select>
+      </select><p></p>
 
       <label>Age (years)</label>
       <input
@@ -57,14 +57,14 @@ function EGFRCalculator() {
         onChange={(e) => setAge(e.target.value)}
         placeholder="e.g., 40"
       />
-
+<p></p>
       <label>Sex</label>
       <select value={sex} onChange={(e) => setSex(e.target.value)}>
         <option value="male">Male</option>
         <option value="female">Female</option>
-      </select>
+      </select><p></p>
 
-      <button onClick={calculateEGFR}>Calculate</button>
+      <button onClick={calculateEGFR}>Calculate</button><p></p>
 
       {egfr && (
         <div className="result">

@@ -63,7 +63,7 @@ export default function DrugDosageCalculator() {
           onChange={(e) => setDosePerKg(e.target.value)}
           placeholder="e.g., 10"
         />
-
+<p></p>
         <label className="label">Patient Weight</label>
         <div className="flex-container">
           <input
@@ -82,13 +82,13 @@ export default function DrugDosageCalculator() {
             <option value="g">g</option>
             <option value="lb">lb</option>
           </select>
-        </div>
+        </div><p></p>
 
         <div className="actions">
           <button type="submit" className="button">Calculate</button>
           <button type="button" className="button secondary" onClick={handleReset}>Reset</button>
         </div>
-      </form>
+      </form><p></p>
 
       {error && <div className="result-box danger">{error}</div>}
 
