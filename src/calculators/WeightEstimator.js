@@ -5,34 +5,49 @@ export default function WeightEstimator() {
   const [age, setAge] = useState("");
   const [unit, setUnit] = useState("years");
   const [result, setResult] = useState("");
+  const [formula, setFormula] = useState("");
 
   function estimateWeight(age, unit) {
     let weight;
+    let usedFormula = "";
+
     if (unit === "days") {
       weight = age * 0.02 + 3;
+      usedFormula = "Weight = (Age in days × 0.02) + 3";
     } else if (unit === "months") {
       weight = age * 0.5 + 4;
+      usedFormula = "Weight = (Age in months × 0.5) + 4";
     } else if (unit === "years") {
       if (age >= 1 && age <= 5) {
         weight = 2 * age + 8;
+        usedFormula = "Weight = (Age in years × 2) + 8";
       } else if (age >= 6 && age <= 12) {
         weight = 3 * age + 7;
+        usedFormula = "Weight = (Age in years × 3) + 7";
       } else if (age >= 13 && age <= 18) {
         weight = 3.5 * age + 5;
+        usedFormula = "Weight = (Age in years × 3.5) + 5";
       } else {
-        return "Estimation not available for this age range.";
+        return { weight: null, formula: "Estimation not available for this age range." };
       }
     }
-    return weight ? `${weight.toFixed(2)} kg` : "Invalid age input.";
+
+    return weight
+      ? { weight: `${weight.toFixed(2)} kg`, formula: usedFormula }
+      : { weight: null, formula: "Invalid age input." };
   }
 
   function handleCalculate() {
     const ageNum = parseFloat(age);
     if (isNaN(ageNum) || ageNum <= 0) {
       setResult("Please enter a valid age.");
+      setFormula("");
       return;
     }
-    setResult("Estimated Weight: " + estimateWeight(ageNum, unit));
+
+    const { weight, formula } = estimateWeight(ageNum, unit);
+    setResult(weight ? "Estimated Weight: " + weight : formula);
+    setFormula(weight ? "Formula Used: " + formula : "");
   }
 
   return (
@@ -66,6 +81,7 @@ export default function WeightEstimator() {
       </button>
 
       {result && <p className="mt-2 text-sm font-medium">{result}</p>}
+      {formula && <p className="mt-1 text-xs text-gray-600 italic">{formula}</p>}
     </div>
   );
 }
