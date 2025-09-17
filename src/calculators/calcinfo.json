@@ -44,11 +44,11 @@
         "id" : "k"
     },
     {
-        "name" : "Pediatrics Anemia Correction",
+        "name" : "Pediatric Anemia Correction",
         "id" : "l"
     },
     {
-        "name" : "Wt Est",
+        "name" : "Pediatric Weight Calc",
         "id" : "m"
     },
     {

@@ -117,7 +117,7 @@ export default function ECGInterpreter() {
           <option value="qtInterval">QT Interval</option>
           <option value="stSegment">ST Segment</option>
           <option value="tWave">T Wave</option>
-          <option value="heartRate">Heart Rate (RR Interval)</option>
+          <option value="heartRate">RR Interval</option>
         </select>
       </div>
 

@@ -3,51 +3,83 @@ import { useState } from "react";
 
 export default function WeightEstimator() {
   const [age, setAge] = useState("");
-  const [unit, setUnit] = useState("years");
-  const [result, setResult] = useState("");
-  const [formula, setFormula] = useState("");
+  const [unit, setUnit] = useState("months");
+  const [formula, setFormula] = useState("nelson");
+  const [result, setResult] = useState(null);
 
-  function estimateWeight(age, unit) {
+  function estimateWeight(age, unit, formula) {
     let weight;
-    let usedFormula = "";
+    let explanation = "";
+    let converted = "";
+
+    // Convert units if necessary
+    let months = 0;
+    let years = 0;
 
     if (unit === "days") {
-      weight = age * 0.02 + 3;
-      usedFormula = "Weight = (Age in days × 0.02) + 3";
+      months = age / 30.44; // approx conversion
+      converted = `${age} days ≈ ${months.toFixed(1)} months`;
     } else if (unit === "months") {
-      weight = age * 0.5 + 4;
-      usedFormula = "Weight = (Age in months × 0.5) + 4";
-    } else if (unit === "years") {
-      if (age >= 1 && age <= 5) {
-        weight = 2 * age + 8;
-        usedFormula = "Weight = (Age in years × 2) + 8";
-      } else if (age >= 6 && age <= 12) {
-        weight = 3 * age + 7;
-        usedFormula = "Weight = (Age in years × 3) + 7";
-      } else if (age >= 13 && age <= 18) {
-        weight = 3.5 * age + 5;
-        usedFormula = "Weight = (Age in years × 3.5) + 5";
+      months = age;
+      if (months >= 12) {
+        years = months / 12;
+        converted = `${age} months ≈ ${years.toFixed(1)} years`;
       } else {
-        return { weight: null, formula: "Estimation not available for this age range." };
+        converted = `${age} months`;
+      }
+    } else if (unit === "years") {
+      years = age;
+      converted = `${age} years`;
+    }
+
+    // Apply formulas
+    if (formula === "nelson") {
+      if (months >= 3 && months <= 11) {
+        weight = (months + 9) / 2;
+        explanation = `Nelson Formula: Weight = (Age in months + 9) / 2`;
+      } else if (years >= 1 && years <= 6) {
+        weight = 2 * years + 8;
+        explanation = `Nelson Formula: Weight = (2 × Age in years) + 8`;
+      } else if (years >= 7 && years <= 12) {
+        weight = 7 * years - 5;
+        explanation = `Nelson Formula: Weight = (7 × Age in years) - 5`;
+      } else {
+        return null;
+      }
+    } else if (formula === "bestGuess") {
+      if (months >= 1 && months <= 11) {
+        weight = (months + 9) / 2;
+        explanation = `Best Guess Formula: Weight = (Age in months + 9) / 2`;
+      } else if (years >= 1 && years <= 5) {
+        weight = 2 * years + 5;
+        explanation = `Best Guess Formula: Weight = (2 × Age in years) + 5`;
+      } else if (years >= 5 && years <= 14) {
+        weight = 4 * years;
+        explanation = `Best Guess Formula: Weight = 4 × Age in years`;
+      } else {
+        return null;
       }
     }
 
-    return weight
-      ? { weight: `${weight.toFixed(2)} kg`, formula: usedFormula }
-      : { weight: null, formula: "Invalid age input." };
+    return {
+      weight: weight.toFixed(1),
+      explanation,
+      converted,
+    };
   }
 
   function handleCalculate() {
     const ageNum = parseFloat(age);
     if (isNaN(ageNum) || ageNum <= 0) {
-      setResult("Please enter a valid age.");
-      setFormula("");
+      setResult({ error: "Please enter a valid age." });
       return;
     }
-
-    const { weight, formula } = estimateWeight(ageNum, unit);
-    setResult(weight ? "Estimated Weight: " + weight : formula);
-    setFormula(weight ? "Formula Used: " + formula : "");
+    const res = estimateWeight(ageNum, unit, formula);
+    if (!res) {
+      setResult({ error: "Estimation not available for this age range." });
+      return;
+    }
+    setResult(res);
   }
 
   return (
@@ -55,6 +87,7 @@ export default function WeightEstimator() {
       <h2 className="text-lg font-semibold mb-2">Weight Estimator</h2>
 
       <div className="mb-2">
+        Age:
         <input
           type="number"
           placeholder="Enter age"
@@ -73,6 +106,18 @@ export default function WeightEstimator() {
         </select>
       </div>
 
+      <div className="mb-2"><p></p>
+        <label className="mr-2">Formula:</label>
+        <select
+          value={formula}
+          onChange={(e) => setFormula(e.target.value)}
+          className="border px-2 py-1 rounded"
+        >
+          <option value="nelson">Nelson</option>
+          <option value="bestGuess">Best Guess</option>
+        </select>
+      </div><p></p>
+
       <button
         onClick={handleCalculate}
         className="bg-blue-500 text-white px-3 py-1 rounded"
@@ -80,8 +125,17 @@ export default function WeightEstimator() {
         Calculate
       </button>
 
-      {result && <p className="mt-2 text-sm font-medium">{result}</p>}
-      {formula && <p className="mt-1 text-xs text-gray-600 italic">{formula}</p>}
+      {result && result.error && (
+        <p className="mt-2 text-sm font-medium text-red-600">{result.error}</p>
+      )}
+
+      {result && !result.error && (
+        <div className="mt-2 text-sm font-medium">
+          <p>Estimated Weight: {result.weight} kg</p>
+          <p>{result.explanation}</p>
+          <p>Converted Age: {result.converted}</p>
+        </div>
+      )}
     </div>
   );
 }
