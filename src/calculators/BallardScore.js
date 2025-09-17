@@ -44,7 +44,7 @@ function BallardScore() {
             <option value="4">4 - Full flexion</option>
           </select>
         </div>
-
+<p></p>
         <div>
           <label>Square Window (Wrist)</label>
           <select onChange={(e) => handleChange("squareWindow", e.target.value)}>
@@ -55,7 +55,7 @@ function BallardScore() {
             <option value="4">4 - 0°</option>
           </select>
         </div>
-
+<p></p>
         <div>
           <label>Arm Recoil</label>
           <select onChange={(e) => handleChange("armRecoil", e.target.value)}>

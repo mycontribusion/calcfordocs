@@ -1,8 +1,6 @@
 import { useState } from "react";
-//import "./ExpectedGestationalAge.css";
 
 function daysBetween(a, b) {
-  // difference in whole days (b - a)
   const msPerDay = 24 * 60 * 60 * 1000;
   return Math.floor((b - a) / msPerDay);
 }
@@ -25,13 +23,13 @@ function weeksAndDaysFromDays(days) {
 }
 
 export default function ExpectedGestationalAge() {
-  const [method, setMethod] = useState("lmp"); // lmp | conception | ultrasound
+  const [method, setMethod] = useState("lmp"); 
   const [lmp, setLmp] = useState("");
   const [conception, setConception] = useState("");
   const [usDate, setUsDate] = useState("");
   const [usWeeks, setUsWeeks] = useState("");
   const [usDays, setUsDays] = useState("");
-  const [refDate, setRefDate] = useState(""); // to compute GA on specific date; default is today
+  const [refDate, setRefDate] = useState(""); 
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
 
@@ -40,12 +38,13 @@ export default function ExpectedGestationalAge() {
     setError("");
     setResult(null);
 
-    const today = new Date();
     const reference = refDate ? new Date(refDate) : new Date();
 
     let edd = null;
-    let gaDaysAtRef = null; // gestational age in days at reference date
+    let gaDaysAtRef = null; 
     let source = "";
+    let backCalculatedLMP = null;
+    let lmpEdd = null;
 
     try {
       if (method === "lmp") {
@@ -59,7 +58,8 @@ export default function ExpectedGestationalAge() {
         edd = addDays(lmpDate, 280);
         source = "LMP (Naegele's rule)";
         gaDaysAtRef = daysBetween(lmpDate, reference);
-      } else if (method === "conception") {
+      } 
+      else if (method === "conception") {
         if (!conception) {
           setError("Please enter conception date.");
           return;
@@ -69,9 +69,9 @@ export default function ExpectedGestationalAge() {
 
         edd = addDays(cDate, 266);
         source = "Conception date";
-        // gestational age counts from LMP normally; if using conception, add ~14 days to compare
-        gaDaysAtRef = daysBetween(cDate, reference) + 14;
-      } else if (method === "ultrasound") {
+        gaDaysAtRef = daysBetween(cDate, reference) + 14; 
+      } 
+      else if (method === "ultrasound") {
         if (!usDate) { setError("Please enter ultrasound date."); return; }
         const uDate = new Date(usDate);
         if (isNaN(uDate)) { setError("Invalid ultrasound date."); return; }
@@ -86,10 +86,14 @@ export default function ExpectedGestationalAge() {
         const usGADays = w * 7 + d;
         const daysToEDD = 280 - usGADays;
         edd = addDays(uDate, daysToEDD);
-        source = `Ultrasound (GA ${w}w ${d}d on ${formatDate(uDate)})`;
-        // gestational age at reference = usGADays + (reference - usDate)
+        source = `Ultrasound (${w}w ${d}d on ${formatDate(uDate)})`;
         gaDaysAtRef = usGADays + daysBetween(uDate, reference);
-      } else {
+
+        // back-calculate LMP equivalent
+        backCalculatedLMP = addDays(uDate, -usGADays);
+        lmpEdd = addDays(backCalculatedLMP, 280);
+      } 
+      else {
         setError("Unknown method.");
         return;
       }
@@ -98,118 +102,98 @@ export default function ExpectedGestationalAge() {
       return;
     }
 
-    if (!edd) {
-      setError("Could not calculate EDD.");
-      return;
-    }
-
-    // If GA days negative (reference before LMP/conception/us), allow negative -> show as "not yet pregnant"
-    const gaDays = gaDaysAtRef;
-    const ga = weeksAndDaysFromDays(Math.max(0, gaDays));
+    const ga = weeksAndDaysFromDays(Math.max(0, gaDaysAtRef));
     const daysUntilDue = daysBetween(reference, edd);
     const dueIn = weeksAndDaysFromDays(Math.max(0, daysUntilDue));
 
-    // trimester
     let trimester = "Unknown";
-    if (gaDays < 0) trimester = "Pre-embryonic (before dating reference)";
-    else if (gaDays < 14) trimester = "Very early pregnancy";
-    else if (gaDays < 14 + 13 * 7) trimester = "1st trimester";
-    else if (gaDays < 14 + 27 * 7) trimester = "2nd trimester";
+    if (gaDaysAtRef < 0) trimester = "Pre-embryonic";
+    else if (gaDaysAtRef < 14) trimester = "Very early pregnancy";
+    else if (gaDaysAtRef < 14 + 13 * 7) trimester = "1st trimester";
+    else if (gaDaysAtRef < 14 + 27 * 7) trimester = "2nd trimester";
     else trimester = "3rd trimester";
 
     setResult({
       edd,
       source,
-      reference: reference,
-      gaDays,
+      reference,
+      gaDays: gaDaysAtRef,
       ga,
       daysUntilDue,
       dueIn,
       trimester,
-      today,
+      backCalculatedLMP,
+      lmpEdd,
     });
   };
 
   return (
-    <div className="ega-card">
+    <div>
       <h2>Expected Gestational Age & EDD</h2>
 
-      <form className="ega-form" onSubmit={compute}>
+      <form onSubmit={compute}>
         <label>Method</label>
-        <select value={method} onChange={(e) => setMethod(e.target.value)} className="select-field">
-          <option value="lmp">LMP (Naegele's rule) — default</option>
+        <select value={method} onChange={(e) => setMethod(e.target.value)}>
+          <option value="lmp">LMP (Naegele's rule)</option>
           <option value="conception">Conception date</option>
-          <option value="ultrasound">Ultrasound (enter GA on scan date)</option>
+          <option value="ultrasound">Ultrasound</option>
         </select>
 
         {method === "lmp" && (
           <>
-            <label>Last Menstrual Period (LMP)</label>
-            <input type="date" value={lmp} onChange={(e) => setLmp(e.target.value)} className="input-field" />
+          <p></p>
+            <label>LMP</label>
+            <input type="date" value={lmp} onChange={(e) => setLmp(e.target.value)} />
           </>
         )}
 
         {method === "conception" && (
           <>
+          <p></p>
             <label>Conception date</label>
-            <input type="date" value={conception} onChange={(e) => setConception(e.target.value)} className="input-field" />
+            <input type="date" value={conception} onChange={(e) => setConception(e.target.value)} />
           </>
         )}
 
         {method === "ultrasound" && (
-          <>
+          <><p></p>
             <label>Ultrasound date</label>
-            <input type="date" value={usDate} onChange={(e) => setUsDate(e.target.value)} className="input-field" />
-
-            <div className="row">
-              <div style={{flex:1}}>
-                <label>US GA — weeks</label>
-                <input type="number" min="0" value={usWeeks} onChange={(e) => setUsWeeks(e.target.value)} className="input-field" placeholder="e.g., 12" />
-              </div>
-              <div style={{width: '90px', marginLeft:8}}>
-                <label>days</label>
-                <input type="number" min="0" max="6" value={usDays} onChange={(e) => setUsDays(e.target.value)} className="input-field" placeholder="0–6" />
-              </div>
-            </div>
+            <input type="date" value={usDate} onChange={(e) => setUsDate(e.target.value)} />
+            <p></p><label>US GA — weeks</label>
+            <input type="number" min="0" value={usWeeks} onChange={(e) => setUsWeeks(e.target.value)} />
+            <label>days</label>
+            <input type="number" min="0" max="6" value={usDays} onChange={(e) => setUsDays(e.target.value)} />
           </>
         )}
+<p></p>
+        <label>Reference date (optional)</label>
+        <input type="date" value={refDate} onChange={(e) => setRefDate(e.target.value)} />
 
-        <label>Reference date for GA (optional; default = today)</label>
-        <input type="date" value={refDate} onChange={(e) => setRefDate(e.target.value)} className="input-field" />
-
-        <div className="actions">
-          <button type="submit" className="button">Calculate</button>
-          <button type="button" className="button secondary" onClick={() => {
+        <div>
+          <p></p>
+          <button type="submit">Calculate</button>
+          <button type="button" onClick={() => {
             setLmp(""); setConception(""); setUsDate(""); setUsWeeks(""); setUsDays(""); setRefDate(""); setResult(null); setError("");
-          }}>Reset</button>
+          }}>Reset</button><p></p>
         </div>
       </form>
 
-      {error && <div className="result danger">{error}</div>}
+      {error && <div>{error}</div>}
 
       {result && (
-        <div className="result success">
+        <div>
           <div><strong>Method:</strong> {result.source}</div>
-          <div style={{marginTop:6}}><strong>Estimated Due Date (EDD):</strong> {formatDate(result.edd)}</div>
-          <div style={{marginTop:6}}>
-            <strong>Gestational age on {formatDate(result.reference)}:</strong>{" "}
-            {result.gaDays < 0 ? `Not yet — ${Math.abs(result.gaDays)} day(s) before reference` :
-              `${result.ga.weeks} week(s) and ${result.ga.days} day(s)` }
-          </div>
-          <div style={{marginTop:6}}>
-            <strong>Time until due:</strong> {result.daysUntilDue < 0 ? `Past due by ${Math.abs(result.daysUntilDue)} day(s)` : `${result.dueIn.weeks} week(s) and ${result.dueIn.days} day(s)` }
-          </div>
-          <div style={{marginTop:8}}><strong>Trimester:</strong> {result.trimester}</div>
+          <div><strong>EDD:</strong> {formatDate(result.edd)}</div>
+          <div><strong>Gestational age on {formatDate(result.reference)}:</strong> {result.ga.weeks}w {result.ga.days}d</div>
+          <div><strong>Time until due:</strong> {result.dueIn.weeks}w {result.dueIn.days}d</div>
+          <div><strong>Trimester:</strong> {result.trimester}</div>
 
-          <details style={{marginTop:10}}>
-            <summary>Notes / Calculation details</summary>
-            <ul>
-              <li>Naegele's rule: EDD = LMP + 280 days.</li>
-              <li>Conception-based EDD uses 266 days after conception (≈ LMP + 280).</li>
-              <li>Ultrasound: EDD = ultrasound date + (280 − ultrasound GA days).</li>
-              <li>Gestational age is displayed in completed weeks and days.</li>
-            </ul>
-          </details>
+          {method === "ultrasound" && result.backCalculatedLMP && (
+            <>
+              <hr />
+              <div><strong>Back-calculated LMP:</strong> {formatDate(result.backCalculatedLMP)}</div>
+            </>
+          )}
         </div>
       )}
     </div>

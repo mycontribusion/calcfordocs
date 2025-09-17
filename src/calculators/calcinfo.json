@@ -72,16 +72,8 @@
         "id" : "q1"
     },
     {
-        "name" : "EGA & EDD from LMP",
+        "name" : "EGA & EDD from LMP/USS",
         "id" : "r"
-    },
-    {
-        "name" : "LMP, EGA, EDD from USS",
-        "id" : "s"
-    },
-    {
-        "name" : "USSLMP Calc",
-        "id" : "t"
     },
     {
         "name" : "Rate Calc",
