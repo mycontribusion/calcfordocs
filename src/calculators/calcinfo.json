@@ -40,11 +40,11 @@
         "id" : "j"
     },
     {
-        "name" : "Pedo Age Estimator",
+        "name" : "Pediatric Age Estimator",
         "id" : "k"
     },
     {
-        "name" : "Pedo Transfu",
+        "name" : "Pediatrics Anemia Correction",
         "id" : "l"
     },
     {

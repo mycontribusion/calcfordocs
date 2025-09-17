@@ -99,6 +99,7 @@ export default function HypokalemiaCorrection() {
       </div>
 
       <div>
+        <p></p>
         <label>Observed Serum K⁺ (mmol/L): </label>
         <input
           type="number"
@@ -109,6 +110,7 @@ export default function HypokalemiaCorrection() {
       </div>
 
       <div>
+        <p></p>
         <label>Target Serum K⁺ (mmol/L): </label>
         <input
           type="number"
@@ -117,6 +119,7 @@ export default function HypokalemiaCorrection() {
           onChange={(e) => setDesiredK(e.target.value)}
         />
       </div>
+      <p></p>
 
       <button onClick={calculateHypokalemia}>Calculate</button>
 

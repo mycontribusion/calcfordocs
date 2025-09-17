@@ -42,6 +42,7 @@ export default function GCSCalculator() {
       </div>
 
       {/* Verbal Response */}
+      <p></p>
       <div className="mb-2">
         <label className="block font-medium mb-1">Verbal Response (V)</label>
         <select
@@ -58,6 +59,7 @@ export default function GCSCalculator() {
       </div>
 
       {/* Motor Response */}
+      <p></p>
       <div className="mb-2">
         <label className="block font-medium mb-1">Motor Response (M)</label>
         <select
@@ -75,6 +77,7 @@ export default function GCSCalculator() {
       </div>
 
       {/* Calculate Button */}
+      <p></p>
       <button
         onClick={calculateGCS}
         className="bg-green-500 text-white px-3 py-1 rounded"
