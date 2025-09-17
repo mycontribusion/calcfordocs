@@ -11,7 +11,7 @@ export default function PediatricTransfusionCalculator() {
   const [result, setResult] = useState("");
 
   const formulaUsed =
-    "Formula: Weight (kg) × Increment in Hb × 3 ÷ Hct/PCV of RBCs (optional)";
+    "Formula: Weight (kg) × Increment in Hb × 3 ÷ Hct of RBCs";
 
   const calculateTransfusion = () => {
     const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
@@ -120,7 +120,7 @@ export default function PediatricTransfusionCalculator() {
       {/* Formula */}
       <p style={{ fontWeight: "bold" }}>{formulaUsed}</p>
       <p style={{ fontSize: "0.9em", color: "gray" }}>
-        Hct of RBCs represents the PCV of the blood to be transfused in decimal form (e.g., 100% = 1, 50% = 0.5). Only used if Factor = 3. In some low-resource settings, instead of dividing by Hct/PCV, the Factor alone is used: 3 for packed cells, 4 for sedimented cells, and 6 for whole blood.
+        Hct of RBCs represents the PCV of the blood to be transfused in decimal form (e.g., 100% = 1, 50% = 0.5) used only with factor of 3. In some low-resource settings, instead of dividing 3 by (Hct level of RBCs), 3 is used for packed cells, 4 for sedimented cells, and 6 for whole blood.
       </p>
     </div>
   );
