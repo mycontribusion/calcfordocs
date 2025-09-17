@@ -60,19 +60,19 @@
         "id" : "o"
     },
     {
-        "name" : "Infusion Rate",
+        "name" : "Infusion Drop Rate",
         "id" : "p"
     },
     {
-        "name" : "Osm Calc",
+        "name" : "Seum Osmolality Calc",
         "id" : "q"
     },
     {
-        "name" : "EGA Calc",
+        "name" : "EGA & EDD from LMP",
         "id" : "r"
     },
     {
-        "name" : "USS GA",
+        "name" : "LMP, EGA, EDD from USS",
         "id" : "s"
     },
     {
