@@ -6,25 +6,37 @@ export default function SerumOsmolalityCalculator() {
   const [glucoseUnit, setGlucoseUnit] = useState("mmol/L");
   const [urea, setUrea] = useState("");
   const [ureaUnit, setUreaUnit] = useState("mmol/L");
-  const [error, setError] = useState("");
+  const [measured, setMeasured] = useState("");
   const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
 
-  function parseNum(v) {
-    if (v === "" || v === null) return null;
+  function parsePositiveNumber(v) {
     const n = Number(v);
-    return Number.isFinite(n) ? n : null;
+    return Number.isFinite(n) && n >= 0 ? n : null;
   }
 
-  function glucoseToMmol(val, unit) {
-    const n = parseNum(val);
+  // convert glucose to mmol/L
+  function glucoseToMmol(value, unit) {
+    const n = parsePositiveNumber(value);
     if (n === null) return null;
     return unit === "mg/dL" ? n / 18 : n;
   }
 
-  function ureaToMmol(val, unit) {
-    const n = parseNum(val);
+  // convert urea to mmol/L
+  function ureaToMmol(value, unit) {
+    const n = parsePositiveNumber(value);
     if (n === null) return null;
     return unit === "mg/dL" ? n / 2.8 : n;
+  }
+
+  function interpretOsm(osm) {
+    if (osm < 275) {
+      return "Low osmolality (<275 mOsm/kg): suggests excess water (SIADH, polydipsia, adrenal insufficiency, severe hypothyroidism).";
+    } else if (osm <= 295) {
+      return "Normal osmolality (275–295 mOsm/kg).";
+    } else {
+      return "High osmolality (>295 mOsm/kg): suggests dehydration, hypernatremia, hyperglycemia, renal failure, mannitol, or toxic alcohols.";
+    }
   }
 
   function handleCalculate(e) {
@@ -32,28 +44,36 @@ export default function SerumOsmolalityCalculator() {
     setError("");
     setResult(null);
 
-    const naVal = parseNum(na);
+    const naVal = parsePositiveNumber(na);
+    const gluVal = glucoseToMmol(glucose, glucoseUnit);
+    const ureaVal = ureaToMmol(urea, ureaUnit);
+    const measVal = parsePositiveNumber(measured);
+
     if (naVal === null) {
-      setError("Please enter a valid Serum Sodium (Na) value.");
+      setError("Enter valid sodium value.");
       return;
     }
-
-    const gluVal = glucoseToMmol(glucose, glucoseUnit) ?? 0;
-    const ureaVal = ureaToMmol(urea, ureaUnit) ?? 0;
+    if (gluVal === null) {
+      setError("Enter valid glucose value.");
+      return;
+    }
+    if (ureaVal === null) {
+      setError("Enter valid urea (BUN) value.");
+      return;
+    }
 
     const osmolality = 2 * naVal + gluVal + ureaVal;
     const rounded = Number(osmolality.toFixed(1));
 
+    let gap = null;
+    if (measVal !== null) {
+      gap = Number((measVal - osmolality).toFixed(1));
+    }
+
     setResult({
       osmolality: rounded,
-      gluText:
-        glucose !== ""
-          ? `Glucose converted: ${glucose} ${glucoseUnit} → ${gluVal.toFixed(2)} mmol/L`
-          : "Glucose not provided (treated as 0 mmol/L).",
-      ureaText:
-        urea !== ""
-          ? `Urea converted: ${urea} ${ureaUnit} → ${ureaVal.toFixed(2)} mmol/L`
-          : "Urea not provided (treated as 0 mmol/L).",
+      gap,
+      interpretation: interpretOsm(rounded),
     });
   }
 
@@ -63,8 +83,9 @@ export default function SerumOsmolalityCalculator() {
     setGlucoseUnit("mmol/L");
     setUrea("");
     setUreaUnit("mmol/L");
-    setError("");
+    setMeasured("");
     setResult(null);
+    setError("");
   }
 
   return (
@@ -72,69 +93,56 @@ export default function SerumOsmolalityCalculator() {
       <h2>Serum Osmolality Calculator</h2>
 
       <form onSubmit={handleCalculate}>
+        <label>Serum Sodium (mmol/L)</label>
+        <input
+          inputMode="decimal"
+          value={na}
+          onChange={(e) => setNa(e.target.value)}
+          placeholder="e.g., 140"
+        />
+        <p></p>
+
+        <label>Serum Glucose</label>
         <div>
-          <label>
-            Serum Sodium (Na, mmol/L)
-            <br />
-            <input
-              inputMode="decimal"
-              value={na}
-              onChange={(e) => setNa(e.target.value)}
-              placeholder="e.g., 140"
-            />
-          </label>
+          <input
+            inputMode="decimal"
+            value={glucose}
+            onChange={(e) => setGlucose(e.target.value)}
+            placeholder="e.g., 5.5"
+          />
+          <select
+            value={glucoseUnit}
+            onChange={(e) => setGlucoseUnit(e.target.value)}
+          >
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
         </div>
         <p></p>
 
+        <label>Serum Urea (BUN)</label>
         <div>
-          <label>
-            Serum Glucose
-            <br />
-            <input
-              inputMode="decimal"
-              value={glucose}
-              onChange={(e) => setGlucose(e.target.value)}
-              placeholder="e.g., 5.5"
-            />
-            <br />
-            <select
-              value={glucoseUnit}
-              onChange={(e) => setGlucoseUnit(e.target.value)}
-            >
-              <option value="mmol/L">mmol/L</option>
-              <option value="mg/dL">mg/dL</option>
-            </select>
-          </label>
+          <input
+            inputMode="decimal"
+            value={urea}
+            onChange={(e) => setUrea(e.target.value)}
+            placeholder="e.g., 5.0"
+          />
+          <select
+            value={ureaUnit}
+            onChange={(e) => setUreaUnit(e.target.value)}
+          >
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
         </div>
         <p></p>
 
-        <div>
-          <label>
-            Serum Urea (BUN)
-            <br />
-            <input
-              inputMode="decimal"
-              value={urea}
-              onChange={(e) => setUrea(e.target.value)}
-              placeholder="e.g., 5.0"
-            />
-            <br />
-            <select value={ureaUnit} onChange={(e) => setUreaUnit(e.target.value)}>
-              <option value="mmol/L">mmol/L</option>
-              <option value="mg/dL">mg/dL</option>
-            </select>
-          </label>
-        </div>
-        <p></p>
-
-        <div>
-          <button type="submit">Calculate</button>{" "}
-          <button type="button" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
+        <button type="submit">Calculate</button>
+        <button type="button" onClick={handleReset}>
+          Reset
+        </button>
       </form>
-
       <p></p>
 
       {error && <div style={{ color: "red" }}>{error}</div>}
@@ -144,9 +152,9 @@ export default function SerumOsmolalityCalculator() {
           <p>
             <strong>Calculated Osmolality:</strong> {result.osmolality} mOsm/kg
           </p>
-
+          
           <p>
-            <em>Formula: Osm = 2 × Na + Glucose + Urea (all in mmol/L)</em>
+            <strong>Interpretation:</strong> {result.interpretation}
           </p>
         </div>
       )}

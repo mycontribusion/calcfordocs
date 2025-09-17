@@ -25,6 +25,7 @@ import USSBasedGestationalAge from "./calculators/USSBasedGestationalAge";
 import LMPFromUSS from "./calculators/LMPFromUSS";
 import RateCounter from "./calculators/RateCounter";
 import BallardScore from "./calculators/BallardScore";
+import AnionGapCalculator from "./calculators/AnionGapCalculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -62,6 +63,7 @@ function CalcForDocs() {
       case "t": return <LMPFromUSS/>;
       case "u": return <RateCounter/>;
       case "v": return <BallardScore/>;
+      case "q1": return <AnionGapCalculator/>;
       default: return null;
     }
   };
