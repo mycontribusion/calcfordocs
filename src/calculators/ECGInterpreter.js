@@ -8,20 +8,21 @@ export default function ECGInterpreter() {
   const [numericalValue, setNumericalValue] = useState("");
   const [result, setResult] = useState("");
 
-  // Conversion factors
+  // Conversion factors: selected unit → base unit (seconds or mV)
   const durationFactors = {
+    milliseconds: 0.001, // 1 ms = 0.001 s
     seconds: 1,
-    smallSquares: 1 / 0.04, // 1 sec = 25 small squares
-    largeSquares: 1 / 0.2,  // 1 sec = 5 large squares
+    smallSquares: 0.04,  // 1 small square = 0.04 s
+    largeSquares: 0.2,   // 1 large square = 0.2 s
   };
 
   const voltageFactors = {
     millivolts: 1,
-    smallSquares: 1 / 0.1, // 1 small square = 0.1 mV
-    largeSquares: 1 / 0.5, // 1 large square = 0.5 mV
+    smallSquares: 0.1, // 1 small square = 0.1 mV
+    largeSquares: 0.5, // 1 large square = 0.5 mV
   };
 
-  // Normal ranges in SECONDS or MILLIVOLTS
+  // Normal ranges in base units (seconds or mV)
   const normalRanges = {
     duration: {
       pWave: [0.08, 0.12],
@@ -45,13 +46,15 @@ export default function ECGInterpreter() {
     }
 
     if (wave === "heartRate") {
-      // Heart Rate Calculation
+      // Heart Rate Calculation from RR interval
       let rrSeconds =
         valueType === "seconds"
           ? val
           : valueType === "smallSquares"
           ? val * 0.04
-          : val * 0.2;
+          : valueType === "largeSquares"
+          ? val * 0.2
+          : val; // fallback
 
       let hr = 60 / rrSeconds;
       let interpretation =
@@ -65,14 +68,14 @@ export default function ECGInterpreter() {
       return;
     }
 
-    // For durations or voltages
+    // Select appropriate conversion factor
     let factor =
       measurementType === "duration"
         ? durationFactors[valueType]
         : voltageFactors[valueType];
 
-    // Convert input to base unit (sec or mV)
-    let baseValue = val / factor;
+    // Convert input to base unit
+    let baseValue = val * factor; // multiply by factor (unit → base)
 
     let range = normalRanges[measurementType][wave];
     if (!range) {
@@ -80,9 +83,9 @@ export default function ECGInterpreter() {
       return;
     }
 
-    // Convert normal range into selected unit
-    let displayLow = range[0] * factor;
-    let displayHigh = range[1] * factor;
+    // Convert normal range into selected unit for display
+    let displayLow = range[0] / factor;
+    let displayHigh = range[1] / factor;
 
     let interpretation =
       baseValue >= range[0] && baseValue <= range[1]
@@ -100,6 +103,7 @@ export default function ECGInterpreter() {
     <div className="p-4 border rounded-xl shadow-md mb-4">
       <h2 className="text-lg font-semibold mb-2">ECG Interpreter</h2>
 
+      {/* Wave/Interval */}
       <div className="mb-2">
         <label className="mr-2">Wave/Interval:</label>
         <select
@@ -117,9 +121,10 @@ export default function ECGInterpreter() {
         </select>
       </div>
 
+      {/* Measurement Type (hide for heart rate) */}
+      <p></p>
       {wave !== "heartRate" && (
         <div className="mb-2">
-          <p></p>
           <label className="mr-2">Measurement Type:</label>
           <select
             value={measurementType}
@@ -132,8 +137,9 @@ export default function ECGInterpreter() {
         </div>
       )}
 
+      {/* Unit */}
+      <p></p>
       <div className="mb-2">
-        <p></p>
         <label className="mr-2">Unit:</label>
         <select
           value={valueType}
@@ -142,6 +148,7 @@ export default function ECGInterpreter() {
         >
           {wave === "heartRate" || measurementType === "duration" ? (
             <>
+              <option value="milliseconds">Milliseconds</option>
               <option value="seconds">Seconds</option>
               <option value="smallSquares">Small Squares</option>
               <option value="largeSquares">Large Squares</option>
@@ -156,18 +163,20 @@ export default function ECGInterpreter() {
         </select>
       </div>
 
+      {/* Input value */}
+      <p></p>
       <div className="mb-2">
-        <p></p>
         <input
           type="number"
           placeholder="Enter value"
           value={numericalValue}
           onChange={(e) => setNumericalValue(e.target.value)}
-          className="border px-2 py-1 rounded"
+          className="border px-2 py-1 rounded w-full"
         />
       </div>
-      <p></p>
 
+      {/* Interpret button */}
+      <p></p>
       <button
         onClick={interpretECG}
         className="bg-blue-500 text-white px-3 py-1 rounded"
@@ -175,6 +184,7 @@ export default function ECGInterpreter() {
         Interpret
       </button>
 
+      {/* Result */}
       {result && <p className="mt-2 text-sm font-medium">{result}</p>}
     </div>
   );
