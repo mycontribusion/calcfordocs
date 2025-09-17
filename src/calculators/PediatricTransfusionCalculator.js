@@ -11,7 +11,7 @@ export default function PediatricTransfusionCalculator() {
   const [result, setResult] = useState("");
 
   const formulaUsed =
-    "Formula: Weight (kg) × Increment in Hb × 3 ÷ Hct of RBCs";
+    "Transfusion Blood Volumes= Weight (kg) × (Target hb - Observed hb) × 3 ÷ Hct of RBCs";
 
   const calculateTransfusion = () => {
     const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
@@ -21,7 +21,7 @@ export default function PediatricTransfusionCalculator() {
     const f = Number(factor);
 
     if (!w || !observed || !target || target <= observed || !f) {
-      setResult("✅ No transfusion needed or invalid input.");
+      setResult("invalid input.");
       return;
     }
 
@@ -93,22 +93,30 @@ export default function PediatricTransfusionCalculator() {
         <input
           type="number"
           value={factor}
-          onChange={(e) => setFactor(e.target.value)}
+          onChange={(e) => {
+            setFactor(e.target.value);
+            // Reset pcv input if factor is not 3
+            if (Number(e.target.value) !== 3) setPcvOfRBC("");
+          }}
         />
       </label>
       <p></p>
 
-      {/* Hct of RBC */}
-      <label>
-        Hct of RBCs (optional):
-        <input
-          type="number"
-          placeholder="100% = 1, 50% = 0.5"
-          value={pcvOfRBC}
-          onChange={(e) => setPcvOfRBC(e.target.value)}
-        />
-      </label>
-      <p></p>
+      {/* Hct of RBC - only visible if factor = 3 */}
+      {Number(factor) === 3 && (
+        <>
+          <label>
+            Hct of RBCs (optional):
+            <input
+              type="number"
+              placeholder="100% = 1, 50% = 0.5"
+              value={pcvOfRBC}
+              onChange={(e) => setPcvOfRBC(e.target.value)}
+            />
+          </label>
+          <p></p>
+        </>
+      )}
 
       {/* Calculate Button */}
       <button onClick={calculateTransfusion}>Calculate</button>
@@ -118,9 +126,9 @@ export default function PediatricTransfusionCalculator() {
       {result && <p>{result}</p>}
 
       {/* Formula */}
-      <p style={{ fontWeight: "bold" }}>{formulaUsed}</p>
+      <p style={{ fontSize: "0.9em" }}>{formulaUsed}</p>
       <p style={{ fontSize: "0.9em", color: "gray" }}>
-        Hct of RBCs represents the PCV of the blood to be transfused in decimal form (e.g., 100% = 1, 50% = 0.5) used only with factor of 3. In some low-resource settings, instead of dividing 3 by (Hct level of RBCs), 3 is used for packed cells, 4 for sedimented cells, and 6 for whole blood.
+        Hct of RBCs represents the PCV of the blood to be transfused in decimal form. In some low-resource settings, instead of dividing 3 by Hct, the Weight and Increment are multiplied by 3 for packed cells, by 4 for sedimented cells, and 6 for whole blood.
       </p>
     </div>
   );
