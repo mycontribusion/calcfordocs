@@ -85,8 +85,11 @@ export default function BallardScoreCalculator() {
   const estimatedGA = scoreMap[totalScore] || "N/A";
 
   const getStatus = () => {
-    if (estimatedGA === "N/A") return "Out of Range";
-    if (estimatedGA < 37) return "Preterm";
+    
+  if (estimatedGA < 28) return "Extremely preterm";
+  if (estimatedGA >= 28 && estimatedGA < 32) return "Very preterm";
+  if (estimatedGA >= 32 && estimatedGA < 34) return "Moderate preterm";
+  if (estimatedGA >= 34 && estimatedGA < 37) return "Late preterm";
     if (estimatedGA >= 37 && estimatedGA <= 42) return "Term";
     if (estimatedGA > 42) return "Post-term";
     return "";
@@ -282,8 +285,7 @@ export default function BallardScoreCalculator() {
       {/* Results */}
       <h3>Results</h3>
       <p>Total Score: {totalScore}</p>
-      <p>Estimated GA: {estimatedGA} weeks</p>
-      <p>Status: {getStatus()}</p>
+      <p>Estimated GA: {estimatedGA} weeks ({getStatus()})</p>
     </div>
   );
 }
