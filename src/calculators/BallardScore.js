@@ -4,18 +4,20 @@ export default function BallardScore() {
   const [scores, setScores] = useState({
     // Neuromuscular Maturity
     posture: 0,
-    squareWindow: 0,
+    squareWindow: -1,
     armRecoil: 0,
-    poplitealAngle: 0,
-    scarfSign: 0,
-    heelToEar: 0,
+    poplitealAngle: -1,
+    scarfSign: -1,
+    heelToEar: -1,
     // Physical Maturity
-    skin: 0,
+    skin: -1,
     lanugo: 0,
-    plantarCreases: 0,
-    breast: 0,
-    eyeEar: 0,
-    genitals: 0,
+    plantarCreases: -1,
+    breast: -1,
+    eyeEar: -1,
+    genitals: -1,
+    maleGenitals: -1,   // 👈 added
+    femaleGenitals: -1, // 👈 added
   });
   const [sex, setSex] = useState("male");
 
@@ -23,7 +25,7 @@ export default function BallardScore() {
     setScores({ ...scores, [param]: parseInt(value) });
   };
 
-  const genitalScore = sex === "male" ? scores.maleGenitals : scores.femaleGenitals;
+  const genitalScore = sex === "male" ? scores.maleGenitals : scores.femaleGenitals || 0;
 
 
   const totalScore =
