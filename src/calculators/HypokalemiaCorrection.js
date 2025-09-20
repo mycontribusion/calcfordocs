@@ -136,7 +136,11 @@ export default function HypokalemiaCorrection() {
             {results.deficit.toFixed(1)} mmol
           </p>
 
-          <p>
+          <p><strong>Formula:</strong> = (Desired – Observed) × Weight(kg) × 0.4</p>
+          <p>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement</p>
+
+
+          {/*<p>
             <strong>Daily Maintenance:</strong>{" "}
             {results.maintenanceLow.toFixed(1)} – {results.maintenanceHigh.toFixed(1)} mmol/day
           </p>
@@ -157,7 +161,7 @@ export default function HypokalemiaCorrection() {
             <li><strong>Max infusion rate</strong>: 10–20 mmol/hr</li>
             <li><strong>Max concentration</strong>: 40 mmol/L</li>
             <li>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement</li>
-          </ul>
+          </ul>*/}
         </div>
       )}
     </div>
