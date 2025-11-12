@@ -26,6 +26,7 @@ import LMPFromUSS from "./calculators/LMPFromUSS";
 import RateCounter from "./calculators/RateCounter";
 import BallardScore from "./calculators/BallardScore";
 import AnionGapCalculator from "./calculators/AnionGapCalculator";
+import UreaCrRatio from "./calculators/UreaCrRatio";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -64,6 +65,8 @@ function CalcForDocs() {
       case "u": return <RateCounter/>;
       case "v": return <BallardScore/>;
       case "q1": return <AnionGapCalculator/>;
+      case "w":return <UreaCrRatio/>;
+
       default: return null;
     }
   };
