@@ -1,194 +1,171 @@
 import React, { useState } from "react";
 
-export default function UreaCrRatio() {
+const UCRCalculator = () => {
+  const [type, setType] = useState("urea");
   const [urea, setUrea] = useState("");
+  const [ureaUnit, setUreaUnit] = useState("mmol/L");
   const [creatinine, setCreatinine] = useState("");
-  const [ureaType, setUreaType] = useState("urea"); // urea or bun
-  const [ureaUnit, setUreaUnit] = useState("mmol"); // mmol or mg
-  const [crUnit, setCrUnit] = useState("umol"); // µmol/L default
-  const [ratioStr, setRatioStr] = useState("");
+  const [creatinineUnit, setCreatinineUnit] = useState("µmol/L");
+  const [ratio, setRatio] = useState("");
   const [interpretation, setInterpretation] = useState("");
-  const [note, setNote] = useState("");
 
-  const toNum = (v) => {
-    const n = parseFloat(v);
-    return Number.isFinite(n) ? n : null;
+  // Conversion factors to mg/dL
+  const ureaFactors = {
+    "mmol/L": 2.801,
+    "mg/dL": 1,
   };
 
-  const convertToMgdl = (urea, creatinine, ureaUnit, crUnit) => {
-    let u_mgdl = urea;
-    let c_mgdl = creatinine;
+  const bunFactors = {
+    "mmol/L": 2.801 * (28 / 60), // converts mmol/L to BUN mg/dL approx
+    "mg/dL": 1,
+  };
 
-    // Convert urea to mg/dL
-    if (ureaUnit === "mmol") u_mgdl = urea * 2.8; // mmol/L → mg/dL
-    // if already mg/dL, unchanged
-
-    // Convert creatinine to mg/dL
-    if (crUnit === "umol") c_mgdl = creatinine / 88.4; // µmol/L → mg/dL
-    else if (crUnit === "mmol") c_mgdl = creatinine * 100; // mmol/L → mg/dL
-    // if mg/dL, unchanged
-
-    return { u_mgdl, c_mgdl };
+  const creatinineFactors = {
+    "µmol/L": 0.0113,
+    "mmol/L": 11.3,
+    "mg/dL": 1,
   };
 
   const calculateUCR = () => {
-    setRatioStr("");
-    setInterpretation("");
-    setNote("");
+    let ureaMgDl = 0;
+    let crMgDl = 0;
 
-    const u = toNum(urea);
-    const c = toNum(creatinine);
+    // Convert Urea/BUN to mg/dL
+    if (type === "urea") {
+      ureaMgDl = parseFloat(urea) * ureaFactors[ureaUnit];
+    } else {
+      ureaMgDl = parseFloat(urea) * bunFactors[ureaUnit];
+    }
 
-    if (u === null || c === null || c === 0) {
-      setNote("Please enter valid numeric values (creatinine must be non-zero).");
+    // Convert Creatinine to mg/dL
+    crMgDl = parseFloat(creatinine) * creatinineFactors[creatinineUnit];
+
+    if (!ureaMgDl || !crMgDl) {
+      setRatio("");
+      setInterpretation("Please enter valid numbers.");
       return;
     }
 
-    const { u_mgdl, c_mgdl } = convertToMgdl(u, c, ureaUnit, crUnit);
+    const ucrValue = ureaMgDl / crMgDl;
+    const rounded = (ucrValue * 1).toFixed(2); // maintain numeric accuracy
+    const displayRatio = `${Math.round(ucrValue)}:1`;
 
-    // Compute ratio
-    let ratio;
-    let ratioDisplay;
-
-    if (u_mgdl >= c_mgdl) {
-      ratio = (u_mgdl / c_mgdl).toFixed(1);
-      ratioDisplay = `${ratio} : 1`;
+    // Interpretation
+    let interp = "";
+    if (ucrValue > 20) {
+      interp = "High UCR — suggests pre-renal azotemia (e.g., dehydration, GI bleed, CHF).";
+    } else if (ucrValue < 10) {
+      interp = "Low UCR — suggests intrinsic renal disease (e.g., ATN, GN, liver disease).";
     } else {
-      ratio = (c_mgdl / u_mgdl).toFixed(1);
-      ratioDisplay = `1 : ${ratio}`;
+      interp = "Normal UCR — suggests normal or post-renal function.";
     }
 
-    // Interpretation (based on urea/creatinine ratio in mg/dL)
-    const rawRatio = u_mgdl / c_mgdl;
-    const interp = rawRatio > 20 ? "Pre-renal azotemia" : "Intrinsic renal disease";
-
-    // Warn if unlikely input values
-    if (crUnit === "mmol" && c > 50) {
-      setNote("Creatinine in mmol/L > 50 is unusual — did you mean µmol/L?");
-    } else if (crUnit === "umol" && c > 2000) {
-      setNote("Creatinine in µmol/L > 2000 is unusually high.");
-    }
-
-    setRatioStr(ratioDisplay);
+    setRatio(displayRatio);
     setInterpretation(interp);
   };
 
-  const resetAll = () => {
+  const resetForm = () => {
+    setType("urea");
     setUrea("");
+    setUreaUnit("mmol/L");
     setCreatinine("");
-    setUreaType("urea");
-    setUreaUnit("mmol");
-    setCrUnit("umol");
-    setRatioStr("");
+    setCreatinineUnit("µmol/L");
+    setRatio("");
     setInterpretation("");
-    setNote("");
   };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>Urea–Creatinine Ratio (UCR)</h2>
 
-      <div style={styles.row}>
-        <label style={styles.label}>Type:</label>
-        <select value={ureaType} onChange={(e) => setUreaType(e.target.value)} style={styles.select}>
+      <div style={styles.section}>
+        <label>Type:</label>
+        <select value={type} onChange={(e) => setType(e.target.value)} style={styles.select}>
           <option value="urea">Urea</option>
           <option value="bun">BUN</option>
         </select>
       </div>
 
-      <div style={styles.row}>
-        <label style={styles.label}>
-          {ureaType === "bun" ? "BUN" : "Urea"} ({ureaUnit === "mmol" ? "mmol/L" : "mg/dL"}):
-        </label>
-        <input type="number" value={urea} onChange={(e) => setUrea(e.target.value)} style={styles.input} />
+      <div style={styles.section}>
+        <label>{type === "urea" ? "Urea" : "BUN"}:</label>
+        <input
+          type="number"
+          value={urea}
+          onChange={(e) => setUrea(e.target.value)}
+          placeholder="Enter value"
+          style={styles.input}
+        />
         <select value={ureaUnit} onChange={(e) => setUreaUnit(e.target.value)} style={styles.select}>
-          <option value="mmol">mmol/L</option>
-          <option value="mg">mg/dL</option>
+          <option value="mmol/L">mmol/L</option>
+          <option value="mg/dL">mg/dL</option>
         </select>
       </div>
 
-      <div style={styles.row}>
-        <label style={styles.label}>
-          Creatinine ({crUnit === "umol" ? "µmol/L" : crUnit === "mmol" ? "mmol/L" : "mg/dL"}):
-        </label>
-        <input type="number" value={creatinine} onChange={(e) => setCreatinine(e.target.value)} style={styles.input} />
-        <select value={crUnit} onChange={(e) => setCrUnit(e.target.value)} style={styles.select}>
-          <option value="umol">µmol/L</option>
-          <option value="mmol">mmol/L</option>
-          <option value="mg">mg/dL</option>
+      <div style={styles.section}>
+        <label>Creatinine:</label>
+        <input
+          type="number"
+          value={creatinine}
+          onChange={(e) => setCreatinine(e.target.value)}
+          placeholder="Enter value"
+          style={styles.input}
+        />
+        <select
+          value={creatinineUnit}
+          onChange={(e) => setCreatinineUnit(e.target.value)}
+          style={styles.select}
+        >
+          <option value="µmol/L">µmol/L</option>
+          <option value="mmol/L">mmol/L</option>
+          <option value="mg/dL">mg/dL</option>
         </select>
       </div>
 
-      <div style={styles.buttonRow}>
-        <button onClick={calculateUCR} style={styles.button}>Calculate</button>
-        <button onClick={resetAll} style={styles.reset}>Reset</button>
+      <div style={styles.buttons}>
+        <button onClick={calculateUCR} style={styles.calculateBtn}>Calculate</button>
+        <button onClick={resetForm} style={styles.resetBtn}>Reset</button>
       </div>
 
-      {note && <div style={styles.note}>{note}</div>}
-
-      {ratioStr && (
-        <div style={styles.resultBox}>
-          <p><strong>UCR:</strong> {ratioStr}</p>
+      {ratio && (
+        <div style={styles.result}>
+          <p><strong>UCR:</strong> {ratio}</p>
           <p><strong>Interpretation:</strong> {interpretation}</p>
         </div>
       )}
     </div>
   );
-}
+};
 
 const styles = {
   container: {
-    maxWidth: "520px",
-    margin: "20px auto",
-    padding: "18px",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    fontFamily: "Arial, sans-serif",
-    background: "#fff",
-  },
-  title: { textAlign: "center", marginBottom: "12px" },
-  row: { display: "flex", alignItems: "center", marginBottom: "10px" },
-  label: { width: "160px", fontSize: "14px" },
-  input: {
-    flex: 1,
-    padding: "6px",
-    marginRight: "8px",
+    maxWidth: "400px",
+    margin: "40px auto",
+    padding: "20px",
     border: "1px solid #ccc",
-    borderRadius: "4px",
+    borderRadius: "10px",
+    background: "#f9f9f9",
+    fontFamily: "Arial, sans-serif",
   },
-  select: { padding: "6px", border: "1px solid #ccc", borderRadius: "4px" },
-  buttonRow: { display: "flex", justifyContent: "space-between", marginTop: "14px" },
-  button: {
-    flex: 1,
-    padding: "8px",
-    marginRight: "8px",
-    background: "#0b7285",
+  title: { textAlign: "center", marginBottom: "20px" },
+  section: { marginBottom: "15px" },
+  input: { width: "100px", marginRight: "10px" },
+  select: { padding: "4px", borderRadius: "5px" },
+  buttons: { display: "flex", justifyContent: "space-between", marginTop: "20px" },
+  calculateBtn: {
+    padding: "8px 15px",
+    background: "#007BFF",
     color: "#fff",
     border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+    borderRadius: "5px",
   },
-  reset: {
-    flex: 1,
-    padding: "8px",
-    background: "#6c757d",
+  resetBtn: {
+    padding: "8px 15px",
+    background: "#dc3545",
     color: "#fff",
     border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+    borderRadius: "5px",
   },
-  resultBox: {
-    marginTop: "16px",
-    padding: "10px",
-    border: "1px solid #eee",
-    borderRadius: "6px",
-    background: "#fbfbfb",
-  },
-  note: {
-    marginTop: "12px",
-    color: "#b45d00",
-    background: "#fff8e6",
-    padding: "8px",
-    borderRadius: "6px",
-  },
+  result: { marginTop: "20px", background: "#fff", padding: "10px", borderRadius: "8px" },
 };
+
+export default UCRCalculator;
