@@ -86,7 +86,11 @@
     {
         "name": "Urea-Creatinine Ratio (UCR)",
         "id": "w"
-      }
+    },
+    {
+        "name": "Corrected Calcium",
+        "id": "x"
+    }
       
 
 
