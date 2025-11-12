@@ -48,7 +48,8 @@ const UCRCalculator = () => {
 
     const ucrValue = ureaMgDl / crMgDl;
     const rounded = (ucrValue * 1).toFixed(2); // maintain numeric accuracy
-    const displayRatio = `${Math.round(ucrValue)}:1`;
+    const displayRatio = `${rounded}:1`;
+    
 
     // Interpretation
     let interp = "";
