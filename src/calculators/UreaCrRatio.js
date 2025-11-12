@@ -76,7 +76,7 @@ const UCRCalculator = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Urea–Creatinine Ratio (UCR)</h2>
+      <h2 style={styles.title}>Urea-Creatinine Ratio</h2>
 
       <div style={styles.section}>
         <label>Type:</label>
