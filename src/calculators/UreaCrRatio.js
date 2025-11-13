@@ -35,12 +35,7 @@ export default function UreaBunCrRatio() {
   // Urea: 1 mmol/L = 6.0 mg/dL  (molecular weight 60 -> 1 mmol/L = 60 mg/L = 6 mg/dL)
   // BUN: 1 mmol/L (urea basis) -> BUN mg/dL approx 2.8 (derived)
   // Creatinine: 1 µmol/L = 0.011312 mg/dL  (1 mg/dL = 88.4 µmol/L)
-  const toMgPerDl_fromUrea = (val, unit) => {
-    // returns urea in mg/dL
-    if (unit === "mmol/L") return val * 6.0;
-    if (unit === "mg/dL") return val;
-    return NaN;
-  };
+
   const toMgPerDl_fromBun = (val, unit) => {
     // returns BUN in mg/dL
     if (unit === "mmol/L") return val * 2.8;
