@@ -38,8 +38,8 @@ export default function UreaBunCrRatio() {
       const cr_mgdl = toMgPerDl_fromCreat(cVal, creatinineUnit);
       const raw = bun_mgdl / cr_mgdl;
       const display = raw >= 1 ? `${fmt(raw, 1)} : 1` : `1 : ${fmt(1 / raw, 1)}`;
-      let interp = raw > 20 ? "High BUN/Cr — pre-renal azotemia." :
-                   raw < 10 ? "Low BUN/Cr — intrinsic renal disease." : 
+      let interp = raw > 20 ? "High BUN/Cr — pre-renal azotemia / upper GI bleeding." :
+                   raw < 10 ? "Low BUN/Cr — intrinsic renal disease / severe liver dx." : 
                    "Normal BUN/Cr - normal / post-renal.";
       setRatioStr(display);
       setInterpretation(interp);
