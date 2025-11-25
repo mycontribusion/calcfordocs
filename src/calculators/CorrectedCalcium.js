@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 function CorrectedCalcium() {
   const [calcium, setCalcium] = useState("");
-  const [calciumUnit, setCalciumUnit] = useState("mg/dL");
+  const [calciumUnit, setCalciumUnit] = useState("mmol/L");
   const [albumin, setAlbumin] = useState("");
-  const [albuminUnit, setAlbuminUnit] = useState("g/dL");
+  const [albuminUnit, setAlbuminUnit] = useState("g/L");
   const [result, setResult] = useState(null);
   const [interpretation, setInterpretation] = useState("");
 
@@ -56,58 +56,71 @@ function CorrectedCalcium() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Corrected Calcium Calculator</h2>
+    <div >
+      <h2 >Corrected Calcium Calculator</h2>
 
-      <div style={styles.section}>
+      <div >
         <label>Calcium:</label>
         <input
           type="number"
           value={calcium}
           onChange={(e) => setCalcium(e.target.value)}
           placeholder="Enter calcium"
-          style={styles.input}
+          
         />
         <select
           value={calciumUnit}
           onChange={(e) => setCalciumUnit(e.target.value)}
-          style={styles.select}
+          
         >
           <option value="mg/dL">mg/dL</option>
           <option value="mmol/L">mmol/L</option>
         </select>
       </div>
 
-      <div style={styles.section}>
+      <div >
+        <p></p>
         <label>Albumin:</label>
         <input
           type="number"
           value={albumin}
           onChange={(e) => setAlbumin(e.target.value)}
           placeholder="Enter albumin"
-          style={styles.input}
+         
         />
         <select
           value={albuminUnit}
           onChange={(e) => setAlbuminUnit(e.target.value)}
-          style={styles.select}
+        
         >
           <option value="g/dL">g/dL</option>
           <option value="g/L">g/L</option>
         </select>
       </div>
 
-      <div style={styles.buttons}>
-        <button onClick={calculateCorrectedCalcium} style={styles.calcBtn}>Calculate</button>
-        <button onClick={reset} style={styles.resetBtn}>Reset</button>
+      <div>
+        <p></p>
+        <button onClick={calculateCorrectedCalcium} >Calculate</button>
+        <button onClick={reset} >Reset</button>
       </div>
 
       {result !== null && (
-        <div style={styles.result}>
-          <p><strong>Corrected Calcium:</strong> {result} {calciumUnit}</p>
-          <p><strong>Interpretation:</strong> {interpretation}</p>
-        </div>
-      )}
+  <div>
+    <p><strong>Corrected Calcium:</strong> {result} {calciumUnit}({interpretation})</p>
+
+    <p>
+      Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4.0 − Albumin in g/dL)
+    </p>
+
+    <p><strong>Normal Ranges:</strong></p>
+    <ul style={{ textAlign: "left" }}>
+      <li>Total Calcium (mg/dL): 8.5 – 10.5</li>
+      <li>Total Calcium (mmol/L): 2.12 – 2.62</li>
+    </ul>
+
+  </div>
+)}
+
     </div>
   );
 }

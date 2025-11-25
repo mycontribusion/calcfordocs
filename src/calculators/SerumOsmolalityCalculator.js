@@ -120,7 +120,7 @@ export default function SerumOsmolalityCalculator() {
         </div>
         <p></p>
 
-        <label>Serum Urea (BUN)</label>
+        <label>Serum Urea</label>
         <div>
           <input
             inputMode="decimal"
@@ -148,16 +148,31 @@ export default function SerumOsmolalityCalculator() {
       {error && <div style={{ color: "red" }}>{error}</div>}
 
       {result && (
-        <div>
-          <p>
-            <strong>Calculated Osmolality:</strong> {result.osmolality} mOsm/kg
-          </p>
-          
-          <p>
-            <strong>Interpretation:</strong> {result.interpretation}
-          </p>
-        </div>
-      )}
+  <div>
+    <p>
+      <strong>Calculated Osmolality:</strong> {result.osmolality} mOsm/kg
+    </p>
+
+    <p>
+      <strong>Interpretation:</strong> {result.interpretation}
+    </p>
+
+    <div style={{ 
+      marginTop: "15px", 
+      padding: "10px", 
+      background: "#f8f8f8", 
+      borderRadius: "6px", 
+      fontSize: "0.9rem" 
+    }}>
+      <strong>Formula Used:</strong>
+      <br />
+      Calculated Osmolality = <br />
+      <code>2 × [Na⁺] + Glucose (mmol/L) + Urea (mmol/L)</code>
+      <br /><br />
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

@@ -43,31 +43,36 @@ function CalcForDocs() {
 
   const renderCalc = (id) => {
     switch (id) {
-      case "a": return <BMICalculator />;
-      case "b": return <AxisInterpreter />;
-      case "c": return <ECGInterpreter />;
+      case "j": return <HypokalemiaCorrection />;
       case "d": return <GlucoseConverter />;
-      case "e": return <MapCalculator />;
+      case "q1": return <AnionGapCalculator/>;
+      case "w": return <UreaCrRatio/>;
+      case "x": return <CorrectedCalcium/>
+      case "n": return <EGFRCalculator/>;
+      case "q": return <SerumOsmolalityCalculator/>;
+
+      case "o": return <DrugDosageCalculator/>;
+      case "p": return <IVInfusionCalculator/>;
       case "f": return <EstimatedBloodVolume />;
       case "g": return <FluidCorrection />;
+      case "u": return <RateCounter/>;
+
+      case "b": return <AxisInterpreter />;
+      case "c": return <ECGInterpreter />;
+      case "e": return <MapCalculator />;
       case "h": return <HeartFailureFramingham />;
-      case "i": return <GCSCalculator />;
-      case "j": return <HypokalemiaCorrection />;
+
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
-      case "n": return <EGFRCalculator/>;
-      case "o": return <DrugDosageCalculator/>;
-      case "p": return <IVInfusionCalculator/>;
-      case "q": return <SerumOsmolalityCalculator/>;
+      case "v": return <BallardScore/>;
+
       case "r": return <ExpectedGestationalAge/>;
       case "s": return <USSBasedGestationalAge/>;
       case "t": return <LMPFromUSS/>;
-      case "u": return <RateCounter/>;
-      case "v": return <BallardScore/>;
-      case "q1": return <AnionGapCalculator/>;
-      case "w":return <UreaCrRatio/>;
-      case "x": return <CorrectedCalcium/>
+
+      case "a": return <BMICalculator />;
+      case "i": return <GCSCalculator />;
 
       default: return null;
     }

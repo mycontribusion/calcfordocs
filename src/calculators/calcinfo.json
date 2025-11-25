@@ -1,7 +1,39 @@
 [
     {
-        "name" : "BMI",
-        "id" : "a"
+        "name" : "Rate Calc",
+        "id" : "u"
+    },
+    {
+        "name" : "Glucose Unit",
+        "id" : "d"
+    },
+    {
+        "name" : "Seum Osmolality Calc",
+        "id" : "q"
+    },
+    {
+        "name" : "Anion Gap Calc",
+        "id" : "q1"
+    },
+    {
+        "name" : "Hypokalemia Correction",
+        "id" : "j"
+    },
+    {
+        "name" : "eGFR Calc",
+        "id" : "n"
+    },
+    {
+        "name": "Urea-Creatinine Ratio (UCR)",
+        "id": "w"
+    },
+    {
+        "name": "Corrected Calcium",
+        "id": "x"
+    },
+    {
+        "name" : "MAP",
+        "id" : "e"
     },
     {
         "name" : "Cardiac Axis",
@@ -12,12 +44,8 @@
         "id" : "c"
     },
     {
-        "name" : "Glucose Unit",
-        "id" : "d"
-    },
-    {
-        "name" : "MAP",
-        "id" : "e"
+        "name" : "Framingham Criteria",
+        "id" : "h"
     },
     {
         "name" : "Estimated Blood Vol",
@@ -28,16 +56,8 @@
         "id" : "g"
     },
     {
-        "name" : "Framingham Criteria",
-        "id" : "h"
-    },
-    {
         "name" : "GCS",
         "id" : "i"
-    },
-    {
-        "name" : "Hypokalemia Correction",
-        "id" : "j"
     },
     {
         "name" : "Pediatric Age Estimator",
@@ -52,8 +72,8 @@
         "id" : "m"
     },
     {
-        "name" : "eGFR Calc",
-        "id" : "n"
+        "name" : "Ballard Calc",
+        "id" : "v"
     },
     {
         "name" : "Dosage Calc",
@@ -64,32 +84,12 @@
         "id" : "p"
     },
     {
-        "name" : "Seum Osmolality Calc",
-        "id" : "q"
-    },
-    {
-        "name" : "Anion Gap Calc",
-        "id" : "q1"
-    },
-    {
         "name" : "EGA & EDD from LMP/USS",
         "id" : "r"
     },
     {
-        "name" : "Rate Calc",
-        "id" : "u"
-    },
-    {
-        "name" : "Ballard Calc",
-        "id" : "v"
-    },
-    {
-        "name": "Urea-Creatinine Ratio (UCR)",
-        "id": "w"
-    },
-    {
-        "name": "Corrected Calcium",
-        "id": "x"
+        "name" : "BMI",
+        "id" : "a"
     }
       
 
