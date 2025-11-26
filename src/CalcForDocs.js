@@ -30,6 +30,10 @@ import UreaCrRatio from "./calculators/UreaCrRatio";
 import CorrectedCalcium from "./calculators/CorrectedCalcium";
 import WellsDVTScore from "./calculators/WellsDVTScore";
 import WellsScorePE from "./calculators/WellsPEScore";
+import ShockIndex from "./ShockIndex";
+import CorrectedSodium from "./CorrectedNa";
+import AnionGapDeltaRatio from "./AnionGapDeltaRatio";
+import CalciumPhosphateProduct from "./CalciumPhosphateProduct";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -52,6 +56,9 @@ function CalcForDocs() {
       case "x": return <CorrectedCalcium/>
       case "n": return <EGFRCalculator/>;
       case "q": return <SerumOsmolalityCalculator/>;
+      case "correctna": return <CorrectedSodium/>
+      case "agdr": return <AnionGapDeltaRatio/>
+      case "cak": return <CalciumPhosphateProduct/>
 
       case "o": return <DrugDosageCalculator/>;
       case "p": return <IVInfusionCalculator/>;
@@ -65,6 +72,7 @@ function CalcForDocs() {
       case "h": return <HeartFailureFramingham />;
       case "welldvt": return <WellsDVTScore/>
       case "wellpe": return <WellsScorePE/>
+      case "shock": return <ShockIndex/>
 
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;

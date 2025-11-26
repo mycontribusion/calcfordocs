@@ -48,7 +48,7 @@ export default function WellsScorePE() {
             <label htmlFor={`criteria-${idx}`}>{c.label} ({c.points} pts)</label>
           </div>
         ))}
-      </div>
+      </div><p></p>
 
       <button
         onClick={computeWellsScore}

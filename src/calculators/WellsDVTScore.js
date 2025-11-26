@@ -11,7 +11,7 @@ export default function WellsDVTScore() {
     edema: false,
     collateral: false,
     prevDvt: false,
-    altDx: false, // subtracts 2 if yes
+    altDx: false,
   });
 
   const [score, setScore] = useState(null);
@@ -41,13 +41,11 @@ export default function WellsDVTScore() {
     });
     setScore(total);
 
-    // Interpretation (3-tier)
     let interp = "";
     if (total >= 3) interp = "High probability of DVT";
     else if (total >= 1) interp = "Moderate probability of DVT";
     else interp = "Low probability of DVT";
 
-    // Simplified recommendation
     if (total >= 2) interp += " — DVT likely.";
     else interp += " — DVT unlikely.";
 
@@ -72,30 +70,29 @@ export default function WellsDVTScore() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>Wells Score for DVT</h2>
+    <div>
+      <h2>Wells Score for DVT</h2>
 
-      <div style={styles.criteriaList}>
-        {criteria.map((c) => (
-          <label key={c.key} style={styles.checkboxRow}>
+      {criteria.map((c) => (
+        <div key={c.key}>
+          <label>
             <input
               type="checkbox"
               checked={answers[c.key]}
               onChange={() => toggle(c.key)}
-              style={{ marginRight: "8px" }}
             />
             {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
           </label>
-        ))}
-      </div>
+        </div>
+      ))}
 
-      <div style={styles.buttons}>
-        <button onClick={calculate} style={styles.calcBtn}>Calculate</button>
-        <button onClick={reset} style={styles.resetBtn}>Reset</button>
+      <div style={{ marginTop: "10px" }}>
+        <button onClick={calculate}>Calculate</button>
+        <button onClick={reset}>Reset</button>
       </div>
 
       {score !== null && (
-        <div style={styles.result}>
+        <div style={{ marginTop: "10px" }}>
           <div><strong>Total Score:</strong> {score}</div>
           <div><strong>Interpretation:</strong> {interpretation}</div>
         </div>
@@ -103,64 +100,3 @@ export default function WellsDVTScore() {
     </div>
   );
 }
-
-// -------------------- STYLES --------------------
-const styles = {
-  container: {
-    width: "90%",
-    maxWidth: "450px",
-    margin: "20px auto",
-    padding: "15px",
-    background: "#f9f9f9",
-    borderRadius: "10px",
-    border: "1px solid #ccc",
-    fontFamily: "Arial, sans-serif",
-  },
-  title: {
-    textAlign: "center",
-    marginBottom: "15px",
-    fontSize: "1.3rem",
-  },
-  criteriaList: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  checkboxRow: {
-    display: "flex",
-    alignItems: "center",
-    fontSize: "0.92rem",
-    lineHeight: "1.3",
-  },
-  buttons: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: "20px",
-    gap: "10px",
-    flexWrap: "wrap",
-  },
-  calcBtn: {
-    flex: 1,
-    padding: "8px",
-    background: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  resetBtn: {
-    flex: 1,
-    padding: "8px",
-    background: "#dc3545",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
-  result: {
-    marginTop: "20px",
-    background: "#fff",
-    padding: "12px",
-    borderRadius: "8px",
-  },
-};

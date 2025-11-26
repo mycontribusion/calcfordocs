@@ -20,12 +20,20 @@
         "id" : "q1"
     },
     {
+        "name" : "AnionGap/DeltaRatio",
+        "id" : "agdr"
+    },
+    {
         "name" : "Hypokalemia Correction",
         "id" : "j"
     },
     {
         "name" : "eGFR Calc",
         "id" : "n"
+    },
+    {
+        "name" : "CalciumPhosphateProduct",
+        "id" : "cak"
     },
     {
         "name": "Urea-Creatinine Ratio (UCR)",
@@ -36,8 +44,16 @@
         "id": "x"
     },
     {
+        "name": "Corrected Sodium",
+        "id": "correctna"
+    },
+    {
         "name" : "MAP",
         "id" : "e"
+    },
+    {
+        "name" : "Shock Index",
+        "id" : "shock"
     },
     {
         "name" : "Cardiac Axis",
