@@ -4,6 +4,10 @@
         "id" : "u"
     },
     {
+        "name" : "Infusion Drop Rate",
+        "id" : "p"
+    },
+    {
         "name" : "Glucose Unit",
         "id" : "d"
     },
@@ -48,6 +52,14 @@
         "id" : "h"
     },
     {
+        "name" : "Well's Score DVT",
+        "id" : "welldvt"
+    },
+    {
+        "name" : "Well's Score PE",
+        "id" : "wellpe"
+    },
+    {
         "name" : "Estimated Blood Vol",
         "id" : "f"
     },
@@ -78,10 +90,6 @@
     {
         "name" : "Dosage Calc",
         "id" : "o"
-    },
-    {
-        "name" : "Infusion Drop Rate",
-        "id" : "p"
     },
     {
         "name" : "EGA & EDD from LMP/USS",

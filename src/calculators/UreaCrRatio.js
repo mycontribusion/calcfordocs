@@ -197,8 +197,13 @@ export default function UreaBunCrRatio() {
 
       {ratioStr && (
         <div style={{ marginTop: 10 }}>
-          <div><strong>Ratio:</strong> {ratioStr}</div>
-          <div><strong>Interpretation:</strong> {interpretation}</div>
+          <div><strong>Ratio:</strong> {ratioStr} ({interpretation})</div>
+          <div><p><strong>Normal Ranges:</strong></p>
+            <ul>
+              <li>BUNCr Ratio- 12:1 - 20:1</li>
+              <li>UrCr ratio- 40:1 - 100:1</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

@@ -28,6 +28,8 @@ import BallardScore from "./calculators/BallardScore";
 import AnionGapCalculator from "./calculators/AnionGapCalculator";
 import UreaCrRatio from "./calculators/UreaCrRatio";
 import CorrectedCalcium from "./calculators/CorrectedCalcium";
+import WellsDVTScore from "./calculators/WellsDVTScore";
+import WellsScorePE from "./calculators/WellsPEScore";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -61,6 +63,8 @@ function CalcForDocs() {
       case "c": return <ECGInterpreter />;
       case "e": return <MapCalculator />;
       case "h": return <HeartFailureFramingham />;
+      case "welldvt": return <WellsDVTScore/>
+      case "wellpe": return <WellsScorePE/>
 
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
