@@ -1,6 +1,6 @@
 [
     {
-        "name" : "Rate Calc",
+        "name" : "Stop Watch + Calc",
         "id" : "u"
     },
     {
@@ -76,12 +76,20 @@
         "id" : "wellpe"
     },
     {
+        "name" : "AF Stroke Risk Score",
+        "id" : "afstroke"
+    },
+    {
         "name" : "Estimated Blood Vol",
         "id" : "f"
     },
     {
         "name" : "Fluid Correction",
         "id" : "g"
+    },
+    {
+        "name" : "Rule of 9",
+        "id" : "9rule"
     },
     {
         "name" : "GCS",

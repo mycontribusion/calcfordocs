@@ -34,6 +34,8 @@ import ShockIndex from "./ShockIndex";
 import CorrectedSodium from "./CorrectedNa";
 import AnionGapDeltaRatio from "./AnionGapDeltaRatio";
 import CalciumPhosphateProduct from "./CalciumPhosphateProduct";
+import RuleOfNines from "./RuleOfNines";
+import CHA2DS2VASc from "./CHA2DS2VASc";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -65,6 +67,7 @@ function CalcForDocs() {
       case "f": return <EstimatedBloodVolume />;
       case "g": return <FluidCorrection />;
       case "u": return <RateCounter/>;
+      case "9rule": return <RuleOfNines/>;
 
       case "b": return <AxisInterpreter />;
       case "c": return <ECGInterpreter />;
@@ -72,6 +75,7 @@ function CalcForDocs() {
       case "h": return <HeartFailureFramingham />;
       case "welldvt": return <WellsDVTScore/>
       case "wellpe": return <WellsScorePE/>
+      case "afstroke": return <CHA2DS2VASc/>
       case "shock": return <ShockIndex/>
 
       case "k": return <MilestoneAgeEstimator />;
