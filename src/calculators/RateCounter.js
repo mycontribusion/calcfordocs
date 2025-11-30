@@ -48,7 +48,7 @@ function TapCounter() {
     <div
       className="calculator-card"
       onClick={handleTap}
-      style={{ cursor: isRunning ? "pointer" : "default", fontSize: "30px" }}
+      style={{ cursor: isRunning ? "pointer" : "default", fontSize: "20px" }}
     >
       <h3>Tap Counter</h3>
 
