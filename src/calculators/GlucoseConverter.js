@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function GlucoseConverter() {
   const [value, setValue] = useState("");
   const [unit, setUnit] = useState("mg"); // default mg/dL
-  const [type, setType] = useState("fasting");
+  const [type, setType] = useState("random");
   const [result, setResult] = useState("");
 
   function convertGlucose() {
@@ -64,7 +64,7 @@ export default function GlucoseConverter() {
     setResult([
       `Conversion Formula: 1 mmol/L = 18.0182 mg/dL`,
       `Converted Value: ${convertedValue.toFixed(2)} ${displayUnit} ${category}`,
-      `Normal Range (${type === "fasting" ? "Fasting" : "Random/OGTT"}): ${normalRange}`
+      `Normal Range (${type === "fasting" ? "Fasting" : "Random"}): ${normalRange}`
     ]);
     
   }
@@ -74,18 +74,17 @@ export default function GlucoseConverter() {
       <h2 className="text-lg font-semibold mb-2">Glucose Converter</h2>
 
       <div className="mb-2">
-        <label className="block mb-1">Glucose Value:</label>
+        <label className="block mb-1">Glucose Value:</label><br />
         <input
           type="number"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           className="border px-2 py-1 rounded w-full"
         />
-      </div>
 
-      <div className="mb-2">
-        <p></p>
-        <label className="block mb-1">Unit:</label>
+
+
+  
         <select
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
@@ -93,19 +92,18 @@ export default function GlucoseConverter() {
         >
           <option value="mg">mg/dL</option>
           <option value="mmol">mmol/L</option>
-        </select>
-      </div>
+        </select>      </div>
 
       <div className="mb-2">
         <p></p>
-        <label className="block mb-1">Type:</label>
+        <label className="block mb-1">Type:</label><br />
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
           className="border px-2 py-1 rounded w-full"
         >
           <option value="fasting">Fasting</option>
-          <option value="random">Random/OGTT</option>
+          <option value="random">Random</option>
         </select>
       </div>
 <p></p>

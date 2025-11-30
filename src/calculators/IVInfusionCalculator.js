@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function IVInfusionCalculator() {
   const [volume, setVolume] = useState("");
   const [time, setTime] = useState("");
-  const [timeUnit, setTimeUnit] = useState("minutes"); // default
+  const [timeUnit, setTimeUnit] = useState("hours"); // default
   const [setType, setSetType] = useState("iv"); // default IV giving set
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -55,7 +55,7 @@ export default function IVInfusionCalculator() {
       <h2 className="iv-title">IV Infusion Drop Rate Calculator</h2>
 
       <form className="iv-form" onSubmit={handleCalculate}>
-        <label className="label">Volume (mL)</label>
+        <label className="label">Volume (mL)</label><br />
         <input
           className="input-field"
           inputMode="decimal"
@@ -84,7 +84,7 @@ export default function IVInfusionCalculator() {
           </select>
         </div>
 <p></p>
-        <label className="label">Giving Set Type</label>
+        <label className="label">Giving Set Type</label><br />
         <select
           className="select-field"
           value={setType}
