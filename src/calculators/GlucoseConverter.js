@@ -95,7 +95,7 @@ export default function GlucoseConverter() {
         >
           <option value="mg">mg/dL</option>
           <option value="mmol">mmol/L</option>
-        </select>
+        </select><p></p>
       </div>
 
       <div className="mb-2">
@@ -108,7 +108,7 @@ export default function GlucoseConverter() {
           <option value="fasting">Fasting</option>
           <option value="random">Random</option>
         </select>
-      </div>
+      </div><p></p>
 
       <button
         onClick={convertGlucose}
