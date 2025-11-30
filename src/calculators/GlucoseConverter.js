@@ -7,6 +7,10 @@ export default function GlucoseConverter() {
   const [type, setType] = useState("random");
   const [result, setResult] = useState("");
 
+  function roundTo1Decimal(num) {
+    return Math.round(num * 10) / 10;
+  }
+
   function convertGlucose() {
     let val = parseFloat(value);
     if (isNaN(val) || val <= 0) {
@@ -14,7 +18,7 @@ export default function GlucoseConverter() {
       return;
     }
 
-    const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
+    const factor = 18; // 1 mmol/L = 18.0182 mg/dL
     let convertedValue = 0;
     let displayUnit = "";
     let normalRange = "";
@@ -23,7 +27,7 @@ export default function GlucoseConverter() {
 
     if (unit === "mg") {
       let valMmol = val / factor;
-      convertedValue = valMmol;
+      convertedValue = roundTo1Decimal(valMmol);
       displayUnit = "mmol/L";
 
       if (type === "fasting") {
@@ -41,7 +45,7 @@ export default function GlucoseConverter() {
       }
     } else {
       let valMg = val * factor;
-      convertedValue = valMg;
+      convertedValue = roundTo1Decimal(valMg);
       displayUnit = "mg/dL";
 
       if (type === "fasting") {
@@ -62,7 +66,7 @@ export default function GlucoseConverter() {
     setResult([
       `Conversion Formula: 1 mmol/L = 18.0182 mg/dL`,
       <span key="converted">
-        Converted Value: {convertedValue.toFixed(2)} {displayUnit}{" "}
+        Converted Value: {convertedValue} {displayUnit}{" "}
         <span style={{ color: categoryColor, fontWeight: "bold" }}>
           ({category})
         </span>
@@ -95,7 +99,6 @@ export default function GlucoseConverter() {
       </div>
 
       <div className="mb-2">
-        <p></p>
         <label className="block mb-1">Type: </label>
         <select
           value={type}
@@ -106,7 +109,7 @@ export default function GlucoseConverter() {
           <option value="random">Random</option>
         </select>
       </div>
-      <p></p>
+
       <button
         onClick={convertGlucose}
         className="bg-blue-500 text-white px-3 py-1 rounded"
