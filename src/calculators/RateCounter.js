@@ -48,7 +48,7 @@ function TapCounter() {
     <div
       className="calculator-card"
       onClick={handleTap}
-      style={{ cursor: isRunning ? "pointer" : "default" }}
+      style={{ cursor: isRunning ? "pointer" : "default", fontSize: "30px" }}
     >
       <h3>Tap Counter</h3>
 
@@ -74,11 +74,11 @@ function TapCounter() {
       <p><strong>Time left:</strong> {timeLeft} sec</p>
       <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} /min</p>
 
-      <div style={{ marginTop: "0.5rem" }}>
+      <div style={{ marginTop: "0.5rem", fontSize: "30px" }}>
         {!isRunning ? (
-          <button onClick={startCounter}>Start</button>
+          <button style={{ fontSize: "30px" }} onClick={startCounter}>Start</button>
         ) : (
-          <button onClick={resetCounter}>Stop & Reset</button>
+          <button style={{ fontSize: "30px" }} onClick={resetCounter}>Stop & Reset</button>
         )}
       </div>
 
