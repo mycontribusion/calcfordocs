@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function TapCounter() {
   const [taps, setTaps] = useState(0);
   const [durationSec, setDurationSec] = useState(0);
-  const [selectedDuration, setSelectedDuration] = useState(30);
+  const [selectedDuration, setSelectedDuration] = useState(15);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -53,7 +53,7 @@ function TapCounter() {
         borderRadius: "10px",
         padding: "1rem",
         margin: "1rem 0",
-        backgroundColor: isRunning ? "#b6f5b6" : "#f9f9f9", // GREEN when active
+        backgroundColor: isRunning ? "#b6f5b6" : "#f9f9f9",
         transition: "0.3s",
       }}
     >
@@ -66,6 +66,7 @@ function TapCounter() {
             <select
               value={selectedDuration}
               onChange={(e) => setSelectedDuration(Number(e.target.value))}
+              onClick={(e) => e.stopPropagation()}  
             >
               <option value={10}>10</option>
               <option value={15}>15</option>
@@ -83,9 +84,25 @@ function TapCounter() {
 
       <div style={{ marginTop: "0.5rem", fontSize: "30px" }}>
         {!isRunning ? (
-          <button style={{ fontSize: "30px" }} onClick={startCounter}>Start</button>
+          <button
+            style={{ fontSize: "30px" }}
+            onClick={(e) => {
+              e.stopPropagation();   {/* FIXED HERE */}
+              startCounter();
+            }}
+          >
+            Start
+          </button>
         ) : (
-          <button style={{ fontSize: "30px" }} onClick={resetCounter}>Stop & Reset</button>
+          <button
+            style={{ fontSize: "30px" }}
+            onClick={(e) => {
+              e.stopPropagation();   {/* FIXED HERE */}
+              resetCounter();
+            }}
+          >
+            Stop & Reset
+          </button>
         )}
       </div>
 
