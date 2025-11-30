@@ -8,7 +8,7 @@
         "id" : "p"
     },
     {
-        "name" : "Glucose Unit",
+        "name" : "Glucose Unit Conversion",
         "id" : "d"
     },
     {
@@ -80,7 +80,7 @@
         "id" : "afstroke"
     },
     {
-        "name" : "Estimated Blood Vol",
+        "name" : "Estimated Blood Volume",
         "id" : "f"
     },
     {
@@ -108,7 +108,7 @@
         "id" : "m"
     },
     {
-        "name" : "Ballard Calc",
+        "name" : "Ballard Score Calc",
         "id" : "v"
     },
     {
