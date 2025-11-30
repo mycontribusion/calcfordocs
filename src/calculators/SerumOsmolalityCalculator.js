@@ -93,7 +93,7 @@ export default function SerumOsmolalityCalculator() {
       <h2>Serum Osmolality Calculator</h2>
 
       <form onSubmit={handleCalculate}>
-        <label>Serum Sodium (mmol/L)</label>
+        <label>Serum Sodium (mmol/L):</label><br />
         <input
           inputMode="decimal"
           value={na}
@@ -102,7 +102,7 @@ export default function SerumOsmolalityCalculator() {
         />
         <p></p>
 
-        <label>Serum Glucose</label>
+        <label>Serum Glucose:</label>
         <div>
           <input
             inputMode="decimal"
@@ -120,7 +120,7 @@ export default function SerumOsmolalityCalculator() {
         </div>
         <p></p>
 
-        <label>Serum Urea</label>
+        <label>Serum Urea:</label>
         <div>
           <input
             inputMode="decimal"

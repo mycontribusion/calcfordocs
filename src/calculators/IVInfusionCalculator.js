@@ -55,7 +55,7 @@ export default function IVInfusionCalculator() {
       <h2 className="iv-title">IV Infusion Drop Rate Calculator</h2>
 
       <form className="iv-form" onSubmit={handleCalculate}>
-        <label className="label">Volume (mL)</label><br />
+        <label className="label">Volume (mL):</label><br />
         <input
           className="input-field"
           inputMode="decimal"
@@ -65,7 +65,7 @@ export default function IVInfusionCalculator() {
         />
         <p></p>
 
-        <label className="label">Time</label>
+        <label className="label">Time:</label>
         <div className="flex-container">
           <input
             className="input-field flex-grow"
@@ -84,7 +84,7 @@ export default function IVInfusionCalculator() {
           </select>
         </div>
 <p></p>
-        <label className="label">Giving Set Type</label><br />
+        <label className="label">Giving Set Type:</label><br />
         <select
           className="select-field"
           value={setType}
