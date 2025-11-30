@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function TapCounter() {
   const [taps, setTaps] = useState(0);
   const [durationSec, setDurationSec] = useState(0);
-  const [selectedDuration, setSelectedDuration] = useState(30); // default 30 sec
+  const [selectedDuration, setSelectedDuration] = useState(30);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -27,7 +27,6 @@ function TapCounter() {
     setIsRunning(false);
   };
 
-  // Countdown timer
   useEffect(() => {
     let timer;
     if (isRunning && timeLeft > 0) {
@@ -36,7 +35,7 @@ function TapCounter() {
         setDurationSec((d) => d + 1);
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
-      setIsRunning(false); // stop when finished
+      setIsRunning(false);
     }
     return () => clearInterval(timer);
   }, [isRunning, timeLeft]);
@@ -46,9 +45,17 @@ function TapCounter() {
 
   return (
     <div
-      className="calculator-card"
       onClick={handleTap}
-      style={{ cursor: isRunning ? "pointer" : "default", fontSize: "20px" }}
+      style={{
+        cursor: isRunning ? "pointer" : "default",
+        fontSize: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "10px",
+        padding: "1rem",
+        margin: "1rem 0",
+        backgroundColor: isRunning ? "#b6f5b6" : "#f9f9f9", // GREEN when active
+        transition: "0.3s",
+      }}
     >
       <h3>Tap Counter</h3>
 
@@ -83,7 +90,7 @@ function TapCounter() {
       </div>
 
       <small style={{ display: "block", marginTop: "0.5rem", color: "#555" }}>
-        Tap inside this card while timer is running
+        Tap anywhere inside the green card while the timer is running.
       </small>
     </div>
   );
