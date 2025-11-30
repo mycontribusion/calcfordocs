@@ -6,10 +6,13 @@ function TapCounter() {
   const [selectedDuration, setSelectedDuration] = useState(15);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [blink, setBlink] = useState(false); // For blink effect
 
   const handleTap = () => {
     if (isRunning) {
       setTaps((prev) => prev + 1);
+      setBlink(true);
+      setTimeout(() => setBlink(false), 150); // short blink
     }
   };
 
@@ -53,8 +56,13 @@ function TapCounter() {
         borderRadius: "10px",
         padding: "1rem",
         margin: "1rem 0",
-        backgroundColor: isRunning ? "#b6f5b6" : "#f9f9f9",
-        transition: "0.3s",
+        backgroundColor: blink
+          ? "#e0ffe0"
+          : isRunning
+          ? "#b6f5b6"
+          : "#f9f9f9",
+        transition: "0.15s",
+        userSelect: "none",
       }}
     >
       <h3>Tap Counter</h3>
@@ -63,7 +71,16 @@ function TapCounter() {
         <label>
           Duration (seconds):{" "}
           {isRunning ? (
-            <span style={{ filter: "blur(1px)" }}>{selectedDuration}</span>
+            <span
+              style={{
+                filter: "blur(1px)",
+                display: "inline-block",
+                width: "2rem",
+                textAlign: "center",
+              }}
+            >
+              {selectedDuration}
+            </span>
           ) : (
             <select
               value={selectedDuration}
