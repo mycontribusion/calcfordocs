@@ -6,7 +6,6 @@ function TapCounter() {
   const [selectedDuration, setSelectedDuration] = useState(15);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [isStopped, setIsStopped] = useState(false); // Stopped but not reset
 
   const handleTap = () => {
     if (isRunning) {
@@ -19,20 +18,13 @@ function TapCounter() {
     setDurationSec(0);
     setTimeLeft(selectedDuration);
     setIsRunning(true);
-    setIsStopped(false);
   };
 
-  const stopCounter = () => {
-    setIsRunning(false);
-    setIsStopped(true);
-  };
-
-  const restartCounter = () => {
+  const resetCounter = () => {
     setTaps(0);
     setDurationSec(0);
-    setTimeLeft(selectedDuration);
-    setIsRunning(true);
-    setIsStopped(false);
+    setTimeLeft(0);
+    setIsRunning(false);
   };
 
   useEffect(() => {
@@ -44,7 +36,6 @@ function TapCounter() {
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
       setIsRunning(false);
-      setIsStopped(true);
     }
     return () => clearInterval(timer);
   }, [isRunning, timeLeft]);
@@ -68,23 +59,24 @@ function TapCounter() {
     >
       <h3>Tap Counter</h3>
 
-      {/* Duration dropdown — always visible */}
       <div style={{ marginBottom: "0.5rem" }}>
         <label>
           Duration (seconds):{" "}
-          <select
-            value={selectedDuration}
-            onChange={(e) => setSelectedDuration(Number(e.target.value))}
-            onClick={(e) => e.stopPropagation()}
-            disabled={isRunning} // blur / disable while running
-            style={{ filter: isRunning ? "blur(1px)" : "none" }}
-          >
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={20}>20</option>
-            <option value={30}>30</option>
-            <option value={60}>60</option>
-          </select>
+          {isRunning ? (
+            <span style={{ filter: "blur(1px)" }}>{selectedDuration}</span>
+          ) : (
+            <select
+              value={selectedDuration}
+              onChange={(e) => setSelectedDuration(Number(e.target.value))}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <option value={10}>10</option>
+              <option value={15}>15</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+              <option value={60}>60</option>
+            </select>
+          )}
         </label>
       </div>
 
@@ -93,8 +85,7 @@ function TapCounter() {
       <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} /min</p>
 
       <div style={{ marginTop: "0.5rem", fontSize: "30px" }}>
-        {/* Idle state */}
-        {!isRunning && !isStopped && (
+        {!isRunning ? (
           <button
             style={{ fontSize: "30px" }}
             onClick={(e) => {
@@ -104,31 +95,15 @@ function TapCounter() {
           >
             Start
           </button>
-        )}
-
-        {/* Running state */}
-        {isRunning && (
+        ) : (
           <button
             style={{ fontSize: "30px" }}
             onClick={(e) => {
               e.stopPropagation();
-              stopCounter();
+              resetCounter();
             }}
           >
-            Stop
-          </button>
-        )}
-
-        {/* Stopped state */}
-        {!isRunning && isStopped && (
-          <button
-            style={{ fontSize: "30px" }}
-            onClick={(e) => {
-              e.stopPropagation();
-              restartCounter();
-            }}
-          >
-            Restart
+            Stop & Reset
           </button>
         )}
       </div>
