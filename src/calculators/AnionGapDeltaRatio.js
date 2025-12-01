@@ -50,11 +50,11 @@ export default function AnionGapDeltaRatio() {
   return (
     <div className="p-4 border rounded-xl shadow-md mb-4">
       <h2 className="text-lg font-semibold mb-2">
-        Anion Gap & Delta Gap/Delta Ratio Calculator
+        Anion Gap & Delta Gap / Delta Ratio Calculator
       </h2>
 
       <div className="mb-2"><p></p>
-        <label className="mr-2">Sodium (Na⁺, mEq/L):</label>
+        <label className="mr-2">Sodium (Na⁺, mmol/L):</label><br />
         <input
           type="number"
           value={sodium}
@@ -65,7 +65,7 @@ export default function AnionGapDeltaRatio() {
       </div>
 
       <div className="mb-2"><p></p>
-        <label className="mr-2">Potassium (K⁺, mEq/L):</label>
+        <label className="mr-2">Potassium (K⁺, mmol/L):</label><br />
         <input
           type="number"
           value={potassium}
@@ -76,7 +76,7 @@ export default function AnionGapDeltaRatio() {
       </div>
 
       <div className="mb-2"><p></p>
-        <label className="mr-2">Chloride (Cl⁻, mEq/L):</label>
+        <label className="mr-2">Chloride (Cl⁻, mmol/L):</label><br />
         <input
           type="number"
           value={chloride}
@@ -87,7 +87,7 @@ export default function AnionGapDeltaRatio() {
       </div>
 
       <div className="mb-2"><p></p>
-        <label className="mr-2">Bicarbonate (HCO₃⁻, mEq/L):</label>
+        <label className="mr-2">Bicarbonate (HCO₃⁻, mmol/L):</label><br />
         <input
           type="number"
           value={bicarbonate}

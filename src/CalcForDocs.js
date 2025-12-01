@@ -32,7 +32,7 @@ import WellsDVTScore from "./calculators/WellsDVTScore";
 import WellsScorePE from "./calculators/WellsPEScore";
 import ShockIndex from "./ShockIndex";
 import CorrectedSodium from "./CorrectedNa";
-import AnionGapDeltaRatio from "./AnionGapDeltaRatio";
+import AnionGapDeltaRatio from "./calculators/AnionGapDeltaRatio";
 import CalciumPhosphateProduct from "./CalciumPhosphateProduct";
 import RuleOfNines from "./RuleOfNines";
 import CHA2DS2VASc from "./CHA2DS2VASc";
