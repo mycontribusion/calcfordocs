@@ -52,6 +52,7 @@ function TapCounter() {
       style={{
         cursor: isRunning ? "pointer" : "default",
         fontSize: "20px",
+        lineHeight: "40px",
         border: "1px solid #ccc",
         borderRadius: "10px",
         padding: "1rem",
