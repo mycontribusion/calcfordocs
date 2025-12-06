@@ -75,7 +75,7 @@ export default function PediatricWeightEstimator() {
       <h2>Pediatric Weight Estimator</h2>
 
       <label>
-        Age:
+        Age: <br />
         <input
           type="number"
           value={age}

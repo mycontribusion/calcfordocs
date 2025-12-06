@@ -132,7 +132,7 @@ export default function ExpectedGestationalAge() {
       <h2>Expected Gestational Age & EDD</h2>
 
       <form onSubmit={compute}>
-        <label>Method</label>
+        <label>Method:</label><br />
         <select value={method} onChange={(e) => setMethod(e.target.value)}>
           <option value="lmp">LMP (Naegele's rule)</option>
           <option value="conception">Conception date</option>
@@ -142,7 +142,7 @@ export default function ExpectedGestationalAge() {
         {method === "lmp" && (
           <>
           <p></p>
-            <label>LMP</label>
+            <label>LMP:</label><br />
             <input type="date" value={lmp} onChange={(e) => setLmp(e.target.value)} />
           </>
         )}
@@ -166,7 +166,7 @@ export default function ExpectedGestationalAge() {
           </>
         )}
 <p></p>
-        <label>Reference date (optional)</label>
+        <label>Reference date (optional):</label><br />
         <input type="date" value={refDate} onChange={(e) => setRefDate(e.target.value)} />
 
         <div>

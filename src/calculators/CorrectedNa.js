@@ -27,7 +27,7 @@ export default function CorrectedSodium() {
       <h2 className="text-lg font-semibold mb-2">Corrected Sodium Calculator</h2>
 
       <div className="mb-2">
-        <label className="mr-2">Measured Sodium (mEq/L):</label>
+        <label className="mr-2">Measured Sodium (mmol/L):</label><br />
         <input
           type="number"
           value={sodium}
@@ -35,10 +35,10 @@ export default function CorrectedSodium() {
           className="border px-2 py-1 rounded w-full"
           placeholder="e.g., 135"
         />
-      </div>
+      </div><p></p>
 
       <div className="mb-2">
-        <label className="mr-2">Blood Glucose (mg/dL):</label>
+        <label className="mr-2">Blood Glucose (mg/dL):</label><br />
         <input
           type="number"
           value={glucose}
@@ -46,7 +46,7 @@ export default function CorrectedSodium() {
           className="border px-2 py-1 rounded w-full"
           placeholder="e.g., 300"
         />
-      </div>
+      </div><p></p>
 
       <button
         onClick={calculateCorrectedNa}

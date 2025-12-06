@@ -83,7 +83,7 @@ export default function HypokalemiaCorrection() {
       <h2>Hypokalemia Correction Calculator</h2>
 
       <div>
-        <label>Weight: </label>
+        <label>Weight: </label><br />
         <input
           type="number"
           value={weight}
@@ -100,7 +100,7 @@ export default function HypokalemiaCorrection() {
 
       <div>
         <p></p>
-        <label>Observed Serum K⁺ (mmol/L): </label>
+        <label>Observed Serum K⁺ (mmol/L): </label><br />
         <input
           type="number"
           step="0.1"
@@ -111,7 +111,7 @@ export default function HypokalemiaCorrection() {
 
       <div>
         <p></p>
-        <label>Target Serum K⁺ (mmol/L): </label>
+        <label>Target Serum K⁺ (mmol/L): </label><br />
         <input
           type="number"
           step="0.1"

@@ -51,7 +51,7 @@ function EGFRCalculator() {
     <div className="calc-container">
       <h2>eGFR Calculator (CKD-EPI 2021)</h2>
 
-      <label>Serum Creatinine</label>
+      <label>Serum Creatinine:</label><br />
       <input
         type="number"
         value={scr}
@@ -65,7 +65,7 @@ function EGFRCalculator() {
 
       <p></p>
 
-      <label>Age (years)</label>
+      <label>Age (years):</label><br />
       <input
         type="number"
         value={age}
@@ -75,7 +75,7 @@ function EGFRCalculator() {
 
       <p></p>
 
-      <label>Sex</label>
+      <label>Sex: </label>
       <select value={sex} onChange={(e) => setSex(e.target.value)}>
         <option value="male">Male</option>
         <option value="female">Female</option>

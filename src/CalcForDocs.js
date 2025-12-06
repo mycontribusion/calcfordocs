@@ -30,12 +30,12 @@ import UreaCrRatio from "./calculators/UreaCrRatio";
 import CorrectedCalcium from "./calculators/CorrectedCalcium";
 import WellsDVTScore from "./calculators/WellsDVTScore";
 import WellsScorePE from "./calculators/WellsPEScore";
-import ShockIndex from "./ShockIndex";
-import CorrectedSodium from "./CorrectedNa";
+import ShockIndex from "./calculators/ShockIndex";
+import CorrectedSodium from "./calculators/CorrectedNa";
 import AnionGapDeltaRatio from "./calculators/AnionGapDeltaRatio";
-import CalciumPhosphateProduct from "./CalciumPhosphateProduct";
-import RuleOfNines from "./RuleOfNines";
-import CHA2DS2VASc from "./CHA2DS2VASc";
+import CalciumPhosphateProduct from "./calculators/CalciumPhosphateProduct";
+import RuleOfNines from "./calculators/RuleOfNines";
+import CHA2DS2VASc from "./calculators/CHA2DS2VASc";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);

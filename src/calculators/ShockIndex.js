@@ -37,7 +37,7 @@ export default function ShockIndex() {
 
       {/* Heart Rate */}
       <div className="mb-2">
-        <label className="mr-2">Heart Rate (bpm):</label>
+        <label className="mr-2">Heart Rate (bpm):</label><br />
         <input
           type="number"
           value={heartRate}
@@ -50,7 +50,7 @@ export default function ShockIndex() {
 
       {/* Systolic BP */}
       <div className="mb-2">
-        <label className="mr-2">Systolic BP (mmHg):</label>
+        <label className="mr-2">Systolic BP (mmHg):</label><br />
         <input
           type="number"
           value={systolicBP}

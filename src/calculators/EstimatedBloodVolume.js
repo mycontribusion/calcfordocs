@@ -58,7 +58,7 @@ export default function EstimatedBloodVolume() {
       <h2 className="text-lg font-bold mb-2">Estimated Blood Volume (EBV)</h2>
 
       <label className="block mb-2">
-        Weight:
+        Weight: <br />
         <input
           type="number"
           min="0.1"
@@ -82,7 +82,7 @@ export default function EstimatedBloodVolume() {
       <p></p>
 
       <label className="block mb-2">
-        Age Group:
+        Age Group: <br />
         <select
           value={ageGroup}
           onChange={(e) => setAgeGroup(e.target.value)}

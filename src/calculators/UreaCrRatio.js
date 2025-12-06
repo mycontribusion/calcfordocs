@@ -115,7 +115,7 @@ export default function UreaBunCrRatio() {
     <div>
       <h2>Urea / BUN – Creatinine Ratio</h2>
 
-      <label style={{marginTop: 10 }}>Type: </label>
+      <label >Type: </label>
       <select
         value={type}
         onChange={handleTypeChange}
@@ -123,11 +123,11 @@ export default function UreaBunCrRatio() {
       >
         <option value="urea">Urea (SI)</option>
         <option value="bun">BUN (Conventional)</option>
-      </select>
+      </select><p></p>
 
-      <label style={{ display: "block", marginTop: 10 }}>
-        {type === "urea" ? "Urea" : "BUN"}
-      </label>
+      <label>
+        {type === "urea" ? "Urea:" : "BUN:"}
+      </label><br />
       <input
         type="number"
         value={analyteValue}
@@ -137,13 +137,12 @@ export default function UreaBunCrRatio() {
       <select
         value={analyteUnit}
         onChange={(e) => setAnalyteUnit(e.target.value)}
-        style={{ marginTop: 5 }}
       >
         <option value="mmol/L">mmol/L</option>
         <option value="mg/dL">mg/dL</option>
-      </select>
+      </select><p></p>
 
-      <label style={{ display: "block", marginTop: 10 }}>Creatinine</label>
+      <label >Creatinine:</label><br />
       <input
         type="number"
         value={creatinineValue}
@@ -153,7 +152,6 @@ export default function UreaBunCrRatio() {
       <select
         value={creatinineUnit}
         onChange={(e) => setCreatinineUnit(e.target.value)}
-        style={{marginTop: 5 }}
       >
         <option value="µmol/L">µmol/L</option>
         <option value="mmol/L">mmol/L</option>

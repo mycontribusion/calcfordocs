@@ -54,7 +54,7 @@ export default function FluidCorrection() {
 
       {/* Weight Input */}
       <div>
-        <label>Weight: </label>
+        <label>Weight: </label><br />
         <input
           type="number"
           value={weight}
@@ -72,7 +72,7 @@ export default function FluidCorrection() {
       {/* Severity Input */}
       <p></p>
       <div>
-        <label>Dehydration Severity: </label>
+        <label>Dehydration Severity: </label><br />
         <select
           value={severity}
           onChange={(e) => setSeverity(e.target.value)}

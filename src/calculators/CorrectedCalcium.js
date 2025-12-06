@@ -60,7 +60,7 @@ function CorrectedCalcium() {
       <h2 >Corrected Calcium Calculator</h2>
 
       <div >
-        <label>Calcium:</label>
+        <label>Calcium:</label><br />
         <input
           type="number"
           value={calcium}
@@ -80,7 +80,7 @@ function CorrectedCalcium() {
 
       <div >
         <p></p>
-        <label>Albumin:</label>
+        <label>Albumin:</label><br />
         <input
           type="number"
           value={albumin}

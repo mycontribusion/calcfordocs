@@ -43,7 +43,7 @@ export default function MapCalculator() {
       <h2 className="text-lg font-semibold mb-2">MAP Calculator</h2>
 
       <div className="mb-2">
-        <label className="block mb-1">Systolic BP (mmHg):</label>
+        <label className="block mb-1">Systolic BP (mmHg):</label><br />
         <input
           type="number"
           value={sbp}
@@ -54,7 +54,7 @@ export default function MapCalculator() {
 
       <div className="mb-2">
         <p></p>
-        <label className="block mb-1">Diastolic BP (mmHg):</label>
+        <label className="block mb-1">Diastolic BP (mmHg):</label><br />
         <input
           type="number"
           value={dbp}

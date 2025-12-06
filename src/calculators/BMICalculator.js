@@ -70,7 +70,7 @@ export default function BmiCalculator() {
             <option value="lb">lb</option>
           </select>
         </div>
-      </div>
+      </div><p></p>
 
       {/* Height Input */}
       <div className="mb-2">
@@ -92,7 +92,7 @@ export default function BmiCalculator() {
             <option value="inch">inch</option>
           </select>
         </div>
-      </div>
+      </div><p></p>
 
       <button
         onClick={calculateBMI}

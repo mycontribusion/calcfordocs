@@ -55,7 +55,7 @@ export default function DrugDosageCalculator() {
       <h2 className="dose-title">Drug Dosage Calculator</h2>
 
       <form className="dose-form" onSubmit={handleCalculate}>
-        <label className="label">Dose (per kg)</label>
+        <label className="label">Dose (per kg):</label><br />
         <input
           className="input-field"
           inputMode="decimal"
@@ -64,7 +64,7 @@ export default function DrugDosageCalculator() {
           placeholder="e.g., 10"
         />
 <p></p>
-        <label className="label">Patient Weight</label>
+        <label className="label">Patient Weight:</label><br />
         <div className="flex-container">
           <input
             className="input-field flex-grow"

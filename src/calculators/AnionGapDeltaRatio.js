@@ -214,19 +214,6 @@ export default function AnionGapDeltaRatio() {
 
       {result && (
         <div>
-          {/* FORMULAS */}
-          <div>
-            <strong>Formulas used:</strong>
-            <br />
-            • AG = (Na⁺ + K⁺) − (Cl⁻ + HCO₃⁻)
-            <br />
-            • Albumin-corrected AG = AG + 2.5 × (4 − albumin [g/dL])  (shown only if albumin entered)
-            <br />
-            • ΔGap = AGused − 12  (AGused = corrected AG if corrected AG ≥ 12, else uncorrected AG)
-            <br />
-            • ΔRatio = ΔGap ÷ (24 − HCO₃⁻)
-          </div>
-
           <p />
 
           {/* RESULTS */}
@@ -269,6 +256,18 @@ export default function AnionGapDeltaRatio() {
           </div>
 
           <p />
+          {/* FORMULAS */}
+          <div>
+            <strong>Formulas used:</strong>
+            <br />
+            • AG = (Na⁺ + K⁺) − (Cl⁻ + HCO₃⁻)
+            <br />
+            • Albumin-corrected AG = AG + 2.5 × (4 − albumin [g/dL])  (shown only if albumin entered)
+            <br />
+            • ΔGap = AGused − 12  (AGused = corrected AG if corrected AG ≥ 12, else uncorrected AG)
+            <br />
+            • ΔRatio = ΔGap ÷ (24 − HCO₃⁻)
+          </div>
 
           {/* REFERENCE */}
           <div style={{ fontSize: "0.95em" }}>

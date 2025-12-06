@@ -54,7 +54,7 @@ export default function CalciumPhosphateProduct() {
 
       {/* Calcium input */}
       <div className="mb-2">
-        <label className="mr-2">Serum Calcium:</label>
+        <label className="mr-2">Serum Calcium: <br /></label>
         <input
           type="number"
           placeholder="Enter Calcium"
@@ -74,7 +74,7 @@ export default function CalciumPhosphateProduct() {
 
       {/* Phosphate input */}
       <div className="mb-2"><p></p>
-        <label className="mr-2">Serum Phosphate:</label>
+        <label className="mr-2">Serum Phosphate:</label><br />
         <input
           type="number"
           placeholder="Enter Phosphate"

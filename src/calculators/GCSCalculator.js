@@ -28,7 +28,7 @@ export default function GCSCalculator() {
 
       {/* Eye Response */}
       <div className="mb-2">
-        <label className="block font-medium mb-1">Eye Response (E)</label>
+        <label className="block font-medium mb-1">Eye Response (E)</label><br />
         <select
           value={eye}
           onChange={(e) => setEye(parseInt(e.target.value))}
@@ -44,7 +44,7 @@ export default function GCSCalculator() {
       {/* Verbal Response */}
       <p></p>
       <div className="mb-2">
-        <label className="block font-medium mb-1">Verbal Response (V)</label>
+        <label className="block font-medium mb-1">Verbal Response (V)</label><br />
         <select
           value={verbal}
           onChange={(e) => setVerbal(parseInt(e.target.value))}
@@ -61,7 +61,7 @@ export default function GCSCalculator() {
       {/* Motor Response */}
       <p></p>
       <div className="mb-2">
-        <label className="block font-medium mb-1">Motor Response (M)</label>
+        <label className="block font-medium mb-1">Motor Response (M)</label><br />
         <select
           value={motor}
           onChange={(e) => setMotor(parseInt(e.target.value))}
