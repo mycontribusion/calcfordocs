@@ -121,7 +121,7 @@ function TapCounter() {
               resetCounter();
             }}
           >
-            Stop & Reset
+            Stop
           </button>
         )}
       </div>
