@@ -102,7 +102,7 @@ function TapCounter() {
       <p><strong>Time left:</strong> {timeLeft} sec</p>
       <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} /min</p>
 
-      <div style={{ marginTop: "0.5rem", fontSize: "30px" }}>
+      <div style={{ marginTop: "0.5rem", fontSize: "30px", marginLeft: "90px" }}>
         {!isRunning ? (
           <button
             style={{ fontSize: "30px" }}
