@@ -8,6 +8,10 @@
         "id" : "p"
     },
     {
+        "name" : "SOFA",
+        "id" : "sofa"
+    },
+    {
         "name" : "Glucose Unit Conversion",
         "id" : "d"
     },

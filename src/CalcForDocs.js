@@ -36,6 +36,7 @@ import AnionGapDeltaRatio from "./calculators/AnionGapDeltaRatio";
 import CalciumPhosphateProduct from "./calculators/CalciumPhosphateProduct";
 import RuleOfNines from "./calculators/RuleOfNines";
 import CHA2DS2VASc from "./calculators/CHA2DS2VASc";
+import SOFA from "./calculators/SOFA";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -89,6 +90,7 @@ function CalcForDocs() {
 
       case "a": return <BMICalculator />;
       case "i": return <GCSCalculator />;
+      case "sofa": return <SOFA/>;
 
       default: return null;
     }
