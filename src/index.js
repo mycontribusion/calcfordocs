@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
+// Import CRA service worker registration
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -9,19 +12,10 @@ root.render(
   </React.StrictMode>
 );
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register(`${process.env.PUBLIC_URL}/service-worker.js`)
-      .then((registration) => {
-        console.log("Service Worker registered with scope:", registration.scope);
-      })
-      .catch((error) => {
-        console.log("Service Worker registration failed:", error);
-      });
-  });
-}
+// Register CRA service worker for full offline support
+serviceWorkerRegistration.register();
 
+// Optional: request persistent storage so browser doesn't evict cache
 if (navigator.storage && navigator.storage.persist) {
   navigator.storage.persist().then(granted => {
     console.log(
