@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 
-// Import CRA service worker registration
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import App from './App';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // <-- add this
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,16 +11,9 @@ root.render(
   </React.StrictMode>
 );
 
-// Register CRA service worker for full offline support
+// Register the service worker for offline support
 serviceWorkerRegistration.register();
 
-// Optional: request persistent storage so browser doesn't evict cache
-if (navigator.storage && navigator.storage.persist) {
-  navigator.storage.persist().then(granted => {
-    console.log(
-      granted
-        ? "CalcforDocs storage is persistent"
-        : "Storage may be cleared under pressure"
-    );
-  });
-}
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

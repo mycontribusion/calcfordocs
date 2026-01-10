@@ -1,8 +1,7 @@
 // serviceWorkerRegistration.js
-// CRA Workbox service worker registration
 
-// This lets the app load faster on subsequent visits in production
-// and gives it offline capabilities.
+// This optional code is used to register a service worker.
+// register() is not called by default.
 
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
@@ -15,10 +14,9 @@ const isLocalhost = Boolean(
   );
   
   export function register(config) {
-    if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
       const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
       if (publicUrl.origin !== window.location.origin) {
-        // Service worker won't work if PUBLIC_URL is on a different origin
         return;
       }
   
@@ -26,10 +24,13 @@ const isLocalhost = Boolean(
         const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
   
         if (isLocalhost) {
-          // This is running on localhost. Check if service worker exists.
+          // Check if service worker exists
           checkValidServiceWorker(swUrl, config);
+          navigator.serviceWorker.ready.then(() => {
+            console.log('Service worker ready.');
+          });
         } else {
-          // Not localhost. Just register service worker
+          // Register service worker
           registerValidSW(swUrl, config);
         }
       });
@@ -42,18 +43,16 @@ const isLocalhost = Boolean(
       .then((registration) => {
         registration.onupdatefound = () => {
           const installingWorker = registration.installing;
-          if (installingWorker == null) {
-            return;
-          }
+          if (installingWorker == null) return;
           installingWorker.onstatechange = () => {
             if (installingWorker.state === 'installed') {
               if (navigator.serviceWorker.controller) {
-                // New content is available; execute callback
+                console.log('New content available; please refresh.');
                 if (config && config.onUpdate) {
                   config.onUpdate(registration);
                 }
               } else {
-                // Content cached for offline use
+                console.log('Content cached for offline use.');
                 if (config && config.onSuccess) {
                   config.onSuccess(registration);
                 }
@@ -68,28 +67,24 @@ const isLocalhost = Boolean(
   }
   
   function checkValidServiceWorker(swUrl, config) {
-    fetch(swUrl, {
-      headers: { 'Service-Worker': 'script' },
-    })
+    fetch(swUrl)
       .then((response) => {
         const contentType = response.headers.get('content-type');
         if (
           response.status === 404 ||
           (contentType != null && contentType.indexOf('javascript') === -1)
         ) {
-          // No service worker found. Reload the page
           navigator.serviceWorker.ready.then((registration) => {
             registration.unregister().then(() => {
               window.location.reload();
             });
           });
         } else {
-          // Service worker found. Proceed as normal.
           registerValidSW(swUrl, config);
         }
       })
       .catch(() => {
-        console.log('No internet connection found. App is running in offline mode.');
+        console.log('No internet connection found. App is running offline.');
       });
   }
   
