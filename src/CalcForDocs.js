@@ -37,6 +37,7 @@ import CalciumPhosphateProduct from "./calculators/CalciumPhosphateProduct";
 import RuleOfNines from "./calculators/RuleOfNines";
 import CHA2DS2VASc from "./calculators/CHA2DS2VASc";
 import SOFA from "./calculators/SOFA";
+import BishopScore from "./calculators/BishopScore";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -87,6 +88,7 @@ function CalcForDocs() {
       case "r": return <ExpectedGestationalAge/>;
       case "s": return <USSBasedGestationalAge/>;
       case "t": return <LMPFromUSS/>;
+      case "bs": return <BishopScore/>;
 
       case "a": return <BMICalculator />;
       case "i": return <GCSCalculator />;

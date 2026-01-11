@@ -1,6 +1,6 @@
 [
     {
-        "name" : "Stop Watch + Calc",
+        "name" : "Timer + Calc",
         "id" : "u"
     },
     {
@@ -16,7 +16,7 @@
         "id" : "d"
     },
     {
-        "name" : "Seum Osmolality Calc",
+        "name" : "Serum Osmolality Calc",
         "id" : "q"
     },
     {
@@ -122,6 +122,10 @@
     {
         "name" : "EGA & EDD from LMP/USS",
         "id" : "r"
+    },
+    {
+        "name" : "Bishop Score",
+        "id" : "bs"
     },
     {
         "name" : "BMI",
