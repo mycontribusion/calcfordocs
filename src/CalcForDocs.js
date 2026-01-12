@@ -38,6 +38,7 @@ import RuleOfNines from "./calculators/RuleOfNines";
 import CHA2DS2VASc from "./calculators/CHA2DS2VASc";
 import SOFA from "./calculators/SOFA";
 import BishopScore from "./calculators/BishopScore";
+import HyponatremiaCorrection from "./calculators/HyponatremiaCorrection";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -63,6 +64,7 @@ function CalcForDocs() {
       case "correctna": return <CorrectedSodium/>
       case "agdr": return <AnionGapDeltaRatio/>
       case "cak": return <CalciumPhosphateProduct/>
+      case "lowna": return <HyponatremiaCorrection/>
 
       case "o": return <DrugDosageCalculator/>;
       case "p": return <IVInfusionCalculator/>;
