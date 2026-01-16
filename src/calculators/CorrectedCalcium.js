@@ -124,25 +124,4 @@ function CorrectedCalcium() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: "400px",
-    margin: "40px auto",
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "10px",
-    background: "#f9f9f9",
-    fontFamily: "Arial, sans-serif",
-  },
-  title: { textAlign: "center", marginBottom: "20px" },
-  section: { marginBottom: "15px" },
-  input: { width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #aaa" },
-  select: { width: "100%", padding: "6px", borderRadius: "5px", border: "1px solid #aaa", marginTop: "5px" },
-  buttons: { display: "flex", justifyContent: "space-between", marginTop: "20px" },
-  calcBtn: { padding: "8px 15px", background: "#007BFF", color: "#fff", border: "none", borderRadius: "5px" },
-  resetBtn: { padding: "8px 15px", background: "#dc3545", color: "#fff", border: "none", borderRadius: "5px" },
-  result: { marginTop: "20px", background: "#fff", padding: "10px", borderRadius: "8px", textAlign: "center" },
-};
-
 export default CorrectedCalcium;
