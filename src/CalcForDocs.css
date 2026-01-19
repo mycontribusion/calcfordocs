@@ -52,7 +52,7 @@
     background: #e9ecef;
   }
 
-  input, option, button {
+  input, select, button {
     color: #015c9c;
     border: 1px solid #da0b1f;
   }
