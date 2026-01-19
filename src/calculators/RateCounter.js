@@ -126,7 +126,7 @@ function TapCounter() {
         )}
       </div>
 
-      <small style={{ display: "block", marginTop: "0.5rem", color: "#555" }}>
+      <small style={{ display: "block", marginTop: "0.5rem", color: "#015c9c" }}>
         Tap anywhere inside the green card while the timer is running.
       </small>
     </div>
