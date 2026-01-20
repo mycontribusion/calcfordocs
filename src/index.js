@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
@@ -10,15 +10,28 @@ function Main() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [waitingWorker, setWaitingWorker] = useState(null);
 
-  // Reload the page to activate the new SW
+  // Listen for messages from the service worker
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data && event.data.type === "NEW_VERSION") {
+          setWaitingWorker(event.data.payload);
+          setUpdateAvailable(true);
+        }
+      });
+    }
+  }, []);
+
+  // User clicks "Refresh" → skip waiting & reload
   const refreshApp = () => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: "SKIP_WAITING" });
       setUpdateAvailable(false);
+      window.location.reload();
     }
   };
 
-  // Dismiss the banner without refreshing
+  // User clicks "Dismiss" → hide banner
   const dismissBanner = () => {
     setUpdateAvailable(false);
   };
@@ -26,6 +39,8 @@ function Main() {
   return (
     <>
       <App />
+
+      {/* Update banner */}
       {updateAvailable && (
         <div
           style={{
@@ -80,18 +95,14 @@ function Main() {
   );
 }
 
-// Render the app
 root.render(<Main />);
 
-// ✅ Register service worker with inline callback — no unused variable
+// Register SW with callback to detect waiting updates
 serviceWorkerRegistration.register({
   onUpdate: (registration) => {
     if (registration && registration.waiting) {
-      // Tell React app to show the update banner
-      registration.waiting.postMessage({ type: "SKIP_WAITING" });
-      // Alternatively, you can manage state via a global event or context
-      // For simplicity, the page will reload automatically
-      window.location.reload();
+      // Send the waiting SW to the app via message
+      registration.waiting.postMessage({ type: "NEW_VERSION", payload: registration.waiting });
     }
   },
 });
