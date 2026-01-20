@@ -8,17 +8,20 @@ export function register(config) {
         .then((registration) => {
           console.log('Service Worker registered:', registration);
 
-          // Listen for updates
           registration.onupdatefound = () => {
             const newWorker = registration.installing;
             if (newWorker) {
               newWorker.onstatechange = () => {
                 if (newWorker.state === 'installed') {
                   if (navigator.serviceWorker.controller) {
-                    // New content is available
-                    console.log('New content available; show refresh prompt.');
+                    // New content available
                     if (config && config.onUpdate) {
                       config.onUpdate(registration);
+                    }
+                  } else {
+                    // First install
+                    if (config && config.onSuccess) {
+                      config.onSuccess(registration);
                     }
                   }
                 }
