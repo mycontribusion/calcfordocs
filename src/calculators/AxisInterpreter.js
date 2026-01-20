@@ -103,7 +103,7 @@ export default function AxisInterpreter() {
             Interpret
           </button>
 
-          <div style={{ marginTop: 10, padding: 10, background: "#015c9c", borderRadius: 6, border: "1px solid #e5e7eb" }}>
+          <div style={{ marginTop: 10, padding: 10, background: "#015c9c", borderRadius: 6, border: "1px solid #e5e7eb", color:"white" }}>
             <div><strong>Interpretation:</strong> {result.interpretation || "—"}</div>
             <div><strong>Equiphasic lead:</strong> {result.equiphasic || "—"}</div>
           </div>

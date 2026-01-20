@@ -52,6 +52,7 @@ function TapCounter() {
       style={{
         cursor: isRunning ? "pointer" : "default",
         fontSize: "20px",
+        color: "white",
         lineHeight: "40px",
         border: "1px solid #ccc",
         borderRadius: "10px",
@@ -98,9 +99,15 @@ function TapCounter() {
         </label>
       </div>
 
-      <p><strong>Taps:</strong> {taps}</p>
-      <p><strong>Time left:</strong> {timeLeft} sec</p>
-      <p><strong>Rate:</strong> {ratePerMin.toFixed(1)} /min</p>
+      <p>
+        <strong>Taps:</strong> {taps}
+      </p>
+      <p>
+        <strong>Time left:</strong> {timeLeft} sec
+      </p>
+      <p>
+        <strong>Rate:</strong> {ratePerMin.toFixed(1)} /min
+      </p>
 
       <div style={{ marginTop: "0.5rem", fontSize: "30px", marginLeft: "90px" }}>
         {!isRunning ? (
@@ -110,7 +117,8 @@ function TapCounter() {
               e.stopPropagation();
               startCounter();
             }}
-          >Start
+          >
+            Start
           </button>
         ) : (
           <button
@@ -125,9 +133,22 @@ function TapCounter() {
         )}
       </div>
 
-      <small style={{ display: "block", marginTop: "1rem", color: "#015c9c", lineHeight: "20px" }}>
-        Tap anywhere inside the green card while the timer is running.
-      </small>
+      {/* ✅ Only show note when the counter is running */}
+      {isRunning && (
+        <small
+          style={{
+            fontSize: "15px",
+            display: "block",
+            marginTop: "1rem",
+            color: "white",
+            lineHeight: "20px",
+            fontStyle: "italic",
+            margin: "20px 20px",
+          }}
+        >
+          Tap anywhere inside the red card.
+        </small>
+      )}
     </div>
   );
 }

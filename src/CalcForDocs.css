@@ -86,65 +86,60 @@
     color: #015c9c;
     cursor: pointer;
   }
-  /* 🌙 Dark mode: follows phone / OS setting */
-@media (prefers-color-scheme: dark) {
 
-  body {
-    background: #000;
-    color: #fff;
-  }
+  /* 🌙 DARK MODE — manual toggle via .dark class */
+.calcfordocs.dark {
+  background: #000;
+  color: #fff;
+}
 
-  .calcfordocs {
-    background: #000;
-    color: #fff;
-  }
+/* titles */
+.calcfordocs.dark .title {
+  color: #fff;
+}
 
-  .title {
-    color: #fff;
-  }
+/* buttons */
+.calcfordocs.dark .calc-btn {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}
 
-  /* calculator cards / rows */
-  .calc-row {
-    background: #000;
-    border: 1px solid #fff;
-    box-shadow: none;
-  }
+.calcfordocs.dark .calc-btn:hover {
+  background: #111;
+}
 
-  /* buttons */
-  .calc-btn {
-    background: #000;
-    color: #fff;
-    border: 1px solid #fff;
-  }
+.calcfordocs.dark .calc-btn.active {
+  background: #111;
+  border-color: #fff;
+}
 
-  .calc-btn:hover {
-    background: #111;
-  }
+/* inputs & selects */
+.calcfordocs.dark input,
+.calcfordocs.dark select,
+.calcfordocs.dark button {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}
 
-  .calc-btn.active {
-    background: #111;
-    border-color: #fff;
-  }
+.calcfordocs.dark input::placeholder {
+  color: #aaa;
+}
 
-  /* inputs & selects */
-  input,
-  select,
-  button {
-    background: #000;
-    color: #fff;
-    border: 1px solid #fff;
-  }
+/* calculator container */
+.calcfordocs.dark .calc-row {
+  background: #000;
+  border: 1px solid #fff;
+  box-shadow: none;
+}
 
-  input::placeholder {
-    color: #aaa;
-  }
+/* contact / header */
+.calcfordocs.dark .contactus {
+  color: #fff;
+}
 
-  /* headers & contact */
-  .contactus {
-    color: #fff;
-  }
-
-  .header-row {
-    border-bottom: 1px solid #fff;
-  }
+/* grid buttons wrapper (safe fallback) */
+.calcfordocs.dark .button-wrapper {
+  background: transparent;
 }

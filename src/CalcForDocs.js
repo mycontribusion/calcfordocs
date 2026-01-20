@@ -1,5 +1,5 @@
 import "./CalcForDocs.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import calcinfo from "./calculators/calcinfo.json";
 
 import AxisInterpreter from "./calculators/AxisInterpreter";
@@ -46,6 +46,19 @@ function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
+  /* 🌙 DARK / LIGHT MODE STATE */
+  const [theme, setTheme] = useState("light");
+
+  /* Auto-detect system theme */
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(prefersDark ? "dark" : "light");
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
+
   const toggleFeedback = () => {
     setShowFeedback(!showFeedback);
   };
@@ -58,76 +71,81 @@ function CalcForDocs() {
     switch (id) {
       case "j": return <HypokalemiaCorrection />;
       case "d": return <GlucoseConverter />;
-      case "q1": return <AnionGapCalculator/>;
-      case "w": return <UreaCrRatio/>;
-      case "x": return <CorrectedCalcium/>
-      case "n": return <EGFRCalculator/>;
-      case "q": return <SerumOsmolalityCalculator/>;
-      case "correctna": return <CorrectedSodium/>
-      case "agdr": return <AnionGapDeltaRatio/>
-      case "cak": return <CalciumPhosphateProduct/>
-      case "lowna": return <HyponatremiaCorrection/>
+      case "q1": return <AnionGapCalculator />;
+      case "w": return <UreaCrRatio />;
+      case "x": return <CorrectedCalcium />;
+      case "n": return <EGFRCalculator />;
+      case "q": return <SerumOsmolalityCalculator />;
+      case "correctna": return <CorrectedSodium />;
+      case "agdr": return <AnionGapDeltaRatio />;
+      case "cak": return <CalciumPhosphateProduct />;
+      case "lowna": return <HyponatremiaCorrection />;
 
-      case "o": return <DrugDosageCalculator/>;
-      case "p": return <IVInfusionCalculator/>;
+      case "o": return <DrugDosageCalculator />;
+      case "p": return <IVInfusionCalculator />;
       case "f": return <EstimatedBloodVolume />;
       case "g": return <FluidCorrection />;
-      case "u": return <RateCounter/>;
-      case "9rule": return <RuleOfNines/>;
+      case "u": return <RateCounter />;
+      case "9rule": return <RuleOfNines />;
 
       case "b": return <AxisInterpreter />;
       case "c": return <ECGInterpreter />;
       case "e": return <MapCalculator />;
       case "h": return <HeartFailureFramingham />;
-      case "welldvt": return <WellsDVTScore/>
-      case "wellpe": return <WellsScorePE/>
-      case "afstroke": return <CHA2DS2VASc/>
-      case "shock": return <ShockIndex/>
+      case "welldvt": return <WellsDVTScore />;
+      case "wellpe": return <WellsScorePE />;
+      case "afstroke": return <CHA2DS2VASc />;
+      case "shock": return <ShockIndex />;
 
       case "k": return <MilestoneAgeEstimator />;
       case "l": return <PediatricTransfusionCalculator />;
       case "m": return <WeightEstimator />;
-      case "v": return <BallardScore/>;
+      case "v": return <BallardScore />;
 
-      case "r": return <ExpectedGestationalAge/>;
-      case "s": return <USSBasedGestationalAge/>;
-      case "t": return <LMPFromUSS/>;
-      case "bs": return <BishopScore/>;
+      case "r": return <ExpectedGestationalAge />;
+      case "s": return <USSBasedGestationalAge />;
+      case "t": return <LMPFromUSS />;
+      case "bs": return <BishopScore />;
 
       case "a": return <BMICalculator />;
       case "i": return <GCSCalculator />;
-      case "sofa": return <SOFA/>;
-      case "sfr": return <SpO2FiO2Ratio/>;
-      case "sc": return <SimpleCalculator/>;
+      case "sofa": return <SOFA />;
+      case "sfr": return <SpO2FiO2Ratio />;
+      case "sc": return <SimpleCalculator />;
       default: return null;
     }
   };
 
   return (
-    <div className="calcfordocs">
+    <div className={`calcfordocs ${theme}`}>
       <div className="head-contact">
-      <h1 className="title">CalcForDocs</h1>
-      <div className="contactus" onClick={toggleFeedback}>
-          Contact-us
-        </div>
+        <h1 className="title">CalcForDocs</h1>
 
-      {/* Feedback overlay */}
-      {showFeedback && (
-        <div className="feedback-overlay">
-          <div className="feedback-popup">
-            <Feedback />
-            <button className="close-btn" onClick={toggleFeedback}>
-              ✖ Close
-            </button>
+        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <button style={{height:"10px", width:"10px", fontSize:"8px"}} className="calc-btn" onClick={toggleTheme}>
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
+
+          <div className="contactus" onClick={toggleFeedback}>
+            Contact-us
           </div>
         </div>
-      )}
+
+        {showFeedback && (
+          <div className="feedback-overlay">
+            <div className="feedback-popup">
+              <Feedback />
+              <button className="close-btn" onClick={toggleFeedback}>
+                ✖ Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="button-grid">
         {calcinfo.map((item) => (
           <>
-            {/* button in grid cell */}
             <div id={item.id} key={item.id} className="button-wrapper">
               <button
                 className={`calc-btn ${activeCalc === item.id ? "active" : ""}`}
@@ -137,7 +155,6 @@ function CalcForDocs() {
               </button>
             </div>
 
-            {/* ✅ calculator gets its own full-width row */}
             {activeCalc === item.id && (
               <div className="calc-row">{renderCalc(item.id)}</div>
             )}
