@@ -143,7 +143,7 @@ export default function SOFA() {
           {qsofaResult && (
             <div><p></p>
               <span>Score: {qsofaResult.score} / 3</span><br />
-              <span>{qsofaResult.interpretation}</span>
+              <span style={{fontSize:"small"}}>{qsofaResult.interpretation}</span>
             </div>
           )}
         </div>
@@ -209,14 +209,14 @@ export default function SOFA() {
           <p></p><button onClick={calculateMSOFA}>Calculate</button>
 
           {msofaResult && (
-            <div>
-              <p>Respiratory: {msofaResult.resp}</p>
-              <p>Liver: {msofaResult.liver}</p>
-              <p>Cardiovascular: {msofaResult.cardio}</p>
-              <p>CNS: {msofaResult.cns}</p>
-              <p>Renal: {msofaResult.renal}</p>
-              <p>Total Score: {msofaResult.total} / 24</p>
-              <p>{msofaResult.interpretation}</p>
+            <div style={{fontSize:"small"}}><p></p>
+              <span>Respiratory: {msofaResult.resp}</span><br />
+              <span>Liver: {msofaResult.liver}</span><br />
+              <span>Cardiovascular: {msofaResult.cardio}</span><br />
+              <span>CNS: {msofaResult.cns}</span><br />
+              <span>Renal: {msofaResult.renal}</span><p></p>
+              <span style={{fontSize:"large"}}>Score: {msofaResult.total} / 24</span><br />
+              <span style={{fontSize:"small"}}>{msofaResult.interpretation}</span>
             </div>
           )}
         </div>

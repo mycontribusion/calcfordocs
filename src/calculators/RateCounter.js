@@ -110,12 +110,11 @@ function TapCounter() {
               e.stopPropagation();
               startCounter();
             }}
-          >
-            Start
+          >Start
           </button>
         ) : (
           <button
-            style={{ fontSize: "30px" }}
+            style={{ fontSize: "15px" }}
             onClick={(e) => {
               e.stopPropagation();
               resetCounter();
@@ -126,7 +125,7 @@ function TapCounter() {
         )}
       </div>
 
-      <small style={{ display: "block", marginTop: "0.5rem", color: "#015c9c" }}>
+      <small style={{ display: "block", marginTop: "1rem", color: "#015c9c", lineHeight: "20px" }}>
         Tap anywhere inside the green card while the timer is running.
       </small>
     </div>

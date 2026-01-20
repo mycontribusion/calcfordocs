@@ -138,8 +138,9 @@
     {
         "name" : "BMI",
         "id" : "a"
-    }
-      
-
-
+    },
+    {
+        "name" : "Simple Calculator",
+        "id" : "sc"
+    }     
 ]

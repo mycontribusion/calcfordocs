@@ -40,6 +40,7 @@ import SOFA from "./calculators/SOFA";
 import BishopScore from "./calculators/BishopScore";
 import HyponatremiaCorrection from "./calculators/HyponatremiaCorrection";
 import SpO2FiO2Ratio from "./calculators/SpO2FiO2Ratio";
+import SimpleCalculator from "./calculators/SimpleCalculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -97,7 +98,7 @@ function CalcForDocs() {
       case "i": return <GCSCalculator />;
       case "sofa": return <SOFA/>;
       case "sfr": return <SpO2FiO2Ratio/>;
-
+      case "sc": return <SimpleCalculator/>;
       default: return null;
     }
   };
