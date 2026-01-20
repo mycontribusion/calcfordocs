@@ -60,8 +60,8 @@ function TapCounter() {
         backgroundColor: blink
           ? "#e0ffe0"
           : isRunning
-          ? "#b6f5b6"
-          : "#f9f9f9",
+          ? "#dc091e"
+          : "#015c9c",
         transition: "0.15s",
         userSelect: "none",
       }}
