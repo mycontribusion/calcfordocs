@@ -122,28 +122,28 @@ export default function SOFA() {
         <div>
           <h3>qSOFA</h3>
 
-          <input
+          Respiratory Rate: <br/><input
             placeholder="Respiratory Rate"
             value={rr}
             onChange={(e) => setRr(e.target.value)}
           />
-          <input
+          <p></p>Systolic BP: <br/><input
             placeholder="Systolic BP"
             value={sbp}
             onChange={(e) => setSbp(e.target.value)}
           />
-          <input
+          <p></p>GCS: <br/><input
             placeholder="GCS"
             value={gcsQ}
             onChange={(e) => setGcsQ(e.target.value)}
           />
 
-          <button onClick={calculateQSOFA}>Calculate</button>
+          <p></p><button onClick={calculateQSOFA}>Calculate</button>
 
           {qsofaResult && (
-            <div>
-              <p>Score: {qsofaResult.score} / 3</p>
-              <p>{qsofaResult.interpretation}</p>
+            <div><p></p>
+              <span>Score: {qsofaResult.score} / 3</span><br />
+              <span>{qsofaResult.interpretation}</span>
             </div>
           )}
         </div>
@@ -160,12 +160,12 @@ export default function SOFA() {
             onChange={(e) => setSpo2fio2(e.target.value)}
           />
 
-          <select value={liver} onChange={(e) => setLiver(e.target.value)}>
+          <p></p><select value={liver} onChange={(e) => setLiver(e.target.value)}>
             <option value="none">No jaundice</option>
             <option value="jaundice">Jaundice present</option>
           </select>
 
-          <input
+          <p></p><input
             placeholder="MAP"
             value={map}
             onChange={(e) => setMap(e.target.value)}
@@ -186,13 +186,13 @@ export default function SOFA() {
             <option value="norepiHigh">Norepinephrine &gt;0.1</option>
           </select>
 
-          <input
+          <p></p><input
             placeholder="GCS"
             value={gcsM}
             onChange={(e) => setGcsM(e.target.value)}
           />
 
-          <input
+          <p></p><input
             placeholder="Creatinine"
             value={creatinine}
             onChange={(e) => setCreatinine(e.target.value)}
@@ -206,7 +206,7 @@ export default function SOFA() {
             <option value="mg">mg/dL</option>
           </select>
 
-          <button onClick={calculateMSOFA}>Calculate</button>
+          <p></p><button onClick={calculateMSOFA}>Calculate</button>
 
           {msofaResult && (
             <div>
