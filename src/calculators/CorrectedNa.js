@@ -40,16 +40,16 @@ export default function CorrectedSodium() {
           placeholder="e.g., 135"
           style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
         />
-      </div>
+      </div><p></p>
 
       <div style={{ marginBottom: "0.5rem" }}>
-        <label>Blood Glucose:</label><br />
+        <label>Blood Glucose:</label>
         <input
           type="number"
           value={glucose}
           onChange={(e) => setGlucose(e.target.value)}
           placeholder="e.g., 300"
-          style={{ width: "70%", padding: "0.25rem", marginTop: "0.25rem", marginRight: "0.5rem" }}
+          style={{ width: "70%", padding: "0.25rem"}}
         />
         <select
           value={glucoseUnit}

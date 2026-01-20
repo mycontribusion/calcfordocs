@@ -90,7 +90,7 @@ export default function GlucoseConverter() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <br /><br />
+        <br />
         <select value={unit} onChange={(e) => setUnit(e.target.value)}>
           <option value="mg">mg/dL</option>
           <option value="mmol">mmol/L</option>
@@ -104,7 +104,7 @@ export default function GlucoseConverter() {
           <option value="fasting">Fasting</option>
           <option value="random">Random</option>
         </select>
-      </div>
+      </div><p></p>
 
       <button onClick={convertGlucose}>Convert & Interpret</button>
 

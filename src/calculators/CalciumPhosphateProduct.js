@@ -1,4 +1,3 @@
-// src/calculators/CalciumPhosphateProduct.js
 import { useState } from "react";
 
 export default function CalciumPhosphateProduct() {
@@ -7,6 +6,7 @@ export default function CalciumPhosphateProduct() {
   const [caUnit, setCaUnit] = useState("mmol"); // default mmol/L
   const [phUnit, setPhUnit] = useState("mmol"); // default mmol/L
   const [result, setResult] = useState("");
+  const [showFormula, setShowFormula] = useState(false); // new state for formula display
 
   // Conversion factors
   const caConv = 0.2495; // 1 mg/dL → mmol/L
@@ -25,6 +25,7 @@ export default function CalciumPhosphateProduct() {
 
     if (isNaN(caVal) || isNaN(phVal) || caVal <= 0 || phVal <= 0) {
       setResult("Please enter valid numerical values.");
+      setShowFormula(false);
       return;
     }
 
@@ -46,6 +47,7 @@ export default function CalciumPhosphateProduct() {
     setResult(
       `Ca × P Product: ${product.toFixed(2)} mg²/dL² → ${interpretation}`
     );
+    setShowFormula(true); // show formula and units after calculation
   }
 
   return (
@@ -70,10 +72,10 @@ export default function CalciumPhosphateProduct() {
           <option value="mmol">mmol/L</option>
           <option value="mg">mg/dL</option>
         </select>
-      </div>
+      </div><p></p>
 
       {/* Phosphate input */}
-      <div className="mb-2"><p></p>
+      <div className="mb-2">
         <label className="mr-2">Serum Phosphate:</label><br />
         <input
           type="number"
@@ -93,7 +95,7 @@ export default function CalciumPhosphateProduct() {
       </div>
 
       {/* Calculate button */}
-      <div className="mb-2"><p></p>
+      <div className="mb-2">
         <button
           onClick={interpretCaP}
           className="bg-blue-500 text-white px-3 py-1 rounded w-full"
@@ -105,11 +107,13 @@ export default function CalciumPhosphateProduct() {
       {/* Result */}
       {result && <p className="mt-2 text-sm font-medium">{result}</p>}
 
-      {/* Formula */}
-      <div className="mt-4 text-sm">
-        <p><strong>Formula:</strong> Ca × P = Serum Calcium × Serum Phosphate</p>
-        <p><strong>Units:</strong> mg/dL × mg/dL → mg²/dL²</p>
-      </div>
+      {/* Formula - only after calculation */}
+      {showFormula && (
+        <div style={{fontSize:"small"}}>
+          <span><strong>Formula:</strong> Ca × P = Serum Calcium × Serum Phosphate</span><br />
+          <span><strong>Units:</strong> mg/dL × mg/dL → mg²/dL²</span>
+        </div>
+      )}
     </div>
   );
 }
