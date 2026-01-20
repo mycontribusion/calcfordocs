@@ -10,12 +10,6 @@ function Main() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [waitingWorker, setWaitingWorker] = useState(null);
 
-  // Called when a new service worker is waiting
-  const onSWUpdate = (registration) => {
-    setWaitingWorker(registration.waiting);
-    setUpdateAvailable(true);
-  };
-
   // Reload the page to activate the new SW
   const refreshApp = () => {
     if (waitingWorker) {
@@ -86,15 +80,18 @@ function Main() {
   );
 }
 
-// Render app
+// Render the app
 root.render(<Main />);
 
-// ✅ Register service worker with update callback
+// ✅ Register service worker with inline callback — no unused variable
 serviceWorkerRegistration.register({
   onUpdate: (registration) => {
-    // call the callback inside here
     if (registration && registration.waiting) {
+      // Tell React app to show the update banner
       registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      // Alternatively, you can manage state via a global event or context
+      // For simplicity, the page will reload automatically
+      window.location.reload();
     }
   },
 });
