@@ -116,7 +116,7 @@ export default function SmartCalculator() {
         {result !== "" && <span>= {result}</span>}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", height:"200px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", height:"300px" }}>
         <button onClick={handleClear}>C</button>
         <button onClick={handleBackspace}>⌫</button>
         <button onClick={handleSquareRoot}>√</button>
