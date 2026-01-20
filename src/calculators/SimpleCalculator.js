@@ -1,89 +1,124 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function SimpleCalculator() {
-  const [display, setDisplay] = useState("");
+export default function CursorButtonCalculator() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
+  const textareaRef = useRef(null);
 
-  function append(value) {
-    setDisplay((prev) => prev + value);
-  }
-
-  function clearDisplay() {
-    setDisplay("");
-  }
-
-  function calculate() {
+  // Dynamically evaluate input
+  useEffect(() => {
     try {
-      // Replace symbols with JS operators
-      const sanitized = display.replace(/×/g, "*").replace(/÷/g, "/");
-
-      // Allow only digits, ., +, -, *, /
-      if (!/^[0-9.+\-*/]+$/.test(sanitized)) {
-        setDisplay("Error");
+      if (!input) {
+        setResult("");
         return;
       }
 
-      // eslint-disable-next-line no-new-func
-      const result = Function(`"use strict"; return (${sanitized})`)();
-
-      if (isNaN(result) || !isFinite(result)) {
-        setDisplay("Error");
-      } else {
-        setDisplay(String(result));
+      let sanitized = input.replace(/×/g, "*").replace(/÷/g, "/");
+      if (!/^[0-9+\-*/().√]*$/.test(sanitized)) {
+        setResult("Error");
+        return;
       }
-    } catch {
-      setDisplay("Error");
-    }
-  }
 
-  function squareRoot() {
-    const value = parseFloat(display);
-    if (isNaN(value) || value < 0) {
-      setDisplay("Error");
-    } else {
-      setDisplay(String(Math.sqrt(value)));
+      sanitized = sanitized.replace(/√(\d+(\.\d+)?)/g, "Math.sqrt($1)");
+
+      // eslint-disable-next-line no-new-func
+      const evalResult = Function(`"use strict"; return (${sanitized})`)();
+      setResult(evalResult);
+    } catch {
+      setResult("Error");
     }
-  }
+  }, [input]);
+
+  // Insert value at cursor
+  const insertAtCursor = (value) => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue = input.slice(0, start) + value + input.slice(end);
+    setInput(newValue);
+
+    // Move cursor after inserted value
+    setTimeout(() => {
+      textarea.setSelectionRange(start + value.length, start + value.length);
+      textarea.focus();
+    }, 0);
+  };
+
+  // Clear everything
+  const handleClear = () => {
+    setInput("");
+    setResult("");
+  };
+
+  // Backspace
+  const handleBackspace = () => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    if (start === 0 && end === 0) return;
+
+    const newValue = input.slice(0, start - 1) + input.slice(end);
+    setInput(newValue);
+
+    setTimeout(() => {
+      textarea.setSelectionRange(start - 1, start - 1);
+      textarea.focus();
+    }, 0);
+  };
+
+  // Square root insert
+  const handleSquareRoot = () => {
+    insertAtCursor("√");
+  };
+
+  // Transfer the live result to replace input
+  const transferResultToInput = () => {
+    if (result === "Error" || result === "") return;
+    setInput(String(result));
+  };
 
   return (
-    <div style={{ maxWidth: "220px", border: "1px solid #ccc", padding: "10px", borderRadius: "6px" }}>
+    <div style={{ maxWidth: "280px", border: "1px solid #ccc", padding: "10px", borderRadius: "6px" }}>
       <h3 style={{ textAlign: "center" }}>Calculator</h3>
 
-      <input
-        type="text"
-        value={display}
+      <textarea
+        ref={textareaRef}
+        value={input}
         readOnly
-        style={{
-          width: "100%",
-          marginBottom: "8px",
-          padding: "6px",
-          fontSize: "1rem",
-          textAlign: "right"
-        }}
+        onKeyDown={(e) => e.preventDefault()} // disable keyboard input
+        rows={2}
+        style={{ width: "100%", fontSize: "1rem", textAlign: "right", marginBottom: "6px", cursor: "text" }}
       />
 
+      <div style={{ textAlign: "right", fontWeight: "bold", marginBottom: "6px" }}>
+        {result !== "" && <span>= {result}</span>}
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px" }}>
-        <button onClick={clearDisplay}>C</button>
-        <button onClick={squareRoot}>√</button>
-        <button onClick={() => append("÷")}>÷</button>
-        <button onClick={() => append("×")}>×</button>
+        <button onClick={handleClear}>C</button>
+        <button onClick={handleBackspace}>⌫</button>
+        <button onClick={handleSquareRoot}>√</button>
+        <button onClick={() => insertAtCursor("÷")}>÷</button>
 
-        <button onClick={() => append("7")}>7</button>
-        <button onClick={() => append("8")}>8</button>
-        <button onClick={() => append("9")}>9</button>
-        <button onClick={() => append("-")}>−</button>
+        <button onClick={() => insertAtCursor("7")}>7</button>
+        <button onClick={() => insertAtCursor("8")}>8</button>
+        <button onClick={() => insertAtCursor("9")}>9</button>
+        <button onClick={() => insertAtCursor("-")}>−</button>
 
-        <button onClick={() => append("4")}>4</button>
-        <button onClick={() => append("5")}>5</button>
-        <button onClick={() => append("6")}>6</button>
-        <button onClick={() => append("+")}>+</button>
+        <button onClick={() => insertAtCursor("4")}>4</button>
+        <button onClick={() => insertAtCursor("5")}>5</button>
+        <button onClick={() => insertAtCursor("6")}>6</button>
+        <button onClick={() => insertAtCursor("+")}>+</button>
 
-        <button onClick={() => append("1")}>1</button>
-        <button onClick={() => append("2")}>2</button>
-        <button onClick={() => append("3")}>3</button>
-        <button onClick={calculate}>=</button>
+        <button onClick={() => insertAtCursor("1")}>1</button>
+        <button onClick={() => insertAtCursor("2")}>2</button>
+        <button onClick={() => insertAtCursor("3")}>3</button>
+        <button onClick={transferResultToInput}>→</button>
 
-        <button onClick={() => append("0")}>0</button>
-        <button onClick={() => append(".")}>.</button>
+        <button onClick={() => insertAtCursor("0")}>0</button>
+        <button onClick={() => insertAtCursor(".")}>.</button>
+        <button onClick={() => insertAtCursor("(")}>(</button>
+        <button onClick={() => insertAtCursor(")")}> )</button>
       </div>
     </div>
   );
