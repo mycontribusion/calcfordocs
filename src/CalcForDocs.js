@@ -39,6 +39,7 @@ import CHA2DS2VASc from "./calculators/CHA2DS2VASc";
 import SOFA from "./calculators/SOFA";
 import BishopScore from "./calculators/BishopScore";
 import HyponatremiaCorrection from "./calculators/HyponatremiaCorrection";
+import SpO2FiO2Ratio from "./calculators/SpO2FiO2Ratio";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -95,6 +96,7 @@ function CalcForDocs() {
       case "a": return <BMICalculator />;
       case "i": return <GCSCalculator />;
       case "sofa": return <SOFA/>;
+      case "sfr": return <SpO2FiO2Ratio/>;
 
       default: return null;
     }

@@ -8,6 +8,10 @@
         "id" : "p"
     },
     {
+        "name" : "SpO2/FiO2 Ratio",
+        "id" : "sfr"
+    },
+    {
         "name" : "SOFA",
         "id" : "sofa"
     },
