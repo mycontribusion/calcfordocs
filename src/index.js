@@ -3,28 +3,22 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
+// Root component to handle update banner
 function Root() {
-  const [waitingWorker, setWaitingWorker] = useState(null);
-  const [showUpdate, setShowUpdate] = useState(false);
+  const [updateAvailable, setUpdateAvailable] = useState(false);
 
-  // Called when a new SW is waiting
-  const onSWUpdate = (worker) => {
-    setWaitingWorker(worker);
-    setShowUpdate(true);
+  // This function will be called by serviceWorkerRegistration when a new SW is waiting
+  const onSWUpdate = (registration) => {
+    setUpdateAvailable(true);
+
+    // Optional: you can store registration to call skipWaiting
+    // registration.waiting.postMessage({ type: 'SKIP_WAITING' });
   };
-
-  const refreshApp = () => {
-    waitingWorker?.postMessage({ type: "SKIP_WAITING" });
-    setShowUpdate(false);
-    window.location.reload();
-  };
-
-  serviceWorkerRegistration.register(onSWUpdate);
 
   return (
     <>
       <App />
-      {showUpdate && (
+      {updateAvailable && (
         <div
           style={{
             position: "fixed",
@@ -35,36 +29,27 @@ function Root() {
             color: "#fff",
             padding: "1rem 2rem",
             borderRadius: "10px",
+            boxShadow: "0px 0px 10px rgba(0,0,0,0.3)",
             zIndex: 9999,
-            boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
           }}
         >
-          <span>New version available.</span>
+          <span>New version available</span>
           <button
             style={{
-              marginLeft: "1rem",
-              padding: "0.3rem 0.6rem",
+              backgroundColor: "#fff",
+              color: "#dc091e",
               border: "none",
+              padding: "0.5rem 1rem",
               borderRadius: "5px",
               cursor: "pointer",
+              fontWeight: "bold",
             }}
-            onClick={refreshApp}
+            onClick={() => window.location.reload()}
           >
             Refresh
-          </button>
-          <button
-            style={{
-              marginLeft: "0.5rem",
-              padding: "0.3rem 0.6rem",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              background: "#fff",
-              color: "#dc091e",
-            }}
-            onClick={() => setShowUpdate(false)}
-          >
-            Dismiss
           </button>
         </div>
       )}
@@ -72,5 +57,15 @@ function Root() {
   );
 }
 
+// Render app
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<Root />);
+root.render(
+  <React.StrictMode>
+    <Root />
+  </React.StrictMode>
+);
+
+// Register CRA service worker with update callback
+serviceWorkerRegistration.register({
+  onUpdate: onSWUpdate,
+});
