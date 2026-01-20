@@ -1,197 +1,222 @@
-// src/calculators/SOFA.js
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function SOFA() {
-  const [mode, setMode] = useState("qsofa"); // default
+  const [mode, setMode] = useState("qsofa");
 
-  /* =======================
-     qSOFA STATES
-  ======================= */
+  /* ================= qSOFA ================= */
   const [rr, setRr] = useState("");
   const [sbp, setSbp] = useState("");
-  const [gcs, setGcs] = useState("");
-  const [qsofa, setQsofa] = useState(null);
+  const [gcsQ, setGcsQ] = useState("");
+  const [qsofaResult, setQsofaResult] = useState(null);
 
-  function calcQSOFA() {
-    const r = Number(rr);
-    const s = Number(sbp);
-    const g = Number(gcs);
-
-    if ([r, s, g].some(v => !Number.isFinite(v))) {
-      setQsofa({ error: "Enter valid numeric values." });
-      return;
-    }
-
+  const calculateQSOFA = () => {
     let score = 0;
-    if (r >= 22) score++;
-    if (s <= 100) score++;
-    if (g < 15) score++;
+    if (Number(rr) >= 22) score++;
+    if (Number(sbp) <= 100) score++;
+    if (Number(gcsQ) < 15) score++;
 
-    let interp =
-      score >= 2
-        ? "High risk of poor outcome → urgent assessment for sepsis required."
-        : score === 1
-        ? "Intermediate risk → close monitoring advised."
-        : "Low immediate risk.";
+    let interpretation = "";
+    if (score === 0) interpretation = "Low immediate risk";
+    else if (score === 1) interpretation = "Intermediate risk → close monitoring";
+    else interpretation = "High risk → urgent sepsis assessment";
 
-    setQsofa({ score, interp });
-  }
+    setQsofaResult({ score, interpretation });
+  };
 
-  /* =======================
-     MODIFIED SOFA STATES
-  ======================= */
-  const [spo2, setSpo2] = useState("");
-  const [platelets, setPlatelets] = useState("");
-  const [bilirubin, setBilirubin] = useState("");
+  /* ================= mSOFA ================= */
+  const [spo2fio2, setSpo2fio2] = useState("");
+  const [liver, setLiver] = useState("none");
   const [map, setMap] = useState("");
+  const [vasopressor, setVasopressor] = useState("none");
+  const [gcsM, setGcsM] = useState("");
   const [creatinine, setCreatinine] = useState("");
-  const [msofa, setMsofa] = useState(null);
+  const [creatinineUnit, setCreatinineUnit] = useState("umol");
+  const [msofaResult, setMsofaResult] = useState(null);
 
-  function calcMSOFA() {
-    const sp = Number(spo2);
-    const pl = Number(platelets);
-    const bl = Number(bilirubin);
-    const mp = Number(map);
-    const cr = Number(creatinine);
+  const calculateRespiratory = (value) => {
+    if (value > 400) return 0;
+    if (value <= 150) return 4;
+    if (value <= 235) return 3;
+    if (value <= 315) return 2;
+    return 1;
+  };
 
-    let r = null, c = null, l = null, cv = null, rn = null;
+  const calculateCNS = (gcs) => {
+    if (gcs === 15) return 0;
+    if (gcs >= 13) return 1;
+    if (gcs >= 10) return 2;
+    if (gcs >= 6) return 3;
+    return 4;
+  };
 
-    if (!isNaN(sp)) {
-      if (sp >= 96) r = 0;
-      else if (sp >= 94) r = 1;
-      else if (sp >= 90) r = 2;
-      else if (sp >= 85) r = 3;
-      else r = 4;
+  const convertCreatinineToMg = (value) =>
+    creatinineUnit === "umol" ? value / 88.4 : value;
+
+  const calculateRenal = (mg) => {
+    if (mg < 1.2) return 0;
+    if (mg <= 1.9) return 1;
+    if (mg <= 3.4) return 2;
+    if (mg <= 4.9) return 3;
+    return 4;
+  };
+
+  const calculateCardio = () => {
+    const mapVal = Number(map);
+    switch (vasopressor) {
+      case "dopamineLow":
+      case "dobutamine":
+        return 2;
+      case "dopamineMid":
+      case "epiLow":
+      case "norepiLow":
+        return 3;
+      case "dopamineHigh":
+      case "epiHigh":
+      case "norepiHigh":
+        return 4;
+      default:
+        return mapVal >= 70 ? 0 : 1;
     }
+  };
 
-    if (!isNaN(pl)) {
-      if (pl >= 150) c = 0;
-      else if (pl >= 100) c = 1;
-      else if (pl >= 50) c = 2;
-      else if (pl >= 20) c = 3;
-      else c = 4;
-    }
+  const calculateMSOFA = () => {
+    const resp = calculateRespiratory(Number(spo2fio2));
+    const liverScore = liver === "jaundice" ? 3 : 0;
+    const cardio = calculateCardio();
+    const cns = calculateCNS(Number(gcsM));
+    const renal = calculateRenal(convertCreatinineToMg(Number(creatinine)));
 
-    const blMg = bl / 17.1;
-    if (!isNaN(bl)) {
-      if (blMg < 1.2) l = 0;
-      else if (blMg < 2.0) l = 1;
-      else if (blMg < 6.0) l = 2;
-      else if (blMg < 12.0) l = 3;
-      else l = 4;
-    }
+    const total = resp + liverScore + cardio + cns + renal;
 
-    if (!isNaN(mp)) {
-      if (mp >= 70) cv = 0;
-      else cv = 1;
-    }
+    let interpretation = "";
+    if (total <= 4) interpretation = "Mild organ dysfunction";
+    else if (total <= 9)
+      interpretation = "Moderate dysfunction → increased mortality risk";
+    else interpretation = "Severe dysfunction → ICU-level care likely required";
 
-    const crMg = cr / 88.4;
-    if (!isNaN(cr)) {
-      if (crMg < 1.2) rn = 0;
-      else if (crMg < 2.0) rn = 1;
-      else if (crMg < 3.5) rn = 2;
-      else if (crMg < 5.0) rn = 3;
-      else rn = 4;
-    }
-
-    const parts = [r, c, l, cv, rn].filter(v => v !== null);
-    if (parts.length === 0) {
-      setMsofa({ error: "Enter at least one valid parameter." });
-      return;
-    }
-
-    const total = parts.reduce((a, b) => a + b, 0);
-
-    let interp =
-      total <= 4
-        ? "Mild organ dysfunction."
-        : total <= 9
-        ? "Moderate organ dysfunction → increased mortality risk."
-        : "Severe organ dysfunction → ICU-level care likely required.";
-
-    setMsofa({ r, c, l, cv, rn, total, interp });
-  }
+    setMsofaResult({
+      resp,
+      liver: liverScore,
+      cardio,
+      cns,
+      renal,
+      total,
+      interpretation,
+    });
+  };
 
   return (
     <div>
-      <h1>SOFA Score</h1>
+      <h2>SOFA Calculator</h2>
 
       <label>
-        Select calculator:
-        <br />
-        <select value={mode} onChange={e => setMode(e.target.value)}>
+        Select Calculator:
+        <select value={mode} onChange={(e) => setMode(e.target.value)}>
           <option value="qsofa">qSOFA</option>
-          <option value="msofa">Modified SOFA</option>
+          <option value="msofa">mSOFA</option>
         </select>
       </label>
 
-      <hr />
-
-      {/* =======================
-          qSOFA VIEW
-      ======================= */}
+      {/* ================= qSOFA UI ================= */}
       {mode === "qsofa" && (
         <div>
-          <h2>qSOFA</h2>
-          <p>
-            RR ≥ 22/min, SBP ≤ 100 mmHg, GCS &lt; 15 <br />
-            <em>Score ≥ 2 suggests high sepsis risk.</em>
-          </p>
+          <h3>qSOFA</h3>
 
-          <input placeholder="Respiratory Rate" value={rr} onChange={e => setRr(e.target.value)} />{" "}
-          <p></p><input placeholder="Systolic BP" value={sbp} onChange={e => setSbp(e.target.value)} />{" "}
-          <p></p><input placeholder="GCS Score" value={gcs} onChange={e => setGcs(e.target.value)} />
+          <input
+            placeholder="Respiratory Rate"
+            value={rr}
+            onChange={(e) => setRr(e.target.value)}
+          />
+          <input
+            placeholder="Systolic BP"
+            value={sbp}
+            onChange={(e) => setSbp(e.target.value)}
+          />
+          <input
+            placeholder="GCS"
+            value={gcsQ}
+            onChange={(e) => setGcsQ(e.target.value)}
+          />
 
-          <p />
-          <button onClick={calcQSOFA}>Calculate</button>
+          <button onClick={calculateQSOFA}>Calculate</button>
 
-          {qsofa && (
+          {qsofaResult && (
             <div>
-              {qsofa.error ? (
-                <p>{qsofa.error}</p>
-              ) : (
-                <>
-                  <p><strong>Score:</strong> {qsofa.score} / 3</p>
-                  <p><strong>Interpretation:</strong> {qsofa.interp}</p>
-                </>
-              )}
+              <p>Score: {qsofaResult.score} / 3</p>
+              <p>{qsofaResult.interpretation}</p>
             </div>
           )}
         </div>
       )}
 
-      {/* =======================
-          MODIFIED SOFA VIEW
-      ======================= */}
+      {/* ================= mSOFA UI ================= */}
       {mode === "msofa" && (
         <div>
-          <h2>Modified SOFA</h2>
+          <h3>mSOFA</h3>
 
-          <input placeholder="SpO₂ (%)" value={spo2} onChange={e => setSpo2(e.target.value)} /><br /><br />
-          <input placeholder="Platelets (×10³/µL)" value={platelets} onChange={e => setPlatelets(e.target.value)} /><br /><br />
-          <input placeholder="Bilirubin (µmol/L)" value={bilirubin} onChange={e => setBilirubin(e.target.value)} /><br /><br />
-          <input placeholder="MAP (mmHg)" value={map} onChange={e => setMap(e.target.value)} /><br /><br />
-          <input placeholder="Creatinine (µmol/L)" value={creatinine} onChange={e => setCreatinine(e.target.value)} />
+          <input
+            placeholder="SpO₂ / FiO₂ Ratio"
+            value={spo2fio2}
+            onChange={(e) => setSpo2fio2(e.target.value)}
+          />
 
-          <p />
-          <button onClick={calcMSOFA}>Calculate</button>
+          <select value={liver} onChange={(e) => setLiver(e.target.value)}>
+            <option value="none">No jaundice</option>
+            <option value="jaundice">Jaundice present</option>
+          </select>
 
-          {msofa && (
+          <input
+            placeholder="MAP"
+            value={map}
+            onChange={(e) => setMap(e.target.value)}
+          />
+
+          <select
+            value={vasopressor}
+            onChange={(e) => setVasopressor(e.target.value)}
+          >
+            <option value="none">No vasopressors</option>
+            <option value="dopamineLow">Dopamine ≤5</option>
+            <option value="dopamineMid">Dopamine &gt;5</option>
+            <option value="dopamineHigh">Dopamine &gt;15</option>
+            <option value="dobutamine">Dobutamine (any dose)</option>
+            <option value="epiLow">Epinephrine ≤0.1</option>
+            <option value="epiHigh">Epinephrine &gt;0.1</option>
+            <option value="norepiLow">Norepinephrine ≤0.1</option>
+            <option value="norepiHigh">Norepinephrine &gt;0.1</option>
+          </select>
+
+          <input
+            placeholder="GCS"
+            value={gcsM}
+            onChange={(e) => setGcsM(e.target.value)}
+          />
+
+          <input
+            placeholder="Creatinine"
+            value={creatinine}
+            onChange={(e) => setCreatinine(e.target.value)}
+          />
+
+          <select
+            value={creatinineUnit}
+            onChange={(e) => setCreatinineUnit(e.target.value)}
+          >
+            <option value="umol">µmol/L</option>
+            <option value="mg">mg/dL</option>
+          </select>
+
+          <button onClick={calculateMSOFA}>Calculate</button>
+
+          {msofaResult && (
             <div>
-              {msofa.error ? (
-                <p>{msofa.error}</p>
-              ) : (
-                <>
-                  <p>
-                    <strong>Component scores:</strong><br />
-                    Resp: {msofa.r} | Coag: {msofa.c} | Liver: {msofa.l} |
-                    CV: {msofa.cv} | Renal: {msofa.rn}
-                  </p>
-                  <p><strong>Total:</strong> {msofa.total}</p>
-                  <p><strong>Interpretation:</strong> {msofa.interp}</p>
-                </>
-              )}
+              <p>Respiratory: {msofaResult.resp}</p>
+              <p>Liver: {msofaResult.liver}</p>
+              <p>Cardiovascular: {msofaResult.cardio}</p>
+              <p>CNS: {msofaResult.cns}</p>
+              <p>Renal: {msofaResult.renal}</p>
+              <p>Total Score: {msofaResult.total} / 24</p>
+              <p>{msofaResult.interpretation}</p>
             </div>
           )}
         </div>
