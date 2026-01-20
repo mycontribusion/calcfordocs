@@ -1,108 +1,89 @@
-import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import "./index.css";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+function Root() {
+  const [waitingWorker, setWaitingWorker] = React.useState(null);
+  const [showUpdateBanner, setShowUpdateBanner] = React.useState(false);
 
-function Main() {
-  const [updateAvailable, setUpdateAvailable] = useState(false);
-  const [waitingWorker, setWaitingWorker] = useState(null);
-
-  // Listen for messages from the service worker
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener("message", (event) => {
-        if (event.data && event.data.type === "NEW_VERSION") {
-          setWaitingWorker(event.data.payload);
-          setUpdateAvailable(true);
-        }
-      });
-    }
-  }, []);
-
-  // User clicks "Refresh" → skip waiting & reload
-  const refreshApp = () => {
-    if (waitingWorker) {
-      waitingWorker.postMessage({ type: "SKIP_WAITING" });
-      setUpdateAvailable(false);
-      window.location.reload();
-    }
+  // Called when a new SW is waiting
+  const handleSWUpdate = (registration) => {
+    setWaitingWorker(registration.waiting);
+    setShowUpdateBanner(true);
   };
 
-  // User clicks "Dismiss" → hide banner
+  const reloadPage = () => {
+    if (!waitingWorker) return;
+    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+    setShowUpdateBanner(false);
+    window.location.reload();
+  };
+
   const dismissBanner = () => {
-    setUpdateAvailable(false);
+    setShowUpdateBanner(false);
   };
+
+  React.useEffect(() => {
+    serviceWorkerRegistration.register({
+      onUpdate: handleSWUpdate,
+      onSuccess: () => console.log('Service Worker registered successfully.'),
+    });
+  }, []);
 
   return (
     <>
-      <App />
-
-      {/* Update banner */}
-      {updateAvailable && (
+      {showUpdateBanner && (
         <div
           style={{
-            position: "fixed",
-            bottom: 20,
-            right: 20,
-            backgroundColor: "#dc091e",
-            color: "white",
-            padding: "1rem 1.5rem",
-            borderRadius: "8px",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+            position: 'fixed',
+            bottom: '10px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            background: '#dc091e',
+            color: '#fff',
+            padding: '10px 20px',
+            borderRadius: '8px',
             zIndex: 9999,
-            maxWidth: "300px",
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
           }}
         >
-          <p style={{ margin: 0, fontWeight: "bold" }}>
-            A new version is available!
-          </p>
-          <div style={{ marginTop: "0.5rem", display: "flex", gap: "0.5rem" }}>
-            <button
-              onClick={refreshApp}
-              style={{
-                flex: 1,
-                padding: "0.5rem",
-                border: "none",
-                borderRadius: "5px",
-                backgroundColor: "#fff",
-                color: "#dc091e",
-                cursor: "pointer",
-              }}
-            >
-              Refresh
-            </button>
-            <button
-              onClick={dismissBanner}
-              style={{
-                flex: 1,
-                padding: "0.5rem",
-                border: "none",
-                borderRadius: "5px",
-                backgroundColor: "#fff",
-                color: "#555",
-                cursor: "pointer",
-              }}
-            >
-              Dismiss
-            </button>
-          </div>
+          <span>New version available!</span>
+          <button
+            style={{
+              background: '#fff',
+              color: '#dc091e',
+              border: 'none',
+              padding: '5px 10px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+            onClick={reloadPage}
+          >
+            Refresh
+          </button>
+          <button
+            style={{
+              background: 'transparent',
+              color: '#fff',
+              border: '1px solid #fff',
+              padding: '5px 10px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+            onClick={dismissBanner}
+          >
+            Dismiss
+          </button>
         </div>
       )}
+      <App />
     </>
   );
 }
 
-root.render(<Main />);
-
-// Register SW with callback to detect waiting updates
-serviceWorkerRegistration.register({
-  onUpdate: (registration) => {
-    if (registration && registration.waiting) {
-      // Send the waiting SW to the app via message
-      registration.waiting.postMessage({ type: "NEW_VERSION", payload: registration.waiting });
-    }
-  },
-});
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Root />);
