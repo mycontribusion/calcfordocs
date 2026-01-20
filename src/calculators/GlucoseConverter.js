@@ -1,4 +1,3 @@
-// src/calculators/GlucoseConverter.js
 import { useState } from "react";
 
 export default function GlucoseConverter() {
@@ -7,6 +6,8 @@ export default function GlucoseConverter() {
   const [type, setType] = useState("random"); // fasting or random
   const [result, setResult] = useState(null);
 
+  const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
+
   function roundTo1Decimal(num) {
     return Math.round(num * 10) / 10;
   }
@@ -14,115 +15,71 @@ export default function GlucoseConverter() {
   function convertGlucose() {
     const val = parseFloat(value);
     if (isNaN(val) || val <= 0) {
-      setResult({
-        error: "Please enter a valid glucose level."
-      });
+      setResult({ error: "Please enter a valid glucose level." });
       return;
     }
 
-    const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
+    let convertedValue, displayUnit, category, categoryColor;
 
-    let convertedValue;
-    let displayUnit;
-    let normalRange;
-    let category;
-    let categoryColor;
-
+    // Conversion
     if (unit === "mg") {
-      // mg/dL → mmol/L
-      const valMmol = val / factor;
-      convertedValue = roundTo1Decimal(valMmol);
+      convertedValue = roundTo1Decimal(val / factor);
       displayUnit = "mmol/L";
+    } else {
+      convertedValue = roundTo1Decimal(val * factor);
+      displayUnit = "mg/dL";
+    }
 
+    // Determine category based on converted value and unit
+    if (displayUnit === "mg/dL") {
       if (type === "fasting") {
-        normalRange = "3.9 – 5.6 mmol/L";
-        if (valMmol < 3.9) {
-          category = "Hypoglycemia";
-          categoryColor = "red";
-        } else if (valMmol <= 5.6) {
-          category = "Normal";
-          categoryColor = "green";
-        } else if (valMmol < 7.0) {
-          category = "Prediabetes";
-          categoryColor = "orange";
-        } else {
-          category = "Diabetes";
-          categoryColor = "red";
-        }
+        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "red"; }
+        else if (convertedValue <= 100) { category = "Normal"; categoryColor = "green"; }
+        else if (convertedValue < 126) { category = "Prediabetes"; categoryColor = "orange"; }
+        else { category = "Diabetes"; categoryColor = "red"; }
       } else {
-        normalRange = "< 7.8 mmol/L";
-        if (valMmol < 3.9) {
-          category = "Hypoglycemia";
-          categoryColor = "red";
-        } else if (valMmol < 7.8) {
-          category = "Normal";
-          categoryColor = "green";
-        } else if (valMmol < 11.1) {
-          category = "Prediabetes";
-          categoryColor = "orange";
-        } else {
-          category = "Diabetes";
-          categoryColor = "red";
-        }
+        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "red"; }
+        else if (convertedValue < 140) { category = "Normal"; categoryColor = "green"; }
+        else if (convertedValue < 200) { category = "Prediabetes"; categoryColor = "orange"; }
+        else { category = "Diabetes"; categoryColor = "red"; }
       }
     } else {
-      // mmol/L → mg/dL
-      const valMg = val * factor;
-      convertedValue = roundTo1Decimal(valMg);
-      displayUnit = "mg/dL";
-
+      // mmol/L ranges
       if (type === "fasting") {
-        normalRange = "70 – 100 mg/dL";
-        if (valMg < 70) {
-          category = "Hypoglycemia";
-          categoryColor = "red";
-        } else if (valMg <= 100) {
-          category = "Normal";
-          categoryColor = "green";
-        } else if (valMg < 126) {
-          category = "Prediabetes";
-          categoryColor = "orange";
-        } else {
-          category = "Diabetes";
-          categoryColor = "red";
-        }
+        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "red"; }
+        else if (convertedValue <= 5.6) { category = "Normal"; categoryColor = "green"; }
+        else if (convertedValue < 7.0) { category = "Prediabetes"; categoryColor = "orange"; }
+        else { category = "Diabetes"; categoryColor = "red"; }
       } else {
-        normalRange = "< 140 mg/dL";
-        if (valMg < 70) {
-          category = "Hypoglycemia";
-          categoryColor = "red";
-        } else if (valMg < 140) {
-          category = "Normal";
-          categoryColor = "green";
-        } else if (valMg < 200) {
-          category = "Prediabetes";
-          categoryColor = "orange";
-        } else {
-          category = "Diabetes";
-          categoryColor = "red";
-        }
+        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "red"; }
+        else if (convertedValue < 7.8) { category = "Normal"; categoryColor = "green"; }
+        else if (convertedValue < 11.1) { category = "Prediabetes"; categoryColor = "orange"; }
+        else { category = "Diabetes"; categoryColor = "red"; }
       }
     }
+
+    // Reference ranges based on display unit
+    const ranges =
+      displayUnit === "mg/dL"
+        ? type === "fasting"
+          ? { Hypoglycemia: "<70", Normal: "70–100", Prediabetes: "101–125", Diabetes: "≥126" }
+          : { Hypoglycemia: "<70", Normal: "70–139", Prediabetes: "140–199", Diabetes: "≥200" }
+        : type === "fasting"
+          ? { Hypoglycemia: "<3.9", Normal: "3.9–5.6", Prediabetes: "5.7–6.9", Diabetes: "≥7.0" }
+          : { Hypoglycemia: "<3.9", Normal: "3.9–7.7", Prediabetes: "7.8–11.0", Diabetes: "≥11.1" };
 
     setResult({
       convertedValue,
       displayUnit,
       category,
       categoryColor,
-      normalRange,
-      typeLabel: type === "fasting" ? "Fasting" : "Random"
+      typeLabel: type === "fasting" ? "Fasting" : "Random",
+      ranges
     });
   }
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem"
-      }}
-    >
+    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
       <h2>Glucose Converter</h2>
 
       <div style={{ marginBottom: "0.5rem" }}>
@@ -158,18 +115,21 @@ export default function GlucoseConverter() {
           ) : (
             <>
               <p>Conversion Formula: 1 mmol/L = 18.0182 mg/dL</p>
-
               <p>
-                Converted Value: {result.convertedValue}{" "}
-                {result.displayUnit}{" "}
-                <strong style={{ color: result.categoryColor }}>
-                  ({result.category})
-                </strong>
+                Converted Value: {result.convertedValue} {result.displayUnit}{" "}
+                <strong style={{ color: result.categoryColor }}>({result.category})</strong>
               </p>
-
-              <p>
-                Normal Range ({result.typeLabel}): {result.normalRange}
-              </p>
+              <p>Reference Ranges ({result.typeLabel}):</p>
+              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+                {Object.entries(result.ranges).map(([key, val]) => (
+                  <li
+                    key={key}
+                    style={{ color: key === result.category ? result.categoryColor : "black" }}
+                  >
+                    {key}: {val} {result.displayUnit}
+                  </li>
+                ))}
+              </ul>
             </>
           )}
         </div>
