@@ -89,7 +89,12 @@ function Main() {
 // Render app
 root.render(<Main />);
 
-// Register service worker with update callback
+// ✅ Register service worker with update callback
 serviceWorkerRegistration.register({
-  onUpdate: onSWUpdate,
+  onUpdate: (registration) => {
+    // call the callback inside here
+    if (registration && registration.waiting) {
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    }
+  },
 });
