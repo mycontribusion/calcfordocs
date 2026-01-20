@@ -3,7 +3,8 @@ import React, { useState } from "react";
 export default function PediatricWeightEstimator() {
   const [age, setAge] = useState("");
   const [unit, setUnit] = useState("days");
-  const [formula, setFormula] = useState("nelson");
+  const [formula, setFormula] = useState("custom");
+  const [birthWeight, setBirthWeight] = useState("");
   const [weightResult, setWeightResult] = useState("");
   const [formulaResult, setFormulaResult] = useState("");
 
@@ -11,7 +12,6 @@ export default function PediatricWeightEstimator() {
     let years = 0;
     let months = 0;
 
-    // Convert entered age
     if (unit === "days") {
       if (age >= 365) {
         years = age / 365;
@@ -64,6 +64,30 @@ export default function PediatricWeightEstimator() {
         setFormulaResult("");
         return;
       }
+    } else if (formula === "custom") {
+      if (unit === "days" && age <= 90) {
+        if (!birthWeight) {
+          setWeightResult("Please enter birth weight for 0–3 month calculation.");
+          setFormulaResult("");
+          return;
+        }
+        weight = (age - 10) * 30 + birthWeight;
+        explanation = "Custom Formula: Weight = (Age in days - 10) × 30 + Birth Weight (grams)";
+        weight = weight / 1000; // convert to kg
+      } else if (months >= 4 && months <= 12) {
+        weight = (months + 8) / 2;
+        explanation = "Custom Formula: Weight = (Age in months + 8) ÷ 2";
+      } else if (years >= 1 && years <= 6) {
+        weight = 2 * years + 8;
+        explanation = "Custom Formula: Weight = (2 × Age in years) + 8";
+      } else if (years >= 7 && years <= 12) {
+        weight = (7 * years - 5) / 2;
+        explanation = "Custom Formula: Weight = (7 × Age in years - 5) ÷ 2";
+      } else {
+        setWeightResult("Not applicable for this age range (Custom).");
+        setFormulaResult("");
+        return;
+      }
     }
 
     setWeightResult(`Estimated Weight: ${weight.toFixed(1)} kg`);
@@ -96,8 +120,20 @@ export default function PediatricWeightEstimator() {
         <select value={formula} onChange={(e) => setFormula(e.target.value)}>
           <option value="nelson">Nelson</option>
           <option value="bestGuess">Best Guess</option>
+          <option value="custom">Custom</option>
         </select>
       </label><p></p>
+
+      {formula === "custom" && (
+        <label>
+          Birth Weight (grams): <br />
+          <input
+            type="number"
+            value={birthWeight}
+            onChange={(e) => setBirthWeight(Number(e.target.value))}
+          />
+        </label>
+      )}<p></p>
 
       <button onClick={calculateWeight}>Calculate</button>
 
