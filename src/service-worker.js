@@ -5,13 +5,12 @@ import { registerRoute } from 'workbox-routing';
 import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 
-self.skipWaiting();   // activate new SW immediately
-clientsClaim();       // take control of all clients
+clientsClaim();
 
 // Auto-inject all build assets (JS, CSS, images, etc.)
 precacheAndRoute(self.__WB_MANIFEST);
 
-// ✅ Cache API responses
+// ✅ Cache API responses (adjust domain/path as needed)
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.startsWith('/api'),
   new NetworkFirst({
