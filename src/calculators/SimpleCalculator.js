@@ -13,11 +13,18 @@ export default function SimpleCalculator() {
 
   function calculate() {
     try {
-      const sanitized = display
-        .replace(/×/g, "*")
-        .replace(/÷/g, "/");
+      // Replace symbols with JS operators
+      const sanitized = display.replace(/×/g, "*").replace(/÷/g, "/");
 
-      const result = Function(`return ${sanitized}`)();
+      // Allow only digits, ., +, -, *, /
+      if (!/^[0-9.+\-*/]+$/.test(sanitized)) {
+        setDisplay("Error");
+        return;
+      }
+
+      // eslint-disable-next-line no-new-func
+      const result = Function(`"use strict"; return (${sanitized})`)();
+
       if (isNaN(result) || !isFinite(result)) {
         setDisplay("Error");
       } else {
