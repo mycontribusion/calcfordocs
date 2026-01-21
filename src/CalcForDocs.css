@@ -1,3 +1,4 @@
+
 .calcfordocs {
     max-width: 1000px;
     margin: 0 auto;
@@ -88,7 +89,7 @@
   }
 
   /* 🌙 DARK MODE — manual toggle via .dark class */
-.calcfordocs.dark {
+.calcfordocs.dark{
   background: #000;
   color: #fff;
 }
@@ -142,4 +143,8 @@
 /* grid buttons wrapper (safe fallback) */
 .calcfordocs.dark .button-wrapper {
   background: transparent;
+}
+
+body:has(.calcfordocs.dark) {
+  background: #000;
 }
