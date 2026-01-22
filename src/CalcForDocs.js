@@ -45,6 +45,7 @@ import SimpleCalculator from "./calculators/SimpleCalculator";
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
 
   /* 🌙 DARK / LIGHT MODE STATE */
   const [theme, setTheme] = useState("light");
@@ -61,6 +62,10 @@ function CalcForDocs() {
 
   const toggleFeedback = () => {
     setShowFeedback(!showFeedback);
+  };
+
+  const toggleUpdate = () => {
+    setShowUpdate(!showUpdate);
   };
 
   const toggleCalc = (id) => {
@@ -119,23 +124,64 @@ function CalcForDocs() {
   return (
     <div className={`calcfordocs ${theme}`}>
       <div className="head-contact">
-        <h1 className="title">CalcForDocs</h1>
+        <h2 className="title">CalcForDocs</h2>
 
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button style={{height:"10px", width:"10px", fontSize:"8px"}} className="calc-btn" onClick={toggleTheme}>
-            {theme === "light" ? "🌙" : "☀️"}
-          </button>
+  <button
+    style={{ height: "10px", width: "10px", fontSize: "8px" }}
+    className="calc-btn"
+    onClick={toggleTheme}
+  >
+    {theme === "light" ? "🌙" : "☀️"}
+  </button>
 
-          <div className="contactus" onClick={toggleFeedback}>
-            Contact-us
-          </div>
-        </div>
+  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+    <div
+      className="contactus"
+      onClick={toggleUpdate}
+      style={{
+        fontSize: "9px",
+        opacity: 0.7,
+        cursor: "pointer",
+      }}
+    >
+      Update
+    </div>
+
+    <div className="contactus" onClick={toggleFeedback}>
+      Contact-us
+    </div>
+  </div>
+</div>
+
 
         {showFeedback && (
           <div className="feedback-overlay">
             <div className="feedback-popup">
               <Feedback />
               <button className="close-btn" onClick={toggleFeedback}>
+                ✖ Close
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showUpdate && (
+          <div className="feedback-overlay">
+            <div className="feedback-popup">
+              <h3>🔄 Update CalcForDocs</h3>
+
+              <ol style={{ textAlign: "left", lineHeight: "1.6" }}>
+                <li>Uninstall CalcForDocs and close all tabs</li>
+                <li>Open device <b>Settings</b></li>
+                <li>Go to <b>Site settings</b></li>
+                <li>Select <b>All sites</b></li>
+                <li>Locate <b>calcfordocs.vercel.app</b></li>
+                <li>Tap <b>Clear data / Delete files</b></li>
+                <li>Reopen the website</li>
+              </ol>
+
+              <button className="close-btn" onClick={toggleUpdate}>
                 ✖ Close
               </button>
             </div>
