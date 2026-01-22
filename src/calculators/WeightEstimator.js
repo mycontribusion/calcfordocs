@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export default function PediatricWeightEstimator() {
   const [age, setAge] = useState("");
   const [unit, setUnit] = useState("days");
-  const [formula, setFormula] = useState("custom");
+  const [formula, setFormula] = useState("default");
   const [birthWeight, setBirthWeight] = useState("");
   const [weightResult, setWeightResult] = useState("");
   const [formulaResult, setFormulaResult] = useState("");
@@ -64,7 +64,7 @@ export default function PediatricWeightEstimator() {
         setFormulaResult("");
         return;
       }
-    } else if (formula === "custom") {
+    } else if (formula === "default") {
       if (unit === "days" && age <= 90) {
         if (!birthWeight) {
           setWeightResult("Please enter birth weight for 0–3 month calculation.");
@@ -120,11 +120,11 @@ export default function PediatricWeightEstimator() {
         <select value={formula} onChange={(e) => setFormula(e.target.value)}>
           <option value="nelson">Nelson</option>
           <option value="bestGuess">Best Guess</option>
-          <option value="custom">Custom</option>
+          <option value="default">Default</option>
         </select>
       </label><p></p>
 
-      {formula === "custom" && (
+      {formula === "default" && (
         <label>
           Birth Weight (grams): <br />
           <input
