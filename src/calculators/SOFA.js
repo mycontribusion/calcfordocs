@@ -21,7 +21,6 @@ export default function SOFA() {
 
   /* ================= qSOFA AUTO ================= */
   useEffect(() => {
-    // Only calculate if all inputs have values
     if (!rr || !sbp || !gcsQ) {
       setQsofaResult(null);
       return;
@@ -94,13 +93,7 @@ export default function SOFA() {
 
   /* ================= mSOFA AUTO ================= */
   useEffect(() => {
-    // Only calculate if all inputs have values
-    if (
-      !spo2fio2 ||
-      !map ||
-      !gcsM ||
-      !creatinine
-    ) {
+    if (!spo2fio2 || !map || !gcsM || !creatinine) {
       setMsofaResult(null);
       return;
     }
@@ -109,9 +102,7 @@ export default function SOFA() {
     const liverScore = liver === "jaundice" ? 3 : 0;
     const cardio = calculateCardio();
     const cns = calculateCNS(Number(gcsM));
-    const renal = calculateRenal(
-      convertCreatinineToMg(Number(creatinine))
-    );
+    const renal = calculateRenal(convertCreatinineToMg(Number(creatinine)));
 
     const total = resp + liverScore + cardio + cns + renal;
 
@@ -131,15 +122,8 @@ export default function SOFA() {
       total,
       interpretation,
     });
-  }, [
-    spo2fio2,
-    liver,
-    map,
-    vasopressor,
-    gcsM,
-    creatinine,
-    creatinineUnit,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spo2fio2, liver, map, vasopressor, gcsM, creatinine, creatinineUnit]);
 
   /* ================= RESET ================= */
   const resetCurrent = () => {
@@ -199,7 +183,8 @@ export default function SOFA() {
               {qsofaResult.interpretation}
             </div>
           )}
-        <p></p></div>
+          <p></p>
+        </div>
       )}
 
       {/* ================= mSOFA UI ================= */}
@@ -212,14 +197,14 @@ export default function SOFA() {
             value={spo2fio2}
             onChange={(e) => setSpo2fio2(e.target.value)}
           />
-
           <p></p>
+
           <select value={liver} onChange={(e) => setLiver(e.target.value)}>
             <option value="none">No jaundice</option>
             <option value="jaundice">Jaundice</option>
           </select>
-
           <p></p>
+
           <input
             placeholder="MAP"
             value={map}
@@ -240,28 +225,28 @@ export default function SOFA() {
             <option value="norepiLow">Norepinephrine ≤0.1</option>
             <option value="norepiHigh">Norepinephrine &gt;0.1</option>
           </select>
-
           <p></p>
+
           <input
             placeholder="GCS"
             value={gcsM}
             onChange={(e) => setGcsM(e.target.value)}
           />
-
           <p></p>
+
           <input
             placeholder="Creatinine"
             value={creatinine}
             onChange={(e) => setCreatinine(e.target.value)}
           />
-
           <select
             value={creatinineUnit}
             onChange={(e) => setCreatinineUnit(e.target.value)}
           >
             <option value="umol">µmol/L</option>
             <option value="mg">mg/dL</option>
-          </select><p></p>
+          </select>
+          <p></p>
 
           {msofaResult && (
             <div style={{ fontSize: "small", marginTop: "8px" }}>
@@ -273,7 +258,8 @@ export default function SOFA() {
               <p></p>
               <strong>Score:</strong> {msofaResult.total} / 24<br />
               {msofaResult.interpretation}
-            <p></p></div>
+              <p></p>
+            </div>
           )}
         </div>
       )}
