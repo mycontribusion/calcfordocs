@@ -15,6 +15,12 @@
         "name" : "qSOFA / mSOFA",
         "id" : "sofa"
     },
+
+    {
+        "name": "CURB-65 Score",
+        "id": "curb65"
+    },
+      
     {
         "name" : "Glucose Converter",
         "id" : "d"

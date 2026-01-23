@@ -42,6 +42,7 @@ import BishopScore from "./calculators/BishopScore";
 import HyponatremiaCorrection from "./calculators/HyponatremiaCorrection";
 import SpO2FiO2Ratio from "./calculators/SpO2FiO2Ratio";
 import SimpleCalculator from "./calculators/SimpleCalculator";
+import CURB65Calculator from "./calculators/CURB65Calculator";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -124,6 +125,8 @@ function CalcForDocs() {
       case "sofa": return <SOFA />;
       case "sfr": return <SpO2FiO2Ratio />;
       case "sc": return <SimpleCalculator />;
+      case "curb65": return <CURB65Calculator />;
+
       default: return null;
     }
   };
