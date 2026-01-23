@@ -99,6 +99,10 @@
   color: #fff;
 }
 
+.calcfordocs.dark .feedback-popup{
+  background: #000;
+  color: #fff;
+}
 /* buttons */
 .calcfordocs.dark .calc-btn {
   background: #000;
