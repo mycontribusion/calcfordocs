@@ -7,15 +7,14 @@ export default function IVInfusionCalculator() {
   const [setType, setSetType] = useState("iv");
   const [result, setResult] = useState(null);
 
-  // Removed unused error state
-  // const [error, setError] = useState("");
-
+  // Drop factors (constant, does not change)
   const dropFactors = {
     iv: 20,
     blood: 15,
     soluset: 60,
   };
 
+  // Convert time to minutes
   function convertTimeToMinutes(value, unit) {
     const n = Number(value);
     if (!Number.isFinite(n) || n <= 0) return null;
@@ -24,7 +23,6 @@ export default function IVInfusionCalculator() {
 
   // 🔄 AUTO CALCULATION
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     setResult(null);
 
     const vol = Number(volume);
@@ -35,8 +33,11 @@ export default function IVInfusionCalculator() {
 
     const dropsPerMin = (vol * df) / timeInMin;
     setResult(Math.round(dropsPerMin));
-  }, [volume, time, timeUnit, setType]); // dropFactors intentionally excluded
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [volume, time, timeUnit, setType]); // dropFactors is constant, so safe to exclude
+
+  // Reset all fields
   function handleReset() {
     setVolume("");
     setTime("");
@@ -58,7 +59,8 @@ export default function IVInfusionCalculator() {
         placeholder="e.g. 500"
       />
 
-      <p></p><label className="label">Time:</label><br />
+      <p></p>
+      <label className="label">Time:</label><br />
       <div className="flex-container">
         <input
           className="input-field flex-grow"
@@ -75,7 +77,8 @@ export default function IVInfusionCalculator() {
           <option value="minutes">minutes</option>
           <option value="hours">hours</option>
         </select>
-      </div><p></p>
+      </div>
+      <p></p>
 
       <label className="label">Giving Set:</label><br />
       <select
@@ -86,13 +89,15 @@ export default function IVInfusionCalculator() {
         <option value="iv">IV set (20 gtt/mL)</option>
         <option value="blood">Blood set (15 gtt/mL)</option>
         <option value="soluset">Soluset (60 gtt/mL)</option>
-      </select><p></p>
+      </select>
+      <p></p>
 
       <div className="actions">
         <button className="button secondary" onClick={handleReset}>
           Reset
         </button>
-      </div><p></p>
+      </div>
+      <p></p>
 
       {result !== null && (
         <div className="result-box success">
