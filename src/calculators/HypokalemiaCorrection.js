@@ -1,5 +1,4 @@
-// src/calculators/HypokalemiaCorrection.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function HypokalemiaCorrection() {
   const [weight, setWeight] = useState("");
@@ -9,9 +8,14 @@ export default function HypokalemiaCorrection() {
   const [results, setResults] = useState(null);
   const [message, setMessage] = useState("");
 
-  function calculateHypokalemia() {
-    setResults(null);
-    setMessage("");
+  // 🔄 Auto calculation
+  useEffect(() => {
+    // If any input is empty, reset results and message
+    if (!weight || !observedK || !desiredK) {
+      setResults(null);
+      setMessage("");
+      return;
+    }
 
     let weightKg = parseFloat(weight);
     let currentK = parseFloat(observedK);
@@ -20,63 +24,77 @@ export default function HypokalemiaCorrection() {
     // basic validation
     if (isNaN(currentK) || currentK <= 0) {
       setMessage("⚠️ Please enter a valid observed serum K⁺ (mmol/L).");
+      setResults(null);
       return;
     }
 
     if (isNaN(weightKg) || weightKg <= 0) {
       setMessage("⚠️ Please enter a valid weight.");
+      setResults(null);
       return;
     }
 
     if (isNaN(targetK)) {
       setMessage("⚠️ Please enter a valid target serum K⁺ (mmol/L).");
-      return;
-    }
-
-    // If observed is within normal range -> do not correct
-    if (currentK >= 3.5 && currentK <= 5.5) {
-      setMessage("✅ Serum potassium is within normal range (3.5–5.5 mmol/L). No correction required.");
+      setResults(null);
       return;
     }
 
     // Hyperkalemia (outside scope)
     if (currentK > 5.5) {
       setMessage("⚠️ Observed K⁺ > 5.5 mmol/L — this tool is for hypokalemia only. Do NOT give K⁺ replacement here.");
+      setResults(null);
       return;
     }
 
-    // Now we have hypokalemia (currentK < 3.5)
+    // Normal range — no correction needed
+    if (currentK >= 3.5 && currentK <= 5.5) {
+      setMessage("✅ Serum potassium is within normal range (3.5–5.5 mmol/L). No correction required.");
+      setResults(null);
+      return;
+    }
+
+    // Convert lb → kg
     if (weightUnit === "lb") {
       weightKg = weightKg * 0.453592;
     }
 
     if (targetK <= currentK) {
       setMessage("⚠️ Target K⁺ must be greater than observed K⁺ to calculate a deficit.");
+      setResults(null);
       return;
     }
 
     // Potassium Deficit formula (mmol)
     const deficit = (targetK - currentK) * weightKg * 0.6;
 
-    // Maintenance range (mmol/day) 1 mmol/kg/day
-    const maintenanceLow = weightKg * 1;
-    const maintenanceHigh = weightKg * 1;
+    // Maintenance (mmol/day) 1 mmol/kg/day
+    const maintenance = weightKg * 1;
 
-    // Total requirement range (mmol)
-    const totalLow = deficit + maintenanceLow;
-    const totalHigh = deficit + maintenanceHigh;
+    // Total requirement
+    const total = deficit + maintenance;
 
     setResults({
       deficit,
-      maintenanceLow,
-      maintenanceHigh,
-      totalLow,
-      totalHigh,
+      maintenance,
+      total,
       weightKg,
       currentK,
       targetK,
     });
-  }
+
+    setMessage(""); // clear any previous messages
+  }, [weight, weightUnit, observedK, desiredK]);
+
+  // 🔄 Reset all fields
+  const handleReset = () => {
+    setWeight("");
+    setWeightUnit("kg");
+    setObservedK("");
+    setDesiredK("4.0");
+    setResults(null);
+    setMessage("");
+  };
 
   return (
     <div>
@@ -119,9 +137,9 @@ export default function HypokalemiaCorrection() {
           onChange={(e) => setDesiredK(e.target.value)}
         />
       </div>
-      <p></p>
 
-      <button onClick={calculateHypokalemia}>Calculate</button>
+      <p></p>
+      <button onClick={handleReset}>Reset</button><p></p>
 
       {message && (
         <div style={{ marginTop: "1em" }}>
@@ -132,34 +150,30 @@ export default function HypokalemiaCorrection() {
       {results && (
         <div style={{ marginTop: "1em" }}>
           <p>
-            <strong>Deficit:</strong>{" "}
-            {results.deficit.toFixed(1)} mmol
-          </p>
-
-          <p>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement</p>
-
-
-          <p>
-            <strong>Daily Maintenance:</strong>{" "}
-            {results.maintenanceHigh.toFixed(1)} mmol/day
+            <strong>Deficit:</strong> {results.deficit.toFixed(1)} mmol
           </p>
 
           <p>
-            <strong>Total:</strong>{" "}
-            {results.totalHigh.toFixed(1)} mmol
+            Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement
           </p>
 
-          
+          <p>
+            <strong>Daily Maintenance:</strong> {results.maintenance.toFixed(1)} mmol/day
+          </p>
+
+          <p>
+            <strong>Total Requirement:</strong> {results.total.toFixed(1)} mmol
+          </p>
 
           <h3>Notes</h3>
           <ul>
-            <li><strong>Deficit</strong> = (Desired – Observed) × Weight(kg) × 0.4</li>
+            <li><strong>Deficit</strong> = (Desired – Observed) × Weight(kg) × 0.6</li>
             <li><strong>Maintenance</strong> = 1 mmol/kg/day</li>
             <li><strong>Normal range</strong>: 3.5 – 5.5 mmol/L</li>
             <li><strong>Max daily dose</strong>: 120 mmol/day</li>
             <li><strong>Max infusion rate</strong>: 10–20 mmol/hr</li>
             <li><strong>Max concentration</strong>: 40 mmol/L</li>
-            </ul>
+          </ul>
         </div>
       )}
     </div>

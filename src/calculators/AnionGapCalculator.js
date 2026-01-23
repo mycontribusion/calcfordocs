@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AnionGapCalculator() {
   const [na, setNa] = useState("");
+  const [k, setK] = useState(""); // optional
   const [cl, setCl] = useState("");
   const [hco3, setHco3] = useState("");
-  const [alb, setAlb] = useState("");
-  const [albUnit, setAlbUnit] = useState("g/L"); // default unit
-  const [error, setError] = useState("");
+  const [alb, setAlb] = useState(""); // optional
+  const [albUnit, setAlbUnit] = useState("g/dL");
+
   const [result, setResult] = useState(null);
 
   function parseNum(v) {
@@ -16,73 +17,72 @@ export default function AnionGapCalculator() {
   }
 
   // Convert albumin to g/dL
-  function convertAlbuminToGdL(value, unit) {
+  function albuminToGdL(value, unit) {
     if (value === null) return null;
+    return unit === "g/L" ? value / 10 : value;
+  }
 
-    switch (unit) {
-      case "g/dL":
-      case "g%":
-        return value; // already g/dL
-      case "g/L":
-        return value / 10;
-      case "mg/mL":
-        return value / 100;
-      default:
-        return value;
+  function interpretAG(value, usedK) {
+    if (usedK) {
+      if (value < 12) return "Low Anion Gap (with K⁺)";
+      if (value <= 16) return "Normal Anion Gap (with K⁺)";
+      return "High Anion Gap (with K⁺)";
+    } else {
+      if (value < 8) return "Low Anion Gap";
+      if (value <= 12) return "Normal Anion Gap";
+      return "High Anion Gap";
     }
   }
 
-  // Interpretation
-  function interpretAG(value) {
-    if (value < 8) return "Low Anion Gap";
-    if (value <= 12) return "Normal Anion Gap";
-    return "High (Elevated Anion Gap)";
-  }
-
-  function handleCalculate(e) {
-    e.preventDefault();
-    setError("");
-    setResult(null);
-
+  useEffect(() => {
     const naVal = parseNum(na);
     const clVal = parseNum(cl);
     const hco3Val = parseNum(hco3);
-    const albVal = alb === "" ? null : parseNum(alb);
 
-    if (naVal === null) return setError("Enter valid Sodium (Na).");
-    if (clVal === null) return setError("Enter valid Chloride (Cl).");
-    if (hco3Val === null) return setError("Enter valid Bicarbonate (HCO₃⁻).");
-    if (alb !== "" && albVal === null)
-      return setError("Enter valid Albumin value or leave empty.");
+    // required fields must be filled
+    if (naVal === null || clVal === null || hco3Val === null) {
+      setResult(null);
+      return;
+    }
 
-    const ag = naVal - (clVal + hco3Val);
+    const kVal = parseNum(k);
+    const albVal = parseNum(alb);
+
+    const usedK = kVal !== null;
+
+    const ag =
+      usedK
+        ? naVal + kVal - (clVal + hco3Val)
+        : naVal - (clVal + hco3Val);
+
     const roundedAG = Number(ag.toFixed(1));
 
     let corrected = null;
     let correctedInterp = null;
 
     if (albVal !== null) {
-      const albGdL = convertAlbuminToGdL(albVal, albUnit);
+      const albGdL = albuminToGdL(albVal, albUnit);
       corrected = ag + 2.5 * (4 - albGdL);
       corrected = Number(corrected.toFixed(1));
-      correctedInterp = interpretAG(corrected);
+      correctedInterp = interpretAG(corrected, usedK);
     }
 
     setResult({
       ag: roundedAG,
-      agInterp: interpretAG(roundedAG),
+      agInterp: interpretAG(roundedAG, usedK),
       corrected,
       correctedInterp,
+      usedK,
     });
-  }
+  }, [na, k, cl, hco3, alb, albUnit]);
 
   function handleReset() {
     setNa("");
+    setK("");
     setCl("");
     setHco3("");
     setAlb("");
     setAlbUnit("g/dL");
-    setError("");
     setResult(null);
   }
 
@@ -90,112 +90,76 @@ export default function AnionGapCalculator() {
     <div>
       <h2>Anion Gap Calculator</h2>
 
-      <form onSubmit={handleCalculate}>
-        <div>
-          <label>
-            Serum Sodium (Na, mmol/L):
-            <br />
-            <input
-              inputMode="decimal"
-              value={na}
-              onChange={(e) => setNa(e.target.value)}
-              placeholder="e.g., 140"
-            />
-          </label>
-        </div>
-        <p />
-
-        <div>
-          <label>
-            Serum Chloride (Cl, mmol/L):
-            <br />
-            <input
-              inputMode="decimal"
-              value={cl}
-              onChange={(e) => setCl(e.target.value)}
-              placeholder="e.g., 100"
-            />
-          </label>
-        </div>
-        <p />
-
-        <div>
-          <label>
-            Serum Bicarbonate (HCO₃⁻, mmol/L):
-            <br />
-            <input
-              inputMode="decimal"
-              value={hco3}
-              onChange={(e) => setHco3(e.target.value)}
-              placeholder="e.g., 24"
-            />
-          </label>
-        </div>
-        <p />
-
-        <div>
-          <label>
-            Albumin (optional):
-            <br />
-            <input
-              inputMode="decimal"
-              value={alb}
-              onChange={(e) => setAlb(e.target.value)}
-              placeholder="e.g., 40 or 3.5"
-              style={{ width: "120px", marginRight: "8px" }}
-            />
-            <select
-              value={albUnit}
-              onChange={(e) => setAlbUnit(e.target.value)}
-            >
-              <option value="g/dL">g/dL</option>
-              <option value="g/L">g/L</option>
-            </select>
-          </label>
-        </div>
-
-        <p />
-
-        <div>
-          <button type="submit">Calculate</button>{" "}
-          <button type="button" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
-      </form>
-
+      <div>
+        <label>Serum Sodium (Na, mmol/L)</label><br />
+        <input value={na} onChange={(e) => setNa(e.target.value)} />
+      </div>
       <p />
 
-      {error && <div style={{ color: "red" }}>{error}</div>}
+      <div>
+        <label>Serum Potassium (K⁺, optional)</label><br />
+        <input value={k} onChange={(e) => setK(e.target.value)} />
+      </div>
+      <p />
 
+      <div>
+        <label>Serum Chloride (Cl, mmol/L)</label><br />
+        <input value={cl} onChange={(e) => setCl(e.target.value)} />
+      </div>
+      <p />
+
+      <div>
+        <label>Serum Bicarbonate (HCO₃⁻, mmol/L)</label><br />
+        <input value={hco3} onChange={(e) => setHco3(e.target.value)} />
+      </div>
+      <p />
+
+      <div>
+        <label>Albumin (optional)</label><br />
+        <input
+          value={alb}
+          onChange={(e) => setAlb(e.target.value)}
+          style={{ width: "120px", marginRight: "8px" }}
+        />
+        <select value={albUnit} onChange={(e) => setAlbUnit(e.target.value)}>
+          <option value="g/dL">g/dL</option>
+          <option value="g/L">g/L</option>
+        </select>
+      </div>
+      <p />
+
+      <button onClick={handleReset}>Reset</button><p></p>
+
+      {/* RESULTS — NOTHING SHOWS UNTIL REQUIRED FIELDS ARE FILLED */}
       {result && (
-        <div>
+        <div style={{ marginTop: "1rem" }}>
           <p>
-            <strong>Anion Gap:</strong> {result.ag} mmol/L <br />
+            <strong>Anion Gap:</strong> {result.ag} mmol/L<br />
             <em>{result.agInterp}</em>
-            <br />
-            {/* Formula added */}
-            <span style={{ fontSize: "0.85em" }}>
-              Formula: AG = Na − (Cl + HCO₃)
-            </span>
+          </p>
+
+          <p style={{ fontSize: "0.85em" }}>
+            Formula: {result.usedK
+              ? "AG = Na + K − (Cl + HCO₃)"
+              : "AG = Na − (Cl + HCO₃)"}
           </p>
 
           {result.corrected !== null && (
             <p>
-              <strong>Albumin-Corrected AG:</strong> {result.corrected} mmol/L
-              <br />
+              <strong>Albumin-Corrected AG:</strong> {result.corrected} mmol/L<br />
               <em>{result.correctedInterp}</em>
               <br />
-              {/* Formula added */}
               <span style={{ fontSize: "0.85em" }}>
-                Formula: Corrected AG = AG + 2.5 × (4 − albumin in g/dL)
+                Corrected AG = AG + 2.5 × (4 − albumin in g/dL)
               </span>
             </p>
           )}
 
           <p style={{ fontSize: "0.9em" }}>
-            Normal AG ≈ 8–12 mmol/L.  
-            Low albumin can hide a high AG — corrected AG unmasks this.
+            Normal AG:{" "}
+            {result.usedK
+              ? "12–16 mmol/L (with K⁺)"
+              : "8–12 mmol/L (without K⁺)"}.
           </p>
         </div>
       )}

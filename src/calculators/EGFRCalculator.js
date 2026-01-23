@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function EGFRCalculator() {
   const [scr, setScr] = useState("");
   const [unit, setUnit] = useState("umol");
   const [age, setAge] = useState("");
   const [sex, setSex] = useState("male");
+
   const [egfr, setEgfr] = useState(null);
   const [interpretation, setInterpretation] = useState("");
 
@@ -17,26 +18,33 @@ function EGFRCalculator() {
     return "G5: Kidney failure (<15)";
   };
 
-  const calculateEGFR = () => {
-    let scrVal = parseFloat(scr);
-    const ageVal = parseFloat(age);
+  // Helper to parse positive numbers
+  const parseRequired = (v) => {
+    if (v === "" || v === null) return null;
+    const n = Number(v);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  };
 
-    if (isNaN(scrVal) || isNaN(ageVal) || scrVal <= 0 || ageVal <= 0) {
-      setEgfr("Invalid input");
+  // Auto-calc when all required fields exist
+  useEffect(() => {
+    const scrVal = parseRequired(scr);
+    const ageVal = parseRequired(age);
+
+    if (scrVal === null || ageVal === null) {
+      setEgfr(null);
       setInterpretation("");
       return;
     }
 
-    // convert µmol/L → mg/dL
+    // Convert µmol/L → mg/dL if needed
     const scrMgdl = unit === "umol" ? scrVal / 88.4 : scrVal;
 
-    // CKD-EPI 2021
     const kappa = sex === "male" ? 0.9 : 0.7;
     const alpha = sex === "male" ? -0.302 : -0.241;
 
     const scrRatio = scrMgdl / kappa;
     const minPart = Math.min(scrRatio, 1) ** alpha;
-    const maxPart = Math.max(scrRatio, 1) ** -1.200;
+    const maxPart = Math.max(scrRatio, 1) ** -1.2;
     const ageFactor = 0.9938 ** ageVal;
     const sexFactor = sex === "female" ? 1.012 : 1;
 
@@ -45,6 +53,15 @@ function EGFRCalculator() {
 
     setEgfr(rounded);
     setInterpretation(interpretEGFR(rounded));
+  }, [scr, unit, age, sex]);
+
+  const handleReset = () => {
+    setScr("");
+    setUnit("umol");
+    setAge("");
+    setSex("male");
+    setEgfr(null);
+    setInterpretation("");
   };
 
   return (
@@ -83,21 +100,18 @@ function EGFRCalculator() {
 
       <p></p>
 
-      <button onClick={calculateEGFR}>Calculate</button>
+      <button onClick={handleReset}>Reset</button>
 
-      <p></p>
-
+      {/* ✅ Show results only when required fields are filled */}
       {egfr !== null && (
         <div className="result">
-          <strong>eGFR:</strong> {egfr} mL/min/1.73m²
-          <br />
-          <strong>Interpretation:</strong> {interpretation}
+          <p><strong>eGFR:</strong> {egfr} mL/min/1.73m²</p>
+          <p><strong>Interpretation:</strong> {interpretation}</p>
 
           <div
             style={{
               marginTop: "15px",
               padding: "10px",
-              background: "#f8f8f8",
               borderRadius: "6px",
               fontSize: "0.9rem",
             }}
@@ -105,8 +119,7 @@ function EGFRCalculator() {
             <strong>Formula Used (CKD-EPI 2021):</strong>
             <br />
             <code>
-              eGFR = 142 × min(SCr/κ, 1)<sup>α</sup> × max(SCr/κ, 1)<sup>−1.200</sup> × 0.9938
-              <sup>Age</sup> × (1.012 if female)
+              eGFR = 142 × min(SCr/κ, 1)<sup>α</sup> × max(SCr/κ, 1)<sup>−1.200</sup> × 0.9938<sup>Age</sup> × (1.012 if female)
             </code>
             <br /><br />
             Where:

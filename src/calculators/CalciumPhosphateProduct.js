@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 export default function CalciumPhosphateProduct() {
   const [calcium, setCalcium] = useState("");
@@ -6,20 +6,19 @@ export default function CalciumPhosphateProduct() {
   const [caUnit, setCaUnit] = useState("mmol"); // default mmol/L
   const [phUnit, setPhUnit] = useState("mmol"); // default mmol/L
   const [result, setResult] = useState("");
-  const [showFormula, setShowFormula] = useState(false); // new state for formula display
+  const [showFormula, setShowFormula] = useState(false);
 
-  // Conversion factors
   const caConv = 0.2495; // 1 mg/dL → mmol/L
   const phConv = 0.3229; // 1 mg/dL → mmol/L
 
-  function convertToMgDL(value, type, unit) {
+  const convertToMgDL = (value, type, unit) => {
     if (unit === "mmol") {
       return type === "calcium" ? value / caConv : value / phConv;
     }
     return value; // already in mg/dL
-  }
+  };
 
-  function interpretCaP() {
+  const calculateCPP = useCallback(() => {
     const caVal = parseFloat(calcium);
     const phVal = parseFloat(phosphate);
 
@@ -29,34 +28,44 @@ export default function CalciumPhosphateProduct() {
       return;
     }
 
-    // Convert both to mg/dL for calculation
     const caMg = convertToMgDL(caVal, "calcium", caUnit);
     const phMg = convertToMgDL(phVal, "phosphate", phUnit);
-
     const product = caMg * phMg;
 
     let interpretation = "";
-    if (product < 55) {
-      interpretation = "Low risk of vascular calcification";
-    } else if (product <= 70) {
-      interpretation = "Moderate risk of vascular calcification";
-    } else {
-      interpretation = "High risk of vascular calcification";
-    }
+    if (product < 55) interpretation = "Low risk of vascular calcification";
+    else if (product <= 70) interpretation = "Moderate risk of vascular calcification";
+    else interpretation = "High risk of vascular calcification";
 
-    setResult(
-      `Ca × P Product: ${product.toFixed(2)} mg²/dL² → ${interpretation}`
-    );
-    setShowFormula(true); // show formula and units after calculation
-  }
+    setResult(`Ca × P Product: ${product.toFixed(2)} mg²/dL² → ${interpretation}`);
+    setShowFormula(true);
+  }, [calcium, phosphate, caUnit, phUnit]);
+
+  // Auto-calc on input change
+  useEffect(() => {
+    if (calcium !== "" && phosphate !== "") {
+      calculateCPP();
+    } else {
+      setResult("");
+      setShowFormula(false);
+    }
+  }, [calcium, phosphate, caUnit, phUnit, calculateCPP]);
+
+  const reset = () => {
+    setCalcium("");
+    setPhosphate("");
+    setCaUnit("mmol");
+    setPhUnit("mmol");
+    setResult("");
+    setShowFormula(false);
+  };
 
   return (
     <div className="p-4 border rounded-xl shadow-md mb-4">
       <h2 className="text-lg font-semibold mb-2">Calcium-Phosphate Product Calculator</h2>
 
-      {/* Calcium input */}
       <div className="mb-2">
-        <label className="mr-2">Serum Calcium: <br /></label>
+        <label>Serum Calcium:</label><br />
         <input
           type="number"
           placeholder="Enter Calcium"
@@ -74,9 +83,8 @@ export default function CalciumPhosphateProduct() {
         </select>
       </div><p></p>
 
-      {/* Phosphate input */}
       <div className="mb-2">
-        <label className="mr-2">Serum Phosphate:</label><br />
+        <label>Serum Phosphate:</label><br />
         <input
           type="number"
           placeholder="Enter Phosphate"
@@ -92,24 +100,21 @@ export default function CalciumPhosphateProduct() {
           <option value="mmol">mmol/L</option>
           <option value="mg">mg/dL</option>
         </select>
-      </div>
+      </div><p></p>
 
-      {/* Calculate button */}
       <div className="mb-2">
         <button
-          onClick={interpretCaP}
-          className="bg-blue-500 text-white px-3 py-1 rounded w-full"
+          onClick={reset}
+          className="bg-gray-400 text-white px-3 py-1 rounded w-full"
         >
-          Calculate
+          Reset
         </button>
       </div>
 
-      {/* Result */}
       {result && <p className="mt-2 text-sm font-medium">{result}</p>}
 
-      {/* Formula - only after calculation */}
       {showFormula && (
-        <div style={{fontSize:"small"}}>
+        <div style={{ fontSize: "small" }}>
           <span><strong>Formula:</strong> Ca × P = Serum Calcium × Serum Phosphate</span><br />
           <span><strong>Units:</strong> mg/dL × mg/dL → mg²/dL²</span>
         </div>

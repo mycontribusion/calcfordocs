@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function GlucoseConverter() {
   const [value, setValue] = useState("");
@@ -8,11 +8,15 @@ export default function GlucoseConverter() {
 
   const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
 
-  function roundTo1Decimal(num) {
-    return Math.round(num * 10) / 10;
-  }
+  const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
-  function convertGlucose() {
+  // 🔄 Auto-calculation
+  useEffect(() => {
+    if (!value || !unit || !type) {
+      setResult(null);
+      return;
+    }
+
     const val = parseFloat(value);
     if (isNaN(val) || val <= 0) {
       setResult({ error: "Please enter a valid glucose level." });
@@ -30,7 +34,7 @@ export default function GlucoseConverter() {
       displayUnit = "mg/dL";
     }
 
-    // Determine category based on converted value and unit
+    // Determine category
     if (displayUnit === "mg/dL") {
       if (type === "fasting") {
         if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "red"; }
@@ -74,9 +78,17 @@ export default function GlucoseConverter() {
       category,
       categoryColor,
       typeLabel: type === "fasting" ? "Fasting" : "Random",
-      ranges
+      ranges,
     });
-  }
+  }, [value, unit, type]);
+
+  // 🔄 Reset button
+  const handleReset = () => {
+    setValue("");
+    setUnit("mg");
+    setType("random");
+    setResult(null);
+  };
 
   return (
     <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
@@ -104,9 +116,10 @@ export default function GlucoseConverter() {
           <option value="fasting">Fasting</option>
           <option value="random">Random</option>
         </select>
-      </div><p></p>
+      </div>
 
-      <button onClick={convertGlucose}>Convert & Interpret</button>
+      <p></p>
+      <button onClick={handleReset}>Reset</button><p></p>
 
       {result && (
         <div style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>

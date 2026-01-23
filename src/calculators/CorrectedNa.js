@@ -1,38 +1,66 @@
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 export default function CorrectedSodium() {
   const [sodium, setSodium] = useState("");
   const [glucose, setGlucose] = useState("");
   const [glucoseUnit, setGlucoseUnit] = useState("mg"); // mg/dL or mmol/L
   const [result, setResult] = useState("");
+  const [note, setNote] = useState("");
 
-  function calculateCorrectedNa() {
+  const calculateCorrectedNa = useCallback(() => {
     const na = parseFloat(sodium);
     let glu = parseFloat(glucose);
 
     if (isNaN(na) || isNaN(glu)) {
-      setResult("Please enter valid numerical values for both sodium and glucose.");
+      setResult("");
+      setNote("Please enter valid numerical values for both sodium and glucose.");
       return;
     }
+
+    // Clear note if inputs are valid
+    setNote("");
 
     // Convert glucose to mg/dL if input is in mmol/L
     if (glucoseUnit === "mmol") {
       glu = glu * 18.0182;
     }
 
-    // Corrected Sodium formula (mg/dL glucose)
-    // 1.6 mEq/L increase per 100 mg/dL glucose above 100
+    // Corrected Sodium formula: 1.6 mEq/L per 100 mg/dL glucose above 100
     const correctedNa = na + 1.6 * ((glu - 100) / 100);
-
     setResult(`Corrected Sodium: ${correctedNa.toFixed(2)} mEq/L`);
-  }
+  }, [sodium, glucose, glucoseUnit]);
+
+  // Auto-calculate when inputs change
+  useEffect(() => {
+    if (sodium !== "" && glucose !== "") {
+      calculateCorrectedNa();
+    } else {
+      setResult("");
+      setNote("");
+    }
+  }, [sodium, glucose, glucoseUnit, calculateCorrectedNa]);
+
+  const reset = () => {
+    setSodium("");
+    setGlucose("");
+    setGlucoseUnit("mg");
+    setResult("");
+    setNote("");
+  };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
+    <div
+      style={{
+        border: "1px solid #ccc",
+        padding: "1rem",
+        borderRadius: "8px",
+        marginBottom: "1rem",
+      }}
+    >
       <h2>Corrected Sodium Calculator</h2>
 
       <div style={{ marginBottom: "0.5rem" }}>
-        <label>Measured Sodium (mmol/L):</label><br />
+        <label>Measured Sodium (mmol/L):</label>
         <input
           type="number"
           value={sodium}
@@ -40,7 +68,7 @@ export default function CorrectedSodium() {
           placeholder="e.g., 135"
           style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
         />
-      </div><p></p>
+      </div>
 
       <div style={{ marginBottom: "0.5rem" }}>
         <label>Blood Glucose:</label>
@@ -49,7 +77,7 @@ export default function CorrectedSodium() {
           value={glucose}
           onChange={(e) => setGlucose(e.target.value)}
           placeholder="e.g., 300"
-          style={{ width: "70%", padding: "0.25rem"}}
+          style={{ width: "70%", padding: "0.25rem", marginRight: "0.5rem" }}
         />
         <select
           value={glucoseUnit}
@@ -59,17 +87,53 @@ export default function CorrectedSodium() {
           <option value="mg">mg/dL</option>
           <option value="mmol">mmol/L</option>
         </select>
+      </div><p></p>
+
+      <div style={{ marginTop: "0.5rem" }}>
+        <button
+          onClick={reset}
+          style={{
+            padding: "0.5rem 1rem",
+            cursor: "pointer",
+            backgroundColor: "#ccc",
+            border: "none",
+            borderRadius: "4px",
+          }}
+        >
+          Reset
+        </button><p></p>
       </div>
 
-      <button
-        onClick={calculateCorrectedNa}
-        style={{ padding: "0.5rem 1rem", marginTop: "0.5rem", cursor: "pointer" }}
-      >
-        Calculate
-      </button>
-
+      {/* Result */}
       {result && (
-        <p style={{ marginTop: "0.75rem", fontSize: "0.9rem", fontWeight: "bold" }}>{result}</p>
+        <p
+          style={{
+            marginTop: "0.75rem",
+            fontSize: "0.9rem",
+            fontWeight: "bold",
+          }}
+        >
+          {result}
+        </p>
+      )}
+
+      {/* Formula note */}
+      {result && (
+        <div style={{ fontSize: "0.85rem", marginTop: "0.5rem" }}>
+          <strong>Formula:</strong> Corrected Na = Measured Na + 1.6 ×
+          ((Glucose [mg/dL] − 100) ÷ 100)
+          <br />
+          <em>
+            If glucose is in mmol/L, convert to mg/dL first: Glucose × 18.0182
+          </em>
+        </div>
+      )}
+
+      {/* Note */}
+      {!result && note && (
+        <p style={{ color: "brown", marginTop: "0.5rem" }}>
+          <strong>{note}</strong>
+        </p>
       )}
     </div>
   );
