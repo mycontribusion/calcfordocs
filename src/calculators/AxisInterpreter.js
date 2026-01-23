@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -48,8 +48,15 @@ export default function AxisInterpreter() {
     return { interpretation: "Indeterminate", equiphasic: "", sector: "" };
   };
 
-  const handleInterpret = () => {
+  // Auto-interpret whenever lead1 or leadAvf changes
+  useEffect(() => {
     setResult(interpretAxis(lead1, leadAvf));
+  }, [lead1, leadAvf]);
+
+  const reset = () => {
+    setLead1("positive");
+    setLeadAvf("positive");
+    setResult({ interpretation: "", equiphasic: "", sector: "" });
   };
 
   const sectors = {
@@ -91,7 +98,7 @@ export default function AxisInterpreter() {
             </select>
           </div>
 
-          <div><p></p>
+          <div style={{ marginTop: 8 }}>
             <label>Lead aVF: </label>
             <select value={leadAvf} onChange={(e) => setLeadAvf(e.target.value)}>
               <option value="positive">Positive</option>
@@ -99,11 +106,22 @@ export default function AxisInterpreter() {
             </select>
           </div>
 
-          <button onClick={handleInterpret} style={{ marginTop: 8, padding: "6px 12px", background: "#2563eb", color: "#fff", borderRadius: 6, border: "none", cursor: "pointer" }}>
-            Interpret
+          <button
+            onClick={reset}
+            style={{
+              marginTop: 12,
+              padding: "6px 12px",
+              background: "#f87171",
+              color: "#fff",
+              borderRadius: 6,
+              border: "none",
+              cursor: "pointer"
+            }}
+          >
+            Reset
           </button>
 
-          <div style={{ marginTop: 10, padding: 10, background: "#015c9c", borderRadius: 6, border: "1px solid #e5e7eb", color:"white" }}>
+          <div style={{ marginTop: 10, padding: 10, borderRadius: 6}}>
             <div><strong>Interpretation:</strong> {result.interpretation || "—"}</div>
             <div><strong>Equiphasic lead:</strong> {result.equiphasic || "—"}</div>
           </div>

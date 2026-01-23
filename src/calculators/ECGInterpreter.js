@@ -1,28 +1,29 @@
-// src/calculators/ECGInterpreter.js
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ECGInterpreter() {
   const [wave, setWave] = useState("pWave");
   const [measurementType, setMeasurementType] = useState("duration");
-  const [valueType, setValueType] = useState("seconds");
+  const [valueType, setValueType] = useState("seconds"); // for main wave
   const [numericalValue, setNumericalValue] = useState("");
+  const [rrInterval, setRrInterval] = useState(""); // for QTc
+  const [rrUnit, setRrUnit] = useState("seconds");
   const [result, setResult] = useState("");
 
-  // Conversion factors: selected unit → base unit (seconds or mV)
+  // Conversion factors
   const durationFactors = {
-    milliseconds: 0.001, // 1 ms = 0.001 s
+    milliseconds: 0.001,
     seconds: 1,
-    smallSquares: 0.04,  // 1 small square = 0.04 s
-    largeSquares: 0.2,   // 1 large square = 0.2 s
+    smallSquares: 0.04,
+    largeSquares: 0.2,
   };
 
   const voltageFactors = {
     millivolts: 1,
-    smallSquares: 0.1, // 1 small square = 0.1 mV
-    largeSquares: 0.5, // 1 large square = 0.5 mV
+    smallSquares: 0.1,
+    largeSquares: 0.5,
   };
 
-  // Normal ranges in base units (seconds or mV)
+  // Normal ranges (base units)
   const normalRanges = {
     duration: {
       pWave: [0.08, 0.12],
@@ -38,23 +39,26 @@ export default function ECGInterpreter() {
     },
   };
 
-  function interpretECG() {
+  // Main auto-calc function
+  const calculate = () => {
     let val = parseFloat(numericalValue);
     if (isNaN(val) || val <= 0) {
       setResult("Please enter a valid numerical value.");
       return;
     }
 
+    // Heart Rate
     if (wave === "heartRate") {
-      // Heart Rate Calculation from RR interval
       let rrSeconds =
         valueType === "seconds"
           ? val
+          : valueType === "milliseconds"
+          ? val * 0.001
           : valueType === "smallSquares"
           ? val * 0.04
           : valueType === "largeSquares"
           ? val * 0.2
-          : val; // fallback
+          : val;
 
       let hr = 60 / rrSeconds;
       let interpretation =
@@ -63,19 +67,14 @@ export default function ECGInterpreter() {
           : hr > 100
           ? `Heart Rate: ${hr.toFixed(1)} bpm → Tachycardia`
           : `Heart Rate: ${hr.toFixed(1)} bpm → Normal`;
-
       setResult(interpretation);
       return;
     }
 
-    // Select appropriate conversion factor
+    // Duration or Voltage
     let factor =
-      measurementType === "duration"
-        ? durationFactors[valueType]
-        : voltageFactors[valueType];
-
-    // Convert input to base unit
-    let baseValue = val * factor; // multiply by factor (unit → base)
+      measurementType === "duration" ? durationFactors[valueType] : voltageFactors[valueType];
+    let baseValue = val * factor;
 
     let range = normalRanges[measurementType][wave];
     if (!range) {
@@ -83,34 +82,54 @@ export default function ECGInterpreter() {
       return;
     }
 
-    // Convert normal range into selected unit for display
     let displayLow = range[0] / factor;
     let displayHigh = range[1] / factor;
 
-    let interpretation =
+    let interp =
       baseValue >= range[0] && baseValue <= range[1]
-        ? `${wave.toUpperCase()} is Normal (${displayLow.toFixed(
-            2
-          )} - ${displayHigh.toFixed(2)} ${valueType})`
-        : `${wave.toUpperCase()} is Abnormal (Normal: ${displayLow.toFixed(
-            2
-          )} - ${displayHigh.toFixed(2)} ${valueType})`;
+        ? `${wave.toUpperCase()} is Normal (${displayLow.toFixed(2)} - ${displayHigh.toFixed(2)} ${valueType})`
+        : `${wave.toUpperCase()} is Abnormal (Normal: ${displayLow.toFixed(2)} - ${displayHigh.toFixed(2)} ${valueType})`;
 
-    setResult(interpretation);
-  }
+    // QTc calculation
+    if (wave === "qtInterval") {
+      let rrVal = parseFloat(rrInterval);
+      if (!isNaN(rrVal) && rrVal > 0) {
+        let rrSeconds =
+          rrUnit === "seconds"
+            ? rrVal
+            : rrUnit === "milliseconds"
+            ? rrVal * 0.001
+            : rrUnit === "smallSquares"
+            ? rrVal * 0.04
+            : rrUnit === "largeSquares"
+            ? rrVal * 0.2
+            : rrVal;
+
+        let qtc = baseValue / Math.sqrt(rrSeconds); // Bazett formula
+        interp += ` | QTc (Bazett): ${qtc.toFixed(2)} s → ${
+          qtc >= 0.36 && qtc <= 0.44 ? "Normal" : "Abnormal"
+        } (Formula: QTc = QT / √RR)`;
+      } else {
+        interp += " | QTc: Enter valid RR interval";
+      }
+    }
+
+    setResult(interp);
+  };
+
+  // Auto-calc on any input change
+  useEffect(() => {
+    calculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wave, measurementType, valueType, numericalValue, rrInterval, rrUnit]);
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">ECG Interpreter</h2>
+    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, marginBottom: "1rem", fontFamily: "Arial, sans-serif" }}>
+      <h2>ECG Interpreter</h2>
 
-      {/* Wave/Interval */}
-      <div className="mb-2">
-        <label className="mr-2">Wave/Interval:</label>
-        <select
-          value={wave}
-          onChange={(e) => setWave(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
+      <div style={{ marginBottom: "0.5rem" }}>
+        <label>Wave/Interval:</label><br />
+        <select value={wave} onChange={(e) => setWave(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
           <option value="pWave">P Wave</option>
           <option value="prInterval">PR Interval</option>
           <option value="qrsWave">QRS Complex</option>
@@ -121,31 +140,19 @@ export default function ECGInterpreter() {
         </select>
       </div>
 
-      {/* Measurement Type (hide for heart rate) */}
-      <p></p>
       {wave !== "heartRate" && (
-        <div className="mb-2">
-          <label className="mr-2">Measurement Type:</label>
-          <select
-            value={measurementType}
-            onChange={(e) => setMeasurementType(e.target.value)}
-            className="border px-2 py-1 rounded"
-          >
+        <div style={{ marginBottom: "0.5rem" }}>
+          <label>Measurement Type:</label><br />
+          <select value={measurementType} onChange={(e) => setMeasurementType(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
             <option value="duration">Duration</option>
             <option value="voltage">Voltage</option>
           </select>
         </div>
       )}
 
-      {/* Unit */}
-      <p></p>
-      <div className="mb-2">
-        <label className="mr-2">Unit:</label>
-        <select
-          value={valueType}
-          onChange={(e) => setValueType(e.target.value)}
-          className="border px-2 py-1 rounded"
-        >
+      <div style={{ marginBottom: "0.5rem" }}>
+        <label>Unit:</label><br />
+        <select value={valueType} onChange={(e) => setValueType(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
           {wave === "heartRate" || measurementType === "duration" ? (
             <>
               <option value="milliseconds">Milliseconds</option>
@@ -163,29 +170,33 @@ export default function ECGInterpreter() {
         </select>
       </div>
 
-      {/* Input value */}
-      <p></p>
-      <div className="mb-2">
-        <input
-          type="number"
-          placeholder="Enter value"
-          value={numericalValue}
-          onChange={(e) => setNumericalValue(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        />
+      <div style={{ marginBottom: "0.5rem" }}>
+        <input type="number" placeholder="Enter value" value={numericalValue} onChange={(e) => setNumericalValue(e.target.value)} style={{ width: "100%", padding: "0.25rem" }} />
       </div>
 
-      {/* Interpret button */}
-      <p></p>
-      <button
-        onClick={interpretECG}
-        className="bg-blue-500 text-white px-3 py-1 rounded"
-      >
-        Interpret
-      </button>
+      {/* RR interval for QTc */}
+      {wave === "qtInterval" && (
+        <div style={{ marginBottom: "0.5rem" }}>
+          <label>RR Interval (for QTc):</label><br />
+          <input
+            type="number"
+            placeholder="e.g., 0.8"
+            value={rrInterval}
+            onChange={(e) => setRrInterval(e.target.value)}
+            style={{ width: "60%", padding: "0.25rem", marginRight: "0.5rem" }}
+          />
+          <select value={rrUnit} onChange={(e) => setRrUnit(e.target.value)} style={{ width: "35%", padding: "0.25rem" }}>
+            <option value="milliseconds">Milliseconds</option>
+            <option value="seconds">Seconds</option>
+            <option value="smallSquares">Small Squares</option>
+            <option value="largeSquares">Large Squares</option>
+          </select>
+        </div>
+      )}
 
-      {/* Result */}
-      {result && <p className="mt-2 text-sm font-medium">{result}</p>}
+      {result && (
+        <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>{result}</p>
+      )}
     </div>
   );
 }

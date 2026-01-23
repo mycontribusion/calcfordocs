@@ -32,7 +32,7 @@ export default function HyponatremiaCorrection() {
     if (volumeStatus !== "hypovolemic" && fluid === "ns") {
       setWarning("⚠️ NS may worsen hyponatremia in euvolemic/hypervolemic states.");
     } else {
-      setWarning("");
+      setWarning("Aim for ≤8 mmol/L rise in 24h (max 10–12 mmol/L in special cases). Avoid rapid correction to prevent osmotic demyelination.");
     }
 
     if (target > 8) {
