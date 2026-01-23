@@ -6,14 +6,13 @@ function TapCounter() {
   const [selectedDuration, setSelectedDuration] = useState(15);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [blink, setBlink] = useState(false); // For blink effect
+  const [blink, setBlink] = useState(false);
 
   const handleTap = () => {
-    if (isRunning) {
-      setTaps((prev) => prev + 1);
-      setBlink(true);
-      setTimeout(() => setBlink(false), 150); // short blink
-    }
+    if (!isRunning) return;
+    setTaps((prev) => prev + 1);
+    setBlink(true);
+    setTimeout(() => setBlink(false), 120);
   };
 
   const startCounter = () => {
@@ -34,7 +33,7 @@ function TapCounter() {
     let timer;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
+        setTimeLeft((t) => t - 1);
         setDurationSec((d) => d + 1);
       }, 1000);
     } else if (isRunning && timeLeft === 0) {
@@ -44,110 +43,120 @@ function TapCounter() {
   }, [isRunning, timeLeft]);
 
   const ratePerMin =
-    taps > 0 && durationSec > 0 ? (taps / durationSec) * 60 : 0;
+    durationSec > 0 ? (taps / durationSec) * 60 : 0;
 
   return (
     <div
       onClick={handleTap}
       style={{
         cursor: isRunning ? "pointer" : "default",
-        fontSize: "20px",
-        color: "white",
-        lineHeight: "40px",
         border: "1px solid #ccc",
-        borderRadius: "10px",
-        padding: "1rem",
+        borderRadius: "12px",
+        padding: "1.5rem",
         margin: "1rem 0",
+
+        minHeight: "360px",               // ✅ taller tap area
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+
         backgroundColor: blink
-          ? "#e0ffe0"
+          ? "#e8ffe8"
           : isRunning
           ? "#dc091e"
           : "#015c9c",
-        transition: "0.15s",
+
+        color: "white",
         userSelect: "none",
+        transition: "0.15s",
       }}
     >
-      <h3>Tap Counter</h3>
+      {/* Header */}
+      <div>
+        <h3 style={{ marginTop: 0 }}>Tap Counter</h3>
 
-      <div style={{ marginBottom: "0.5rem" }}>
-        <label>
-          Duration (seconds):{" "}
+        <div style={{ marginBottom: "0.5rem" }}>
+          <strong>Duration:</strong>{" "}
           {isRunning ? (
-            <span
-              style={{
-                filter: "blur(1px)",
-                display: "inline-block",
-                width: "2rem",
-                textAlign: "center",
-              }}
-            >
-              {selectedDuration}
+            <span style={{ opacity: 0.7 }}>
+              {selectedDuration} sec
             </span>
           ) : (
             <select
               value={selectedDuration}
-              onChange={(e) => setSelectedDuration(Number(e.target.value))}
+              onChange={(e) =>
+                setSelectedDuration(Number(e.target.value))
+              }
               onClick={(e) => e.stopPropagation()}
             >
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
-              <option value={30}>30</option>
-              <option value={60}>60</option>
+              <option value={10}>10 sec</option>
+              <option value={15}>15 sec</option>
+              <option value={20}>20 sec</option>
+              <option value={30}>30 sec</option>
+              <option value={60}>60 sec</option>
             </select>
           )}
-        </label>
+        </div>
       </div>
 
-      <p>
-        <strong>Taps:</strong> {taps}
-      </p>
-      <p>
-        <strong>Time left:</strong> {timeLeft} sec
-      </p>
-      <p>
-        <strong>Rate:</strong> {ratePerMin.toFixed(1)} /min
-      </p>
+      {/* 🔥 Large central tap zone */}
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          textAlign: "center",
+          fontSize: "18px",
+          lineHeight: "30px",
+        }}
+      >
+        <div><strong>Taps:</strong> {taps}</div>
+        <div><strong>Time remaining:</strong> {timeLeft} sec</div>
+        <div>
+          <strong>Rate:</strong>{" "}
+          {ratePerMin.toFixed(1)} / min
+        </div>
+      </div>
 
-      <div style={{ marginTop: "0.5rem", fontSize: "30px", marginLeft: "90px" }}>
+      {/* Controls */}
+      <div style={{ textAlign: "center" }}>
         {!isRunning ? (
           <button
-            style={{ fontSize: "30px" }}
+            style={{ fontSize: "18px" }}
             onClick={(e) => {
               e.stopPropagation();
               startCounter();
             }}
           >
-            Start
+            ▶ Start
           </button>
         ) : (
           <button
-            style={{ fontSize: "15px" }}
+            style={{ fontSize: "14px" }}
             onClick={(e) => {
               e.stopPropagation();
               resetCounter();
             }}
           >
-            Stop
+            ⏹ Stop
           </button>
         )}
       </div>
 
-      {/* ✅ Only show note when the counter is running */}
+      {/* Instruction */}
       {isRunning && (
-        <small
+        <div
           style={{
-            fontSize: "15px",
-            display: "block",
-            marginTop: "1rem",
-            color: "white",
-            lineHeight: "20px",
+            marginTop: "0.8rem",
+            fontSize: "14px",
+            opacity: 0.9,
             fontStyle: "italic",
-            margin: "20px 20px",
+            textAlign: "center",
           }}
         >
-          Tap anywhere inside the red card.
-        </small>
+          Tap anywhere inside the red area for each beat or breath.
+        </div>
       )}
     </div>
   );

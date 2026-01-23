@@ -56,11 +56,11 @@ export default function HypokalemiaCorrection() {
     }
 
     // Potassium Deficit formula (mmol)
-    const deficit = (targetK - currentK) * weightKg * 0.4;
+    const deficit = (targetK - currentK) * weightKg * 0.6;
 
-    // Maintenance range (mmol/day) 2–3 mmol/kg/day
-    const maintenanceLow = weightKg * 2;
-    const maintenanceHigh = weightKg * 3;
+    // Maintenance range (mmol/day) 1 mmol/kg/day
+    const maintenanceLow = weightKg * 1;
+    const maintenanceHigh = weightKg * 1;
 
     // Total requirement range (mmol)
     const totalLow = deficit + maintenanceLow;
@@ -136,18 +136,17 @@ export default function HypokalemiaCorrection() {
             {results.deficit.toFixed(1)} mmol
           </p>
 
-          <p><strong>Formula:</strong> = (Desired – Observed) × Weight(kg) × 0.4</p>
           <p>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement</p>
 
 
-          {/*<p>
+          <p>
             <strong>Daily Maintenance:</strong>{" "}
-            {results.maintenanceLow.toFixed(1)} – {results.maintenanceHigh.toFixed(1)} mmol/day
+            {results.maintenanceHigh.toFixed(1)} mmol/day
           </p>
 
           <p>
             <strong>Total:</strong>{" "}
-            {results.totalLow.toFixed(1)} – {results.totalHigh.toFixed(1)} mmol
+            {results.totalHigh.toFixed(1)} mmol
           </p>
 
           
@@ -155,13 +154,12 @@ export default function HypokalemiaCorrection() {
           <h3>Notes</h3>
           <ul>
             <li><strong>Deficit</strong> = (Desired – Observed) × Weight(kg) × 0.4</li>
-            <li><strong>Maintenance</strong> = 2 – 3 mmol/kg/day</li>
+            <li><strong>Maintenance</strong> = 1 mmol/kg/day</li>
             <li><strong>Normal range</strong>: 3.5 – 5.5 mmol/L</li>
             <li><strong>Max daily dose</strong>: 120 mmol/day</li>
             <li><strong>Max infusion rate</strong>: 10–20 mmol/hr</li>
             <li><strong>Max concentration</strong>: 40 mmol/L</li>
-            <li>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement</li>
-          </ul>*/}
+            </ul>
         </div>
       )}
     </div>
