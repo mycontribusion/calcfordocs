@@ -6,7 +6,9 @@ export default function IVInfusionCalculator() {
   const [timeUnit, setTimeUnit] = useState("hours");
   const [setType, setSetType] = useState("iv");
   const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
+
+  // Removed unused error state
+  // const [error, setError] = useState("");
 
   const dropFactors = {
     iv: 20,
@@ -22,7 +24,7 @@ export default function IVInfusionCalculator() {
 
   // 🔄 AUTO CALCULATION
   useEffect(() => {
-    setError("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setResult(null);
 
     const vol = Number(volume);
@@ -33,7 +35,7 @@ export default function IVInfusionCalculator() {
 
     const dropsPerMin = (vol * df) / timeInMin;
     setResult(Math.round(dropsPerMin));
-  }, [volume, time, timeUnit, setType]);
+  }, [volume, time, timeUnit, setType]); // dropFactors intentionally excluded
 
   function handleReset() {
     setVolume("");
@@ -41,7 +43,6 @@ export default function IVInfusionCalculator() {
     setTimeUnit("hours");
     setSetType("iv");
     setResult(null);
-    setError("");
   }
 
   return (
