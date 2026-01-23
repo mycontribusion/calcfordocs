@@ -1,154 +1,240 @@
-
+/* --- 1. Base Styles --- */
 .calcfordocs {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 16px;
-    font-family: Arial, sans-serif;
-    color: #015c9c
-  }
-  
-  .title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #dc091e;
-  }
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  color: #015c9c;
+  transition: background 0.3s ease, color 0.3s ease;
+}
 
-  .head-contact {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .contactus {
-    display: flex;
-    align-items: center;
-  }
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #dc091e;
+}
 
-  /* grid for buttons */
-  .button-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 16px;
-  }
-  
-  /* button cell */
-  .button-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .calc-btn {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #da0b1f;
-    border-radius: 8px;
-    background: #f8f9fa;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    color: #015c9c;
-  }
-  
-  .calc-btn:hover {
-    background: #e9ecef;
-  }
+.head-contact {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
-  input, select, button {
-    color: #015c9c;
-    border: 1px solid #da0b1f;
-  }
-  
-  .calc-btn.active {
-    background: #dbeafe;
-    border-color: #60a5fa;
-  }
-  
-  /* ✅ full-width calculator row */
-  .calc-row {
-    grid-column: 1 / -1;   /* span all grid columns */
-    margin-top: 10px;
-    padding: 16px;
-    background: #fff;
-    border: 1px solid #da0b1f;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  }
+.contactus {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #015c9c;
+  cursor: pointer;
+}
 
-  
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .contactus {
-    font-weight: bold;
-    color: #015c9c;
-    cursor: pointer;
-  }
+/* --- 2. Button Grid --- */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
 
-  /* 🌙 DARK MODE — manual toggle via .dark class */
-.calcfordocs.dark{
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #da0b1f;
+  border-radius: 8px;
+  background: #f8f9fa;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #015c9c;
+}
+
+.calc-btn:hover {
+  background: #e9ecef;
+}
+
+.calc-btn.active {
+  background: #dbeafe;
+  border-color: #60a5fa;
+}
+
+/* --- 3. Calculator Container --- */
+.calc-row {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #da0b1f;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* --- 4. Overlays & Popups (Feedback & Manual Update) --- */
+.feedback-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.feedback-popup {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  color: #015c9c; /* Default light mode text */
+}
+
+.close-btn {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  background: #f1f1f1;
+  border: 1px solid #da0b1f;
+  border-radius: 6px;
+}
+
+/* --- 5. Automatic Update Banner (The one that slides up) --- */
+.update-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  color: white;
+  padding: 20px;
+  z-index: 3000;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
+  animation: slideUp 0.4s ease-out;
+}
+
+.update-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.update-confirm {
+  background: #dc091e;
+  color: white;
+  border: none !important;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  flex: 1;
+}
+
+.update-cancel {
+  background: transparent;
+  color: #ccc;
+  border: 1px solid #444 !important;
+  padding: 10px 20px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+/* --- 6. DARK MODE FIXES --- */
+.calcfordocs.dark {
   background: #000;
   color: #fff;
 }
 
-/* titles */
-.calcfordocs.dark .title {
+/* Ensure Popup stays dark in Dark Mode */
+.calcfordocs.dark .feedback-popup {
+  background: #111;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.calcfordocs.dark .feedback-popup h3,
+.calcfordocs.dark .feedback-popup ol,
+.calcfordocs.dark .feedback-popup li {
   color: #fff;
 }
 
-.calcfordocs.dark .feedback-popup{
-  background: #000;
+.calcfordocs.dark .title,
+.calcfordocs.dark .contactus {
   color: #fff;
 }
-/* buttons */
+
 .calcfordocs.dark .calc-btn {
   background: #000;
   color: #fff;
   border: 1px solid #fff;
 }
 
-.calcfordocs.dark .calc-btn:hover {
-  background: #111;
-}
-
-.calcfordocs.dark .calc-btn.active {
-  background: #111;
-  border-color: #fff;
-}
-
-/* inputs & selects */
-.calcfordocs.dark input,
-.calcfordocs.dark select,
-.calcfordocs.dark button {
-  background: #000;
-  color: #fff;
-  border: 1px solid #fff;
-}
-
-.calcfordocs.dark input::placeholder {
-  color: #aaa;
-}
-
-/* calculator container */
 .calcfordocs.dark .calc-row {
   background: #000;
   border: 1px solid #fff;
-  box-shadow: none;
 }
 
-/* contact / header */
-.calcfordocs.dark .contactus {
+/* Standardizing inputs in dark mode */
+.calcfordocs.dark input,
+.calcfordocs.dark select,
+.calcfordocs.dark button:not(.update-confirm) {
+  background: #000;
+  color: #fff !important;
+  border: 1px solid #fff;
+}
+
+/* Fix for the Automatic Banner in Dark Mode */
+.calcfordocs.dark .update-banner {
+  background: #111;
+  border-top: 1px solid #333;
+}
+
+/* Ensure the popup container and all children stay dark */
+.calcfordocs.dark .feedback-popup,
+.calcfordocs.dark .feedback-popup > div,
+.calcfordocs.dark .feedback-popup form {
+  background-color: #111 !important;
+  color: #ffffff !important;
+}
+
+/* Fix for the Feedback & Support Header and text */
+.calcfordocs.dark .feedback-popup h2,
+.calcfordocs.dark .feedback-popup h3,
+.calcfordocs.dark .feedback-popup p,
+.calcfordocs.dark .feedback-popup label {
+  color: #ffffff !important;
+}
+
+/* Fix for Input fields and Textareas inside the modal */
+.calcfordocs.dark .feedback-popup input,
+.calcfordocs.dark .feedback-popup textarea {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #444 !important;
+}
+
+/* Fix for the Send Feedback button to remain visible */
+.calcfordocs.dark .feedback-popup button {
+  background-color: #000;
   color: #fff;
+  border: 1px solid #fff;
 }
 
-/* grid buttons wrapper (safe fallback) */
-.calcfordocs.dark .button-wrapper {
-  background: transparent;
-}
-
+/* Global body sync */
 body:has(.calcfordocs.dark) {
   background: #000;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
