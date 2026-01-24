@@ -57,9 +57,21 @@ function CalcForDocs() {
 
   /* Detect System Theme & Listen for SW Updates */
   useEffect(() => {
+    // Theme Logic
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setTheme(prefersDark ? "dark" : "light");
 
+    // 1. Check for waiting updates immediately on mount (fixes "Later" disappearing)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg && reg.waiting) {
+          setUpdateWaiting(reg.waiting);
+          setShowUpdateBanner(true);
+        }
+      });
+    }
+
+    // 2. Listen for the event from index.js
     const handleUpdateFound = (event) => {
       setUpdateWaiting(event.detail.waiting);
       setShowUpdateBanner(true);
@@ -72,10 +84,15 @@ function CalcForDocs() {
   /* 🛠️ HANDLERS */
   const handleUpdateNow = () => {
     if (updateWaiting) {
+      // Send message to the Workbox SW to activate the new version
       updateWaiting.postMessage({ type: "SKIP_WAITING" });
+      
+      // Force reload as soon as the new SW takes control
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         window.location.reload();
       });
+    } else {
+      window.location.reload();
     }
   };
 
@@ -145,7 +162,7 @@ function CalcForDocs() {
           <div className="update-content">
             <p><strong>Update Available!</strong> New features are ready.</p>
             <div className="update-btns">
-              <button className="update-confirm" onClick={handleUpdateNow}>Update Now</button>
+              <button className="update-confirm" onClick={handleUpdateNow}>Update</button>
               <button className="update-cancel" onClick={() => setShowUpdateBanner(false)}>Later</button>
             </div>
           </div>

@@ -5,10 +5,11 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// 1. Define the callback function to handle updates
+// This callback fires when a new version is downloaded and waiting to activate
 const onUpdateFound = (registration) => {
-  // This creates a custom event that CalcForDocs.jsx listens for
-  const event = new CustomEvent('swUpdateAvailable', { detail: registration });
+  const event = new CustomEvent('swUpdateAvailable', { 
+    detail: { waiting: registration.waiting } 
+  });
   window.dispatchEvent(event);
 };
 
@@ -18,5 +19,5 @@ root.render(
   </React.StrictMode>
 );
 
-// 2. Pass the callback into the register function
+// Register the service worker with the update callback
 serviceWorkerRegistration.register({ onUpdate: onUpdateFound });
