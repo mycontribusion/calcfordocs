@@ -1,63 +1,55 @@
 // src/calculators/WellsScorePE.js
 import { useState } from "react";
 
+const WELLS_CRITERIA = [
+  { id: 1, label: "Clinical signs of DVT", points: 3 },
+  { id: 2, label: "PE is most likely diagnosis", points: 3 },
+  { id: 3, label: "Heart rate > 100 bpm", points: 1.5 },
+  { id: 4, label: "Immobilization ≥ 3 days or surgery in the past 4 weeks", points: 1.5 },
+  { id: 5, label: "Previous DVT/PE", points: 1.5 },
+  { id: 6, label: "Hemoptysis", points: 1 },
+  { id: 7, label: "Malignancy (active, treated within 6 months, or palliative)", points: 1 },
+];
+
 export default function WellsScorePE() {
-  // Wells PE criteria with their points
-  const wellsCriteria = [
-    { label: "Clinical signs of DVT", points: 3 },
-    { label: "PE is most likely diagnosis", points: 3 },
-    { label: "Heart rate > 100 bpm", points: 1.5 },
-    { label: "Immobilization ≥ 3 days or surgery in the past 4 weeks", points: 1.5 },
-    { label: "Previous DVT/PE", points: 1.5 },
-    { label: "Hemoptysis", points: 1 },
-    { label: "Malignancy (active, treated within 6 months, or palliative)", points: 1 },
-  ];
+  const [selectedIds, setSelectedIds] = useState([]);
 
-  const [selectedCriteria, setSelectedCriteria] = useState([]);
-  const [result, setResult] = useState("");
-
-  const handleCriteriaChange = (point, checked) => {
-    if (checked) setSelectedCriteria([...selectedCriteria, point]);
-    else setSelectedCriteria(selectedCriteria.filter(p => p !== point));
+  const toggleCriteria = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
   };
 
-  const computeWellsScore = () => {
-    const total = selectedCriteria.reduce((a, b) => a + b, 0);
-    let interpretation = "";
+  // Auto-calculate score
+  const totalScore = selectedIds
+    .map((id) => WELLS_CRITERIA.find((c) => c.id === id).points)
+    .reduce((sum, p) => sum + p, 0);
 
-    if (total > 6) interpretation = "High probability of PE";
-    else if (total >= 2 && total <= 6) interpretation = "Moderate probability of PE";
-    else interpretation = "Low probability of PE";
-
-    setResult(`Score: ${total} → ${interpretation}`);
-  };
+  let interpretation = "";
+  if (totalScore > 6) interpretation = "High probability of PE";
+  else if (totalScore >= 2) interpretation = "Moderate probability of PE";
+  else interpretation = "Low probability of PE";
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">Wells Score for Pulmonary Embolism</h2>
-      
-      <div className="mb-2">
-        {wellsCriteria.map((c, idx) => (
-          <div key={idx} className="flex items-center mb-1">
-            <input
-              type="checkbox"
-              id={`criteria-${idx}`}
-              onChange={(e) => handleCriteriaChange(c.points, e.target.checked)}
-              className="mr-2"
-            />
-            <label htmlFor={`criteria-${idx}`}>{c.label} ({c.points} pts)</label>
-          </div>
-        ))}
-      </div><p></p>
+    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, marginBottom: "1rem" }}>
+      <h2>Wells Score for Pulmonary Embolism</h2>
 
-      <button
-        onClick={computeWellsScore}
-        className="bg-blue-500 text-white px-3 py-1 rounded mt-2"
-      >
-        Calculate Score
-      </button>
+      {WELLS_CRITERIA.map((c) => (
+        <label key={c.id} style={{ display: "block", marginBottom: 4 }}>
+          <input
+            type="checkbox"
+            checked={selectedIds.includes(c.id)}
+            onChange={() => toggleCriteria(c.id)}
+          />{" "}
+          {c.label} ({c.points} pts)
+        </label>
+      ))}
 
-      {result && <p className="mt-2 font-medium">{result}</p>}
+      {selectedIds.length > 0 && (
+        <p style={{ marginTop: 10, fontWeight: "bold" }}>
+          Score: {totalScore} → {interpretation}
+        </p>
+      )}
     </div>
   );
 }

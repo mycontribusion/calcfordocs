@@ -1,39 +1,50 @@
-// src/calculators/GCSCalculator.js
 import { useState } from "react";
 
 export default function GCSCalculator() {
   const [eye, setEye] = useState(4);
   const [verbal, setVerbal] = useState(5);
   const [motor, setMotor] = useState(6);
-  const [result, setResult] = useState("");
 
-  function calculateGCS() {
-    const total = eye + verbal + motor;
+  // Total and interpretation auto-calculated
+  const total = eye + verbal + motor;
 
-    let interpretation = "";
-    if (total <= 8) {
-      interpretation = "Severe head injury (GCS ≤ 8)";
-    } else if (total >= 9 && total <= 12) {
-      interpretation = "Moderate head injury (GCS 9 - 12)";
-    } else {
-      interpretation = "Mild head injury (GCS 13 - 15)";
-    }
+  let interpretation = "";
+  if (total <= 8) interpretation = "Severe head injury (GCS ≤ 8)";
+  else if (total <= 12) interpretation = "Moderate head injury (GCS 9 - 12)";
+  else interpretation = "Mild head injury (GCS 13 - 15)";
 
-    setResult(`Total GCS: ${total} ➝ ${interpretation}`);
-  }
+  const containerStyle = {
+    maxWidth: 360,
+    margin: "1rem auto",
+    padding: 16,
+    border: "1px solid #ccc",
+    borderRadius: 8,
+    fontFamily: "Arial, sans-serif",
+  };
+
+  const boxStyle = {
+    border: "1px solid #aaa",
+    padding: 12,
+    borderRadius: 6,
+    marginBottom: 12,
+  };
+
+  const selectStyle = { width: "100%", padding: 6 };
+
+  const reset = () => {
+    setEye(4);
+    setVerbal(5);
+    setMotor(6);
+  };
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">GCS Calculator</h2>
+    <div style={containerStyle}>
+      <h2 style={{ marginBottom: 16, fontSize: "18px" }}>GCS Calculator</h2>
 
       {/* Eye Response */}
-      <div className="mb-2">
-        <label className="block font-medium mb-1">Eye Response (E)</label><br />
-        <select
-          value={eye}
-          onChange={(e) => setEye(parseInt(e.target.value))}
-          className="border px-2 py-1 rounded w-full"
-        >
+      <div style={boxStyle}>
+        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Eye Response (E)</div>
+        <select value={eye} onChange={(e) => setEye(parseInt(e.target.value))} style={selectStyle}>
           <option value={4}>4 - Spontaneous</option>
           <option value={3}>3 - To speech</option>
           <option value={2}>2 - To pain</option>
@@ -42,14 +53,9 @@ export default function GCSCalculator() {
       </div>
 
       {/* Verbal Response */}
-      <p></p>
-      <div className="mb-2">
-        <label className="block font-medium mb-1">Verbal Response (V)</label><br />
-        <select
-          value={verbal}
-          onChange={(e) => setVerbal(parseInt(e.target.value))}
-          className="border px-2 py-1 rounded w-full"
-        >
+      <div style={boxStyle}>
+        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Verbal Response (V)</div>
+        <select value={verbal} onChange={(e) => setVerbal(parseInt(e.target.value))} style={selectStyle}>
           <option value={5}>5 - Oriented</option>
           <option value={4}>4 - Confused</option>
           <option value={3}>3 - Inappropriate words</option>
@@ -59,14 +65,9 @@ export default function GCSCalculator() {
       </div>
 
       {/* Motor Response */}
-      <p></p>
-      <div className="mb-2">
-        <label className="block font-medium mb-1">Motor Response (M)</label><br />
-        <select
-          value={motor}
-          onChange={(e) => setMotor(parseInt(e.target.value))}
-          className="border px-2 py-1 rounded w-full"
-        >
+      <div style={boxStyle}>
+        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Motor Response (M)</div>
+        <select value={motor} onChange={(e) => setMotor(parseInt(e.target.value))} style={selectStyle}>
           <option value={6}>6 - Obeys commands</option>
           <option value={5}>5 - Localizes pain</option>
           <option value={4}>4 - Withdraws to pain</option>
@@ -76,17 +77,18 @@ export default function GCSCalculator() {
         </select>
       </div>
 
-      {/* Calculate Button */}
-      <p></p>
-      <button
-        onClick={calculateGCS}
-        className="bg-green-500 text-white px-3 py-1 rounded"
-      >
-        Calculate
-      </button>
-
       {/* Result */}
-      {result && <p className="mt-2 text-sm font-medium">{result}</p>}
+      <div style={{ fontWeight: "bold", fontSize: 14, marginBottom: 12 }}>
+        Total GCS: {total} → {interpretation}
+      </div>
+
+      {/* Reset button */}
+      <button
+        onClick={reset}
+        style={{ padding: "6px 12px", borderRadius: 4, border: "1px solid #888" }}
+      >
+        Reset
+      </button>
     </div>
   );
 }

@@ -1,43 +1,33 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
+// Move criteria outside the component to avoid missing deps warning
+const criteria = [
+  { key: "cancer", label: "Active cancer (treatment within 6 months or palliative)", points: 1 },
+  { key: "paralysis", label: "Paralysis, paresis, or recent immobilization of lower limb", points: 1 },
+  { key: "bedridden", label: "Recently bedridden ≥ 3 days OR major surgery within 12 weeks", points: 1 },
+  { key: "tenderness", label: "Localized tenderness along the deep venous system", points: 1 },
+  { key: "legSwollen", label: "Entire leg swollen", points: 1 },
+  { key: "calfDiff", label: "Calf swelling ≥ 3 cm compared to the other leg", points: 1 },
+  { key: "edema", label: "Pitting edema confined to symptomatic leg", points: 1 },
+  { key: "collateral", label: "Collateral superficial (non-varicose) veins", points: 1 },
+  { key: "prevDvt", label: "Previous DVT", points: 1 },
+  { key: "altDx", label: "Alternative diagnosis more likely than DVT", points: -2 },
+];
 
 export default function WellsDVTScore() {
-  const [answers, setAnswers] = useState({
-    cancer: false,
-    paralysis: false,
-    bedridden: false,
-    tenderness: false,
-    legSwollen: false,
-    calfDiff: false,
-    edema: false,
-    collateral: false,
-    prevDvt: false,
-    altDx: false,
-  });
-
-  const [score, setScore] = useState(null);
+  const [answers, setAnswers] = useState({});
+  const [score, setScore] = useState(0);
   const [interpretation, setInterpretation] = useState("");
 
-  const criteria = [
-    { key: "cancer", label: "Active cancer (treatment within 6 months or palliative)", points: 1 },
-    { key: "paralysis", label: "Paralysis, paresis, or recent immobilization of lower limb", points: 1 },
-    { key: "bedridden", label: "Recently bedridden ≥ 3 days OR major surgery within 12 weeks", points: 1 },
-    { key: "tenderness", label: "Localized tenderness along the deep venous system", points: 1 },
-    { key: "legSwollen", label: "Entire leg swollen", points: 1 },
-    { key: "calfDiff", label: "Calf swelling ≥ 3 cm compared to the other leg", points: 1 },
-    { key: "edema", label: "Pitting edema confined to symptomatic leg", points: 1 },
-    { key: "collateral", label: "Collateral superficial (non-varicose) veins", points: 1 },
-    { key: "prevDvt", label: "Previous DVT", points: 1 },
-    { key: "altDx", label: "Alternative diagnosis more likely than DVT", points: -2 },
-  ];
-
+  // Toggle checkbox and recalc immediately
   const toggle = (key) => {
-    setAnswers({ ...answers, [key]: !answers[key] });
-  };
+    const newAnswers = { ...answers, [key]: !answers[key] };
+    setAnswers(newAnswers);
 
-  const calculate = () => {
+    // Auto-calc
     let total = 0;
     criteria.forEach((c) => {
-      if (answers[c.key]) total += c.points;
+      if (newAnswers[c.key]) total += c.points;
     });
     setScore(total);
 
@@ -53,50 +43,34 @@ export default function WellsDVTScore() {
   };
 
   const reset = () => {
-    setAnswers({
-      cancer: false,
-      paralysis: false,
-      bedridden: false,
-      tenderness: false,
-      legSwollen: false,
-      calfDiff: false,
-      edema: false,
-      collateral: false,
-      prevDvt: false,
-      altDx: false,
-    });
-    setScore(null);
+    setAnswers({});
+    setScore(0);
     setInterpretation("");
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: 500, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
       <h2>Wells Score for DVT</h2>
 
       {criteria.map((c) => (
-        <div key={c.key}>
-          <label>
-            <input
-              type="checkbox"
-              checked={answers[c.key]}
-              onChange={() => toggle(c.key)}
-            />
-            {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
-          </label>
-        </div>
+        <label key={c.key} style={{ display: "block", marginBottom: 4 }}>
+          <input
+            type="checkbox"
+            checked={!!answers[c.key]}
+            onChange={() => toggle(c.key)}
+          />{" "}
+          {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
+        </label>
       ))}
 
-      <div style={{ marginTop: "10px" }}>
-        <button onClick={calculate}>Calculate</button>
-        <button onClick={reset}>Reset</button>
-      </div>
+      <button onClick={reset} style={{ marginTop: 10, padding: "6px 12px", cursor: "pointer" }}>
+        Reset
+      </button>
 
-      {score !== null && (
-        <div style={{ marginTop: "10px" }}>
-          <div><strong>Total Score:</strong> {score}</div>
-          <div><strong>Interpretation:</strong> {interpretation}</div>
-        </div>
-      )}
+      <div style={{ marginTop: 15, padding: 10, border: "1px solid #ccc", borderRadius: 6 }}>
+        <strong>Total Score:</strong> {score} <br />
+        <strong>Interpretation:</strong> {interpretation}
+      </div>
     </div>
   );
 }

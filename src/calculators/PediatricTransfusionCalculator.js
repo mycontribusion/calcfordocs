@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function PediatricTransfusionCalculator() {
   const [weight, setWeight] = useState("");
@@ -6,28 +6,44 @@ export default function PediatricTransfusionCalculator() {
   const [observedValue, setObservedValue] = useState("");
   const [targetValue, setTargetValue] = useState("");
   const [method, setMethod] = useState("pcv"); // pcv or hb
-  const [pcvOfRBC, setPcvOfRBC] = useState(""); // optional
-  const [factor, setFactor] = useState(3); // default factor
+  const [bloodType, setBloodType] = useState("whole"); // whole, sedimented, packed, custom
+  const [customPCV, setCustomPCV] = useState(""); // only if custom
+  const [useFactor, setUseFactor] = useState(true);
   const [result, setResult] = useState(null);
 
-  const formulaUsed =
-    "Transfusion Volume = Weight (kg) × (Target Hb – Observed Hb) × 3 ÷ Hct of RBCs";
+  const formulaUsed = "Transfusion Volume = Weight (kg) × (Target Hb – Observed Hb) × Factor";
+
+  const getFactor = () => {
+    if (!useFactor) return null;
+    switch (bloodType) {
+      case "whole":
+        return 6;
+      case "sedimented":
+        return 4;
+      case "packed":
+        return 3;
+      case "custom":
+        const pcvFraction = Number(customPCV) / 100;
+        if (!pcvFraction || pcvFraction <= 0) return null;
+        return 3 / pcvFraction;
+      default:
+        return 3;
+    }
+  };
 
   const calculateTransfusion = () => {
     const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
     let observed = Number(observedValue);
     let target = Number(targetValue);
-    const pcv = pcvOfRBC ? Number(pcvOfRBC) : null;
-    const f = Number(factor);
+    const factor = getFactor();
 
-    if (!w || !observed || !target || target <= observed || !f) {
-      setResult({ error: "invalid input." });
+    if (!w || !observed || !target || target <= observed || (useFactor && factor === null)) {
+      setResult({ error: "⚠️ Please enter valid inputs." });
       return;
     }
 
     let conversionNote = "";
 
-    // Convert PCV → Hb if method = pcv
     if (method === "pcv") {
       observed = observed / 3;
       target = target / 3;
@@ -36,41 +52,54 @@ export default function PediatricTransfusionCalculator() {
       )}, Target Hb = ${target.toFixed(1)}`;
     }
 
-    let transfusionVolume = w * (target - observed) * f;
-    if (pcv && f === 3) transfusionVolume = transfusionVolume / pcv;
+    const transfusionVolume = w * (target - observed) * (factor ?? 1);
 
     setResult({
       volume: `Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`,
       note: conversionNote,
       formula: formulaUsed,
+      factorUsed: factor,
     });
+  };
+
+  // Auto-calculate
+  useEffect(() => {
+    if (weight && observedValue && targetValue && useFactor) {
+      calculateTransfusion();
+    } else {
+      setResult(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [weight, weightUnit, observedValue, targetValue, method, bloodType, customPCV, useFactor]);
+
+  const reset = () => {
+    setWeight("");
+    setWeightUnit("kg");
+    setObservedValue("");
+    setTargetValue("");
+    setMethod("pcv");
+    setBloodType("packed");
+    setCustomPCV("");
+    setUseFactor(true);
+    setResult(null);
   };
 
   return (
     <div>
       <h2>Pediatric Transfusion Calculator</h2>
 
-      {/* Weight Input */}
       <label>
         Weight:
-        <input
-          type="number"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        />
+        <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
       </label>
       <label>
-        <select
-          value={weightUnit}
-          onChange={(e) => setWeightUnit(e.target.value)}
-        >
+        <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)}>
           <option value="kg">kg</option>
           <option value="lb">lb</option>
         </select>
       </label>
       <p></p>
 
-      {/* Method */}
       <label>
         Method:
         <select value={method} onChange={(e) => setMethod(e.target.value)}>
@@ -80,63 +109,43 @@ export default function PediatricTransfusionCalculator() {
       </label>
       <p></p>
 
-      {/* Observed */}
       <label>
         Observed {method.toUpperCase()}:
-        <input
-          type="number"
-          value={observedValue}
-          onChange={(e) => setObservedValue(e.target.value)}
-        />
+        <input type="number" value={observedValue} onChange={(e) => setObservedValue(e.target.value)} />
       </label>
       <p></p>
 
-      {/* Target */}
       <label>
         Target {method.toUpperCase()}:
-        <input
-          type="number"
-          value={targetValue}
-          onChange={(e) => setTargetValue(e.target.value)}
-        />
+        <input type="number" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} />
       </label>
       <p></p>
 
-      {/* Factor */}
       <label>
-        Factor:
-        <input
-          type="number"
-          value={factor}
-          onChange={(e) => {
-            setFactor(e.target.value);
-            if (Number(e.target.value) !== 3) setPcvOfRBC("");
-          }}
-        />
+        Blood type / Product:
+        <select value={bloodType} onChange={(e) => setBloodType(e.target.value)}>
+          <option value="whole">Whole blood (factor 6)</option>
+          <option value="sedimented">Sedimented (factor 4)</option>
+          <option value="packed">Packed cells (factor 3)</option>
+          <option value="custom">Custom / Factor from PCV</option>
+        </select>
       </label>
       <p></p>
 
-      {/* Hct of RBC - only visible if factor = 3 */}
-      {Number(factor) === 3 && (
+      {bloodType === "custom" && (
         <>
           <label>
-            Hct of RBCs (optional):
-            <input
-              type="number"
-              placeholder="100% = 1, 50% = 0.5"
-              value={pcvOfRBC}
-              onChange={(e) => setPcvOfRBC(e.target.value)}
-            />
+            Enter PCV of donated blood (%):
+            <input type="number" value={customPCV} onChange={(e) => setCustomPCV(e.target.value)} />
           </label>
           <p></p>
         </>
       )}
-
-      {/* Calculate Button */}
-      <button onClick={calculateTransfusion}>Calculate</button>
       <p></p>
 
-      {/* Result */}
+      <button onClick={reset}>Reset</button>
+      <p></p>
+
       {result && (
         <div>
           {result.error ? (
@@ -146,17 +155,14 @@ export default function PediatricTransfusionCalculator() {
               <p>{result.volume}</p>
               {result.note && <p>{result.note}</p>}
               <p>{result.formula}</p>
+              <p>Factor used: {result.factorUsed}</p>
             </>
           )}
         </div>
       )}
 
-      {/* Extra Note */}
       <p style={{ fontSize: "0.9em", color: "gray" }}>
-        Hct of RBCs represents the PCV of the blood to be transfused in decimal
-        form. In some low-resource settings, instead of dividing 3 by Hct, the
-        Weight and Increment are multiplied by 3 for packed cells, by 4 for
-        sedimented cells, and 6 for whole blood.
+        Factor is automatically set according to blood type: Whole blood = 6, Sedimented = 4, Packed cells = 3. Custom factor is calculated from PCV if selected.
       </p>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function PediatricWeightEstimator() {
   const [age, setAge] = useState("");
@@ -8,24 +8,27 @@ export default function PediatricWeightEstimator() {
   const [weightResult, setWeightResult] = useState("");
   const [formulaResult, setFormulaResult] = useState("");
 
-  const calculateWeight = () => {
-    let years = 0;
-    let months = 0;
+  // Helper: convert all ages to months
+  const ageInMonths = () => {
+    if (!age) return 0;
+    if (unit === "days") return age / 30.44;
+    if (unit === "months") return age;
+    if (unit === "years") return age * 12;
+    return 0;
+  };
 
-    if (unit === "days") {
-      if (age >= 365) {
-        years = age / 365;
-      } else {
-        months = age / 30.44;
-      }
-    } else if (unit === "months") {
-      if (age >= 12) {
-        years = age / 12;
-      } else {
-        months = age;
-      }
-    } else if (unit === "years") {
-      years = age;
+  const ageInYears = () => ageInMonths() / 12;
+
+  const calculateWeight = () => {
+    const months = ageInMonths();
+    const years = ageInYears();
+
+    const showBirthWeight = formula === "default" && months <= 3;
+
+    if (!age || (showBirthWeight && !birthWeight)) {
+      setWeightResult("⚠️ Please enter the required input(s).");
+      setFormulaResult("");
+      return;
     }
 
     let weight = null;
@@ -47,10 +50,7 @@ export default function PediatricWeightEstimator() {
         return;
       }
     } else if (formula === "bestGuess") {
-      if (unit === "days" && age < 365) {
-        weight = age * 0.02 + 3;
-        explanation = "Best Guess: Weight = (Age in days × 0.02) + 3";
-      } else if (months >= 1 && months <= 11) {
+      if (months < 12) {
         weight = (months + 9) / 2;
         explanation = "Best Guess: Weight = (Age in months + 9) ÷ 2";
       } else if (years >= 1 && years <= 5) {
@@ -65,16 +65,12 @@ export default function PediatricWeightEstimator() {
         return;
       }
     } else if (formula === "default") {
-      if (unit === "days" && age <= 90) {
-        if (!birthWeight) {
-          setWeightResult("Please enter birth weight for 0–3 month calculation.");
-          setFormulaResult("");
-          return;
-        }
-        weight = (age - 10) * 30 + birthWeight;
-        explanation = "Custom Formula: Weight = (Age in days - 10) × 30 + Birth Weight (grams)";
-        weight = weight / 1000; // convert to kg
-      } else if (months >= 4 && months <= 12) {
+      if (months <= 3) {
+        weight = (age - 10) * 30 + Number(birthWeight); // age in days
+        weight = weight / 1000; // grams → kg
+        explanation =
+          "Custom Formula: Weight = (Age in days - 10) × 30 + Birth Weight (kg)";
+      } else if (months > 3 && months <= 12) {
         weight = (months + 8) / 2;
         explanation = "Custom Formula: Weight = (Age in months + 8) ÷ 2";
       } else if (years >= 1 && years <= 6) {
@@ -92,6 +88,28 @@ export default function PediatricWeightEstimator() {
 
     setWeightResult(`Estimated Weight: ${weight.toFixed(1)} kg`);
     setFormulaResult(explanation);
+  };
+
+  // Auto-calculate whenever relevant inputs change
+  useEffect(() => {
+    if (age && ((formula === "default" && (ageInMonths() > 3 || birthWeight)) || formula !== "default")) {
+      calculateWeight();
+    } else {
+      setWeightResult("");
+      setFormulaResult("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [age, unit, formula, birthWeight]);
+
+  const showBirthWeightInput = formula === "default" && ageInMonths() <= 3;
+
+  const reset = () => {
+    setAge("");
+    setUnit("days");
+    setFormula("default");
+    setBirthWeight("");
+    setWeightResult("");
+    setFormulaResult("");
   };
 
   return (
@@ -113,7 +131,8 @@ export default function PediatricWeightEstimator() {
           <option value="months">Months</option>
           <option value="years">Years</option>
         </select>
-      </label><p></p>
+      </label>
+      <p></p>
 
       <label>
         Formula:
@@ -122,9 +141,10 @@ export default function PediatricWeightEstimator() {
           <option value="bestGuess">Best Guess</option>
           <option value="default">Default</option>
         </select>
-      </label><p></p>
+      </label>
+      <p></p>
 
-      {formula === "default" && (
+      {showBirthWeightInput && (
         <label>
           Birth Weight (grams): <br />
           <input
@@ -133,9 +153,12 @@ export default function PediatricWeightEstimator() {
             onChange={(e) => setBirthWeight(Number(e.target.value))}
           />
         </label>
-      )}<p></p>
+      )}
+      {showBirthWeightInput && <p></p>}
 
-      <button onClick={calculateWeight}>Calculate</button>
+      {/* Reset Button */}
+      <button onClick={reset}>Reset</button>
+      <p></p>
 
       {weightResult && (
         <div>
