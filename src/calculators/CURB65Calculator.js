@@ -7,7 +7,7 @@ export default function CURB65Calculator() {
   const [sbp, setSbp] = useState("");
   const [dbp, setDbp] = useState("");
   const [respRate, setRespRate] = useState("");
-  const [nitrogenType, setNitrogenType] = useState("urea_mg");
+  const [nitrogenType, setNitrogenType] = useState("urea_mmol");
   const [value, setValue] = useState("");
 
   // --- BUN conversion ---
