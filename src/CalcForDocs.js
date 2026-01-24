@@ -49,6 +49,7 @@ function CalcForDocs() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [searchTerm, setSearchTerm] = useState(""); // Global search
 
   /* 🔄 UPDATE STATES */
   const [updateWaiting, setUpdateWaiting] = useState(null);
@@ -56,11 +57,9 @@ function CalcForDocs() {
 
   /* Detect System Theme & Listen for SW Updates */
   useEffect(() => {
-    // Theme Detection
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setTheme(prefersDark ? "dark" : "light");
 
-    // Listen for the custom "swUpdateAvailable" event from index.js
     const handleUpdateFound = (event) => {
       setUpdateWaiting(event.detail.waiting);
       setShowUpdateBanner(true);
@@ -126,14 +125,20 @@ function CalcForDocs() {
       case "sfr": return <SpO2FiO2Ratio />;
       case "sc": return <SimpleCalculator />;
       case "curb65": return <CURB65Calculator />;
-
       default: return null;
     }
   };
 
+  /* Filter calculators based on searchTerm and keywords */
+  const filteredCalcs = calcinfo.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm) ||
+      (item.keywords &&
+        item.keywords.some((k) => k.toLowerCase().includes(searchTerm)))
+  );
+
   return (
     <div className={`calcfordocs ${theme}`}>
-      
       {/* 🔔 AUTOMATIC UPDATE BANNER */}
       {showUpdateBanner && (
         <div className="update-banner">
@@ -198,8 +203,26 @@ function CalcForDocs() {
         )}
       </div>
 
+      {/* 🔍 Global Search Input */}
+      <div style={{ margin: "10px 0" }}>
+        <input
+          type="text"
+          placeholder="Search calculators..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+          style={{
+            width: "100%",
+            padding: "6px 10px",
+            borderRadius: 6,
+            border: "1px solid #bbb",
+            boxSizing: "border-box"
+          }}
+        />
+      </div>
+
+      {/* Calculator Button Grid */}
       <div className="button-grid">
-        {calcinfo.map((item) => (
+        {filteredCalcs.map((item) => (
           <div key={item.id} className="button-wrapper-container">
             <div className="button-wrapper">
               <button
