@@ -162,7 +162,13 @@ export default function SOFA() {
     <div>
       <h2>SOFA Calculator</h2>
 
-      <select value={mode} onChange={e => setMode(e.target.value)}>
+      <select style={{
+          width: "70%",
+          padding: "5px",
+          borderRadius: 4,
+          border: "1px solid",
+          cursor: "pointer",
+        }} value={mode} onChange={e => setMode(e.target.value)}>
         <option value="qsofa">qSOFA</option>
         <option value="msofa">mSOFA</option>
       </select>
@@ -201,7 +207,15 @@ export default function SOFA() {
           <h3>mSOFA</h3>
 
           SpO₂ / FiO₂: 
-          <br /><select value={spo2fio2} onChange={e => setSpo2fio2(e.target.value)}>
+          <br /><select 
+          style={{
+            width: "100%",
+            padding: "5px",
+            borderRadius: 4,
+            border: "1px solid",
+            cursor: "pointer",
+          }}
+          value={spo2fio2} onChange={e => setSpo2fio2(e.target.value)}>
             <option value="">Select</option>
             <option value="≤150">≤150</option>
             <option value="151-235">151–235</option>
@@ -220,7 +234,16 @@ export default function SOFA() {
           </p>
 
           MAP:
-          <br /><select value={map} onChange={e => setMap(e.target.value)}>
+          <br /><select 
+          style={{
+            width: "40%",
+            padding: "5px",
+            borderRadius: 4,
+            border: "1px solid",
+            cursor: "pointer",
+            marginRight: '10px'
+          }}
+          value={map} onChange={e => setMap(e.target.value)}>
             <option value="">Select</option>
             <option value="<70">&lt;70</option>
             <option value="≥70">≥70</option>
@@ -240,7 +263,15 @@ export default function SOFA() {
          
 
           GCS:
-          <br /><select value={gcsM} onChange={e => setGcsM(e.target.value)}>
+          <br /><select 
+          style={{
+            width: "100%",
+            padding: "5px",
+            borderRadius: 4,
+            border: "1px solid",
+            cursor: "pointer",
+          }}
+          value={gcsM} onChange={e => setGcsM(e.target.value)}>
             <option value="">Select</option>
             <option value="3-5">3–5</option>
             <option value="6-9">6–9</option>
@@ -250,7 +281,16 @@ export default function SOFA() {
           </select>
 
           <p>Creatinine:
-            <br /><select value={creatinine} onChange={e => setCreatinine(e.target.value)}>
+            <br /><select 
+            style={{
+              width: "70%",
+              padding: "5px",
+              borderRadius: 4,
+              border: "1px solid",
+              cursor: "pointer",
+              marginRight: '10px'
+            }}
+            value={creatinine} onChange={e => setCreatinine(e.target.value)}>
               <option value="">Select</option>
               {creatinineUnit === "umol" ? (
                 <>
