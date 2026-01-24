@@ -15,7 +15,10 @@
         "name" : "qSOFA / mSOFA",
         "id" : "sofa"
     },
-
+    {
+        "name" : "Dosage Calc",
+        "id" : "o"
+    },
     {
         "name": "CURB-65 Score",
         "id": "curb65"
@@ -128,10 +131,6 @@
     {
         "name" : "Ballard Score Calc",
         "id" : "v"
-    },
-    {
-        "name" : "Dosage Calc",
-        "id" : "o"
     },
     {
         "name" : "EGA & EDD from LMP/USS",

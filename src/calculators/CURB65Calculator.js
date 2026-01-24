@@ -1,31 +1,24 @@
 import { useState } from "react";
 
 export default function CURB65Calculator() {
-  // Confusion components
-  const [confTime, setConfTime] = useState(false);
-  const [confPlace, setConfPlace] = useState(false);
-  const [confPerson, setConfPerson] = useState(false);
-
+  // --- States ---
+  const [confusion, setConfusion] = useState(false);
+  const [age65, setAge65] = useState(false);
   const [sbp, setSbp] = useState("");
   const [dbp, setDbp] = useState("");
-
+  const [respRate, setRespRate] = useState("");
   const [nitrogenType, setNitrogenType] = useState("urea_mg");
   const [value, setValue] = useState("");
 
-  const [respRate, setRespRate] = useState("");
-  const [age65, setAge65] = useState(false);
-
-  // BUN conversion
+  // --- BUN conversion ---
   const bunMg = (() => {
-    if (value === "") return 0;
+    if (!value) return 0;
     const v = Number(value);
     switch (nitrogenType) {
       case "urea_mmol":
-        return v * 2.8;
-      case "urea_mg":
-        return v;
       case "bun_mmol":
         return v * 2.8;
+      case "urea_mg":
       case "bun_mg":
         return v;
       default:
@@ -33,160 +26,111 @@ export default function CURB65Calculator() {
     }
   })();
 
-  // Confusion score: any of time/place/person ticked → 1 point
-  const confusionScore = confTime || confPlace || confPerson ? 1 : 0;
-
-  // Low BP score
-  const lowBPScore =
-    sbp !== "" && dbp !== "" && (Number(sbp) < 90 || Number(dbp) <= 60)
-      ? 1
-      : 0;
-
-  // CURB-65 scoring
+  // --- CURB-65 Score ---
   const score =
-    confusionScore +
-    lowBPScore +
+    (confusion ? 1 : 0) +
     (bunMg >= 20 ? 1 : 0) +
-    (respRate !== "" && Number(respRate) >= 30 ? 1 : 0) +
+    (respRate && Number(respRate) >= 30 ? 1 : 0) +
+    (sbp && dbp && (Number(sbp) < 90 || Number(dbp) <= 60) ? 1 : 0) +
     (age65 ? 1 : 0);
 
-  const containerStyle = {
-    maxWidth: 360,
-    margin: "1rem auto",
-    padding: 16,
-    border: "1px solid #ccc",
-    borderRadius: 8,
-    fontFamily: "Arial, sans-serif",
+  // --- Reset Function ---
+  const resetCalculator = () => {
+    setConfusion(false);
+    setAge65(false);
+    setSbp("");
+    setDbp("");
+    setRespRate("");
+    setNitrogenType("urea_mg");
+    setValue("");
   };
 
   const boxStyle = {
-    border: "1px solid #aaa",
-    padding: 12,
+    border: "1px solid #bbb",
     borderRadius: 6,
-    marginBottom: 12,
+    padding: 8,
+    boxSizing: "border-box",
+    overflow: "hidden",
   };
 
-  const labelStyle = { display: "block", marginBottom: 6 };
+  const inputStyle = { width: "100%", padding: 6, boxSizing: "border-box" };
+  const flexInputStyle = { flex: "1 1 0", padding: 6, boxSizing: "border-box", minWidth: 0 };
 
   return (
-    <div style={containerStyle}>
-      <h2 style={{ marginBottom: 16, fontSize: "18px" }}>CURB-65 Calculator</h2>
+    <div style={{ maxWidth: 360, margin: "1rem auto", fontFamily: "Arial, sans-serif" }}>
+      <h3 style={{ marginBottom: 6 }}>CURB-65 Calculator</h3>
 
-      {/* Confusion */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Confusion (Orientation)</div>
-        <label style={labelStyle}>
-          <input
-            type="checkbox"
-            checked={confTime}
-            onChange={(e) => setConfTime(e.target.checked)}
-          />{" "}
-          Disoriented to Time
-        </label>
-        <label style={labelStyle}>
-          <input
-            type="checkbox"
-            checked={confPlace}
-            onChange={(e) => setConfPlace(e.target.checked)}
-          />{" "}
-          Disoriented to Place
-        </label>
-        <label style={labelStyle}>
-          <input
-            type="checkbox"
-            checked={confPerson}
-            onChange={(e) => setConfPerson(e.target.checked)}
-          />{" "}
-          Disoriented to Person
-        </label>
-        <div style={{ fontSize: "12px", color: "#555" }}>
-          (1 point if any disorientation)
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 10,
+          boxSizing: "border-box",
+        }}
+      >
+        {/* C — Confusion */}
+        <div style={boxStyle}>
+          <label style={{ display: "block" }}>
+            <input type="checkbox" checked={confusion} onChange={e => setConfusion(e.target.checked)} /> Confusion
+          </label>
+        </div>
+
+        {/* U — Urea / BUN */}
+        <div style={boxStyle}>
+          <select value={nitrogenType} onChange={e => setNitrogenType(e.target.value)} style={{ ...inputStyle, marginBottom: 4 }}>
+            <option value="urea_mmol">Urea mmol/L</option>
+            <option value="urea_mg">Urea mg/dL</option>
+            <option value="bun_mmol">BUN mmol/L</option>
+            <option value="bun_mg">BUN mg/dL</option>
+          </select>
+          <input type="number" value={value} onChange={e => setValue(e.target.value)} placeholder="≥ 20 mg/dL" style={inputStyle} />
+        </div>
+
+        {/* R — Respiratory Rate */}
+        <div style={boxStyle}>
+          <input type="number" value={respRate} onChange={e => setRespRate(e.target.value)} placeholder="RR ≥ 30 /min" style={inputStyle} />
+        </div>
+
+        {/* B — Blood Pressure */}
+        <div style={boxStyle}>
+          <div style={{ display: "flex", gap: 8, width: "100%" }}>
+            <input type="number" value={sbp} onChange={e => setSbp(e.target.value)} placeholder="SBP < 90" style={flexInputStyle} />
+            <input type="number" value={dbp} onChange={e => setDbp(e.target.value)} placeholder="DBP ≤ 60" style={flexInputStyle} />
+          </div>
+        </div>
+
+        {/* 65 — Age */}
+        <div style={{ ...boxStyle, gridColumn: "1 / -1" }}>
+          <label style={{ display: "block" }}>
+            <input type="checkbox" checked={age65} onChange={e => setAge65(e.target.checked)} /> Age ≥ 65
+          </label>
         </div>
       </div>
 
-      {/* Urea / BUN */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Urea / BUN</div>
-        <select
-          value={nitrogenType}
-          onChange={(e) => setNitrogenType(e.target.value)}
-          style={{ width: "100%", padding: 6, marginBottom: 4 }}
-        >
-          <option value="urea_mmol">Urea mmol/L</option>
-          <option value="urea_mg">Urea mg/dL</option>
-          <option value="bun_mmol">BUN mmol/L</option>
-          <option value="bun_mg">BUN mg/dL</option>
-        </select>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Urea / BUN"
-          style={{ width: "100%", padding: 6 }}
-        />
-        <div style={{ fontSize: "12px", color: "#555" }}>
-          (1 point if BUN ≥ 20 mg/dL)
-        </div>
-      </div>
+      {/* Reset Button */}
+      <button
+        onClick={resetCalculator}
+        style={{
+          marginTop: 10,
+          padding: "6px 12px",
+          borderRadius: 4,
+          border: "1px solid #888",
+          background: "#f5f5f5",
+          cursor: "pointer",
+          width: "100%",
+          boxSizing: "border-box",
+        }}
+      >
+        Reset
+      </button><p></p>
+
+      <div style={{ fontWeight: "bold", marginBottom: 8 }}>Score: {score} / 5</div>
 
 
-      {/* Respiratory rate */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Respiratory Rate</div>
-        <input
-          type="number"
-          value={respRate}
-          onChange={(e) => setRespRate(e.target.value)}
-          placeholder="Respiratory Rate (breaths/min)"
-          style={{ width: "100%", padding: 6 }}
-        />
-        <div style={{ fontSize: "12px", color: "#555" }}>
-          (1 point if RR ≥ 30)
-        </div>
-      </div>
-
-      {/* Blood pressure */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Blood Pressure</div>
-        <input
-          type="number"
-          value={sbp}
-          onChange={(e) => setSbp(e.target.value)}
-          placeholder="Systolic BP (mmHg)"
-          style={{ width: "48%", padding: 6, marginRight: "4%" }}
-        />
-        <input
-          type="number"
-          value={dbp}
-          onChange={(e) => setDbp(e.target.value)}
-          placeholder="Diastolic BP (mmHg)"
-          style={{ width: "48%", padding: 6 }}
-        />
-        <div style={{ fontSize: "12px", color: "#555" }}>
-          (1 point if SBP &lt; 90 or DBP ≤ 60)
-        </div>
-      </div>
-
-      {/* Age ≥65 */}
-      <div style={boxStyle}>
-        <label>
-          <input
-            type="checkbox"
-            checked={age65}
-            onChange={(e) => setAge65(e.target.checked)}
-          />{" "}
-          Age ≥ 65
-        </label>
-      </div>
-
-      {/* Score display */}
-      <div style={{ marginTop: 12, fontSize: "14px" }}>
-        <strong>Score:</strong> {score} / 5
-      </div>
-      <div style={{ fontSize: "12px", color: "#555" }}>
+      <div style={{ fontSize: 12, marginTop: 8, color: "#555" }}>
         {score <= 1
-          ? "0–1: Mild to moderate CAP. Consider outpatient care."
-          : "≥2: Severe CAP. Recommend hospitalization."}
+          ? "0–1: Mild CAP — consider outpatient care"
+          : "≥2: Severe CAP — recommend hospitalization"}
       </div>
     </div>
   );
