@@ -100,7 +100,7 @@ export default function SmartCalculator() {
   };
 
   return (
-    <div style={{ maxWidth: "280px", border: "1px solid #ccc", padding: "10px", borderRadius: "6px" }}>
+    <div style={{ maxWidth: "280px", border: "1px solid", padding: "10px", borderRadius: "6px" }}>
       <h3 style={{ textAlign: "center" }}>Calculator</h3>
 
       <textarea

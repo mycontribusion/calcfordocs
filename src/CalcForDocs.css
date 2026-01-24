@@ -15,6 +15,18 @@
   color: #dc091e;
 }
 
+input, select, button, textarea {
+  border: 1px solid #da0b1f;
+  color: #015c9c;
+}
+
+/* Chrome, Firefox, Safari, Edge */
+input::placeholder,
+textarea::placeholder {
+  color: #015c9c; /* Subtle grey for light mode */
+  opacity: 0.4; /* Firefox fix */
+}
+
 .head-contact {
   display: flex;
   justify-content: space-between;
@@ -238,3 +250,4 @@ body:has(.calcfordocs.dark) {
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
 }
+

@@ -156,7 +156,7 @@ function CalcForDocs() {
 
   return (
     <div className={`calcfordocs ${theme}`}>
-      {/* 🔔 AUTOMATIC UPDATE BANNER */}
+      {/* 1. Update Banner (Bottom Slide-up) */}
       {showUpdateBanner && (
         <div className="update-banner">
           <div className="update-content">
@@ -169,56 +169,50 @@ function CalcForDocs() {
         </div>
       )}
 
+      {/* 2. Main Header */}
       <div className="head-contact">
         <h2 className="title">CalcForDocs</h2>
-
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button
-            style={{ height: "10px", width: "10px", fontSize: "8px" }}
-            className="calc-btn"
-            onClick={toggleTheme}
-          >
+          <button className="theme-toggle" onClick={toggleTheme}>
             {theme === "light" ? "🌙" : "☀️"}
           </button>
+          <div className="contact-links">
+            <div className="contactus" onClick={toggleUpdate}>Update</div>
+            <div className="contactus" onClick={toggleFeedback}>Contact-us</div>
+          </div>
+        </div>
+      </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <div className="contactus" onClick={toggleUpdate} style={{ fontSize: "9px", opacity: 0.7, cursor: "pointer" }}>
-              Update
+      {/* 3. Unified Modal System (Fixed Alignment) */}
+      {(showFeedback || showUpdate) && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <span className="modal-title">
+                {showFeedback ? "Feedback & Support" : "System Update"}
+              </span>
+              <button className="modal-close-btn" onClick={showFeedback ? toggleFeedback : toggleUpdate}>
+                ✖ Close
+              </button>
             </div>
-            <div className="contactus" onClick={toggleFeedback}>
-              Contact-us
+            <div className="modal-body">
+              {showFeedback ? <Feedback /> : (
+                <div className="hard-reset-container">
+                  <h3>🔄 Hard Reset CalcForDocs</h3>
+                  <p>Use this if the app is stuck or not showing new features.</p>
+                  <ol>
+                    <li>Uninstall CalcForDocs and close all tabs</li>
+                    <li>Open device <b>Settings</b> &gt; <b>Site settings</b></li>
+                    <li>Locate <b>calcfordocs.vercel.app</b></li>
+                    <li>Tap <b>Clear data / Delete files</b></li>
+                    <li>Reopen the website</li>
+                  </ol>
+                </div>
+              )}
             </div>
           </div>
         </div>
-
-        {/* Feedback Popup */}
-        {showFeedback && (
-          <div className="feedback-overlay">
-            <div className="feedback-popup">
-              <Feedback />
-              <button className="close-btn" onClick={toggleFeedback}>✖ Close</button>
-            </div>
-          </div>
-        )}
-
-        {/* Manual/Hard Update Modal */}
-        {showUpdate && (
-          <div className="feedback-overlay">
-            <div className="feedback-popup">
-              <h3>🔄 Hard Reset CalcForDocs</h3>
-              <p style={{fontSize: '12px', marginBottom: '10px'}}>Use this if the app is stuck or not showing new features.</p>
-              <ol style={{ textAlign: "left", lineHeight: "1.6", fontSize: '13px' }}>
-                <li>Uninstall CalcForDocs and close all tabs</li>
-                <li>Open device <b>Settings</b> &gt; <b>Site settings</b></li>
-                <li>Locate <b>calcfordocs.vercel.app</b></li>
-                <li>Tap <b>Clear data / Delete files</b></li>
-                <li>Reopen the website</li>
-              </ol>
-              <button className="close-btn" onClick={toggleUpdate}>✖ Close</button>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* 🔍 Global Search Input */}
       <div style={{ margin: "10px 0" }}>
@@ -231,7 +225,7 @@ function CalcForDocs() {
             width: "100%",
             padding: "6px 10px",
             borderRadius: 6,
-            border: "1px solid #bbb",
+            border: "1px solid",
             boxSizing: "border-box"
           }}
         />
