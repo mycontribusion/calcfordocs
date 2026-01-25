@@ -102,7 +102,7 @@
     {
       "name": "ECG Waveforms",
       "id": "c",
-      "keywords": ["ecg", "ekg", "waveforms", "cardiac rhythm"]
+      "keywords": ["ecg", "ekg", "waveforms", "cardiac rhythm", "rr", "interval", "qt"]
     },
     {
       "name": "Framingham Criteria",
