@@ -1,6 +1,7 @@
 import "./CalcForDocs.css";
 import { useState, useEffect } from "react";
 import calcinfo from "./calculators/calcinfo.json";
+import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
 
 // Calculator Imports
 import AxisInterpreter from "./calculators/AxisInterpreter";
@@ -50,6 +51,7 @@ function CalcForDocs() {
   const [showUpdate, setShowUpdate] = useState(false);
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState(""); // Global search
+  const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
 
   /* 🔄 UPDATE STATES */
   const [updateWaiting, setUpdateWaiting] = useState(null);
@@ -158,7 +160,7 @@ function CalcForDocs() {
     <div className={`calcfordocs ${theme}`}>
       {/* 1. Update Banner (Bottom Slide-up) */}
       {showUpdateBanner && (
-        <div className="update-banner">
+        <div style={{display: "none"}} className="update-banner">
           <div className="update-content">
             <p><strong>Update Available!</strong> New features are ready.</p>
             <div className="update-btns">
@@ -166,6 +168,14 @@ function CalcForDocs() {
               <button className="update-cancel" onClick={() => setShowUpdateBanner(false)}>Later</button>
             </div>
           </div>
+        </div>
+      )}
+
+{updateAvailable && (
+        <div style={{ background: "#fffae6", padding: "10px", marginTop: "10px" }}>
+          <p>A new version is available.</p>
+          <button onClick={refreshApp}>Refresh</button>
+          <button onClick={() => window.location.reload(false)}>Dismiss</button>
         </div>
       )}
 
