@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# CalcForDocs
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+**CalcForDocs** is an offline-first, web-based clinical decision support platform designed to provide fast, reliable medical calculators for frontline healthcare workers, especially in low-resource and low-connectivity settings.
 
-In the project directory, you can run:
+The platform removes common access barriers by working on **any device with a web browser**, requiring **no app store installation**, **no user accounts**, and **no continuous internet connection**.
 
-### `npm start`
+CalcForDocs is built and maintained by a practicing medical doctor, ensuring clinical relevance and real-world usability.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## The Problem
 
-### `npm test`
+Healthcare workers in many settings face significant barriers when accessing clinical decision tools:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Most medical apps are **device-specific**, excluding clinicians without certain smartphones or operating systems
+* Many medical websites are **internet-dependent**, making them unreliable in areas with poor connectivity
+* Existing tools often require **navigating through multiple pages**, slowing down urgent bedside decisions
 
-### `npm run build`
+These limitations contribute to delays, calculation errors, and reduced adherence to evidence-based care—particularly in underserved healthcare systems.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## The Solution
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+CalcForDocs addresses these challenges by providing:
 
-### `npm run eject`
+* A **single-page, fast-loading interface** optimized for bedside use
+* **Offline functionality** using Progressive Web App (PWA) technology
+* **Device-agnostic access** via any modern web browser
+* **No logins, subscriptions, or payments**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The platform is intentionally lightweight and resilient, designed to function in environments where infrastructure is limited.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Key Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+* Evidence-based medical calculators (e.g. CURB-65, qSOFA, SOFA, pediatric and emergency tools)
+* Clear scoring systems with clinical interpretation
+* Installable as a Progressive Web App (PWA)
+* Offline access via service workers
+* Responsive design for mobile, tablet, and desktop devices
+* Clinician-centered UX optimized for speed and clarity
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Target Users
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Medical doctors, house officers, and residents
+* Emergency and internal medicine clinicians
+* Public hospitals and training institutions
+* Health-focused NGOs and humanitarian organizations
 
-### Code Splitting
+Primary focus: **resource-limited and underserved healthcare settings**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Expected Impact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+CalcForDocs aims to:
 
-### Making a Progressive Web App
+* Improve adherence to evidence-based clinical care
+* Reduce errors from manual calculations
+* Enable faster, safer bedside decision-making
+* Support improved patient outcomes in emergency and inpatient settings
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## Current Status
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+* Live and functional platform
+* Actively used by clinicians on mobile and desktop devices
+* Offline installation supported
+* Ongoing development informed by frontline clinical feedback
 
-### Deployment
+Website: [https://calcfordocs.vercel.app/](https://calcfordocs.vercel.app/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Sustainability & Scale
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Core tools remain freely accessible to clinicians
+* Designed for scalability across hospitals and regions
+* Potential integration into training programs and institutional workflows
+* Long-term sustainability through grants, partnerships, and institutional support
+
+---
+
+## Ethical Use & Disclaimer
+
+CalcForDocs is intended to **support**, not replace, clinical judgment.
+
+All tools are based on established clinical guidelines and scoring systems, but final medical decisions remain the responsibility of the healthcare professional.
+
+---
+
+## Open Source & Transparency
+
+CalcForDocs is developed with transparency in mind. Public access to the codebase supports trust, collaboration, and sustainability—values aligned with global health and humanitarian principles.
+
+---
+
+## Project Lead
+
+**Ahmad Musa Muhammad**
+Medical Doctor | mHealth Developer
+
+Clinician-led, impact-focused digital health innovation.
+
+---
+
+## Contact
+
+For partnerships, funding, or collaboration inquiries:
+
+LinkedIn: [https://www.linkedin.com/in/ahmad-m-musa-b93587156/](https://www.linkedin.com/in/ahmad-m-musa-b93587156/)
+Website: [https://calcfordocs.vercel.app/](https://calcfordocs.vercel.app/)
+
+CalcForDocs is committed to equitable access to clinical decision support tools worldwide.
