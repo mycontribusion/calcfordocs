@@ -116,6 +116,7 @@ Clinician-led, impact-focused digital health innovation.
 For partnerships, funding, or collaboration inquiries:
 
 LinkedIn: [https://www.linkedin.com/in/ahmad-m-musa-b93587156/](https://www.linkedin.com/in/ahmad-m-musa-b93587156/)
+
 Website: [https://calcfordocs.vercel.app/](https://calcfordocs.vercel.app/)
 
 CalcForDocs is committed to equitable access to clinical decision support tools worldwide.
