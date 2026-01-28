@@ -137,7 +137,7 @@ export default function GlucoseConverter() {
                 {Object.entries(result.ranges).map(([key, val]) => (
                   <li
                     key={key}
-                    style={{ color: key === result.category ? result.categoryColor : "black" }}
+                    style={{ color: key === result.category ? result.categoryColor : "#015c9c" }}
                   >
                     {key}: {val} {result.displayUnit}
                   </li>

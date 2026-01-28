@@ -3,9 +3,13 @@ import React, { useState, useEffect, useCallback } from "react";
 export default function CorrectedSodium() {
   const [sodium, setSodium] = useState("");
   const [glucose, setGlucose] = useState("");
-  const [glucoseUnit, setGlucoseUnit] = useState("mg"); // mg/dL or mmol/L
+  const [glucoseUnit, setGlucoseUnit] = useState("mmol"); // mg/dL or mmol/L
   const [result, setResult] = useState("");
   const [note, setNote] = useState("");
+  const [interpretation, setInterpretation] = useState(null);
+
+  const NORMAL_LOW = 135;
+  const NORMAL_HIGH = 145;
 
   const calculateCorrectedNa = useCallback(() => {
     const na = parseFloat(sodium);
@@ -13,11 +17,11 @@ export default function CorrectedSodium() {
 
     if (isNaN(na) || isNaN(glu)) {
       setResult("");
+      setInterpretation(null);
       setNote("Please enter valid numerical values for both sodium and glucose.");
       return;
     }
 
-    // Clear note if inputs are valid
     setNote("");
 
     // Convert glucose to mg/dL if input is in mmol/L
@@ -25,17 +29,41 @@ export default function CorrectedSodium() {
       glu = glu * 18.0182;
     }
 
-    // Corrected Sodium formula: 1.6 mEq/L per 100 mg/dL glucose above 100
+    // Corrected Sodium formula
     const correctedNa = na + 1.6 * ((glu - 100) / 100);
-    setResult(`Corrected Sodium: ${correctedNa.toFixed(2)} mEq/L`);
+    const roundedNa = parseFloat(correctedNa.toFixed(2));
+
+    setResult(`Corrected Sodium: ${roundedNa} mmol/L`);
+
+    // Interpretation
+    let status = "";
+    let color = "";
+
+    if (roundedNa < NORMAL_LOW) {
+      status = "Hyponatremia";
+      color = "orange";
+    } else if (roundedNa > NORMAL_HIGH) {
+      status = "Hypernatremia";
+      color = "red";
+    } else {
+      status = "Within normal range";
+      color = "green";
+    }
+
+    setInterpretation({
+      value: roundedNa,
+      status,
+      color,
+      normalRange: `${NORMAL_LOW}–${NORMAL_HIGH} mmol/L`,
+    });
   }, [sodium, glucose, glucoseUnit]);
 
-  // Auto-calculate when inputs change
   useEffect(() => {
     if (sodium !== "" && glucose !== "") {
       calculateCorrectedNa();
     } else {
       setResult("");
+      setInterpretation(null);
       setNote("");
     }
   }, [sodium, glucose, glucoseUnit, calculateCorrectedNa]);
@@ -45,6 +73,7 @@ export default function CorrectedSodium() {
     setGlucose("");
     setGlucoseUnit("mg");
     setResult("");
+    setInterpretation(null);
     setNote("");
   };
 
@@ -87,34 +116,32 @@ export default function CorrectedSodium() {
           <option value="mg">mg/dL</option>
           <option value="mmol">mmol/L</option>
         </select>
-      </div><p></p>
-
-      <div style={{ marginTop: "0.5rem" }}>
-        <button
-          onClick={reset}
-          style={{
-            padding: "0.5rem 1rem",
-            cursor: "pointer",
-            backgroundColor: "#ccc",
-            border: "none",
-            borderRadius: "4px",
-          }}
-        >
-          Reset
-        </button><p></p>
       </div>
+
+      <button onClick={reset} style={{ padding: "0.5rem 1rem" }}>
+        Reset
+      </button>
 
       {/* Result */}
       {result && (
-        <p
-          style={{
-            marginTop: "0.75rem",
-            fontSize: "0.9rem",
-            fontWeight: "bold",
-          }}
-        >
-          {result}
-        </p>
+        <div style={{ marginTop: "0.75rem", fontSize: "0.9rem" }}>
+          <p style={{ fontWeight: "bold" }}>{result}</p>
+
+          {interpretation && (
+            <>
+              <p>
+                Status:{" "}
+                <strong style={{ color: interpretation.color }}>
+                  {interpretation.status}
+                </strong>
+              </p>
+              <p>
+                Normal range:{" "}
+                <strong>{interpretation.normalRange}</strong>
+              </p>
+            </>
+          )}
+        </div>
       )}
 
       {/* Formula note */}
