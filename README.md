@@ -120,3 +120,5 @@ LinkedIn: [https://www.linkedin.com/in/ahmad-m-musa-b93587156/](https://www.link
 Website: [https://calcfordocs.vercel.app/](https://calcfordocs.vercel.app/)
 
 CalcForDocs is committed to equitable access to clinical decision support tools worldwide.
+
+To Allah be the glory
