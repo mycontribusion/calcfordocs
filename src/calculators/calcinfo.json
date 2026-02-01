@@ -166,7 +166,7 @@
     },
     {
       "name": "EGA & EDD from LMP/USS",
-      "id": "r",
+      "id": "rbug",
       "keywords": ["ega", "edd", "gestational age", "lmp", "ultrasound", "uss"]
     },
     {
