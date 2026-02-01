@@ -10,15 +10,15 @@ export default function PregnancyCalculator() {
 
   // Calculate EDD from LMP
   const calculateEDD = (lmpDate) => {
-    const lmp = new Date(lmpDate);
-    lmp.setDate(lmp.getDate() + 280);
-    return lmp.toISOString().split("T")[0];
+    const lmpObj = new Date(lmpDate);
+    lmpObj.setDate(lmpObj.getDate() + 280);
+    return lmpObj.toISOString().split("T")[0];
   };
 
   // Calculate EGA from LMP
   const calculateEGA = (lmpDate) => {
-    const lmp = new Date(lmpDate);
-    const diffDays = Math.floor((today - lmp) / (1000 * 60 * 60 * 24));
+    const lmpObj = new Date(lmpDate);
+    const diffDays = Math.floor((today - lmpObj) / (1000 * 60 * 60 * 24));
     const weeks = Math.floor(diffDays / 7);
     const days = diffDays % 7;
     return { weeks, days };
@@ -34,9 +34,9 @@ export default function PregnancyCalculator() {
   // Calculate LMP from EGA
   const calculateLMPfromEGA = (weeks, days) => {
     const totalDays = weeks * 7 + days;
-    const lmp = new Date(today);
-    lmp.setDate(lmp.getDate() - totalDays);
-    return lmp.toISOString().split("T")[0];
+    const lmpObj = new Date(today);
+    lmpObj.setDate(lmpObj.getDate() - totalDays);
+    return lmpObj.toISOString().split("T")[0];
   };
 
   const handleLMPChange = (e) => {
@@ -72,9 +72,42 @@ export default function PregnancyCalculator() {
     }
   };
 
+  const resetAll = () => {
+    setLmp("");
+    setEdd("");
+    setEgaWeeks("");
+    setEgaDays("");
+  };
+
+  // Clinical comments
+  const getANCComment = () => {
+    if (!egaWeeks) return "";
+    if (egaWeeks < 28) return "ANC booking: every 4 weeks.";
+    if (egaWeeks >= 28 && egaWeeks < 36) return "ANC booking: twice weekly.";
+    if (egaWeeks >= 36) return "ANC booking: weekly.";
+    return "";
+  };
+
+  const getTrimester = () => {
+    if (!egaWeeks) return "";
+    if (egaWeeks < 13) return "Trimester: First";
+    if (egaWeeks < 28) return "Trimester: Second";
+    return "Trimester: Third";
+  };
+
+  const getQuickening = () => {
+    if (!egaWeeks) return "";
+    if (egaWeeks >= 16 && egaWeeks <= 20) return "Possibility of quickening (first fetal movements).";
+    return "";
+  };
+
   return (
     <div style={{ maxWidth: "400px", margin: "20px auto", fontFamily: "Arial" }}>
       <h2>Pregnancy Calculator</h2>
+
+      <button onClick={resetAll} style={{ width: "80%" }}>
+        Reset
+      </button><p></p>
 
       {/* LMP */}
       <div style={{ marginBottom: "10px" }}>
@@ -119,6 +152,16 @@ export default function PregnancyCalculator() {
             style={{ width: "50px", marginLeft: "8px" }}
           /> days
         </label>
+      </div>
+
+      {/* Reset Button */}
+      
+
+      {/* Clinical Comments */}
+      <div style={{ marginTop: "0px",padding: "10px", borderRadius: "6px" }}>
+        <p>{getANCComment()}</p>
+        <p>{getTrimester()}</p>
+        <p>{getQuickening()}</p>
       </div>
     </div>
   );
