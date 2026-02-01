@@ -164,9 +164,6 @@ export default function SOFA() {
 
       <select style={{
           width: "70%",
-          padding: "5px",
-          borderRadius: 4,
-          border: "1px solid",
           cursor: "pointer",
         }} value={mode} onChange={e => setMode(e.target.value)}>
         <option value="qsofa">qSOFA</option>
@@ -210,9 +207,7 @@ export default function SOFA() {
           <br /><select 
           style={{
             width: "100%",
-            padding: "5px",
-            borderRadius: 4,
-            border: "1px solid",
+            
             cursor: "pointer",
           }}
           value={spo2fio2} onChange={e => setSpo2fio2(e.target.value)}>
@@ -237,11 +232,7 @@ export default function SOFA() {
           <br /><select 
           style={{
             width: "40%",
-            padding: "5px",
-            borderRadius: 4,
-            border: "1px solid",
-            cursor: "pointer",
-            marginRight: '10px'
+            cursor: "pointer"
           }}
           value={map} onChange={e => setMap(e.target.value)}>
             <option value="">Select</option>
@@ -266,9 +257,6 @@ export default function SOFA() {
           <br /><select 
           style={{
             width: "100%",
-            padding: "5px",
-            borderRadius: 4,
-            border: "1px solid",
             cursor: "pointer",
           }}
           value={gcsM} onChange={e => setGcsM(e.target.value)}>
@@ -284,9 +272,7 @@ export default function SOFA() {
             <br /><select 
             style={{
               width: "70%",
-              padding: "5px",
-              borderRadius: 4,
-              border: "1px solid",
+      
               cursor: "pointer",
               marginRight: '10px'
             }}

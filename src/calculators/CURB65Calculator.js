@@ -91,9 +91,6 @@ export default function CURB65Calculator() {
         onClick={resetCalculator}
         style={{
           width: "100%",
-          padding: "6px",
-          borderRadius: 4,
-          border: "1px solid",
           cursor: "pointer",
         }}
       >
