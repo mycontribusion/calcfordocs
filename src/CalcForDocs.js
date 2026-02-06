@@ -1,5 +1,5 @@
 import "./CalcForDocs.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import calcinfo from "./calculators/calcinfo.json";
 import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
 
@@ -12,8 +12,10 @@ function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activePanel, setActivePanel] = useState(null);
+  const [activePanel, setActivePanel] = useState(null); // for dropdowns
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
+
+  const headerRef = useRef(null); // detect clicks outside
 
   /* 🔄 Service Worker Update State */
   const [updateWaiting, setUpdateWaiting] = useState(null);
@@ -68,6 +70,17 @@ function CalcForDocs() {
       item.keywords?.some((k) => k.toLowerCase().includes(searchTerm))
   );
 
+  /* 🔒 Close dropdowns when clicking outside header */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) {
+        setActivePanel(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className={`calcfordocs ${theme}`}>
       
@@ -80,12 +93,14 @@ function CalcForDocs() {
       />
 
       {/* 🧭 Header */}
-      <Header
-        theme={theme}
-        toggleTheme={toggleTheme}
-        activePanel={activePanel}       // <--- pass both
-        setActivePanel={setActivePanel} //
-      />
+      <div ref={headerRef}>
+        <Header
+          theme={theme}
+          toggleTheme={toggleTheme}
+          activePanel={activePanel}
+          setActivePanel={setActivePanel}
+        />
+      </div>
 
       {/* 🔍 Search */}
       <GlobalSearch
