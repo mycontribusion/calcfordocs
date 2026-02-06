@@ -10,6 +10,8 @@ import Feedback from "./Feedback";
 import UpdateBanner from "./components/UpdateBanner";
 import Modal from "./components/Modal"
 import HardResetGuide from "./components/HardResetGuide";
+import InstallGuide from "./components/InstallGuide";
+import usePWAInstall from "./hooks/usePWAInstall";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
@@ -23,6 +25,15 @@ function CalcForDocs() {
   /* 🔄 Service Worker Update State */
   const [updateWaiting, setUpdateWaiting] = useState(null);
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
+
+  const [showInstall, setShowInstall] = useState(false);
+
+  const {
+    canInstall,
+    promptInstall,
+    isInstalled,
+    isIOS,
+  } = usePWAInstall();
 
   /* 🌗 Detect System Theme + SW Waiting */
   useEffect(() => {
@@ -90,25 +101,42 @@ function CalcForDocs() {
         toggleTheme={toggleTheme}
         toggleFeedback={() => setShowFeedback(true)}
         toggleUpdate={() => setShowUpdate(true)}
+        toggleInstall={() => setShowInstall(true)}
+        showInstall={!isInstalled}
       />
+
+      {/* 🪟 Modal */}
+      <Modal
+        show={showFeedback || showUpdate || showInstall}
+        onClose={() => {
+          setShowFeedback(false);
+          setShowUpdate(false);
+          setShowInstall(false);
+        }}
+        title={
+          showFeedback
+            ? "Feedback & Support"
+            : showInstall
+            ? "Install App"
+            : "System Update"
+        }
+      >
+        {showFeedback && <Feedback />}
+        {showInstall && (
+          <InstallGuide
+            canInstall={canInstall}
+            isIOS={isIOS}
+            onInstall={promptInstall}
+          />
+        )}
+        {showUpdate && <HardResetGuide />}
+      </Modal>
 
       {/* 🔍 Search */}
       <GlobalSearch
         value={searchTerm}
         onChange={setSearchTerm}
-      />
-
-      {/* 🪟 Modal */}
-      <Modal
-        show={showFeedback || showUpdate}
-        onClose={() => {
-          setShowFeedback(false);
-          setShowUpdate(false);
-              }}
-        title={showFeedback ? "Feedback & Support" : "System Update"}
-      >
-        {showFeedback ? <Feedback /> : <HardResetGuide />}
-      </Modal>
+      />      
 
       {/* 🧮 Calculator Grid */}
       <CalculatorGrid
