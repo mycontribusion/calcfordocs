@@ -6,34 +6,18 @@ import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
 import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
-import Feedback from "./Feedback";
 import UpdateBanner from "./components/UpdateBanner";
-import Modal from "./components/Modal"
-import HardResetGuide from "./components/HardResetGuide";
-import InstallGuide from "./components/InstallGuide";
-import usePWAInstall from "./hooks/usePWAInstall";
 
 function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [showUpdate, setShowUpdate] = useState(false);
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [activePanel, setActivePanel] = useState(null);
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
 
   /* 🔄 Service Worker Update State */
   const [updateWaiting, setUpdateWaiting] = useState(null);
   const [showUpdateBanner, setShowUpdateBanner] = useState(false);
-
-  const [showInstall, setShowInstall] = useState(false);
-
-  const {
-    canInstall,
-    promptInstall,
-    isInstalled,
-    isIOS,
-  } = usePWAInstall();
 
   /* 🌗 Detect System Theme + SW Waiting */
   useEffect(() => {
@@ -99,38 +83,9 @@ function CalcForDocs() {
       <Header
         theme={theme}
         toggleTheme={toggleTheme}
-        toggleFeedback={() => setShowFeedback(true)}
-        toggleUpdate={() => setShowUpdate(true)}
-        toggleInstall={() => setShowInstall(true)}
-        showInstall={!isInstalled}
+        activePanel={activePanel}       // <--- pass both
+        setActivePanel={setActivePanel} //
       />
-
-      {/* 🪟 Modal */}
-      <Modal
-        show={showFeedback || showUpdate || showInstall}
-        onClose={() => {
-          setShowFeedback(false);
-          setShowUpdate(false);
-          setShowInstall(false);
-        }}
-        title={
-          showFeedback
-            ? "Feedback & Support"
-            : showInstall
-            ? "Install App"
-            : "System Update"
-        }
-      >
-        {showFeedback && <Feedback />}
-        {showInstall && (
-          <InstallGuide
-            canInstall={canInstall}
-            isIOS={isIOS}
-            onInstall={promptInstall}
-          />
-        )}
-        {showUpdate && <HardResetGuide />}
-      </Modal>
 
       {/* 🔍 Search */}
       <GlobalSearch

@@ -2,60 +2,46 @@ import { useEffect, useState } from "react";
 
 export default function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const ua = window.navigator.userAgent.toLowerCase();
+    const ios = /iphone|ipad|ipod/.test(ua);
+    const android = /android/.test(ua);
+    setIsIOS(ios);
+    setIsAndroid(android);
+    setIsDesktop(!ios && !android);
 
-    // Detect iOS and Android
-    setIsIOS(/iphone|ipad|ipod/.test(ua));
-    setIsAndroid(/android/.test(ua));
-
-    // Detect if app is installed
-    const installed =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true;
-    setIsInstalled(installed);
-
-    // Clear deferredPrompt if already installed
-    if (installed) setDeferredPrompt(null);
-
-    // Capture install prompt event (Android/Desktop)
-    const beforeInstallHandler = (e) => {
+    const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
-    window.addEventListener("beforeinstallprompt", beforeInstallHandler);
+    window.addEventListener("beforeinstallprompt", handler);
 
-    // Detect appinstalled event
-    const appInstalledHandler = () => {
-      setIsInstalled(true);
-      setDeferredPrompt(null); // remove install button immediately
-    };
-    window.addEventListener("appinstalled", appInstalledHandler);
+    const installedHandler = () => setDeferredPrompt(null);
+    window.addEventListener("appinstalled", installedHandler);
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", beforeInstallHandler);
-      window.removeEventListener("appinstalled", appInstalledHandler);
+      window.removeEventListener("beforeinstallprompt", handler);
+      window.removeEventListener("appinstalled", installedHandler);
     };
   }, []);
 
   const promptInstall = async () => {
-    if (!deferredPrompt || isInstalled) return; // don't prompt if installed
+    if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
+    const choice = await deferredPrompt.userChoice;
     setDeferredPrompt(null);
-    if (choiceResult.outcome === "accepted") setIsInstalled(true);
+    return choice.outcome;
   };
 
   return {
-    canInstall: !!deferredPrompt && !isInstalled, // hide button if installed
+    canInstall: !!deferredPrompt,
     promptInstall,
-    isInstalled,
     isIOS,
     isAndroid,
-    isDesktop: !/iphone|ipad|ipod|android/.test(window.navigator.userAgent.toLowerCase()),
+    isDesktop,
   };
 }

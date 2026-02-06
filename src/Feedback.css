@@ -1,43 +1,44 @@
-.feedback-container {
-  width: 100%;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-}
-
-.feedback-container h2 {
-  font-size: 20px;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.feedback-form input, 
-.feedback-form textarea {
-  width: 100%;
-  box-sizing: border-box; /* Crucial for alignment */
-  padding: 12px;
-  margin-bottom: 12px;
-  border: 1px solid #ccc;
+.feedback-dropdown {
+  width: 100%;             /* full width of the container */
+  max-width: 1000px;       /* optional, same as .calcfordocs max-width */
+  padding: 10px;
+  border: 1px solid;
   border-radius: 8px;
-  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  box-sizing: border-box;  /* ensure padding doesn't break width */
+}
+
+.feedback-intro {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  width: 100%;          /* occupy full dropdown width */
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  border: 1px solid;
+  border-radius: 6px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.feedback-form textarea {
+  resize: none;
 }
 
 .feedback-form button {
-  width: 100%;
-  padding: 12px;
-  background: #015c9c;
-  color: white;
+  padding: 6px;
+  font-size: 0.85rem;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
-}
-
-/* Dark mode overrides for internal feedback elements */
-.calcfordocs.dark .feedback-form input,
-.calcfordocs.dark .feedback-form textarea {
-  background: #000;
-  color: #fff;
-  border-color: #444;
 }

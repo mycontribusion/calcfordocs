@@ -1,4 +1,5 @@
 import CalcForDocs from "./CalcForDocs";
+import "./App.css";
 
 
 function App(){
