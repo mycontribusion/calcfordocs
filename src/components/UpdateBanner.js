@@ -7,9 +7,9 @@ export default function UpdateBanner({ show, waitingSW, handleUpdateNow, refresh
         <p><strong>Update Available!</strong> New features are ready.</p>
         <div className="update-btns">
           {waitingSW ? (
-            <button onClick={handleUpdateNow}>Update</button>
+            <button style={{display:"none"}} onClick={handleUpdateNow}>Update</button>
           ) : (
-            <button onClick={refreshApp}>Refresh</button>
+            <button style={{display:"none"}} onClick={refreshApp}>Refresh</button>
           )}
           <button onClick={onClose}>Later</button>
         </div>
