@@ -1,29 +1,48 @@
+/* useServiceWorkerUpdate.js */
 import { useState, useEffect } from "react";
 
 export default function useServiceWorkerUpdate() {
+  const [waitingSW, setWaitingSW] = useState(null);
   const [updateAvailable, setUpdateAvailable] = useState(false);
-  const [waitingWorker, setWaitingWorker] = useState(null);
 
   useEffect(() => {
-    const handler = (e) => {
-      const waiting = e.detail.waiting;
-      setWaitingWorker(waiting);
-      setUpdateAvailable(true);
-    };
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistration().then((reg) => {
+        if (reg?.waiting) {
+          setWaitingSW(reg.waiting);
+          setUpdateAvailable(true);
+        }
 
-    window.addEventListener("swUpdateAvailable", handler);
-    return () => window.removeEventListener("swUpdateAvailable", handler);
+        reg?.addEventListener("updatefound", () => {
+          const newSW = reg.installing;
+          if (newSW) {
+            newSW.addEventListener("statechange", () => {
+              if (newSW.state === "installed" && navigator.serviceWorker.controller) {
+                setWaitingSW(newSW);
+                setUpdateAvailable(true);
+              }
+            });
+          }
+        });
+      });
+    }
+
+    const onAppInstalled = () => setUpdateAvailable(false);
+    window.addEventListener("appinstalled", onAppInstalled);
+
+    return () => window.removeEventListener("appinstalled", onAppInstalled);
   }, []);
 
   const refreshApp = () => {
-    if (waitingWorker) {
-      waitingWorker.postMessage({ type: "SKIP_WAITING" });
-      waitingWorker.addEventListener("statechange", (event) => {
-        if (event.target.state === "activated") {
-          window.location.reload();
-        }
-      });
-    }
+    if (!waitingSW) return;
+    waitingSW.postMessage({ type: "SKIP_WAITING" });
+
+    const onControllerChange = () => {
+      window.location.reload();
+      navigator.serviceWorker.removeEventListener("controllerchange", onControllerChange);
+    };
+
+    navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
   };
 
   return { updateAvailable, refreshApp };
