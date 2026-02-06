@@ -145,6 +145,11 @@
       "keywords": ["glasgow coma scale", "coma", "gcs score"]
     },
     {
+      "name": "Ischemic or Hemmorrhagic",
+      "id": "siri",
+      "keywords": ["cvd", "stroke", "siriraj"]
+    },
+    {
       "name": "Pediatric Age Estimator",
       "id": "k",
       "keywords": ["pediatric age", "child age", "baby age", "paed age"]
