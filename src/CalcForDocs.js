@@ -12,63 +12,22 @@ function CalcForDocs() {
   const [activeCalc, setActiveCalc] = useState(null);
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activePanel, setActivePanel] = useState(null); // for dropdowns
+  const [activePanel, setActivePanel] = useState(null); // dropdown state
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
 
-  const headerRef = useRef(null); // detect clicks outside
+  const [showBanner, setShowBanner] = useState(false); // banner UI state
+  const headerRef = useRef(null);
 
-  /* 🔄 Service Worker Update State */
-  const [updateWaiting, setUpdateWaiting] = useState(null);
-  const [showUpdateBanner, setShowUpdateBanner] = useState(false);
-
-  /* 🌗 Detect System Theme + SW Waiting */
+  /* 🌗 Detect System Theme */
   useEffect(() => {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setTheme(prefersDark ? "dark" : "light");
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.getRegistration().then((reg) => {
-        if (reg?.waiting) {
-          setUpdateWaiting(reg.waiting);
-          setShowUpdateBanner(true);
-        }
-      });
-    }
-
-    const handleUpdateFound = (e) => {
-      setUpdateWaiting(e.detail.waiting);
-      setShowUpdateBanner(true);
-    };
-
-    window.addEventListener("swUpdateAvailable", handleUpdateFound);
-    return () =>
-      window.removeEventListener("swUpdateAvailable", handleUpdateFound);
   }, []);
 
-  /* 🛠 Handlers */
-  const toggleTheme = () =>
-    setTheme((p) => (p === "light" ? "dark" : "light"));
-
-  const toggleCalc = (id) =>
-    setActiveCalc((prev) => (prev === id ? null : id));
-
-  const handleUpdateNow = () => {
-    if (updateWaiting) {
-      updateWaiting.postMessage({ type: "SKIP_WAITING" });
-      navigator.serviceWorker.addEventListener("controllerchange", () => {
-        window.location.reload();
-      });
-    } else {
-      window.location.reload();
-    }
-  };
-
-  /* 🔍 Filter Calculators */
-  const filteredCalcs = calcinfo.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm) ||
-      item.keywords?.some((k) => k.toLowerCase().includes(searchTerm))
-  );
+  /* 🔔 Show banner when SW update becomes available */
+  useEffect(() => {
+    if (updateAvailable) setShowBanner(true);
+  }, [updateAvailable]);
 
   /* 🔒 Close dropdowns when clicking outside header */
   useEffect(() => {
@@ -81,15 +40,21 @@ function CalcForDocs() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  /* 🛠 Handlers */
+  const toggleTheme = () => setTheme((p) => (p === "light" ? "dark" : "light"));
+  const toggleCalc = (id) => setActiveCalc((prev) => (prev === id ? null : id));
+
   return (
     <div className={`calcfordocs ${theme}`}>
-      
+
+      {/* Update Banner */}
       <UpdateBanner
-        show={showUpdateBanner || updateAvailable}
-        waitingSW={!!updateWaiting}
-        handleUpdateNow={handleUpdateNow}
-        refreshApp={refreshApp}
-        onClose={() => setShowUpdateBanner(false)}
+        show={showBanner}
+        onUpdate={() => {
+          refreshApp(); // triggers SW skipWaiting + reload
+          setShowBanner(false); // hide banner
+        }}
+        onClose={() => setShowBanner(false)} // Later button hides banner
       />
 
       {/* 🧭 Header */}
@@ -106,15 +71,18 @@ function CalcForDocs() {
       <GlobalSearch
         value={searchTerm}
         onChange={setSearchTerm}
-      />      
+      />
 
       {/* 🧮 Calculator Grid */}
       <CalculatorGrid
-        calcs={filteredCalcs}
+        calcs={calcinfo.filter(
+          (item) =>
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.keywords?.some((k) => k.toLowerCase().includes(searchTerm))
+        )}
         activeCalc={activeCalc}
         toggleCalc={toggleCalc}
       />
-
     </div>
   );
 }

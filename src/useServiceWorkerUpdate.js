@@ -1,4 +1,4 @@
-/* useServiceWorkerUpdate.js */
+// useServiceWorkerUpdate.js
 import { useState, useEffect } from "react";
 
 export default function useServiceWorkerUpdate() {
@@ -6,35 +6,35 @@ export default function useServiceWorkerUpdate() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.getRegistration().then((reg) => {
-        if (reg?.waiting) {
-          setWaitingSW(reg.waiting);
-          setUpdateAvailable(true);
-        }
+    if (!("serviceWorker" in navigator)) return;
 
-        reg?.addEventListener("updatefound", () => {
+    const checkWaitingSW = async () => {
+      const reg = await navigator.serviceWorker.getRegistration();
+      if (reg?.waiting) {
+        setWaitingSW(reg.waiting);
+        setUpdateAvailable(true);
+      }
+
+      if (reg) {
+        reg.addEventListener("updatefound", () => {
           const newSW = reg.installing;
-          if (newSW) {
-            newSW.addEventListener("statechange", () => {
-              if (newSW.state === "installed" && navigator.serviceWorker.controller) {
-                setWaitingSW(newSW);
-                setUpdateAvailable(true);
-              }
-            });
-          }
+          if (!newSW) return;
+          newSW.addEventListener("statechange", () => {
+            if (newSW.state === "installed" && navigator.serviceWorker.controller) {
+              setWaitingSW(newSW);
+              setUpdateAvailable(true);
+            }
+          });
         });
-      });
-    }
+      }
+    };
 
-    const onAppInstalled = () => setUpdateAvailable(false);
-    window.addEventListener("appinstalled", onAppInstalled);
-
-    return () => window.removeEventListener("appinstalled", onAppInstalled);
+    checkWaitingSW();
   }, []);
 
   const refreshApp = () => {
     if (!waitingSW) return;
+
     waitingSW.postMessage({ type: "SKIP_WAITING" });
 
     const onControllerChange = () => {
