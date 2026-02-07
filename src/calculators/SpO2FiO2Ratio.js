@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 const nasalFiO2Map = { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 };
 const venturiFiO2Map = {
@@ -69,11 +70,12 @@ function useSpO2FiO2Ratio(spo2, device, flow) {
 
 function LabeledInput({ label, value, onChange, placeholder, type = "text" }) {
   return (
-    <label style={{ display: "block", margin: "8px 0" }}>
-      {label}:
-      <br />
-      <input type={type} value={value} onChange={onChange} placeholder={placeholder} />
-    </label>
+    <div className="calc-box">
+      <label className="calc-label">
+        {label}
+      </label>
+      <input type={type} value={value} onChange={onChange} placeholder={placeholder} className="calc-input" />
+    </div>
   );
 }
 
@@ -99,8 +101,8 @@ export default function SpO2FiO2Ratio() {
   ];
 
   return (
-    <div>
-      <h4>SpO₂ / FiO₂ Ratio</h4>
+    <div className="calc-container">
+      <h4 className="calc-title">SpO₂ / FiO₂ Ratio</h4>
 
       <LabeledInput
         label="SpO₂ (%)"
@@ -110,17 +112,18 @@ export default function SpO2FiO2Ratio() {
         placeholder="e.g. 92"
       />
 
-      <label>
-        Oxygen device:
-        <br />
-        <select value={device} onChange={(e) => setDevice(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">
+          Oxygen device:
+        </label>
+        <select value={device} onChange={(e) => setDevice(e.target.value)} className="calc-select">
           {devices.map((d) => (
             <option key={d.value} value={d.value}>
               {d.label}
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
       {deviceFlowConfig[device] && (
         <LabeledInput
@@ -132,27 +135,27 @@ export default function SpO2FiO2Ratio() {
       )}
 
       <div style={{ marginTop: "12px" }}>
-        <p>
-          <strong>FiO₂ breakdown</strong>
-        </p>
-        {breakdown.map(
-          (item, i) =>
-            item && (
-              <div key={i}>
-                {item[0]}: <strong>{item[1]}</strong>
-              </div>
-            )
-        )}
+        <p className="calc-label">FiO₂ breakdown</p>
+        <div style={{ fontSize: '0.9rem' }}>
+          {breakdown.map(
+            (item, i) =>
+              item && (
+                <div key={i}>
+                  {item[0]}: <strong>{item[1]}</strong>
+                </div>
+              )
+          )}
+        </div>
       </div>
 
       {ratio && (
-        <p style={{ marginTop: "8px" }}>
-          <strong>SpO₂ / FiO₂ ratio:</strong> {ratio} <br />
-          <strong>Interpretation:</strong> {interpretSF(ratio)}
-        </p>
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p><strong>SpO₂ / FiO₂ ratio:</strong> {ratio}</p>
+          <p><strong>Interpretation:</strong> {interpretSF(ratio)}</p>
+        </div>
       )}
 
-      <small><p></p>
+      <small style={{ display: 'block', marginTop: 12, color: '#666', fontSize: '0.75rem' }}>
         BTS/ARDSNet approximations
       </small>
     </div>

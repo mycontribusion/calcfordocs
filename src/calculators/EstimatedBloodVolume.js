@@ -1,5 +1,6 @@
 // src/calculators/EstimatedBloodVolume.js
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function EstimatedBloodVolume() {
   const [weight, setWeight] = useState("");
@@ -47,39 +48,39 @@ export default function EstimatedBloodVolume() {
   })();
 
   return (
-    <div style={{padding: "1rem", borderRadius: 8, maxWidth: 360, margin: "1rem auto" }}>
-      <h2>Estimated Blood Volume (EBV)</h2>
+    <div className="calc-container" style={{ maxWidth: 360 }}>
+      <h2 className="calc-title">Estimated Blood Volume (EBV)</h2>
 
-      <label style={{ display: "block", marginBottom: 8 }}>
-        Weight:
+      <div className="calc-box">
+        <label className="calc-label">Weight:</label>
         <input
           type="number"
           min="0.1"
           step="0.1"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          style={{ width: "100%", padding: 6, marginTop: 4 }}
+          className="calc-input"
         />
-      </label>
+      </div>
 
-      <label style={{ display: "block", marginBottom: 8 }}>
-        Unit:
+      <div className="calc-box">
+        <label className="calc-label">Unit:</label>
         <select
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
-          style={{ width: "100%", padding: 6, marginTop: 4 }}
+          className="calc-select"
         >
           <option value="kg">kg</option>
           <option value="lb">lb</option>
         </select>
-      </label>
+      </div>
 
-      <label style={{ display: "block", marginBottom: 8 }}>
-        Age Group:
+      <div className="calc-box">
+        <label className="calc-label">Age Group:</label>
         <select
           value={ageGroup}
           onChange={(e) => setAgeGroup(e.target.value)}
-          style={{ width: "100%", padding: 6, marginTop: 4 }}
+          className="calc-select"
         >
           <option value="neonate">Neonate (85–90 mL/kg)</option>
           <option value="infant">Infant (75–80 mL/kg)</option>
@@ -87,9 +88,11 @@ export default function EstimatedBloodVolume() {
           <option value="adultMale">Adult Male (~70 mL/kg)</option>
           <option value="adultFemale">Adult Female (~65 mL/kg)</option>
         </select>
-      </label>
+      </div>
 
-      <p style={{ marginTop: 12, fontWeight: "bold" }}>{result}</p>
+      <div className="calc-result" style={{ marginTop: 12 }}>
+        {result}
+      </div>
     </div>
   );
 }

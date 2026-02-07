@@ -48,6 +48,12 @@
   gap: 10px;
 }
 
+.header-actions-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 /* =========================
    THEME TOGGLE
 ========================= */

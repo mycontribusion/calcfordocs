@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function HypokalemiaCorrection() {
   const [weight, setWeight] = useState("");
@@ -97,63 +98,68 @@ export default function HypokalemiaCorrection() {
   };
 
   return (
-    <div>
-      <h2>Hypokalemia Correction Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Hypokalemia Correction Calculator</h2>
 
-      <div>
-        <label>Weight: </label><br />
-        <input
-          type="number"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
-        />
-        <select
-          value={weightUnit}
-          onChange={(e) => setWeightUnit(e.target.value)}
-        >
-          <option value="kg">kg</option>
-          <option value="lb">lb</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Weight: </label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={weightUnit}
+            onChange={(e) => setWeightUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="kg">kg</option>
+            <option value="lb">lb</option>
+          </select>
+        </div>
       </div>
 
-      <div>
-        <p></p>
-        <label>Observed Serum K⁺ (mmol/L): </label><br />
+      <div className="calc-box">
+        <label className="calc-label">Observed Serum K⁺ (mmol/L): </label>
         <input
           type="number"
           step="0.1"
           value={observedK}
           onChange={(e) => setObservedK(e.target.value)}
+          className="calc-input"
         />
       </div>
 
-      <div>
-        <p></p>
-        <label>Target Serum K⁺ (mmol/L): </label><br />
+      <div className="calc-box">
+        <label className="calc-label">Target Serum K⁺ (mmol/L): </label>
         <input
           type="number"
           step="0.1"
           value={desiredK}
           onChange={(e) => setDesiredK(e.target.value)}
+          className="calc-input"
         />
       </div>
 
-      <p></p>
-      <button onClick={handleReset}>Reset</button><p></p>
+      <button onClick={handleReset} className="calc-btn-reset">Reset</button>
 
       {message && (
-        <div style={{ marginTop: "1em" }}>
+        <div className="calc-result" style={{ marginTop: 16, borderColor: message.includes("✅") ? '#16a34a' : '#ea580c', color: message.includes("✅") ? '#16a34a' : '#ea580c', background: message.includes("✅") ? 'rgba(22, 163, 74, 0.05)' : 'rgba(234, 88, 12, 0.05)' }}>
           <p>{message}</p>
         </div>
       )}
 
       {results && (
-        <div style={{ marginTop: "1em" }}>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p>
             <strong>Deficit:</strong> {results.deficit.toFixed(1)} mmol
           </p>
 
-          <p>
+          <p style={{ margin: '8px 0', fontSize: '0.9rem', color: '#555' }}>
             Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr (~30 mL/hr in adults) before giving IV replacement
           </p>
 
@@ -161,19 +167,21 @@ export default function HypokalemiaCorrection() {
             <strong>Daily Maintenance:</strong> {results.maintenance.toFixed(1)} mmol/day
           </p>
 
-          <p>
+          <p style={{ marginTop: 8, fontSize: '1.1rem', color: '#0056b3' }}>
             <strong>Total Requirement:</strong> {results.total.toFixed(1)} mmol
           </p>
 
-          <h3>Notes</h3>
-          <ul>
-            <li><strong>Deficit</strong> = (Desired – Observed) × Weight(kg) × 0.6</li>
-            <li><strong>Maintenance</strong> = 1 mmol/kg/day</li>
-            <li><strong>Normal range</strong>: 3.5 – 5.5 mmol/L</li>
-            <li><strong>Max daily dose</strong>: 120 mmol/day</li>
-            <li><strong>Max infusion rate</strong>: 10–20 mmol/hr</li>
-            <li><strong>Max concentration</strong>: 40 mmol/L</li>
-          </ul>
+          <div style={{ marginTop: 16, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 12, borderRadius: 8 }}>
+            <h3 style={{ fontSize: '0.95rem', margin: '0 0 8px' }}>Notes</h3>
+            <ul style={{ paddingLeft: 20, margin: 0, fontSize: '0.9rem', color: '#444' }}>
+              <li><strong>Deficit</strong> = (Desired – Observed) × Weight(kg) × 0.6</li>
+              <li><strong>Maintenance</strong> = 1 mmol/kg/day</li>
+              <li><strong>Normal range</strong>: 3.5 – 5.5 mmol/L</li>
+              <li><strong>Max daily dose</strong>: 120 mmol/day</li>
+              <li><strong>Max infusion rate</strong>: 10–20 mmol/hr</li>
+              <li><strong>Max concentration</strong>: 40 mmol/L</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

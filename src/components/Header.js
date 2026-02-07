@@ -11,11 +11,11 @@ export default function Header({ theme, toggleTheme, activePanel, setActivePanel
   };
 
   return (
-    <div className="head-contact-container" style={{ position: "relative" }}>
+    <div className="head-contact-container">
       <div className="head-contact">
         <h2 className="title">CalcForDocs</h2>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div className="header-actions-container">
           <button className="theme-toggle" onClick={toggleTheme}>
             {theme === "light" ? "🌙" : "☀️"}
           </button>

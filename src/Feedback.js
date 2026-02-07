@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Feedback.css";
+import "./components/Dropdowns.css";
 
 export default function FeedbackDropdown() {
   const [subject, setSubject] = useState("");
@@ -16,13 +16,14 @@ export default function FeedbackDropdown() {
   };
 
   return (
-    <div className="feedback-dropdown">
-      <p className="feedback-intro">
+    <div className="dropdown-container">
+      <p className="dropdown-text">
         💡 Found a bug or have suggestions? Share your thoughts below.
       </p>
 
-      <form onSubmit={handleSubmit} className="feedback-form">
+      <form onSubmit={handleSubmit}>
         <input
+          className="dropdown-input"
           type="text"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
@@ -30,6 +31,7 @@ export default function FeedbackDropdown() {
         />
 
         <textarea
+          className="dropdown-textarea"
           rows="4"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -37,7 +39,7 @@ export default function FeedbackDropdown() {
           required
         ></textarea>
 
-        <button type="submit">📨 Send</button>
+        <button type="submit" className="dropdown-btn">📨 Send</button>
       </form>
     </div>
   );

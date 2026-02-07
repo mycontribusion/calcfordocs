@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function SirirajScore() {
   const [consciousness, setConsciousness] = useState(0);
@@ -47,105 +48,74 @@ export default function SirirajScore() {
     setInterpretation("");
   };
 
-  const containerStyle = {
-    margin: "20px auto",
-    fontFamily: "sans-serif",
-
-    borderRadius: "6px",
-  };
-
-  const labelStyle = {
-    display: "block",
-    marginBottom: "8px",
-  };
-
-  const inputStyle = {
-    marginLeft: "8px",
-    padding: "4px",
-  };
-
-  const buttonStyle = {
-    marginTop: "12px",
-    padding: "6px 12px",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  };
-
-  const resultStyle = {
-    marginTop: "16px",
-    padding: "10px",
-    borderRadius: "4px",
-  };
-
   return (
-    <div style={containerStyle}>
-      <h2>Siriraj Stroke Score</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Siriraj Stroke Score</h2>
 
-      <label style={labelStyle}>
-        Consciousness:
+      <div className="calc-box">
+        <label className="calc-label">Consciousness:</label>
         <select
+          className="calc-select"
           value={consciousness}
           onChange={(e) => setConsciousness(Number(e.target.value))}
-          style={inputStyle}
         >
           <option value={0}>Alert</option>
           <option value={1}>Drowsy/Stuporous</option>
           <option value={2}>Semi-coma/Coma</option>
         </select>
-      </label>
+      </div>
 
-      <label style={labelStyle}>
-        Vomiting:
+      <div className="calc-box">
+        <label className="calc-label">Vomiting:</label>
         <select
+          className="calc-select"
           value={vomiting}
           onChange={(e) => setVomiting(Number(e.target.value))}
-          style={inputStyle}
         >
           <option value={0}>Absent</option>
           <option value={1}>Present</option>
         </select>
-      </label>
+      </div>
 
-      <label style={labelStyle}>
-        Headache:
+      <div className="calc-box">
+        <label className="calc-label">Headache:</label>
         <select
+          className="calc-select"
           value={headache}
           onChange={(e) => setHeadache(Number(e.target.value))}
-          style={inputStyle}
         >
           <option value={0}>Absent</option>
           <option value={1}>Present</option>
         </select>
-      </label>
+      </div>
 
-      <label style={labelStyle}>
-        Diastolic BP (mmHg):
+      <div className="calc-box">
+        <label className="calc-label">Diastolic BP (mmHg):</label>
         <input
           type="number"
+          className="calc-input"
           value={dbp}
           onChange={(e) => setDbp(e.target.value)}
           placeholder="e.g. 90"
-          style={inputStyle}
         />
-      </label>
+      </div>
 
-      <label style={labelStyle}>
-        Atheroma markers:
+      <div className="calc-box">
+        <label className="calc-label">Atheroma markers:</label>
         <select
+          className="calc-select"
           value={atheroma}
           onChange={(e) => setAtheroma(Number(e.target.value))}
-          style={inputStyle}
         >
           <option value={0}>Absent</option>
           <option value={1}>Present</option>
         </select>
-      </label>
+      </div>
 
-      <button onClick={resetAll} style={buttonStyle}>Reset</button>
+      <button onClick={resetAll} className="calc-btn-reset">Reset</button>
 
       {score !== null && (
-        <div style={resultStyle}>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Score:</strong> {score}</p>
           <p><strong>Interpretation:</strong> {interpretation}</p>
         </div>

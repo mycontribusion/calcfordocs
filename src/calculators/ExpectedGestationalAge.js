@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function PregnancyCalculator() {
   const [lmp, setLmp] = useState("");
@@ -102,67 +103,65 @@ export default function PregnancyCalculator() {
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "20px auto", fontFamily: "Arial" }}>
-      <h2>Pregnancy Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Pregnancy Calculator</h2>
 
-      <button onClick={resetAll} style={{ width: "80%" }}>
+      <div className="calc-box">
+        <label className="calc-label">LMP:</label>
+        <input
+          type="date"
+          value={lmp}
+          onChange={handleLMPChange}
+          className="calc-input"
+        />
+      </div>
+
+      <div className="calc-box">
+        <label className="calc-label">EDD:</label>
+        <input
+          type="date"
+          value={edd}
+          onChange={handleEDDChange}
+          className="calc-input"
+        />
+      </div>
+
+      <div className="calc-box">
+        <label className="calc-label">EGA:</label>
+        <div className="calc-ega-group">
+          <div className="calc-ega-field">
+            <input
+              type="number"
+              value={egaWeeks}
+              onChange={(e) => handleEGAChange(e.target.value, egaDays)}
+              className="calc-input"
+            />
+            <span className="calc-unit-label">weeks</span>
+          </div>
+          <div className="calc-ega-field">
+            <input
+              type="number"
+              value={egaDays}
+              onChange={(e) => handleEGAChange(egaWeeks, e.target.value)}
+              className="calc-input"
+            />
+            <span className="calc-unit-label">days</span>
+          </div>
+        </div>
+      </div>
+
+      <button onClick={resetAll} className="calc-btn-reset">
         Reset
-      </button><p></p>
-
-      {/* LMP */}
-      <div style={{ marginBottom: "10px" }}>
-        <label>
-          LMP:
-          <input
-            type="date"
-            value={lmp}
-            onChange={handleLMPChange}
-            style={{ marginLeft: "8px" }}
-          />
-        </label>
-      </div>
-
-      {/* EDD */}
-      <div style={{ marginBottom: "10px" }}>
-        <label>
-          EDD:
-          <input
-            type="date"
-            value={edd}
-            onChange={handleEDDChange}
-            style={{ marginLeft: "8px" }}
-          />
-        </label>
-      </div>
-
-      {/* EGA */}
-      <div style={{ marginBottom: "10px" }}>
-        <label>
-          EGA:
-          <input
-            type="number"
-            value={egaWeeks}
-            onChange={(e) => handleEGAChange(e.target.value, egaDays)}
-            style={{ width: "50px", marginLeft: "8px" }}
-          /> weeks
-          <input
-            type="number"
-            value={egaDays}
-            onChange={(e) => handleEGAChange(egaWeeks, e.target.value)}
-            style={{ width: "50px", marginLeft: "8px" }}
-          /> days
-        </label>
-      </div>
-
-      {/* Reset Button */}
-      
+      </button>
 
       {/* Clinical Comments */}
-      <div style={{ marginTop: "0px",padding: "10px", borderRadius: "6px" }}>
-        <p>{getANCComment()}</p>
-        <p>{getTrimester()}</p>
-        <p>{getQuickening()}</p>
-      </div>
+      {(egaWeeks !== "") && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p>{getANCComment()}</p>
+          <p>{getTrimester()}</p>
+          <p>{getQuickening()}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,11 +1,10 @@
 import CalcForDocs from "./CalcForDocs";
-import "./App.css";
 
 
-function App(){
-  return(
+function App() {
+  return (
     <div>
-      <CalcForDocs/>
+      <CalcForDocs />
     </div>
   )
 }

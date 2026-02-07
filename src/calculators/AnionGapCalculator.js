@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function AnionGapCalculator() {
   const [na, setNa] = useState("");
@@ -87,79 +88,82 @@ export default function AnionGapCalculator() {
   }
 
   return (
-    <div>
-      <h2>Anion Gap Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Anion Gap Calculator</h2>
 
-      <div>
-        <label>Serum Sodium (Na, mmol/L)</label><br />
-        <input value={na} onChange={(e) => setNa(e.target.value)} />
+      <div className="calc-box">
+        <label className="calc-label">Serum Sodium (Na, mmol/L)</label>
+        <input value={na} onChange={(e) => setNa(e.target.value)} className="calc-input" />
       </div>
-      <p />
 
-      <div>
-        <label>Serum Potassium (K⁺, optional)</label><br />
-        <input value={k} onChange={(e) => setK(e.target.value)} />
+      <div className="calc-box">
+        <label className="calc-label">Serum Potassium (K⁺, optional)</label>
+        <input value={k} onChange={(e) => setK(e.target.value)} className="calc-input" />
       </div>
-      <p />
 
-      <div>
-        <label>Serum Chloride (Cl, mmol/L)</label><br />
-        <input value={cl} onChange={(e) => setCl(e.target.value)} />
+      <div className="calc-box">
+        <label className="calc-label">Serum Chloride (Cl, mmol/L)</label>
+        <input value={cl} onChange={(e) => setCl(e.target.value)} className="calc-input" />
       </div>
-      <p />
 
-      <div>
-        <label>Serum Bicarbonate (HCO₃⁻, mmol/L)</label><br />
-        <input value={hco3} onChange={(e) => setHco3(e.target.value)} />
+      <div className="calc-box">
+        <label className="calc-label">Serum Bicarbonate (HCO₃⁻, mmol/L)</label>
+        <input value={hco3} onChange={(e) => setHco3(e.target.value)} className="calc-input" />
       </div>
-      <p />
 
-      <div>
-        <label>Albumin (optional)</label><br />
-        <input
-          value={alb}
-          onChange={(e) => setAlb(e.target.value)}
-          style={{ width: "120px", marginRight: "8px" }}
-        />
-        <select value={albUnit} onChange={(e) => setAlbUnit(e.target.value)}>
-          <option value="g/dL">g/dL</option>
-          <option value="g/L">g/L</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Albumin (optional)</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            value={alb}
+            onChange={(e) => setAlb(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={albUnit}
+            onChange={(e) => setAlbUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="g/dL">g/dL</option>
+            <option value="g/L">g/L</option>
+          </select>
+        </div>
       </div>
-      <p />
 
-      <button onClick={handleReset}>Reset</button><p></p>
+      <button onClick={handleReset} className="calc-btn-reset">Reset</button>
 
-      {/* RESULTS — NOTHING SHOWS UNTIL REQUIRED FIELDS ARE FILLED */}
       {result && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className="calc-result" style={{ marginTop: "1rem" }}>
           <p>
             <strong>Anion Gap:</strong> {result.ag} mmol/L<br />
-            <em>{result.agInterp}</em>
+            <em style={{ fontWeight: "normal" }}>{result.agInterp}</em>
           </p>
 
-          <p style={{ fontSize: "0.85em" }}>
+          <p style={{ fontSize: "0.85em", marginTop: 4 }}>
             Formula: {result.usedK
               ? "AG = Na + K − (Cl + HCO₃)"
               : "AG = Na − (Cl + HCO₃)"}
           </p>
 
           {result.corrected !== null && (
-            <p>
-              <strong>Albumin-Corrected AG:</strong> {result.corrected} mmol/L<br />
-              <em>{result.correctedInterp}</em>
-              <br />
-              <span style={{ fontSize: "0.85em" }}>
-                Corrected AG = AG + 2.5 × (4 − albumin in g/dL)
-              </span>
-            </p>
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
+              <p>
+                <strong>Albumin-Corrected AG:</strong> {result.corrected} mmol/L<br />
+                <em style={{ fontWeight: "normal" }}>{result.correctedInterp}</em>
+              </p>
+              <p style={{ fontSize: "0.85em", marginTop: 4 }}>
+                Corrected AG = AG + 2.5 × (4 − albumin)
+              </p>
+            </div>
           )}
 
-          <p style={{ fontSize: "0.9em" }}>
-            Normal AG:{" "}
+          <p style={{ fontSize: "0.9em", marginTop: 12 }}>
+            <strong>Normal AG:</strong>{" "}
             {result.usedK
               ? "12–16 mmol/L (with K⁺)"
-              : "8–12 mmol/L (without K⁺)"}.
+              : "8–12 mmol/L (without K⁺)"}
           </p>
         </div>
       )}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 /* ===================== HELPERS ===================== */
 
@@ -76,38 +77,46 @@ export default function SerumOsmolalityCalculator() {
   };
 
   return (
-    <div>
-      <h2>Serum Osmolality Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Serum Osmolality Calculator</h2>
 
-      <label>Serum Sodium (mmol/L):</label><br />
-      <input value={na} onChange={(e) => setNa(e.target.value)} placeholder="e.g., 140" />
-      <p />
+      <div className="calc-box">
+        <label className="calc-label">Serum Sodium (mmol/L):</label>
+        <input value={na} onChange={(e) => setNa(e.target.value)} placeholder="e.g., 140" className="calc-input" />
+      </div>
 
-      <label>Serum Glucose:</label><br />
-      <input value={glucose} onChange={(e) => setGlucose(e.target.value)} placeholder="e.g., 5.5" />
-      <select value={glucoseUnit} onChange={(e) => setGlucoseUnit(e.target.value)}>
-        <option value="mmol/L">mmol/L</option>
-        <option value="mg/dL">mg/dL</option>
-      </select>
-      <p />
+      <div className="calc-box">
+        <label className="calc-label">Serum Glucose:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input value={glucose} onChange={(e) => setGlucose(e.target.value)} placeholder="e.g., 5.5" className="calc-input" style={{ flex: 2 }} />
+          <select value={glucoseUnit} onChange={(e) => setGlucoseUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
+        </div>
+      </div>
 
-      <label>Serum Urea:</label><br />
-      <input value={urea} onChange={(e) => setUrea(e.target.value)} placeholder="e.g., 5.0" />
-      <select value={ureaUnit} onChange={(e) => setUreaUnit(e.target.value)}>
-        <option value="mmol/L">mmol/L</option>
-        <option value="mg/dL">mg/dL</option>
-      </select>
-      <p />
+      <div className="calc-box">
+        <label className="calc-label">Serum Urea:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input value={urea} onChange={(e) => setUrea(e.target.value)} placeholder="e.g., 5.0" className="calc-input" style={{ flex: 2 }} />
+          <select value={ureaUnit} onChange={(e) => setUreaUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
+        </div>
+      </div>
 
-      <label>Measured Osmolality (optional):</label><br />
-      <input value={measured} onChange={(e) => setMeasured(e.target.value)} placeholder="e.g., 290" />
-      <p />
+      <div className="calc-box">
+        <label className="calc-label">Measured Osmolality (optional):</label>
+        <input value={measured} onChange={(e) => setMeasured(e.target.value)} placeholder="e.g., 290" className="calc-input" />
+      </div>
 
-      <button onClick={handleReset}>Reset</button>
+      <button onClick={handleReset} className="calc-btn-reset">Reset</button>
 
       {/* ✅ NOTHING renders until ALL required inputs are filled */}
       {result && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Calculated Osmolality:</strong> {result.osmolality} mOsm/kg</p>
 
           {result.gap !== null && (
@@ -116,7 +125,7 @@ export default function SerumOsmolalityCalculator() {
 
           <p><strong>Interpretation:</strong> {result.interpretation}</p>
 
-          <div style={{ marginTop: "10px", padding: "10px", borderRadius: "6px" }}>
+          <div style={{ marginTop: "10px", padding: "10px", borderRadius: "6px", background: '#f5f5f5', border: '1px solid #ddd', fontSize: '0.9rem', color: '#555', textAlign: 'center', fontWeight: 'normal' }}>
             <strong>Formula:</strong><br />
             <code>2 × [Na⁺] + Glucose (mmol/L) + Urea (mmol/L)</code>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function PediatricWeightEstimator() {
   const [age, setAge] = useState("");
@@ -113,57 +114,64 @@ export default function PediatricWeightEstimator() {
   };
 
   return (
-    <div>
-      <h2>Pediatric Weight Estimator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Pediatric Weight Estimator</h2>
 
-      <label>
-        Age: <br />
-        <input
-          type="number"
-          value={age}
-          onChange={(e) => setAge(Number(e.target.value))}
-        />
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">Age:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(Number(e.target.value))}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="days">Days</option>
+            <option value="months">Months</option>
+            <option value="years">Years</option>
+          </select>
+        </div>
+      </div>
 
-      <label>
-        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-          <option value="days">Days</option>
-          <option value="months">Months</option>
-          <option value="years">Years</option>
-        </select>
-      </label>
-      <p></p>
-
-      <label>
-        Formula:
-        <select value={formula} onChange={(e) => setFormula(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">Formula:</label>
+        <select
+          value={formula}
+          onChange={(e) => setFormula(e.target.value)}
+          className="calc-select"
+        >
           <option value="nelson">Nelson</option>
           <option value="bestGuess">Best Guess</option>
           <option value="default">Default</option>
         </select>
-      </label>
-      <p></p>
+      </div>
 
       {showBirthWeightInput && (
-        <label>
-          Birth Weight (grams): <br />
+        <div className="calc-box">
+          <label className="calc-label">Birth Weight (grams):</label>
           <input
             type="number"
             value={birthWeight}
             onChange={(e) => setBirthWeight(Number(e.target.value))}
+            className="calc-input"
           />
-        </label>
+        </div>
       )}
-      {showBirthWeightInput && <p></p>}
 
       {/* Reset Button */}
-      <button onClick={reset}>Reset</button>
-      <p></p>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
       {weightResult && (
-        <div>
-          <p>{weightResult}</p>
-          {formulaResult && <p>{formulaResult}</p>}
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p><strong>{weightResult}</strong></p>
+          {formulaResult && <p style={{ fontSize: "0.9em", marginTop: 5 }}>{formulaResult}</p>}
         </div>
       )}
     </div>

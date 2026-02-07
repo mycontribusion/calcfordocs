@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 // Move criteria arrays outside the component to avoid ESLint warnings
 const majorCriteria = [
@@ -51,39 +52,45 @@ export default function HeartFailureFramingham() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
-      <h2>Heart Failure (Framingham Criteria)</h2>
+    <div className="calc-container" style={{ maxWidth: 500 }}>
+      <h2 className="calc-title">Heart Failure (Framingham Criteria)</h2>
 
-      <h3>Major Criteria</h3>
-      {majorCriteria.map((c) => (
-        <label key={c.id} style={{ display: "block", marginBottom: 4 }}>
-          <input
-            type="checkbox"
-            checked={!!selected[c.id]}
-            onChange={() => toggleCheck(c.id)}
-          />{" "}
-          {c.label}
-        </label>
-      ))}
+      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: '#333' }}>Major Criteria</h3>
+      <div className="calc-box">
+        {majorCriteria.map((c) => (
+          <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={!!selected[c.id]}
+              onChange={() => toggleCheck(c.id)}
+              style={{ marginRight: 8 }}
+            />
+            {c.label}
+          </label>
+        ))}
+      </div>
 
-      <h3>Minor Criteria</h3>
-      {minorCriteria.map((c) => (
-        <label key={c.id} style={{ display: "block", marginBottom: 4 }}>
-          <input
-            type="checkbox"
-            checked={!!selected[c.id]}
-            onChange={() => toggleCheck(c.id)}
-          />{" "}
-          {c.label}
-        </label>
-      ))}
+      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: '#333' }}>Minor Criteria</h3>
+      <div className="calc-box">
+        {minorCriteria.map((c) => (
+          <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={!!selected[c.id]}
+              onChange={() => toggleCheck(c.id)}
+              style={{ marginRight: 8 }}
+            />
+            {c.label}
+          </label>
+        ))}
+      </div>
 
-      <button onClick={reset} style={{ marginTop: 10, padding: "6px 12px", cursor: "pointer" }}>
+      <button onClick={reset} className="calc-btn-reset" style={{ marginTop: 10 }}>
         Reset
       </button>
 
       {result && (
-        <div style={{ marginTop: 15, padding: 10, border: "1px solid #ccc", borderRadius: 6 }}>
+        <div className="calc-result" style={{ marginTop: 15 }}>
           <strong>Diagnosis:</strong> {result}
         </div>
       )}

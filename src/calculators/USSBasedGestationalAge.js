@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 function USSBasedGestationalAge() {
   const [ussDate, setUssDate] = useState("");
@@ -40,51 +41,63 @@ function USSBasedGestationalAge() {
 
   return (
     <div className="calc-container">
-      <h2>USS-Based Gestational Age Calculator</h2>
+      <h2 className="calc-title">USS-Based Gestational Age Calculator</h2>
 
-      <label>
-        USS Date:
-        <input
-          type="date"
-          value={ussDate}
-          onChange={(e) => setUssDate(e.target.value)}
-        />
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">
+          USS Date:
+          <input
+            type="date"
+            value={ussDate}
+            onChange={(e) => setUssDate(e.target.value)}
+            className="calc-input"
+          />
+        </label>
+      </div>
 
-      <label>
-        GA at USS (weeks):
-        <input
-          type="number"
-          value={gaWeeks}
-          onChange={(e) => setGaWeeks(e.target.value)}
-        />
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">
+          GA at USS (weeks):
+          <input
+            type="number"
+            value={gaWeeks}
+            onChange={(e) => setGaWeeks(e.target.value)}
+            className="calc-input"
+          />
+        </label>
+      </div>
 
-      <label>
-        GA at USS (days):
-        <input
-          type="number"
-          value={gaDays}
-          onChange={(e) => setGaDays(e.target.value)}
-        />
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">
+          GA at USS (days):
+          <input
+            type="number"
+            value={gaDays}
+            onChange={(e) => setGaDays(e.target.value)}
+            className="calc-input"
+          />
+        </label>
+      </div>
 
-      <label>
-        Current Date:
-        <input
-          type="date"
-          value={currentDate}
-          onChange={(e) => setCurrentDate(e.target.value)}
-        />
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">
+          Current Date:
+          <input
+            type="date"
+            value={currentDate}
+            onChange={(e) => setCurrentDate(e.target.value)}
+            className="calc-input"
+          />
+        </label>
+      </div>
 
-      <button onClick={calculateGA}>Calculate</button>
+      <button onClick={calculateGA} className="calc-btn-primary">Calculate</button>
 
       {result && typeof result === "string" && (
-        <p style={{ color: "red" }}>{result}</p>
+        <p className="calc-result" style={{ color: "#d9534f", borderColor: "#ebccd1", background: "#f2dede" }}>{result}</p>
       )}
       {result && typeof result === "object" && (
-        <div className="result">
+        <div className="calc-result">
           <p><strong>Current GA:</strong> {result.ga}</p>
           <p><strong>EDD:</strong> {result.edd}</p>
         </div>

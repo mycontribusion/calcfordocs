@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 function PregnancyCalculator() {
   const [mode, setMode] = useState("lmp"); // "lmp", "edd", "ega"
@@ -65,30 +66,41 @@ function PregnancyCalculator() {
 
   return (
     <div className="calc-container">
-      <h2>Pregnancy Calculator</h2>
+      <h2 className="calc-title">Pregnancy Calculator</h2>
 
-      <label>
-        Mode:
-        <select value={mode} onChange={(e) => setMode(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">Mode:</label>
+        <select value={mode} onChange={(e) => setMode(e.target.value)} className="calc-select">
           <option value="lmp">LMP known → calculate EDD & EGA</option>
           <option value="edd">EDD known → calculate LMP & EGA</option>
           <option value="ega">Current EGA known → calculate LMP & EDD</option>
         </select>
-      </label>
+      </div>
 
-      <label>
-        {mode === "lmp" && "LMP"}{mode === "edd" && "EDD"}{mode === "ega" && "EGA (weeks)"}:
+      <div className="calc-box">
+        <label className="calc-label">
+          {mode === "lmp" && "LMP"}
+          {mode === "edd" && "EDD"}
+          {mode === "ega" && "EGA (weeks)"}:
+        </label>
         <input
           type={mode === "ega" ? "number" : "date"}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          className="calc-input"
         />
-      </label>
+      </div>
 
-      <button onClick={calculate}>Calculate</button>
+      <button onClick={calculate} className="calc-btn-primary">Calculate</button>
 
-      {result && (
-        <div className="result">
+      {result && typeof result === 'string' && (
+        <div className="calc-result" style={{ marginTop: 16, color: 'red', borderColor: 'red', background: '#fff0f0' }}>
+          {result}
+        </div>
+      )}
+
+      {result && typeof result === 'object' && (
+        <div className="calc-result" style={{ marginTop: 16, textAlign: 'left', fontWeight: 'normal' }}>
           <p><strong>LMP:</strong> {result.lmp}</p>
           <p><strong>EDD:</strong> {result.edd}</p>
           <p><strong>Current EGA (weeks):</strong> {result.egaWeeks}</p>

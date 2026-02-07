@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 function CorrectedCalcium() {
   const [calcium, setCalcium] = useState("");
@@ -62,57 +63,75 @@ function CorrectedCalcium() {
   };
 
   return (
-    <div>
-      <h2>Corrected Calcium Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Corrected Calcium Calculator</h2>
 
-      <div>
-        <label>Calcium:</label><br />
-        <input
-          type="number"
-          value={calcium}
-          onChange={(e) => setCalcium(e.target.value)}
-          placeholder="Enter calcium"
-        />
-        <select value={calciumUnit} onChange={(e) => setCalciumUnit(e.target.value)}>
-          <option value="mg/dL">mg/dL</option>
-          <option value="mmol/L">mmol/L</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Calcium:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={calcium}
+            onChange={(e) => setCalcium(e.target.value)}
+            placeholder="Enter calcium"
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={calciumUnit}
+            onChange={(e) => setCalciumUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
+          </select>
+        </div>
       </div>
 
-      <div>
-        <p></p>
-        <label>Albumin:</label><br />
-        <input
-          type="number"
-          value={albumin}
-          onChange={(e) => setAlbumin(e.target.value)}
-          placeholder="Enter albumin"
-        />
-        <select value={albuminUnit} onChange={(e) => setAlbuminUnit(e.target.value)}>
-          <option value="g/dL">g/dL</option>
-          <option value="g/L">g/L</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Albumin:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={albumin}
+            onChange={(e) => setAlbumin(e.target.value)}
+            placeholder="Enter albumin"
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={albuminUnit}
+            onChange={(e) => setAlbuminUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="g/dL">g/dL</option>
+            <option value="g/L">g/L</option>
+          </select>
+        </div>
       </div>
 
-      <div>
-        <p></p>
-        <button onClick={reset}>Reset</button>
-      </div>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
       {/* Show result only when both required inputs exist */}
       {result !== null && (
-        <div>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p>
             <strong>Corrected Calcium:</strong> {result} {calciumUnit} ({interpretation})
           </p>
 
-          <p>Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4.0 − Albumin in g/dL)</p>
+          <p style={{ fontSize: '0.85rem', marginTop: 12 }}>
+            Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4.0 − Albumin in g/dL)
+          </p>
 
-          <p><strong>Normal Ranges:</strong></p>
-          <ul style={{ textAlign: "left" }}>
-            <li>Total Calcium (mg/dL): 8.5 – 10.5</li>
-            <li>Total Calcium (mmol/L): 2.12 – 2.62</li>
-          </ul>
+          <div style={{ fontSize: '0.85rem', marginTop: 8, textAlign: 'left' }}>
+            <p className="calc-label">Normal Ranges:</p>
+            <ul style={{ paddingLeft: 20 }}>
+              <li>Total Calcium (mg/dL): 8.5 – 10.5</li>
+              <li>Total Calcium (mmol/L): 2.12 – 2.62</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

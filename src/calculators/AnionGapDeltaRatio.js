@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./CalculatorShared.css";
 
 export default function AnionGapDeltaRatio() {
   const [sodium, setSodium] = useState("");
@@ -111,87 +112,87 @@ export default function AnionGapDeltaRatio() {
   };
 
   return (
-    <div>
-      <h2>Anion Gap & Delta Gap / Delta Ratio</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Anion Gap & Delta Gap / Delta Ratio</h2>
 
-      <label>
-        Sodium (Na⁺, mmol/L):
-        <br /><input value={sodium} onChange={(e) => setSodium(e.target.value)} />
-      </label><p></p>
+      <div className="calc-box">
+        <label className="calc-label">Sodium (Na⁺, mmol/L):</label>
+        <input value={sodium} onChange={(e) => setSodium(e.target.value)} className="calc-input" />
+      </div>
 
-      <label>
-        Potassium (K⁺, mmol/L):
-        <br /><input value={potassium} onChange={(e) => setPotassium(e.target.value)} />
-      </label><p></p>
+      <div className="calc-box">
+        <label className="calc-label">Potassium (K⁺, mmol/L):</label>
+        <input value={potassium} onChange={(e) => setPotassium(e.target.value)} className="calc-input" />
+      </div>
 
-      <label>
-        Chloride (Cl⁻, mmol/L):
-        <br /><input value={chloride} onChange={(e) => setChloride(e.target.value)} />
-      </label><p></p>
+      <div className="calc-box">
+        <label className="calc-label">Chloride (Cl⁻, mmol/L):</label>
+        <input value={chloride} onChange={(e) => setChloride(e.target.value)} className="calc-input" />
+      </div>
 
-      <label>
-        Bicarbonate (HCO₃⁻, mmol/L):
-        <br /><input
-          value={bicarbonate}
-          onChange={(e) => setBicarbonate(e.target.value)}
-        />
-      </label><p></p>
+      <div className="calc-box">
+        <label className="calc-label">Bicarbonate (HCO₃⁻, mmol/L):</label>
+        <input value={bicarbonate} onChange={(e) => setBicarbonate(e.target.value)} className="calc-input" />
+      </div>
 
-      <label>
-        Albumin (optional):
-        <br />
-        <input
-          value={albumin}
-          onChange={(e) => setAlbumin(e.target.value)}
-          style={{ width: "120px", marginRight: "8px" }}
-        />
-        <select
-          value={albuminUnit}
-          onChange={(e) => setAlbuminUnit(e.target.value)}
-        >
-          <option value="g/dL">g/dL</option>
-          <option value="g/L">g/L</option>
-          <option value="g%">g%</option>
-          <option value="mg/mL">mg/mL</option>
-        </select>
-      </label>
+      <div className="calc-box">
+        <label className="calc-label">Albumin (optional):</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            value={albumin}
+            onChange={(e) => setAlbumin(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={albuminUnit}
+            onChange={(e) => setAlbuminUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="g/dL">g/dL</option>
+            <option value="g/L">g/L</option>
+            <option value="g%">g%</option>
+            <option value="mg/mL">mg/mL</option>
+          </select>
+        </div>
+      </div>
 
-      <p></p>
-      <button onClick={reset}>Reset</button>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
       {/* 🔒 NOTHING shows until required fields are filled */}
       {result && (
-        <div>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p>
             <strong>Anion Gap:</strong> {result.ag} mmol/L
           </p>
 
           {result.agCorr !== null && (
-            <>
+            <div style={{ marginTop: 8 }}>
               <p>Albumin (g/dL): {result.albuminGdL.toFixed(2)}</p>
               <p>
                 <strong>Corrected AG:</strong> {result.agCorr} mmol/L
               </p>
-            </>
+            </div>
           )}
 
-          <p>
-            <strong>Delta Gap / Ratio</strong>
-          </p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
+            <p><strong>Delta Gap / Ratio</strong></p>
 
-          {result.deltaGap === null ? (
-            <p>ΔRatio not applicable (AG &lt; 12 mmol/L)</p>
-          ) : result.deltaRatio === null ? (
-            <p>ΔGap: {result.deltaGap} — cannot compute ΔRatio</p>
-          ) : (
-            <>
-              <p>ΔGap: {result.deltaGap}</p>
-              <p>ΔRatio: {result.deltaRatio}</p>
-              <p>{result.deltaInterpretation}</p>
-            </>
-          )}
+            {result.deltaGap === null ? (
+              <p style={{ fontSize: '0.9rem' }}>ΔRatio not applicable (AG &lt; 12 mmol/L)</p>
+            ) : result.deltaRatio === null ? (
+              <p style={{ fontSize: '0.9rem' }}>ΔGap: {result.deltaGap} — cannot compute ΔRatio</p>
+            ) : (
+              <div style={{ fontSize: '0.95rem' }}>
+                <p>ΔGap: {result.deltaGap}</p>
+                <p>ΔRatio: {result.deltaRatio}</p>
+                <p style={{ fontStyle: 'italic', marginTop: 4 }}>{result.deltaInterpretation}</p>
+              </div>
+            )}
+          </div>
 
-          <p>
+          <div style={{ fontSize: '0.8rem', marginTop: 16, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 8, borderRadius: 4 }}>
             <strong>Formulas</strong>
             <br />
             AG = (Na⁺ + K⁺) − (Cl⁻ + HCO₃⁻)
@@ -199,7 +200,7 @@ export default function AnionGapDeltaRatio() {
             Corrected AG = AG + 2.5 × (4 − albumin[g/dL])
             <br />
             ΔRatio = (AG − 12) ÷ (24 − HCO₃⁻)
-          </p>
+          </div>
         </div>
       )}
     </div>

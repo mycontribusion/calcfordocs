@@ -1,5 +1,6 @@
 // src/calculators/MapCalculator.js
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function MapCalculator() {
   const [sbp, setSbp] = useState("");
@@ -51,41 +52,45 @@ export default function MapCalculator() {
   };
 
   return (
-    <div style={{padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-      <h2>MAP & Pulse Pressure Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">MAP & Pulse Pressure Calculator</h2>
 
-      <div style={{ marginTop: "0.5rem" }}>
-        <label>Systolic BP (mmHg)</label><br />
+      <div className="calc-box">
+        <label className="calc-label">Systolic BP (mmHg)</label>
         <input
           type="number"
           value={sbp}
           onChange={(e) => setSbp(e.target.value)}
           placeholder="e.g., 120"
-          style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
+          className="calc-input"
         />
       </div>
 
-      <div style={{ marginTop: "0.5rem" }}>
-        <label>Diastolic BP (mmHg)</label><br />
+      <div className="calc-box">
+        <label className="calc-label">Diastolic BP (mmHg)</label>
         <input
           type="number"
           value={dbp}
           onChange={(e) => setDbp(e.target.value)}
           placeholder="e.g., 80"
-          style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
+          className="calc-input"
         />
       </div>
 
       <button
         onClick={reset}
-        style={{ marginTop: "0.75rem", padding: "0.5rem 1rem", cursor: "pointer" }}
+        className="calc-btn-reset"
       >
         Reset
       </button>
 
-      {formula && <p style={{ marginTop: "1rem", fontStyle: "italic" }}>Formula used: {formula}</p>}
-      {mapResult && <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>{mapResult}</p>}
-      {ppResult && <p style={{ marginTop: "0.25rem", fontWeight: "bold" }}>{ppResult}</p>}
+      {(mapResult || ppResult) && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          {mapResult && <p style={{ fontWeight: "bold", marginBottom: 8 }}>{mapResult}</p>}
+          {ppResult && <p style={{ fontWeight: "bold" }}>{ppResult}</p>}
+          {formula && <p style={{ marginTop: "1rem", fontStyle: "italic", fontSize: '0.9rem', color: '#555', fontWeight: 'normal' }}>Formula used: {formula}</p>}
+        </div>
+      )}
     </div>
   );
 }

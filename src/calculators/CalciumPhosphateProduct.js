@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import "./CalculatorShared.css";
 
 export default function CalciumPhosphateProduct() {
   const [calcium, setCalcium] = useState("");
@@ -61,60 +62,66 @@ export default function CalciumPhosphateProduct() {
   };
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">Calcium-Phosphate Product Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Calcium-Phosphate Product Calculator</h2>
 
-      <div className="mb-2">
-        <label>Serum Calcium:</label><br />
-        <input
-          type="number"
-          placeholder="Enter Calcium"
-          value={calcium}
-          onChange={(e) => setCalcium(e.target.value)}
-          className="border px-2 py-1 rounded w-full mb-1"
-        />
-        <select
-          value={caUnit}
-          onChange={(e) => setCaUnit(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="mmol">mmol/L</option>
-          <option value="mg">mg/dL</option>
-        </select>
-      </div><p></p>
-
-      <div className="mb-2">
-        <label>Serum Phosphate:</label><br />
-        <input
-          type="number"
-          placeholder="Enter Phosphate"
-          value={phosphate}
-          onChange={(e) => setPhosphate(e.target.value)}
-          className="border px-2 py-1 rounded w-full mb-1"
-        />
-        <select
-          value={phUnit}
-          onChange={(e) => setPhUnit(e.target.value)}
-          className="border px-2 py-1 rounded w-full"
-        >
-          <option value="mmol">mmol/L</option>
-          <option value="mg">mg/dL</option>
-        </select>
-      </div><p></p>
-
-      <div className="mb-2">
-        <button
-          onClick={reset}
-          className="bg-gray-400 text-white px-3 py-1 rounded w-full"
-        >
-          Reset
-        </button>
+      <div className="calc-box">
+        <label className="calc-label">Serum Calcium:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            placeholder="Enter Calcium"
+            value={calcium}
+            onChange={(e) => setCalcium(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={caUnit}
+            onChange={(e) => setCaUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="mmol">mmol/L</option>
+            <option value="mg">mg/dL</option>
+          </select>
+        </div>
       </div>
 
-      {result && <p className="mt-2 text-sm font-medium">{result}</p>}
+      <div className="calc-box">
+        <label className="calc-label">Serum Phosphate:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            placeholder="Enter Phosphate"
+            value={phosphate}
+            onChange={(e) => setPhosphate(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={phUnit}
+            onChange={(e) => setPhUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="mmol">mmol/L</option>
+            <option value="mg">mg/dL</option>
+          </select>
+        </div>
+      </div>
+
+      <button
+        onClick={reset}
+        className="calc-btn-reset"
+      >
+        Reset
+      </button>
+
+      {result && <div className="calc-result" style={{ marginTop: 16 }}>{result}</div>}
 
       {showFormula && (
-        <div style={{ fontSize: "small" }}>
+        <div style={{ fontSize: "small", marginTop: 8, padding: 8, borderRadius: 4, background: 'rgba(0,0,0,0.02)' }}>
           <span><strong>Formula:</strong> Ca × P = Serum Calcium × Serum Phosphate</span><br />
           <span><strong>Units:</strong> mg/dL × mg/dL → mg²/dL²</span>
         </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function GCSCalculator() {
   const [eye, setEye] = useState(4);
@@ -13,23 +14,6 @@ export default function GCSCalculator() {
   else if (total <= 12) interpretation = "Moderate head injury (GCS 9 - 12)";
   else interpretation = "Mild head injury (GCS 13 - 15)";
 
-  const containerStyle = {
-    maxWidth: 360,
-    margin: "1rem auto",
-    padding: 16,
-    borderRadius: 8,
-    fontFamily: "Arial, sans-serif",
-  };
-
-  const boxStyle = {
-    border: "1px solid",
-    padding: 12,
-    borderRadius: 6,
-    marginBottom: 12,
-  };
-
-  const selectStyle = { width: "100%", padding: 6 };
-
   const reset = () => {
     setEye(4);
     setVerbal(5);
@@ -37,13 +21,13 @@ export default function GCSCalculator() {
   };
 
   return (
-    <div style={containerStyle}>
-      <h2 style={{ marginBottom: 16, fontSize: "18px" }}>GCS Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">GCS Calculator</h2>
 
       {/* Eye Response */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Eye Response (E)</div>
-        <select value={eye} onChange={(e) => setEye(parseInt(e.target.value))} style={selectStyle}>
+      <div className="calc-box">
+        <label className="calc-label">Eye Response (E)</label>
+        <select value={eye} onChange={(e) => setEye(parseInt(e.target.value))} className="calc-select">
           <option value={4}>4 - Spontaneous</option>
           <option value={3}>3 - To speech</option>
           <option value={2}>2 - To pain</option>
@@ -52,9 +36,9 @@ export default function GCSCalculator() {
       </div>
 
       {/* Verbal Response */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Verbal Response (V)</div>
-        <select value={verbal} onChange={(e) => setVerbal(parseInt(e.target.value))} style={selectStyle}>
+      <div className="calc-box">
+        <label className="calc-label">Verbal Response (V)</label>
+        <select value={verbal} onChange={(e) => setVerbal(parseInt(e.target.value))} className="calc-select">
           <option value={5}>5 - Oriented</option>
           <option value={4}>4 - Confused</option>
           <option value={3}>3 - Inappropriate words</option>
@@ -64,9 +48,9 @@ export default function GCSCalculator() {
       </div>
 
       {/* Motor Response */}
-      <div style={boxStyle}>
-        <div style={{ fontWeight: "bold", marginBottom: 6 }}>Motor Response (M)</div>
-        <select value={motor} onChange={(e) => setMotor(parseInt(e.target.value))} style={selectStyle}>
+      <div className="calc-box">
+        <label className="calc-label">Motor Response (M)</label>
+        <select value={motor} onChange={(e) => setMotor(parseInt(e.target.value))} className="calc-select">
           <option value={6}>6 - Obeys commands</option>
           <option value={5}>5 - Localizes pain</option>
           <option value={4}>4 - Withdraws to pain</option>
@@ -77,15 +61,12 @@ export default function GCSCalculator() {
       </div>
 
       {/* Result */}
-      <div style={{ fontWeight: "bold", fontSize: 14, marginBottom: 12 }}>
+      <div className="calc-result">
         Total GCS: {total} → {interpretation}
       </div>
 
       {/* Reset button */}
-      <button
-        onClick={reset}
-        style={{ padding: "6px 12px", borderRadius: 4, border: "1px solid" }}
-      >
+      <button onClick={reset} className="calc-btn-reset">
         Reset
       </button>
     </div>

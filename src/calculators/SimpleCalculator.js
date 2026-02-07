@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function SmartCalculator() {
   const [input, setInput] = useState("");
@@ -100,8 +101,8 @@ export default function SmartCalculator() {
   };
 
   return (
-    <div style={{ maxWidth: "280px", border: "1px solid", padding: "10px", borderRadius: "6px" }}>
-      <h3 style={{ textAlign: "center" }}>Calculator</h3>
+    <div className="calc-container" style={{ maxWidth: "280px" }}>
+      <h3 className="calc-title">Calculator</h3>
 
       <textarea
         ref={textareaRef}
@@ -109,38 +110,38 @@ export default function SmartCalculator() {
         readOnly
         onKeyDown={(e) => e.preventDefault()} // disable keyboard input
         rows={2}
-        style={{ width: "100%", fontSize: "1rem", textAlign: "right", marginBottom: "6px", cursor: "text" }}
+        className="calc-grid-display"
       />
 
       <div style={{ textAlign: "right", fontWeight: "bold", marginBottom: "6px" }}>
         {result !== "" && <span>= {result}</span>}
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "6px", height:"300px" }}>
-        <button onClick={handleClear}>C</button>
-        <button onClick={handleBackspace}>⌫</button>
-        <button onClick={handleSquareRoot}>√</button>
-        <button onClick={() => insertAtCursor("÷")}>÷</button>
+      <div className="calc-keypad" style={{ height: "300px" }}>
+        <button className="calc-key" onClick={handleClear}>C</button>
+        <button className="calc-key" onClick={handleBackspace}>⌫</button>
+        <button className="calc-key" onClick={handleSquareRoot}>√</button>
+        <button className="calc-key" onClick={() => insertAtCursor("÷")}>÷</button>
 
-        <button onClick={() => insertAtCursor("7")}>7</button>
-        <button onClick={() => insertAtCursor("8")}>8</button>
-        <button onClick={() => insertAtCursor("9")}>9</button>
-        <button onClick={() => insertAtCursor("×")}>×</button>
+        <button className="calc-key" onClick={() => insertAtCursor("7")}>7</button>
+        <button className="calc-key" onClick={() => insertAtCursor("8")}>8</button>
+        <button className="calc-key" onClick={() => insertAtCursor("9")}>9</button>
+        <button className="calc-key" onClick={() => insertAtCursor("×")}>×</button>
 
-        <button onClick={() => insertAtCursor("4")}>4</button>
-        <button onClick={() => insertAtCursor("5")}>5</button>
-        <button onClick={() => insertAtCursor("6")}>6</button>
-        <button onClick={() => insertAtCursor("-")}>−</button>
+        <button className="calc-key" onClick={() => insertAtCursor("4")}>4</button>
+        <button className="calc-key" onClick={() => insertAtCursor("5")}>5</button>
+        <button className="calc-key" onClick={() => insertAtCursor("6")}>6</button>
+        <button className="calc-key" onClick={() => insertAtCursor("-")}>−</button>
 
-        <button onClick={() => insertAtCursor("1")}>1</button>
-        <button onClick={() => insertAtCursor("2")}>2</button>
-        <button onClick={() => insertAtCursor("3")}>3</button>
-        <button onClick={() => insertAtCursor("+")}>+</button>
+        <button className="calc-key" onClick={() => insertAtCursor("1")}>1</button>
+        <button className="calc-key" onClick={() => insertAtCursor("2")}>2</button>
+        <button className="calc-key" onClick={() => insertAtCursor("3")}>3</button>
+        <button className="calc-key" onClick={() => insertAtCursor("+")}>+</button>
 
-        <button onClick={() => insertAtCursor("0")}>0</button>
-        <button onClick={() => insertAtCursor(".")}>.</button>
-        <button onClick={handleParentheses}>()</button>
-        <button onClick={transferResultToInput}>→</button>
+        <button className="calc-key" onClick={() => insertAtCursor("0")}>0</button>
+        <button className="calc-key" onClick={() => insertAtCursor(".")}>.</button>
+        <button className="calc-key" onClick={handleParentheses}>()</button>
+        <button className="calc-key" onClick={transferResultToInput}>→</button>
       </div>
     </div>
   );

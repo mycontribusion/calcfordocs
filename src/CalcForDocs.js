@@ -1,5 +1,5 @@
 import "./CalcForDocs.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import calcinfo from "./calculators/calcinfo.json";
 import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
 
@@ -41,8 +41,23 @@ function CalcForDocs() {
   }, []);
 
   /* 🛠 Handlers */
-  const toggleTheme = () => setTheme((p) => (p === "light" ? "dark" : "light"));
-  const toggleCalc = (id) => setActiveCalc((prev) => (prev === id ? null : id));
+  const toggleTheme = useCallback(() => {
+    setTheme((p) => (p === "light" ? "dark" : "light"));
+  }, []);
+
+  const toggleCalc = useCallback((id) => {
+    setActiveCalc((prev) => (prev === id ? null : id));
+  }, []);
+
+  /* 🔍 Filtered Calculators */
+  const filteredCalcs = useMemo(() => {
+    const lowerTerm = searchTerm.toLowerCase();
+    return calcinfo.filter(
+      (item) =>
+        item.name.toLowerCase().includes(lowerTerm) ||
+        item.keywords?.some((k) => k.toLowerCase().includes(lowerTerm))
+    );
+  }, [searchTerm]);
 
   return (
     <div className={`calcfordocs ${theme}`}>
@@ -75,11 +90,7 @@ function CalcForDocs() {
 
       {/* 🧮 Calculator Grid */}
       <CalculatorGrid
-        calcs={calcinfo.filter(
-          (item) =>
-            item.name.toLowerCase().includes(searchTerm) ||
-            item.keywords?.some((k) => k.toLowerCase().includes(searchTerm))
-        )}
+        calcs={filteredCalcs}
         activeCalc={activeCalc}
         toggleCalc={toggleCalc}
       />
