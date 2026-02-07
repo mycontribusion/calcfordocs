@@ -34,7 +34,7 @@ export default function ShockIndex() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
+    <div style={{padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
       <h2>Shock Index Calculator</h2>
 
       {/* Heart Rate */}

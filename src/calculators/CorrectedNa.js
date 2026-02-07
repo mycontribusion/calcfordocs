@@ -80,7 +80,6 @@ export default function CorrectedSodium() {
   return (
     <div
       style={{
-        border: "1px solid #ccc",
         padding: "1rem",
         borderRadius: "8px",
         marginBottom: "1rem",

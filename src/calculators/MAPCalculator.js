@@ -51,7 +51,7 @@ export default function MapCalculator() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
+    <div style={{padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
       <h2>MAP & Pulse Pressure Calculator</h2>
 
       <div style={{ marginTop: "0.5rem" }}>

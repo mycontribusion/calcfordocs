@@ -91,7 +91,7 @@ export default function GlucoseConverter() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
+    <div style={{padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
       <h2>Glucose Converter</h2>
 
       <div style={{ marginBottom: "0.5rem" }}>

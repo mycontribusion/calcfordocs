@@ -47,7 +47,7 @@ export default function EstimatedBloodVolume() {
   })();
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, maxWidth: 360, margin: "1rem auto" }}>
+    <div style={{padding: "1rem", borderRadius: 8, maxWidth: 360, margin: "1rem auto" }}>
       <h2>Estimated Blood Volume (EBV)</h2>
 
       <label style={{ display: "block", marginBottom: 8 }}>

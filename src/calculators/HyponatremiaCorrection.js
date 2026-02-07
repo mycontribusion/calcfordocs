@@ -86,7 +86,7 @@ export default function HyponatremiaCorrection() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
+    <div style={{padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
       <h2>Hyponatremia Correction Calculator (Adrogué–Madias)</h2>
 
       <div>

@@ -47,7 +47,7 @@ export default function MilestoneAgeEstimator() {
   }
 
   return (
-    <div style={{ maxWidth: 360, margin: "1rem auto", padding: 16, border: "1px solid #ccc", borderRadius: 8, fontFamily: "Arial, sans-serif" }}>
+    <div style={{ maxWidth: 360, margin: "1rem auto", padding: 16, borderRadius: 8, fontFamily: "Arial, sans-serif" }}>
       <h2>Pediatric Age Estimator</h2>
 
       <b>Gross Motor:</b>

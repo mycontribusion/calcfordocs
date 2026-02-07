@@ -17,13 +17,12 @@ export default function GCSCalculator() {
     maxWidth: 360,
     margin: "1rem auto",
     padding: 16,
-    border: "1px solid #ccc",
     borderRadius: 8,
     fontFamily: "Arial, sans-serif",
   };
 
   const boxStyle = {
-    border: "1px solid #aaa",
+    border: "1px solid",
     padding: 12,
     borderRadius: 6,
     marginBottom: 12,
@@ -85,7 +84,7 @@ export default function GCSCalculator() {
       {/* Reset button */}
       <button
         onClick={reset}
-        style={{ padding: "6px 12px", borderRadius: 4, border: "1px solid #888" }}
+        style={{ padding: "6px 12px", borderRadius: 4, border: "1px solid" }}
       >
         Reset
       </button>

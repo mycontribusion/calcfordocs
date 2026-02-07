@@ -48,11 +48,9 @@ export default function SirirajScore() {
   };
 
   const containerStyle = {
-    maxWidth: "400px",
     margin: "20px auto",
     fontFamily: "sans-serif",
-    padding: "16px",
-    border: "1px solid",
+
     borderRadius: "6px",
   };
 
@@ -78,7 +76,6 @@ export default function SirirajScore() {
     marginTop: "16px",
     padding: "10px",
     borderRadius: "4px",
-    border: "1px solid",
   };
 
   return (

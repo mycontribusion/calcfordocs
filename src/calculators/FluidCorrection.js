@@ -38,7 +38,7 @@ export default function FluidCorrection() {
   })();
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: 16, borderRadius: 8, maxWidth: 400, margin: "1rem auto" }}>
+    <div style={{padding: 16, borderRadius: 8, maxWidth: 400, margin: "1rem auto" }}>
       <h2>Fluid Correction Calculator</h2>
 
       {/* Weight */}

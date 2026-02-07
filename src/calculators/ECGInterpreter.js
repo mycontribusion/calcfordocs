@@ -124,7 +124,7 @@ export default function ECGInterpreter() {
   }, [wave, measurementType, valueType, numericalValue, rrInterval, rrUnit]);
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, marginBottom: "1rem", fontFamily: "Arial, sans-serif" }}>
+    <div style={{padding: "1rem", borderRadius: 8, marginBottom: "1rem", fontFamily: "Arial, sans-serif" }}>
       <h2>ECG Interpreter</h2>
 
       <div style={{ marginBottom: "0.5rem" }}>

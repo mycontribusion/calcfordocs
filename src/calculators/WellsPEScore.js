@@ -31,7 +31,7 @@ export default function WellsScorePE() {
   else interpretation = "Low probability of PE";
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, marginBottom: "1rem" }}>
+    <div style={{padding: "1rem", borderRadius: 8, marginBottom: "1rem" }}>
       <h2>Wells Score for Pulmonary Embolism</h2>
 
       {WELLS_CRITERIA.map((c) => (
