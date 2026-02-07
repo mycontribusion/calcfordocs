@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 // Move criteria outside the component to avoid missing deps warning
 const criteria = [
@@ -49,25 +50,28 @@ export default function WellsDVTScore() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
-      <h2>Wells Score for DVT</h2>
+    <div className="calc-container" style={{ maxWidth: 500 }}>
+      <h2 className="calc-title">Wells Score for DVT</h2>
 
-      {criteria.map((c) => (
-        <label key={c.key} style={{ display: "block", marginBottom: 4 }}>
-          <input
-            type="checkbox"
-            checked={!!answers[c.key]}
-            onChange={() => toggle(c.key)}
-          />{" "}
-          {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
-        </label>
-      ))}
+      <div className="calc-box">
+        {criteria.map((c) => (
+          <label key={c.key} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={!!answers[c.key]}
+              onChange={() => toggle(c.key)}
+              style={{ marginRight: 8 }}
+            />
+            {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
+          </label>
+        ))}
+      </div>
 
-      <button onClick={reset} style={{ marginTop: 10, padding: "6px 12px", cursor: "pointer" }}>
+      <button onClick={reset} className="calc-btn-reset">
         Reset
       </button>
 
-      <div style={{ marginTop: 15, padding: 10, border: "1px solid #ccc", borderRadius: 6 }}>
+      <div className="calc-result" style={{ marginTop: 16 }}>
         <strong>Total Score:</strong> {score} <br />
         <strong>Interpretation:</strong> {interpretation}
       </div>

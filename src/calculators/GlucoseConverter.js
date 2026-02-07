@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function GlucoseConverter() {
   const [value, setValue] = useState("");
@@ -37,28 +38,28 @@ export default function GlucoseConverter() {
     // Determine category
     if (displayUnit === "mg/dL") {
       if (type === "fasting") {
-        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "red"; }
-        else if (convertedValue <= 100) { category = "Normal"; categoryColor = "green"; }
-        else if (convertedValue < 126) { category = "Prediabetes"; categoryColor = "orange"; }
-        else { category = "Diabetes"; categoryColor = "red"; }
+        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
+        else if (convertedValue <= 100) { category = "Normal"; categoryColor = "#16a34a"; }
+        else if (convertedValue < 126) { category = "Prediabetes"; categoryColor = "#ea580c"; }
+        else { category = "Diabetes"; categoryColor = "#dc2626"; }
       } else {
-        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "red"; }
-        else if (convertedValue < 140) { category = "Normal"; categoryColor = "green"; }
-        else if (convertedValue < 200) { category = "Prediabetes"; categoryColor = "orange"; }
-        else { category = "Diabetes"; categoryColor = "red"; }
+        if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
+        else if (convertedValue < 140) { category = "Normal"; categoryColor = "#16a34a"; }
+        else if (convertedValue < 200) { category = "Prediabetes"; categoryColor = "#ea580c"; }
+        else { category = "Diabetes"; categoryColor = "#dc2626"; }
       }
     } else {
       // mmol/L ranges
       if (type === "fasting") {
-        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "red"; }
-        else if (convertedValue <= 5.6) { category = "Normal"; categoryColor = "green"; }
-        else if (convertedValue < 7.0) { category = "Prediabetes"; categoryColor = "orange"; }
-        else { category = "Diabetes"; categoryColor = "red"; }
+        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
+        else if (convertedValue <= 5.6) { category = "Normal"; categoryColor = "#16a34a"; }
+        else if (convertedValue < 7.0) { category = "Prediabetes"; categoryColor = "#ea580c"; }
+        else { category = "Diabetes"; categoryColor = "#dc2626"; }
       } else {
-        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "red"; }
-        else if (convertedValue < 7.8) { category = "Normal"; categoryColor = "green"; }
-        else if (convertedValue < 11.1) { category = "Prediabetes"; categoryColor = "orange"; }
-        else { category = "Diabetes"; categoryColor = "red"; }
+        if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
+        else if (convertedValue < 7.8) { category = "Normal"; categoryColor = "#16a34a"; }
+        else if (convertedValue < 11.1) { category = "Prediabetes"; categoryColor = "#ea580c"; }
+        else { category = "Diabetes"; categoryColor = "#dc2626"; }
       }
     }
 
@@ -91,58 +92,60 @@ export default function GlucoseConverter() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-      <h2>Glucose Converter</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Glucose Converter</h2>
 
-      <div style={{ marginBottom: "0.5rem" }}>
-        <label>Glucose Value:</label>
-        <br />
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <br />
-        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-          <option value="mg">mg/dL</option>
-          <option value="mmol">mmol/L</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Glucose Value:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select value={unit} onChange={(e) => setUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mg">mg/dL</option>
+            <option value="mmol">mmol/L</option>
+          </select>
+        </div>
       </div>
 
-      <div style={{ marginBottom: "0.5rem" }}>
-        <label>Type:</label>
-        <br />
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">Type:</label>
+        <select value={type} onChange={(e) => setType(e.target.value)} className="calc-select">
           <option value="fasting">Fasting</option>
           <option value="random">Random</option>
         </select>
       </div>
 
-      <p></p>
-      <button onClick={handleReset}>Reset</button><p></p>
+      <button onClick={handleReset} className="calc-btn-reset">Reset</button>
 
       {result && (
-        <div style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           {result.error ? (
-            <p style={{ color: "red" }}>{result.error}</p>
+            <p style={{ color: "#ef4444" }}>{result.error}</p>
           ) : (
             <>
-              <p>Conversion Formula: 1 mmol/L = 18.0182 mg/dL</p>
-              <p>
+              <p style={{ fontSize: '0.85rem' }}>Conversion Formula: 1 mmol/L = 18.0182 mg/dL</p>
+              <p style={{ marginTop: 8 }}>
                 Converted Value: {result.convertedValue} {result.displayUnit}{" "}
                 <strong style={{ color: result.categoryColor }}>({result.category})</strong>
               </p>
-              <p>Reference Ranges ({result.typeLabel}):</p>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                {Object.entries(result.ranges).map(([key, val]) => (
-                  <li
-                    key={key}
-                    style={{ color: key === result.category ? result.categoryColor : "#015c9c" }}
-                  >
-                    {key}: {val} {result.displayUnit}
-                  </li>
-                ))}
-              </ul>
+              <div style={{ marginTop: 12, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 8, borderRadius: 4 }}>
+                <p className="calc-label">Reference Ranges ({result.typeLabel}):</p>
+                <ul style={{ listStyle: "none", paddingLeft: 0, margin: '4px 0 0' }}>
+                  {Object.entries(result.ranges).map(([key, val]) => (
+                    <li
+                      key={key}
+                      style={{ color: key === result.category ? result.categoryColor : "#0369a1", fontWeight: key === result.category ? 'bold' : 'normal' }}
+                    >
+                      {key}: {val} {result.displayUnit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </>
           )}
         </div>

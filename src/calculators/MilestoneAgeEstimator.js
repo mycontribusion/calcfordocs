@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function MilestoneAgeEstimator() {
   const [grossMotor, setGrossMotor] = useState("");
@@ -47,54 +48,62 @@ export default function MilestoneAgeEstimator() {
   }
 
   return (
-    <div style={{ maxWidth: 360, margin: "1rem auto", padding: 16, border: "1px solid #ccc", borderRadius: 8, fontFamily: "Arial, sans-serif" }}>
-      <h2>Pediatric Age Estimator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Pediatric Age Estimator</h2>
 
-      <b>Gross Motor:</b>
-      <select value={grossMotor} onChange={(e) => setGrossMotor(e.target.value)} style={{ width: "100%", padding: 6, marginBottom: 12 }}>
-        <option value="">--Select--</option>
-        <option value="headControl">Head control</option>
-        <option value="sits">Sits without support</option>
-        <option value="crawls">Crawls</option>
-        <option value="walksSupport">Walks with support</option>
-        <option value="walksAlone">Walks alone</option>
-        <option value="runs">Runs</option>
-        <option value="tricycle">Rides tricycle</option>
-        <option value="hops">Hops on one foot</option>
-        <option value="skips">Skips</option>
-      </select>
+      <div className="calc-box">
+        <label className="calc-label">Gross Motor:</label>
+        <select value={grossMotor} onChange={(e) => setGrossMotor(e.target.value)} className="calc-select">
+          <option value="">--Select--</option>
+          <option value="headControl">Head control</option>
+          <option value="sits">Sits without support</option>
+          <option value="crawls">Crawls</option>
+          <option value="walksSupport">Walks with support</option>
+          <option value="walksAlone">Walks alone</option>
+          <option value="runs">Runs</option>
+          <option value="tricycle">Rides tricycle</option>
+          <option value="hops">Hops on one foot</option>
+          <option value="skips">Skips</option>
+        </select>
+      </div>
 
-      <b>Fine Motor:</b>
-      <select value={fineMotor} onChange={(e) => setFineMotor(e.target.value)} style={{ width: "100%", padding: 6, marginBottom: 12 }}>
-        <option value="">--Select--</option>
-        <option value="reaches">Reaches for objects</option>
-        <option value="transfers">Transfers object hand-to-hand</option>
-        <option value="pincer">Pincer grasp</option>
-        <option value="blocks2">Stacks 2 blocks</option>
-        <option value="blocks4">Stacks 4 blocks</option>
-        <option value="blocks6">Stacks 6 blocks</option>
-        <option value="circle">Copies circle</option>
-        <option value="cross">Copies cross</option>
-        <option value="square">Copies square</option>
-      </select>
+      <div className="calc-box">
+        <label className="calc-label">Fine Motor:</label>
+        <select value={fineMotor} onChange={(e) => setFineMotor(e.target.value)} className="calc-select">
+          <option value="">--Select--</option>
+          <option value="reaches">Reaches for objects</option>
+          <option value="transfers">Transfers object hand-to-hand</option>
+          <option value="pincer">Pincer grasp</option>
+          <option value="blocks2">Stacks 2 blocks</option>
+          <option value="blocks4">Stacks 4 blocks</option>
+          <option value="blocks6">Stacks 6 blocks</option>
+          <option value="circle">Copies circle</option>
+          <option value="cross">Copies cross</option>
+          <option value="square">Copies square</option>
+        </select>
+      </div>
 
-      <b>Language/Verbal:</b>
-      <select value={language} onChange={(e) => setLanguage(e.target.value)} style={{ width: "100%", padding: 6, marginBottom: 12 }}>
-        <option value="">--Select--</option>
-        <option value="cooing">Cooing</option>
-        <option value="babbling">Babbling</option>
-        <option value="mama">Mama/Dada</option>
-        <option value="firstWords">First words</option>
-        <option value="words20">10–20 words</option>
-        <option value="phrases2">2-word phrases</option>
-        <option value="sentences3">3-word sentences</option>
-        <option value="story">Tells story</option>
-        <option value="fluent">Fluent conversation</option>
-      </select>
+      <div className="calc-box">
+        <label className="calc-label">Language/Verbal:</label>
+        <select value={language} onChange={(e) => setLanguage(e.target.value)} className="calc-select">
+          <option value="">--Select--</option>
+          <option value="cooing">Cooing</option>
+          <option value="babbling">Babbling</option>
+          <option value="mama">Mama/Dada</option>
+          <option value="firstWords">First words</option>
+          <option value="words20">10–20 words</option>
+          <option value="phrases2">2-word phrases</option>
+          <option value="sentences3">3-word sentences</option>
+          <option value="story">Tells story</option>
+          <option value="fluent">Fluent conversation</option>
+        </select>
+      </div>
 
-      <p></p><button onClick={reset} style={{ padding: "6px 12px", borderRadius: 4, border: "1px solid #888", marginBottom: 12 }}>Reset</button>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
-      <p><b>{result}</b></p>
+      <div className="calc-result" style={{ marginTop: 16 }}>
+        <p>{result}</p>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,135 @@
+/* =========================
+   DROPDOWN SHARED STYLES
+========================= */
+
+.dropdown-container {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #333;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typography */
+.dropdown-title {
+    margin: 0 0 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.dropdown-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+/* Lists */
+.dropdown-list {
+    padding-left: 20px;
+    margin: 8px 0 16px;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.dropdown-list li {
+    margin-bottom: 6px;
+}
+
+/* Inputs & Textareas */
+.dropdown-input,
+.dropdown-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fdfdfd;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    font-family: inherit;
+}
+
+.dropdown-input:focus,
+.dropdown-textarea:focus {
+    border-color: #007bff;
+    background: #fff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.dropdown-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Buttons */
+.dropdown-btn {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.dropdown-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.dropdown-btn:active {
+    transform: translateY(0);
+}
+
+/* Dark Mode Overrides */
+.calcfordocs.dark .dropdown-container {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+}
+
+.calcfordocs.dark .dropdown-title {
+    color: #fff;
+}
+
+.calcfordocs.dark .dropdown-text,
+.calcfordocs.dark .dropdown-list {
+    color: #ccc;
+}
+
+.calcfordocs.dark .dropdown-input,
+.calcfordocs.dark .dropdown-textarea {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+}
+
+.calcfordocs.dark .dropdown-input:focus,
+.calcfordocs.dark .dropdown-textarea:focus {
+    border-color: #4da3ff;
+    background: #333;
+}

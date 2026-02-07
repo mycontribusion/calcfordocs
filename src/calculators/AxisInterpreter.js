@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -85,22 +86,22 @@ export default function AxisInterpreter() {
   const activeSector = result.sector || "normal";
 
   return (
-    <div style={{ maxWidth: 720, margin: "20px auto", fontFamily: "Arial, sans-serif" }}>
+    <div className="calc-container" style={{ maxWidth: 720 }}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 320px", minWidth: 280 }}>
-          <h2>Axis Interpreter</h2>
+          <h2 className="calc-title">Axis Interpreter</h2>
 
-          <div>
-            <label>Lead I: </label>
-            <select value={lead1} onChange={(e) => setLead1(e.target.value)}>
+          <div className="calc-box">
+            <label className="calc-label">Lead I: </label>
+            <select value={lead1} onChange={(e) => setLead1(e.target.value)} className="calc-select">
               <option value="positive">Positive</option>
               <option value="negative">Negative</option>
             </select>
           </div>
 
-          <div style={{ marginTop: 8 }}>
-            <label>Lead aVF: </label>
-            <select value={leadAvf} onChange={(e) => setLeadAvf(e.target.value)}>
+          <div className="calc-box">
+            <label className="calc-label">Lead aVF: </label>
+            <select value={leadAvf} onChange={(e) => setLeadAvf(e.target.value)} className="calc-select">
               <option value="positive">Positive</option>
               <option value="negative">Negative</option>
             </select>
@@ -108,26 +109,19 @@ export default function AxisInterpreter() {
 
           <button
             onClick={reset}
-            style={{
-              marginTop: 12,
-              padding: "6px 12px",
-              background: "#f87171",
-              color: "#fff",
-              borderRadius: 6,
-              border: "none",
-              cursor: "pointer"
-            }}
+            className="calc-btn-reset"
+            style={{ marginTop: 12 }}
           >
             Reset
           </button>
 
-          <div style={{ marginTop: 10, padding: 10, borderRadius: 6}}>
+          <div className="calc-result" style={{ marginTop: 16 }}>
             <div><strong>Interpretation:</strong> {result.interpretation || "—"}</div>
             <div><strong>Equiphasic lead:</strong> {result.equiphasic || "—"}</div>
           </div>
         </div>
 
-        <div style={{ width: 320, textAlign: "center" }}>
+        <div style={{ width: 320, textAlign: "center", margin: 'auto' }}>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
             <circle cx={cx} cy={cy} r={r} stroke="#374151" strokeWidth="1" fill="#fff" />
 

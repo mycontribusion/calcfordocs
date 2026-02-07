@@ -1,0 +1,33 @@
+/* =========================
+   GLOBAL SEARCH
+========================= */
+
+.global-search-container {
+    margin: 10px 0;
+}
+
+.global-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.global-search-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Dark mode support if parent has .dark class */
+.calcfordocs.dark .global-search-input {
+    background: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+.calcfordocs.dark .global-search-input:focus {
+    border-color: #4da3ff;
+}

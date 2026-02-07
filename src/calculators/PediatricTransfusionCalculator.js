@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function PediatricTransfusionCalculator() {
   const [weight, setWeight] = useState("");
@@ -85,83 +86,99 @@ export default function PediatricTransfusionCalculator() {
   };
 
   return (
-    <div>
-      <h2>Pediatric Transfusion Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Pediatric Transfusion Calculator</h2>
 
-      <label>
-        Weight:
-        <input type="number" value={weight} onChange={(e) => setWeight(e.target.value)} />
-      </label>
-      <label>
-        <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)}>
-          <option value="kg">kg</option>
-          <option value="lb">lb</option>
-        </select>
-      </label>
-      <p></p>
+      <div className="calc-box">
+        <label className="calc-label">Weight:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={weightUnit}
+            onChange={(e) => setWeightUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="kg">kg</option>
+            <option value="lb">lb</option>
+          </select>
+        </div>
+      </div>
 
-      <label>
-        Method:
-        <select value={method} onChange={(e) => setMethod(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">Method:</label>
+        <select value={method} onChange={(e) => setMethod(e.target.value)} className="calc-select">
           <option value="pcv">PCV</option>
           <option value="hb">Hb</option>
         </select>
-      </label>
-      <p></p>
+      </div>
 
-      <label>
-        Observed {method.toUpperCase()}:
-        <input type="number" value={observedValue} onChange={(e) => setObservedValue(e.target.value)} />
-      </label>
-      <p></p>
+      <div className="calc-box">
+        <label className="calc-label">Observed {method.toUpperCase()}:</label>
+        <input
+          type="number"
+          value={observedValue}
+          onChange={(e) => setObservedValue(e.target.value)}
+          className="calc-input"
+        />
+      </div>
 
-      <label>
-        Target {method.toUpperCase()}:
-        <input type="number" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} />
-      </label>
-      <p></p>
+      <div className="calc-box">
+        <label className="calc-label">Target {method.toUpperCase()}:</label>
+        <input
+          type="number"
+          value={targetValue}
+          onChange={(e) => setTargetValue(e.target.value)}
+          className="calc-input"
+        />
+      </div>
 
-      <label>
-        Blood type / Product:
-        <select value={bloodType} onChange={(e) => setBloodType(e.target.value)}>
+      <div className="calc-box">
+        <label className="calc-label">Blood type / Product:</label>
+        <select value={bloodType} onChange={(e) => setBloodType(e.target.value)} className="calc-select">
           <option value="whole">Whole blood (factor 6)</option>
           <option value="sedimented">Sedimented (factor 4)</option>
           <option value="packed">Packed cells (factor 3)</option>
           <option value="custom">Custom / Factor from PCV</option>
         </select>
-      </label>
-      <p></p>
+      </div>
 
       {bloodType === "custom" && (
-        <>
-          <label>
-            Enter PCV of donated blood (%):
-            <input type="number" value={customPCV} onChange={(e) => setCustomPCV(e.target.value)} />
-          </label>
-          <p></p>
-        </>
+        <div className="calc-box">
+          <label className="calc-label">Enter PCV of donated blood (%):</label>
+          <input
+            type="number"
+            value={customPCV}
+            onChange={(e) => setCustomPCV(e.target.value)}
+            className="calc-input"
+          />
+        </div>
       )}
-      <p></p>
 
-      <button onClick={reset}>Reset</button>
-      <p></p>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
       {result && (
-        <div>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           {result.error ? (
-            <p>{result.error}</p>
+            <p style={{ color: 'red' }}>{result.error}</p>
           ) : (
             <>
-              <p>{result.volume}</p>
-              {result.note && <p>{result.note}</p>}
-              <p>{result.formula}</p>
-              <p>Factor used: {result.factorUsed}</p>
+              <p style={{ fontSize: '1.2rem', color: '#0056b3' }}>{result.volume}</p>
+              {result.note && <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 8 }}>{result.note}</p>}
+              <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 4 }}>{result.formula}</p>
+              <p style={{ fontSize: '0.9rem', color: '#555' }}>Factor used: {result.factorUsed}</p>
             </>
           )}
         </div>
       )}
 
-      <p style={{ fontSize: "0.9em", color: "gray" }}>
+      <p style={{ fontSize: "0.85rem", color: "#666", marginTop: 12, padding: 8, background: '#f9f9f9', borderRadius: 6 }}>
         Factor is automatically set according to blood type: Whole blood = 6, Sedimented = 4, Packed cells = 3. Custom factor is calculated from PCV if selected.
       </p>
     </div>

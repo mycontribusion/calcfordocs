@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import "./CalculatorShared.css";
 
 export default function HyponatremiaCorrection() {
   const [serumNa, setSerumNa] = useState("");
@@ -86,69 +87,69 @@ export default function HyponatremiaCorrection() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-      <h2>Hyponatremia Correction Calculator (Adrogué–Madias)</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Hyponatremia Correction Calculator (Adrogué–Madias)</h2>
 
-      <div>
-        <label>Serum Sodium (mmol/L)</label>
-        <input type="number" value={serumNa} onChange={e => setSerumNa(e.target.value)} style={{ width: "100%", padding: "0.25rem" }} />
+      <div className="calc-box">
+        <label className="calc-label">Serum Sodium (mmol/L)</label>
+        <input type="number" value={serumNa} onChange={e => setSerumNa(e.target.value)} className="calc-input" />
       </div>
 
-      <div>
-        <label>Weight (kg)</label>
-        <input type="number" value={weight} onChange={e => setWeight(e.target.value)} style={{ width: "100%", padding: "0.25rem" }} />
+      <div className="calc-box">
+        <label className="calc-label">Weight (kg)</label>
+        <input type="number" value={weight} onChange={e => setWeight(e.target.value)} className="calc-input" />
       </div>
 
-      <div>
-        <label>Sex</label>
-        <select value={sex} onChange={e => setSex(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
+      <div className="calc-box">
+        <label className="calc-label">Sex</label>
+        <select value={sex} onChange={e => setSex(e.target.value)} className="calc-select">
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
       </div>
 
-      <div>
-        <label>Age Group</label>
-        <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
+      <div className="calc-box">
+        <label className="calc-label">Age Group</label>
+        <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)} className="calc-select">
           <option value="nonelderly">Non-elderly</option>
           <option value="elderly">Elderly</option>
         </select>
       </div>
 
-      <div>
-        <label>Volume Status</label>
-        <select value={volumeStatus} onChange={e => setVolumeStatus(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
+      <div className="calc-box">
+        <label className="calc-label">Volume Status</label>
+        <select value={volumeStatus} onChange={e => setVolumeStatus(e.target.value)} className="calc-select">
           <option value="hypovolemic">Hypovolemic</option>
           <option value="euvolemic">Euvolemic (SIADH)</option>
           <option value="hypervolemic">Hypervolemic</option>
         </select>
       </div>
 
-      <div>
-        <label>Infusate</label>
-        <select value={fluid} onChange={e => setFluid(e.target.value)} style={{ width: "100%", padding: "0.25rem" }}>
+      <div className="calc-box">
+        <label className="calc-label">Infusate</label>
+        <select value={fluid} onChange={e => setFluid(e.target.value)} className="calc-select">
           <option value="ns">0.9% Normal Saline</option>
           <option value="hts">3% Hypertonic Saline</option>
           <option value="rl">Ringer’s Lactate</option>
         </select>
       </div>
 
-      <div>
-        <label>Target Rise (mmol/24h)</label>
-        <input type="number" value={targetRise} onChange={e => setTargetRise(e.target.value)} style={{ width: "100%", padding: "0.25rem" }} />
+      <div className="calc-box">
+        <label className="calc-label">Target Rise (mmol/24h)</label>
+        <input type="number" value={targetRise} onChange={e => setTargetRise(e.target.value)} className="calc-input" />
       </div>
 
-      <button onClick={reset} style={{ marginTop: 10 }}>Reset</button><p></p>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
-      {warning && <p style={{ color: "darkred" }}>{warning}</p>}
+      {warning && <p className="calc-result" style={{ color: "darkred", background: '#fff0f0', borderColor: 'darkred' }}>{warning}</p>}
 
       {result && (
-        <div>
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Total Body Water:</strong> {result.tbw} L</p>
           <p><strong>ΔNa per 1 L:</strong> +{result.deltaPerLiter} mmol/L</p>
           <p><strong>Total Volume Needed:</strong> {result.totalLiters} L</p>
           <p><strong>Estimated Rate:</strong> {result.hourlyRate} mL/hr</p>
-          <p><em>Formula: {result.formula}</em></p>
+          <p style={{ marginTop: 8, fontSize: '0.9rem', color: '#555' }}><em>Formula: {result.formula}</em></p>
         </div>
       )}
     </div>

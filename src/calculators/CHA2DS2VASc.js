@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function CHA2DS2VASc() {
   const criteria = [
@@ -59,27 +60,31 @@ export default function CHA2DS2VASc() {
   };
 
   return (
-    <div>
-      <h3>CHA₂DS₂-VASc Score (Atrial Fibrillation Stroke Risk)</h3>
+    <div className="calc-container">
+      <h3 className="calc-title" style={{ fontSize: '1.2rem', marginBottom: 16 }}>CHA₂DS₂-VASc Score (Atrial Fibrillation Stroke Risk)</h3>
 
-      {criteria.map((c) => (
-        <label key={c.label}>
-          <input
-            type="checkbox"
-            checked={checked[c.label] || false}
-            onChange={() => toggle(c.label)}
-          />
-          {" "}
-          {c.label} ({c.value} point{c.value > 1 ? "s" : ""})
-          <br />
-        </label>
-      ))}
+      <div className="calc-box">
+        {criteria.map((c) => (
+          <label key={c.label} style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={checked[c.label] || false}
+              onChange={() => toggle(c.label)}
+              style={{ marginRight: 10 }}
+            />
+            <span>{c.label} ({c.value} point{c.value > 1 ? "s" : ""})</span>
+          </label>
+        ))}
+      </div>
 
-      <br />
-      <button onClick={reset}>Reset</button>
+      <button onClick={reset} className="calc-btn-reset">Reset</button>
 
-      <p><strong>Total Score:</strong> {score}</p>
-      <p><strong>Interpretation:</strong> {interpretation}</p>
+      {(score > 0 || interpretation) && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p><strong>Total Score:</strong> {score}</p>
+          <p><strong>Interpretation:</strong> {interpretation}</p>
+        </div>
+      )}
     </div>
   );
 }

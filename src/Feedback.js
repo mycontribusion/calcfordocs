@@ -1,14 +1,14 @@
 import { useState } from "react";
-import "./Feedback.css";
+import "./components/Dropdowns.css";
 
-function Feedback() {
+export default function FeedbackDropdown() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const mailtoLink = `mailto:ahmadmusa1114@gmail.com?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:ahmadmusamuhd@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(message)}`;
 
@@ -16,34 +16,31 @@ function Feedback() {
   };
 
   return (
-    <div className="feedback-container">
-      <h2>Feedback & Support</h2>
-      <p className="feedback-intro">
-        💡 Found a bug? Have suggestions? Share your thoughts below.
+    <div className="dropdown-container">
+      <p className="dropdown-text">
+        💡 Found a bug or have suggestions? Share your thoughts below.
       </p>
 
-      <form onSubmit={handleSubmit} className="feedback-form">
-        <label>Subject (optional)</label>
+      <form onSubmit={handleSubmit}>
         <input
+          className="dropdown-input"
           type="text"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          placeholder="Enter subject (optional)"
+          placeholder="Subject (optional)"
         />
 
-        <label>Your Message</label>
         <textarea
-          rows="5"
+          className="dropdown-textarea"
+          rows="4"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your feedback here..."
           required
         ></textarea>
 
-        <button type="submit">📨 Send Feedback</button>
+        <button type="submit" className="dropdown-btn">📨 Send</button>
       </form>
     </div>
   );
 }
-
-export default Feedback;

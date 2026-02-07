@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 function TapCounter() {
   const [taps, setTaps] = useState(0);
@@ -47,13 +48,14 @@ function TapCounter() {
 
   return (
     <div
+      className="calc-container"
       onClick={handleTap}
       style={{
         cursor: isRunning ? "pointer" : "default",
-        border: "1px solid #ccc",
-        borderRadius: "12px",
+        // border: "1px solid #ccc", // handled by calc-container
+        // borderRadius: "12px", // handled by calc-container
         padding: "1.5rem",
-        margin: "1rem 0",
+        // margin: "1rem 0", // handled by calc-container (margin: 1rem auto)
 
         minHeight: "360px",               // ✅ taller tap area
         display: "flex",
@@ -63,8 +65,8 @@ function TapCounter() {
         backgroundColor: blink
           ? "#e8ffe8"
           : isRunning
-          ? "#dc091e"
-          : "#015c9c",
+            ? "#dc091e"
+            : "#015c9c",
 
         color: "white",
         userSelect: "none",
@@ -73,7 +75,7 @@ function TapCounter() {
     >
       {/* Header */}
       <div>
-        <h3 style={{ marginTop: 0 }}>Tap Counter</h3>
+        <h3 className="calc-title" style={{ marginTop: 0, color: 'white' }}>Tap Counter</h3>
 
         <div style={{ marginBottom: "0.5rem" }}>
           <strong>Duration:</strong>{" "}
@@ -83,11 +85,13 @@ function TapCounter() {
             </span>
           ) : (
             <select
+              className="calc-select"
               value={selectedDuration}
               onChange={(e) =>
                 setSelectedDuration(Number(e.target.value))
               }
               onClick={(e) => e.stopPropagation()}
+              style={{ width: 'auto', display: 'inline-block', marginLeft: 8 }}
             >
               <option value={10}>10 sec</option>
               <option value={15}>15 sec</option>
@@ -123,7 +127,8 @@ function TapCounter() {
       <div style={{ textAlign: "center" }}>
         {!isRunning ? (
           <button
-            style={{ fontSize: "18px" }}
+            className="calc-btn-reset"
+            style={{ fontSize: "18px", width: 'auto', display: 'inline-block', padding: '10px 30px' }}
             onClick={(e) => {
               e.stopPropagation();
               startCounter();
@@ -133,7 +138,8 @@ function TapCounter() {
           </button>
         ) : (
           <button
-            style={{ fontSize: "14px" }}
+            className="calc-btn-reset"
+            style={{ fontSize: "14px", width: 'auto', display: 'inline-block', padding: '10px 30px' }}
             onClick={(e) => {
               e.stopPropagation();
               resetCounter();

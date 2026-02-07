@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./CalculatorShared.css";
 
 export default function RuleOfNines() {
   const parts = [
@@ -57,28 +58,28 @@ export default function RuleOfNines() {
   };
 
   return (
-    <div>
-      <h3>Rule of Nines – Detailed Burn Calculator</h3>
+    <div className="calc-container">
+      <h3 className="calc-title">Rule of Nines – Detailed Burn Calculator</h3>
 
-      {parts.map((p) => (
-        <label key={p.label}>
-          <input
-            type="checkbox"
-            checked={checked[p.label] || false}
-            onChange={() => toggle(p.label)}
-          />
-          {" "}
-          {p.label} ({p.value}%)
-          <br />
-        </label>
-      ))}
+      <div className="calc-box">
+        {parts.map((p) => (
+          <label key={p.label} style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={checked[p.label] || false}
+              onChange={() => toggle(p.label)}
+              style={{ marginRight: 10 }}
+            />
+            {p.label} ({p.value}%)
+          </label>
+        ))}
+      </div>
 
-      <br />
-      <button onClick={reset}>Reset</button>
+      <button onClick={reset} className="calc-btn-reset" style={{ marginBottom: 16 }}>Reset</button>
 
-      <p>
+      <div className="calc-result">
         <strong>Total Burn Area:</strong> {total}%
-      </p>
+      </div>
     </div>
   );
 }

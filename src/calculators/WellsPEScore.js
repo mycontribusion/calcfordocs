@@ -1,5 +1,6 @@
 // src/calculators/WellsScorePE.js
 import { useState } from "react";
+import "./CalculatorShared.css";
 
 const WELLS_CRITERIA = [
   { id: 1, label: "Clinical signs of DVT", points: 3 },
@@ -31,24 +32,27 @@ export default function WellsScorePE() {
   else interpretation = "Low probability of PE";
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: 8, marginBottom: "1rem" }}>
-      <h2>Wells Score for Pulmonary Embolism</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Wells Score for Pulmonary Embolism</h2>
 
-      {WELLS_CRITERIA.map((c) => (
-        <label key={c.id} style={{ display: "block", marginBottom: 4 }}>
-          <input
-            type="checkbox"
-            checked={selectedIds.includes(c.id)}
-            onChange={() => toggleCriteria(c.id)}
-          />{" "}
-          {c.label} ({c.points} pts)
-        </label>
-      ))}
+      <div className="calc-box">
+        {WELLS_CRITERIA.map((c) => (
+          <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={selectedIds.includes(c.id)}
+              onChange={() => toggleCriteria(c.id)}
+              style={{ marginRight: 8 }}
+            />
+            {c.label} ({c.points} pts)
+          </label>
+        ))}
+      </div>
 
       {selectedIds.length > 0 && (
-        <p style={{ marginTop: 10, fontWeight: "bold" }}>
+        <div className="calc-result">
           Score: {totalScore} → {interpretation}
-        </p>
+        </div>
       )}
     </div>
   );

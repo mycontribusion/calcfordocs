@@ -1,10 +1,10 @@
 import CalcForDocs from "./CalcForDocs";
 
 
-function App(){
-  return(
+function App() {
+  return (
     <div>
-      <CalcForDocs/>
+      <CalcForDocs />
     </div>
   )
 }

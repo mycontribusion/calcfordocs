@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function IVInfusionCalculator() {
   const [volume, setVolume] = useState("");
@@ -47,60 +48,62 @@ export default function IVInfusionCalculator() {
   }
 
   return (
-    <div className="iv-card">
-      <h2 className="iv-title">IV Infusion Drop Rate</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">IV Infusion Drop Rate</h2>
 
-      <label className="label">Volume (mL):</label><br />
-      <input
-        className="input-field"
-        inputMode="decimal"
-        value={volume}
-        onChange={(e) => setVolume(e.target.value)}
-        placeholder="e.g. 500"
-      />
-
-      <p></p>
-      <label className="label">Time:</label><br />
-      <div className="flex-container">
+      <div className="calc-box">
+        <label className="calc-label">Volume (mL):</label>
         <input
-          className="input-field flex-grow"
+          className="calc-input"
           inputMode="decimal"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          placeholder="e.g. 4"
+          value={volume}
+          onChange={(e) => setVolume(e.target.value)}
+          placeholder="e.g. 500"
         />
+      </div>
+
+      <div className="calc-box">
+        <label className="calc-label">Time:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            className="calc-input"
+            inputMode="decimal"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            placeholder="e.g. 4"
+            style={{ flex: 2 }}
+          />
+          <select
+            className="calc-select"
+            value={timeUnit}
+            onChange={(e) => setTimeUnit(e.target.value)}
+            style={{ flex: 1 }}
+          >
+            <option value="minutes">minutes</option>
+            <option value="hours">hours</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="calc-box">
+        <label className="calc-label">Giving Set:</label>
         <select
-          className="select-field"
-          value={timeUnit}
-          onChange={(e) => setTimeUnit(e.target.value)}
+          className="calc-select"
+          value={setType}
+          onChange={(e) => setSetType(e.target.value)}
         >
-          <option value="minutes">minutes</option>
-          <option value="hours">hours</option>
+          <option value="iv">IV set (20 gtt/mL)</option>
+          <option value="blood">Blood set (15 gtt/mL)</option>
+          <option value="soluset">Soluset (60 gtt/mL)</option>
         </select>
       </div>
-      <p></p>
 
-      <label className="label">Giving Set:</label><br />
-      <select
-        className="select-field"
-        value={setType}
-        onChange={(e) => setSetType(e.target.value)}
-      >
-        <option value="iv">IV set (20 gtt/mL)</option>
-        <option value="blood">Blood set (15 gtt/mL)</option>
-        <option value="soluset">Soluset (60 gtt/mL)</option>
-      </select>
-      <p></p>
-
-      <div className="actions">
-        <button className="button secondary" onClick={handleReset}>
-          Reset
-        </button>
-      </div>
-      <p></p>
+      <button className="calc-btn-reset" onClick={handleReset}>
+        Reset
+      </button>
 
       {result !== null && (
-        <div className="result-box success">
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <strong>Drops/min:</strong> {result}
         </div>
       )}

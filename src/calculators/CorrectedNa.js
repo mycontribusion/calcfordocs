@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import "./CalculatorShared.css";
 
 export default function CorrectedSodium() {
   const [sodium, setSodium] = useState("");
@@ -41,13 +42,13 @@ export default function CorrectedSodium() {
 
     if (roundedNa < NORMAL_LOW) {
       status = "Hyponatremia";
-      color = "orange";
+      color = "#d97706"; // orange-600
     } else if (roundedNa > NORMAL_HIGH) {
       status = "Hypernatremia";
-      color = "red";
+      color = "#dc2626"; // red-600
     } else {
       status = "Within normal range";
-      color = "green";
+      color = "#16a34a"; // green-600
     }
 
     setInterpretation({
@@ -78,57 +79,54 @@ export default function CorrectedSodium() {
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "1rem",
-        borderRadius: "8px",
-        marginBottom: "1rem",
-      }}
-    >
-      <h2>Corrected Sodium Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Corrected Sodium Calculator</h2>
 
-      <div style={{ marginBottom: "0.5rem" }}>
-        <label>Measured Sodium (mmol/L):</label>
+      <div className="calc-box">
+        <label className="calc-label">Measured Sodium (mmol/L):</label>
         <input
           type="number"
           value={sodium}
           onChange={(e) => setSodium(e.target.value)}
           placeholder="e.g., 135"
-          style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
+          className="calc-input"
         />
       </div>
 
-      <div style={{ marginBottom: "0.5rem" }}>
-        <label>Blood Glucose:</label>
-        <input
-          type="number"
-          value={glucose}
-          onChange={(e) => setGlucose(e.target.value)}
-          placeholder="e.g., 300"
-          style={{ width: "70%", padding: "0.25rem", marginRight: "0.5rem" }}
-        />
-        <select
-          value={glucoseUnit}
-          onChange={(e) => setGlucoseUnit(e.target.value)}
-          style={{ padding: "0.25rem" }}
-        >
-          <option value="mg">mg/dL</option>
-          <option value="mmol">mmol/L</option>
-        </select>
+      <div className="calc-box">
+        <label className="calc-label">Blood Glucose:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={glucose}
+            onChange={(e) => setGlucose(e.target.value)}
+            placeholder="e.g., 300"
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select
+            value={glucoseUnit}
+            onChange={(e) => setGlucoseUnit(e.target.value)}
+            className="calc-select"
+            style={{ flex: 1 }}
+          >
+            <option value="mg">mg/dL</option>
+            <option value="mmol">mmol/L</option>
+          </select>
+        </div>
       </div>
 
-      <button onClick={reset} style={{ padding: "0.5rem 1rem" }}>
+      <button onClick={reset} className="calc-btn-reset">
         Reset
       </button>
 
       {/* Result */}
       {result && (
-        <div style={{ marginTop: "0.75rem", fontSize: "0.9rem" }}>
-          <p style={{ fontWeight: "bold" }}>{result}</p>
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p style={{ fontWeight: "bold", fontSize: '1.1rem' }}>{result}</p>
 
           {interpretation && (
-            <>
+            <div style={{ marginTop: 8 }}>
               <p>
                 Status:{" "}
                 <strong style={{ color: interpretation.color }}>
@@ -139,26 +137,24 @@ export default function CorrectedSodium() {
                 Normal range:{" "}
                 <strong>{interpretation.normalRange}</strong>
               </p>
-            </>
+            </div>
           )}
-        </div>
-      )}
 
-      {/* Formula note */}
-      {result && (
-        <div style={{ fontSize: "0.85rem", marginTop: "0.5rem" }}>
-          <strong>Formula:</strong> Corrected Na = Measured Na + 1.6 ×
-          ((Glucose [mg/dL] − 100) ÷ 100)
-          <br />
-          <em>
-            If glucose is in mmol/L, convert to mg/dL first: Glucose × 18.0182
-          </em>
+          {/* Formula note */}
+          <div style={{ fontSize: "0.85rem", marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
+            <strong>Formula:</strong> Corrected Na = Measured Na + 1.6 ×
+            ((Glucose [mg/dL] − 100) ÷ 100)
+            <br />
+            <em style={{ opacity: 0.8 }}>
+              If glucose is in mmol/L, convert to mg/dL first: Glucose × 18.0182
+            </em>
+          </div>
         </div>
       )}
 
       {/* Note */}
       {!result && note && (
-        <p style={{ color: "brown", marginTop: "0.5rem" }}>
+        <p style={{ color: "#b91c1c", marginTop: 16, background: '#fee2e2', padding: 8, borderRadius: 4 }}>
           <strong>{note}</strong>
         </p>
       )}

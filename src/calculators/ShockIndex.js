@@ -1,5 +1,6 @@
 // src/calculators/ShockIndex.js
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function ShockIndex() {
   const [heartRate, setHeartRate] = useState("");
@@ -34,43 +35,47 @@ export default function ShockIndex() {
   };
 
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", borderRadius: "8px", marginBottom: "1rem" }}>
-      <h2>Shock Index Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Shock Index Calculator</h2>
 
       {/* Heart Rate */}
-      <div style={{ marginTop: "0.5rem" }}>
-        <label>Heart Rate (bpm):</label><br />
+      <div className="calc-box">
+        <label className="calc-label">Heart Rate (bpm):</label>
         <input
           type="number"
           value={heartRate}
           onChange={(e) => setHeartRate(e.target.value)}
           placeholder="e.g., 80"
-          style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
+          className="calc-input"
         />
       </div>
 
       {/* Systolic BP */}
-      <div style={{ marginTop: "0.5rem" }}>
-        <label>Systolic BP (mmHg):</label><br />
+      <div className="calc-box">
+        <label className="calc-label">Systolic BP (mmHg):</label>
         <input
           type="number"
           value={systolicBP}
           onChange={(e) => setSystolicBP(e.target.value)}
           placeholder="e.g., 120"
-          style={{ width: "100%", padding: "0.25rem", marginTop: "0.25rem" }}
+          className="calc-input"
         />
       </div>
 
       {/* Reset Button */}
       <button
         onClick={reset}
-        style={{ marginTop: "0.75rem", padding: "0.5rem 1rem", cursor: "pointer" }}
+        className="calc-btn-reset"
       >
         Reset
       </button>
 
       {/* Result */}
-      {result && <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>{result}</p>}
+      {result && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p>{result}</p>
+        </div>
+      )}
     </div>
   );
 }

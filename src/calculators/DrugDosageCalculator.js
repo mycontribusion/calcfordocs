@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function DrugDosageCalculator() {
   const [dose, setDose] = useState(""); // the dose value
@@ -93,82 +94,94 @@ export default function DrugDosageCalculator() {
   };
 
   return (
-    <div className="dose-card">
-      <h2>Drug Dosage Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">Drug Dosage Calculator</h2>
 
-      <label>Dose:</label><br />
-      <input
-        type="number"
-        inputMode="decimal"
-        value={dose}
-        onChange={(e) => setDose(e.target.value)}
-        placeholder="Enter dose"
-      />
-      <select value={doseUnit} onChange={(e) => setDoseUnit(e.target.value)}>
-        <option value="/kg">/kg</option>
-        <option value="/kg/day">/kg/day</option>
-        <option value="/min">/min</option>
-        <option value="/kg/min">/kg/min</option>
-      </select>
-      <p></p>
+      <div className="calc-box">
+        <label className="calc-label">Dose:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            inputMode="decimal"
+            value={dose}
+            onChange={(e) => setDose(e.target.value)}
+            placeholder="Enter dose"
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select value={doseUnit} onChange={(e) => setDoseUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="/kg">/kg</option>
+            <option value="/kg/day">/kg/day</option>
+            <option value="/min">/min</option>
+            <option value="/kg/min">/kg/min</option>
+          </select>
+        </div>
+      </div>
 
-      <label>Weight:</label><br />
-      <input
-        type="number"
-        value={weight}
-        onChange={(e) => setWeight(e.target.value)}
-        placeholder="Patient weight"
-      />
-      <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)}>
-        <option value="kg">kg</option>
-        <option value="g">g</option>
-        <option value="lb">lb</option>
-      </select>
-      <p></p>
+      <div className="calc-box">
+        <label className="calc-label">Weight:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            placeholder="Patient weight"
+            className="calc-input"
+            style={{ flex: 2 }}
+          />
+          <select value={weightUnit} onChange={(e) => setWeightUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="lb">lb</option>
+          </select>
+        </div>
+      </div>
 
       {/* Conditional extra inputs */}
       {doseUnit === "/kg/day" && (
-        <label>
-          Number of divided doses per day:
+        <div className="calc-box">
+          <label className="calc-label">Number of divided doses per day:</label>
           <input
             type="number"
             min="1"
             value={numDoses}
             onChange={(e) => setNumDoses(e.target.value)}
+            className="calc-input"
           />
-        </label>
+        </div>
       )}
 
       {(doseUnit === "/min" || doseUnit === "/kg/min") && (
-        <>
-          <label>
-            Duration:
-            <br /><input
+        <div className="calc-box">
+          <label className="calc-label">Duration:</label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input
               type="number"
               min="1"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
+              className="calc-input"
+              style={{ flex: 2 }}
             />
-          </label>
-          <select
-            value={durationUnit}
-            onChange={(e) => setDurationUnit(e.target.value)}
-          >
-            <option value="hours">hours</option>
-            <option value="minutes">minutes</option>
-          </select>
-        </>
+            <select
+              value={durationUnit}
+              onChange={(e) => setDurationUnit(e.target.value)}
+              className="calc-select"
+              style={{ flex: 1 }}
+            >
+              <option value="hours">hours</option>
+              <option value="minutes">minutes</option>
+            </select>
+          </div>
+        </div>
       )}
 
-      <p></p>
-      <div className="actions">
-        <button type="button" onClick={reset}>Reset</button><p></p>
-      </div>
+      <button type="button" onClick={reset} className="calc-btn-reset">Reset</button>
 
-      {error && <div className="result-box danger">{error}</div>}
+      {error && <div className="calc-result" style={{ marginTop: 16, color: '#ef4444', borderColor: '#ef4444' }}>{error}</div>}
 
       {result !== null && !error && (
-        <div className="result-box success">
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <strong>Total Dose:</strong> {result}
         </div>
       )}

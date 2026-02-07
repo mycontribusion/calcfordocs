@@ -1,5 +1,6 @@
 // src/calculators/BmiCalculator.js
 import { useState, useEffect } from "react";
+import "./CalculatorShared.css";
 
 export default function BmiCalculator() {
   const [weight, setWeight] = useState("");
@@ -60,65 +61,72 @@ export default function BmiCalculator() {
   }
 
   return (
-    <div className="p-4 border rounded-xl shadow-md mb-4">
-      <h2 className="text-lg font-semibold mb-2">BMI Calculator</h2>
+    <div className="calc-container">
+      <h2 className="calc-title">BMI Calculator</h2>
 
       {/* Weight */}
-      <div className="mb-2">
-        <label className="block mb-1">Weight:</label>
-        <div className="flex gap-2">
+      <div className="calc-box">
+        <label className="calc-label">Weight:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className="border px-2 py-1 rounded w-full"
+            className="calc-input"
+            style={{ flex: 2 }}
           />
           <select
             value={weightUnit}
             onChange={(e) => setWeightUnit(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="calc-select"
+            style={{ flex: 1 }}
           >
             <option value="kg">kg</option>
             <option value="lb">lb</option>
           </select>
         </div>
-      </div><p></p>
+      </div>
 
       {/* Height */}
-      <div className="mb-2">
-        <label className="block mb-1">Height:</label>
-        <div className="flex gap-2">
+      <div className="calc-box">
+        <label className="calc-label">Height:</label>
+        <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
-            className="border px-2 py-1 rounded w-full"
+            className="calc-input"
+            style={{ flex: 2 }}
           />
           <select
             value={heightUnit}
             onChange={(e) => setHeightUnit(e.target.value)}
-            className="border px-2 py-1 rounded"
+            className="calc-select"
+            style={{ flex: 1 }}
           >
             <option value="cm">cm</option>
             <option value="m">m</option>
             <option value="inch">inch</option>
           </select>
         </div>
-      </div><p></p>
+      </div>
 
       {/* Actions */}
       <button
         onClick={handleReset}
-        className="border px-3 py-1 rounded"
+        className="calc-btn-reset"
       >
         Reset
       </button>
 
-      {result && <p className="mt-3 font-medium">{result}
-
-      <p className="text-sm text-gray-600 mt-2">
-        Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
-      </p></p>}
+      {result && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <p className="font-medium">{result}</p>
+          <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
+            Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
+          </p>
+        </div>
+      )}
     </div>
   );
 }
