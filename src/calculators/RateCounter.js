@@ -57,7 +57,7 @@ function TapCounter() {
         padding: "1.5rem",
         // margin: "1rem 0", // handled by calc-container (margin: 1rem auto)
 
-        minHeight: "80vh",               // ✅ taller tap area
+        minHeight: "70vh",               // ✅ taller tap area
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -65,7 +65,7 @@ function TapCounter() {
         backgroundColor: blink
           ? "#e8ffe8"
           : isRunning
-            ? "#dc091e"
+            ? "#da0b1f"
             : "#015c9c",
 
         color: "white",

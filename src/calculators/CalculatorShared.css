@@ -65,10 +65,10 @@
     font-size: 0.95rem;
     margin-bottom: 8px;
     padding: 8px;
-    background: rgba(0, 123, 255, 0.05);
+    background: rgba(1, 92, 156, 0.05);
     border-radius: 6px;
     text-align: center;
-    border: 1px dashed rgba(0, 123, 255, 0.2);
+    border: 1px dashed rgba(1, 92, 156, 0.2);
 }
 
 .calc-btn-primary,

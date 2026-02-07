@@ -90,48 +90,54 @@ export default function HyponatremiaCorrection() {
     <div className="calc-container">
       <h2 className="calc-title">Hyponatremia Correction Calculator (Adrogué–Madias)</h2>
 
-      <div className="calc-box">
-        <label className="calc-label">Serum Sodium (mmol/L)</label>
-        <input type="number" value={serumNa} onChange={e => setSerumNa(e.target.value)} className="calc-input" />
+      <div style={{ display: "flex", gap: "8px" }}>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Serum Sodium (mmol/L)</label>
+          <input type="number" value={serumNa} onChange={e => setSerumNa(e.target.value)} className="calc-input" />
+        </div>
+
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Weight (kg)</label><p></p>
+          <input type="number" value={weight} onChange={e => setWeight(e.target.value)} className="calc-input" />
+        </div>
       </div>
 
-      <div className="calc-box">
-        <label className="calc-label">Weight (kg)</label>
-        <input type="number" value={weight} onChange={e => setWeight(e.target.value)} className="calc-input" />
+      <div style={{ display: "flex", gap: "8px" }}>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Sex</label>
+          <select value={sex} onChange={e => setSex(e.target.value)} className="calc-select">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Age Group</label>
+          <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)} className="calc-select">
+            <option value="nonelderly">Non-elderly</option>
+            <option value="elderly">Elderly</option>
+          </select>
+        </div>
       </div>
 
-      <div className="calc-box">
-        <label className="calc-label">Sex</label>
-        <select value={sex} onChange={e => setSex(e.target.value)} className="calc-select">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Volume Status</label>
+          <select value={volumeStatus} onChange={e => setVolumeStatus(e.target.value)} className="calc-select">
+            <option value="hypovolemic">Hypovolemic</option>
+            <option value="euvolemic">Euvolemic (SIADH)</option>
+            <option value="hypervolemic">Hypervolemic</option>
+          </select>
+        </div>
 
-      <div className="calc-box">
-        <label className="calc-label">Age Group</label>
-        <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)} className="calc-select">
-          <option value="nonelderly">Non-elderly</option>
-          <option value="elderly">Elderly</option>
-        </select>
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Volume Status</label>
-        <select value={volumeStatus} onChange={e => setVolumeStatus(e.target.value)} className="calc-select">
-          <option value="hypovolemic">Hypovolemic</option>
-          <option value="euvolemic">Euvolemic (SIADH)</option>
-          <option value="hypervolemic">Hypervolemic</option>
-        </select>
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Infusate</label>
-        <select value={fluid} onChange={e => setFluid(e.target.value)} className="calc-select">
-          <option value="ns">0.9% Normal Saline</option>
-          <option value="hts">3% Hypertonic Saline</option>
-          <option value="rl">Ringer’s Lactate</option>
-        </select>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Infusate</label>
+          <select value={fluid} onChange={e => setFluid(e.target.value)} className="calc-select">
+            <option value="ns">0.9% Normal Saline</option>
+            <option value="hts">3% Hypertonic Saline</option>
+            <option value="rl">Ringer’s Lactate</option>
+          </select>
+        </div>
       </div>
 
       <div className="calc-box">

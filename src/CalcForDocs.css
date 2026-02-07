@@ -23,7 +23,7 @@
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  color: #dc091e;
+  color: #da0b1f;
 }
 
 input,
@@ -130,7 +130,7 @@ textarea::placeholder {
 }
 
 .update-confirm {
-  background: #dc091e;
+  background: #da0b1f;
   color: #fff;
   border: none;
   padding: 10px 20px;
