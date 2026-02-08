@@ -98,7 +98,6 @@ export default function BallardScoreCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">New Ballard Score Calculator</h2>
 
       {/* Sex Selection */}
       <div className="calc-box">

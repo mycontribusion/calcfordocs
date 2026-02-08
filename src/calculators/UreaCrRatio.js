@@ -119,7 +119,6 @@ export default function UreaBunCrRatio() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Urea / BUN – Creatinine Ratio</h2>
 
       <div className="calc-box">
         <label className="calc-label">Type: </label>

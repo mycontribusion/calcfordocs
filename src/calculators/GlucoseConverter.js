@@ -93,7 +93,6 @@ export default function GlucoseConverter() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Glucose Converter</h2>
 
       <div className="calc-box">
         <label className="calc-label">Glucose Value:</label>

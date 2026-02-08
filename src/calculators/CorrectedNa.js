@@ -80,7 +80,6 @@ export default function CorrectedSodium() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Corrected Sodium Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Measured Sodium (mmol/L):</label>

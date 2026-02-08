@@ -51,7 +51,6 @@ export default function WellsDVTScore() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 500 }}>
-      <h2 className="calc-title">Wells Score for DVT</h2>
 
       <div className="calc-box">
         {criteria.map((c) => (

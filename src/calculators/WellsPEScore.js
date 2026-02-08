@@ -33,7 +33,6 @@ export default function WellsScorePE() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Wells Score for Pulmonary Embolism</h2>
 
       <div className="calc-box">
         {WELLS_CRITERIA.map((c) => (

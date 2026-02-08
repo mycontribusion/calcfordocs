@@ -25,7 +25,6 @@ export default function CURB65Calculator() {
 
   return (
     <div className="calc-container">
-      <h3 className="calc-title">CURB-65 Calculator</h3>
 
       <div className="calc-box">
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>

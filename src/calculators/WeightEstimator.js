@@ -115,7 +115,6 @@ export default function PediatricWeightEstimator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Pediatric Weight Estimator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Age:</label>

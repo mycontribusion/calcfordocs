@@ -88,7 +88,7 @@ export default function HyponatremiaCorrection() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Hyponatremia Correction Calculator (Adrogué–Madias)</h2>
+      <h4 className="calc-title">Adrogué–Madias Formula</h4>
 
       <div style={{ display: "flex", gap: "8px" }}>
         <div className="calc-box" style={{ flex: 1 }}>

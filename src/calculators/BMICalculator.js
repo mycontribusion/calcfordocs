@@ -62,7 +62,6 @@ export default function BmiCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">BMI Calculator</h2>
 
       {/* Weight */}
       <div className="calc-box">

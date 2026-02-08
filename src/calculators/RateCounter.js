@@ -75,10 +75,9 @@ function TapCounter() {
     >
       {/* Header */}
       <div>
-        <h3 className="calc-title" style={{ marginTop: 0, color: 'white' }}>Tap Counter</h3>
 
-        <div style={{ marginBottom: "0.5rem" }}>
-          <strong>Duration:</strong>{" "}
+        <div style={{ marginBottom: "0.5rem", textAlign: "center" }}>
+          <strong></strong>{" "}
           {isRunning ? (
             <span style={{ opacity: 0.7 }}>
               {selectedDuration} sec
@@ -91,7 +90,7 @@ function TapCounter() {
                 setSelectedDuration(Number(e.target.value))
               }
               onClick={(e) => e.stopPropagation()}
-              style={{ width: 'auto', display: 'inline-block', marginLeft: 8 }}
+              style={{ width: 'auto', display: 'inline-block' }}
             >
               <option value={10}>10 sec</option>
               <option value={15}>15 sec</option>

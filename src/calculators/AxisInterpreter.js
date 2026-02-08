@@ -89,7 +89,6 @@ export default function AxisInterpreter() {
     <div className="calc-container" style={{ maxWidth: 720 }}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 320px", minWidth: 280 }}>
-          <h2 className="calc-title">Axis Interpreter</h2>
 
           <div className="calc-box">
             <label className="calc-label">Lead I: </label>

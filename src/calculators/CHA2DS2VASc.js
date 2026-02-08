@@ -61,7 +61,7 @@ export default function CHA2DS2VASc() {
 
   return (
     <div className="calc-container">
-      <h3 className="calc-title" style={{ fontSize: '1.2rem', marginBottom: 16 }}>CHA₂DS₂-VASc Score (Atrial Fibrillation Stroke Risk)</h3>
+      <h4 className="calc-title">CHA₂DS₂-VASc Score for Atrial Fibrillation Stroke Risk</h4>
 
       <div className="calc-box">
         {criteria.map((c) => (

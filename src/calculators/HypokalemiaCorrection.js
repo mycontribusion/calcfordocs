@@ -99,7 +99,6 @@ export default function HypokalemiaCorrection() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Hypokalemia Correction Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Weight: </label>

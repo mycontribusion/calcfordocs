@@ -66,7 +66,6 @@ function PregnancyCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Pregnancy Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Mode:</label>

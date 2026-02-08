@@ -53,7 +53,6 @@ export default function MapCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">MAP & Pulse Pressure Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Systolic BP (mmHg)</label>

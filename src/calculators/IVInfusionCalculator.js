@@ -49,7 +49,6 @@ export default function IVInfusionCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">IV Infusion Drop Rate</h2>
 
       <div className="calc-box">
         <label className="calc-label">Volume (mL):</label>

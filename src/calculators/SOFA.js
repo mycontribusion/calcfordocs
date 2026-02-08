@@ -161,7 +161,6 @@ export default function SOFA() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">SOFA Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Mode:</label>
@@ -181,7 +180,6 @@ export default function SOFA() {
 
       {mode === "qsofa" && (
         <div>
-          <h3 className="calc-title" style={{ fontSize: '1rem', marginTop: 10 }}>qSOFA Criteria</h3>
           <div className="calc-box">
             <label style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
               <input type="checkbox" checked={rrHigh} onChange={() => setRrHigh(!rrHigh)} style={{ marginRight: 10 }} />
@@ -206,7 +204,6 @@ export default function SOFA() {
 
       {mode === "msofa" && (
         <div>
-          <h3 className="calc-title" style={{ fontSize: '1rem', marginTop: 10 }}>mSOFA Criteria</h3>
 
           <div className="calc-box">
             <label className="calc-label">SpO₂ / FiO₂:</label>

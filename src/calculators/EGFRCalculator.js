@@ -67,7 +67,6 @@ function EGFRCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">eGFR Calculator (CKD-EPI 2021)</h2>
 
       <div className="calc-box">
         <label className="calc-label">Serum Creatinine:</label>

@@ -59,7 +59,6 @@ export default function RuleOfNines() {
 
   return (
     <div className="calc-container">
-      <h3 className="calc-title">Rule of Nines – Detailed Burn Calculator</h3>
 
       <div className="calc-box">
         {parts.map((p) => (

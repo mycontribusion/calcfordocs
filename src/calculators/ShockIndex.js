@@ -36,7 +36,6 @@ export default function ShockIndex() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Shock Index Calculator</h2>
 
       {/* Heart Rate */}
       <div className="calc-box">

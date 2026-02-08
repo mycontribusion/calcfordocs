@@ -49,7 +49,6 @@ export default function EstimatedBloodVolume() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 360 }}>
-      <h2 className="calc-title">Estimated Blood Volume (EBV)</h2>
 
       <div className="calc-box">
         <label className="calc-label">Weight:</label>

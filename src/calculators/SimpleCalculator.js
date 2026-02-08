@@ -102,7 +102,6 @@ export default function SmartCalculator() {
 
   return (
     <div className="calc-container" style={{ maxWidth: "280px" }}>
-      <h3 className="calc-title">Calculator</h3>
 
       <textarea
         ref={textareaRef}

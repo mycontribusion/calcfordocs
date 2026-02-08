@@ -102,7 +102,6 @@ export default function SpO2FiO2Ratio() {
 
   return (
     <div className="calc-container">
-      <h4 className="calc-title">SpO₂ / FiO₂ Ratio</h4>
 
       <LabeledInput
         label="SpO₂ (%)"

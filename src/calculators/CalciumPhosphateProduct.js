@@ -63,7 +63,6 @@ export default function CalciumPhosphateProduct() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Calcium-Phosphate Product Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Serum Calcium:</label>

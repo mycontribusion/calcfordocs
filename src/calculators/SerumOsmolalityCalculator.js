@@ -78,7 +78,6 @@ export default function SerumOsmolalityCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Serum Osmolality Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Serum Sodium (mmol/L):</label>

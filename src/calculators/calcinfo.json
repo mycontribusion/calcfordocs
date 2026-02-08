@@ -1,193 +1,364 @@
 [
-    {
-      "name": "Timer + Calc",
-      "id": "u",
-      "keywords": ["timer", "stopwatch", "countdown", "chronometer", "time", "ahmad"]
-    },
-    {
-      "name": "Infusion Drop Rate",
-      "id": "p",
-      "keywords": ["iv rate", "infusion", "drip rate", "fluid rate"]
-    },
-    {
-      "name": "SpO2/FiO2 Ratio",
-      "id": "sfr",
-      "keywords": ["spo2", "fio2", "oxygen ratio", "oxygenation"]
-    },
-    {
-      "name": "qSOFA / mSOFA",
-      "id": "sofa",
-      "keywords": ["qsofa", "msofa", "sepsis score", "sofa"]
-    },
-    {
-      "name": "Dosage Calc",
-      "id": "o",
-      "keywords": ["dose", "drug", "medication", "meds"]
-    },
-    {
-      "name": "CURB-65 Score",
-      "id": "curb65",
-      "keywords": ["curb", "pneumonia", "risk score", "cap", "severity"]
-    },
-    {
-      "name": "Glucose Converter",
-      "id": "d",
-      "keywords": ["blood sugar", "glucose", "mg to mmol", "mmol to mg"]
-    },
-    {
-      "name": "Serum Osmolality Calc",
-      "id": "q",
-      "keywords": ["osmolality", "serum osmol", "osmolarity"]
-    },
-    {
-      "name": "Anion Gap Calc",
-      "id": "q1",
-      "keywords": ["anion gap", "gap", "metabolic acidosis"]
-    },
-    {
-      "name": "AnionGap / DeltaRatio",
-      "id": "agdr",
-      "keywords": ["delta ratio", "anion gap ratio", "gap ratio"]
-    },
-    {
-      "name": "Hypokalemia Correction",
-      "id": "j",
-      "keywords": ["potassium", "k correction", "hypokalemia"]
-    },
-    {
-      "name": "eGFR Calculator",
-      "id": "n",
-      "keywords": ["kidney", "gfr", "renal function", "egfr"]
-    },
-    {
-      "name": "Calcium Phosphate Product",
-      "id": "cak",
-      "keywords": ["ca phosphate", "ca x phosphate", "calcium phosphate"]
-    },
-    {
-      "name": "Urea-Creatinine Ratio (UCR)",
-      "id": "w",
-      "keywords": ["ucr", "urea creatinine", "kidney ratio"]
-    },
-    {
-      "name": "Corrected Calcium",
-      "id": "x",
-      "keywords": ["ca corrected", "albumin corrected calcium"]
-    },
-    {
-      "name": "Corrected Sodium",
-      "id": "correctna",
-      "keywords": ["na corrected", "sodium", "hyponatremia"]
-    },
-    {
-      "name": "Hyponatremia Correction",
-      "id": "lowna",
-      "keywords": ["na correction", "low sodium", "hyponatremia"]
-    },
-    {
-      "name": "MAP",
-      "id": "e",
-      "keywords": ["mean arterial pressure", "blood pressure"]
-    },
-    {
-      "name": "Shock Index",
-      "id": "shock",
-      "keywords": ["shock", "heart rate/bp", "si"]
-    },
-    {
-      "name": "Cardiac Axis",
-      "id": "b",
-      "keywords": ["ecg axis", "heart axis"]
-    },
-    {
-      "name": "ECG Waveforms",
-      "id": "c",
-      "keywords": ["ecg", "ekg", "waveforms", "cardiac rhythm", "rr", "interval", "qt"]
-    },
-    {
-      "name": "Framingham Criteria",
-      "id": "h",
-      "keywords": ["heart failure", "framingham", "hf criteria"]
-    },
-    {
-      "name": "Well's Score DVT",
-      "id": "welldvt",
-      "keywords": ["dvt", "wells dvt", "deep vein thrombosis"]
-    },
-    {
-      "name": "Well's Score PE",
-      "id": "wellpe",
-      "keywords": ["pe", "wells pe", "pulmonary embolism"]
-    },
-    {
-      "name": "AF Stroke Risk Score",
-      "id": "afstroke",
-      "keywords": ["af", "atrial fibrillation", "stroke risk", "cha2ds2vasc"]
-    },
-    {
-      "name": "Estimated Blood Volume",
-      "id": "f",
-      "keywords": ["ebv", "blood volume", "ml/kg"]
-    },
-    {
-      "name": "Fluid Correction",
-      "id": "g",
-      "keywords": ["fluids", "maintenance", "fluid therapy"]
-    },
-    {
-      "name": "Rule of 9",
-      "id": "9rule",
-      "keywords": ["burn", "body surface area", "rule 9", "burn percentage"]
-    },
-    {
-      "name": "GCS",
-      "id": "i",
-      "keywords": ["glasgow coma scale", "coma", "gcs score"]
-    },
-    {
-      "name": "Ischemic or Hemmorrhagic",
-      "id": "siri",
-      "keywords": ["cvd", "stroke", "siriraj"]
-    },
-    {
-      "name": "Pediatric Age Estimator",
-      "id": "k",
-      "keywords": ["pediatric age", "child age", "baby age", "paed age"]
-    },
-    {
-      "name": "Pediatric Anemia Correction",
-      "id": "l",
-      "keywords": ["anemia correction", "paed anemia", "hemoglobin correction"]
-    },
-    {
-      "name": "Pediatric Weight Calc",
-      "id": "m",
-      "keywords": ["weight", "paed weight", "child weight", "pediatric weight"]
-    },
-    {
-      "name": "Ballard Score Calc",
-      "id": "v",
-      "keywords": ["ballard", "gestational age", "newborn assessment"]
-    },
-    {
-      "name": "Pregnancy Calculator",
-      "id": "r",
-      "keywords": ["ega", "edd", "gestational age", "lmp", "ultrasound", "uss"]
-    },
-    {
-      "name": "Bishop Score",
-      "id": "bs",
-      "keywords": ["bishop", "cervical score", "labor readiness"]
-    },
-    {
-      "name": "BMI",
-      "id": "a",
-      "keywords": ["body mass index", "weight height ratio", "bmi"]
-    },
-    {
-      "name": "Simple Calculator",
-      "id": "sc",
-      "keywords": ["basic", "simple", "math", "calculator"]
-    }
-  ]
-  
+  {
+    "name": "Timer + Calc",
+    "id": "u",
+    "keywords": [
+      "timer",
+      "stopwatch",
+      "countdown",
+      "chronometer",
+      "time",
+      "ahmad"
+    ]
+  },
+  {
+    "name": "IV Infusion Drop Rate",
+    "id": "p",
+    "keywords": [
+      "iv rate",
+      "infusion",
+      "drip rate",
+      "fluid rate"
+    ]
+  },
+  {
+    "name": "SpO₂ / FiO₂ Ratio",
+    "id": "sfr",
+    "keywords": [
+      "spo2",
+      "fio2",
+      "oxygen ratio",
+      "oxygenation"
+    ]
+  },
+  {
+    "name": "qSOFA / mSOFA",
+    "id": "sofa",
+    "keywords": [
+      "qsofa",
+      "msofa",
+      "sepsis score",
+      "sofa"
+    ]
+  },
+  {
+    "name": "Dosage Calc",
+    "id": "o",
+    "keywords": [
+      "dose",
+      "drug",
+      "medication",
+      "meds"
+    ]
+  },
+  {
+    "name": "CURB-65 Score",
+    "id": "curb65",
+    "keywords": [
+      "curb",
+      "pneumonia",
+      "risk score",
+      "cap",
+      "severity"
+    ]
+  },
+  {
+    "name": "Glucose Converter",
+    "id": "d",
+    "keywords": [
+      "blood sugar",
+      "glucose",
+      "mg to mmol",
+      "mmol to mg"
+    ]
+  },
+  {
+    "name": "Serum Osmolality Calc",
+    "id": "q",
+    "keywords": [
+      "osmolality",
+      "serum osmol",
+      "osmolarity"
+    ]
+  },
+  {
+    "name": "Anion Gap",
+    "id": "q1",
+    "keywords": [
+      "anion gap",
+      "gap",
+      "metabolic acidosis"
+    ]
+  },
+  {
+    "name": "AnionGap / DeltaRatio",
+    "id": "agdr",
+    "keywords": [
+      "delta ratio",
+      "anion gap ratio",
+      "gap ratio"
+    ]
+  },
+  {
+    "name": "Hypokalemia Correction",
+    "id": "j",
+    "keywords": [
+      "potassium",
+      "k correction",
+      "hypokalemia"
+    ]
+  },
+  {
+    "name": "eGFR Calculator",
+    "id": "n",
+    "keywords": [
+      "kidney",
+      "gfr",
+      "renal function",
+      "egfr"
+    ]
+  },
+  {
+    "name": "Calcium Phosphate Product",
+    "id": "cak",
+    "keywords": [
+      "ca phosphate",
+      "ca x phosphate",
+      "calcium phosphate"
+    ]
+  },
+  {
+    "name": "Urea-Creatinine Ratio (UCR)",
+    "id": "w",
+    "keywords": [
+      "ucr",
+      "urea creatinine",
+      "kidney ratio"
+    ]
+  },
+  {
+    "name": "Corrected Calcium",
+    "id": "x",
+    "keywords": [
+      "ca corrected",
+      "albumin corrected calcium"
+    ]
+  },
+  {
+    "name": "Corrected Sodium",
+    "id": "correctna",
+    "keywords": [
+      "na corrected",
+      "sodium",
+      "hyponatremia"
+    ]
+  },
+  {
+    "name": "Hyponatremia Correction",
+    "id": "lowna",
+    "keywords": [
+      "na correction",
+      "low sodium",
+      "hyponatremia"
+    ]
+  },
+  {
+    "name": "Mean Arterial Pressure",
+    "id": "e",
+    "keywords": [
+      "mean arterial pressure",
+      "blood pressure"
+    ]
+  },
+  {
+    "name": "Shock Index",
+    "id": "shock",
+    "keywords": [
+      "shock",
+      "heart rate/bp",
+      "si"
+    ]
+  },
+  {
+    "name": "Cardiac Axis",
+    "id": "b",
+    "keywords": [
+      "ecg axis",
+      "heart axis"
+    ]
+  },
+  {
+    "name": "ECG Waveforms",
+    "id": "c",
+    "keywords": [
+      "ecg",
+      "ekg",
+      "waveforms",
+      "cardiac rhythm",
+      "rr",
+      "interval",
+      "qt"
+    ]
+  },
+  {
+    "name": "Framingham Criteria",
+    "id": "h",
+    "keywords": [
+      "heart failure",
+      "framingham",
+      "hf criteria"
+    ]
+  },
+  {
+    "name": "Well's Score DVT",
+    "id": "welldvt",
+    "keywords": [
+      "dvt",
+      "wells dvt",
+      "deep vein thrombosis"
+    ]
+  },
+  {
+    "name": "Well's Score PE",
+    "id": "wellpe",
+    "keywords": [
+      "pe",
+      "wells pe",
+      "pulmonary embolism"
+    ]
+  },
+  {
+    "name": "AF Stroke Risk Score",
+    "id": "afstroke",
+    "keywords": [
+      "af",
+      "atrial fibrillation",
+      "stroke risk",
+      "cha2ds2vasc"
+    ]
+  },
+  {
+    "name": "Estimated Blood Volume",
+    "id": "f",
+    "keywords": [
+      "ebv",
+      "blood volume",
+      "ml/kg"
+    ]
+  },
+  {
+    "name": "Fluid Correction",
+    "id": "g",
+    "keywords": [
+      "fluids",
+      "maintenance",
+      "fluid therapy"
+    ]
+  },
+  {
+    "name": "Rule of 9",
+    "id": "9rule",
+    "keywords": [
+      "burn",
+      "body surface area",
+      "rule 9",
+      "burn percentage"
+    ]
+  },
+  {
+    "name": "GCS",
+    "id": "i",
+    "keywords": [
+      "glasgow coma scale",
+      "coma",
+      "gcs score"
+    ]
+  },
+  {
+    "name": "Ischemic / Hemmorrhagic Stroke",
+    "id": "siri",
+    "keywords": [
+      "cvd",
+      "stroke",
+      "siriraj"
+    ]
+  },
+  {
+    "name": "Pediatric Age Estimator",
+    "id": "k",
+    "keywords": [
+      "pediatric age",
+      "child age",
+      "baby age",
+      "paed age"
+    ]
+  },
+  {
+    "name": "Pediatric Anemia Correction",
+    "id": "l",
+    "keywords": [
+      "anemia correction",
+      "paed anemia",
+      "hemoglobin correction"
+    ]
+  },
+  {
+    "name": "Pediatric Weight Calc",
+    "id": "m",
+    "keywords": [
+      "weight",
+      "paed weight",
+      "child weight",
+      "pediatric weight"
+    ]
+  },
+  {
+    "name": "Ballard Score Calc",
+    "id": "v",
+    "keywords": [
+      "ballard",
+      "gestational age",
+      "newborn assessment"
+    ]
+  },
+  {
+    "name": "Pregnancy Calculator",
+    "id": "r",
+    "keywords": [
+      "ega",
+      "edd",
+      "gestational age",
+      "lmp",
+      "ultrasound",
+      "uss"
+    ]
+  },
+  {
+    "name": "Bishop Score",
+    "id": "bs",
+    "keywords": [
+      "bishop",
+      "cervical score",
+      "labor readiness"
+    ]
+  },
+  {
+    "name": "BMI",
+    "id": "a",
+    "keywords": [
+      "body mass index",
+      "weight height ratio",
+      "bmi"
+    ]
+  },
+  {
+    "name": "Simple Calculator",
+    "id": "sc",
+    "keywords": [
+      "basic",
+      "simple",
+      "math",
+      "calculator"
+    ]
+  }
+]

@@ -87,7 +87,6 @@ export default function PediatricTransfusionCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Pediatric Transfusion Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
@@ -119,24 +118,26 @@ export default function PediatricTransfusionCalculator() {
         </select>
       </div>
 
-      <div className="calc-box">
-        <label className="calc-label">Observed {method.toUpperCase()}:</label>
-        <input
-          type="number"
-          value={observedValue}
-          onChange={(e) => setObservedValue(e.target.value)}
-          className="calc-input"
-        />
-      </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "48%" }} className="calc-box">
+          <label className="calc-label">Observed {method.toUpperCase()}:</label>
+          <input
+            type="number"
+            value={observedValue}
+            onChange={(e) => setObservedValue(e.target.value)}
+            className="calc-input"
+          />
+        </div>
 
-      <div className="calc-box">
-        <label className="calc-label">Target {method.toUpperCase()}:</label>
-        <input
-          type="number"
-          value={targetValue}
-          onChange={(e) => setTargetValue(e.target.value)}
-          className="calc-input"
-        />
+        <div style={{ width: "48%" }} className="calc-box">
+          <label className="calc-label">Target {method.toUpperCase()}:</label>
+          <input
+            type="number"
+            value={targetValue}
+            onChange={(e) => setTargetValue(e.target.value)}
+            className="calc-input"
+          />
+        </div>
       </div>
 
       <div className="calc-box">
@@ -177,10 +178,6 @@ export default function PediatricTransfusionCalculator() {
           )}
         </div>
       )}
-
-      <p style={{ fontSize: "0.85rem", color: "#666", marginTop: 12, padding: 8, background: '#f9f9f9', borderRadius: 6 }}>
-        Factor is automatically set according to blood type: Whole blood = 6, Sedimented = 4, Packed cells = 3. Custom factor is calculated from PCV if selected.
-      </p>
     </div>
   );
 }

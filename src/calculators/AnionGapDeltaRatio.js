@@ -113,7 +113,6 @@ export default function AnionGapDeltaRatio() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Anion Gap & Delta Gap / Delta Ratio</h2>
 
       <div className="calc-box">
         <label className="calc-label">Sodium (Na⁺, mmol/L):</label>

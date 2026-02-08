@@ -50,7 +50,7 @@ export default function SirirajScore() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Siriraj Stroke Score</h2>
+      <h4 className="calc-title">Siriraj Stroke Score</h4>
 
       <div className="calc-box">
         <label className="calc-label">Consciousness:</label>

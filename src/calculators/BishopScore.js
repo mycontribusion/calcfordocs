@@ -58,7 +58,6 @@ export default function BishopScore() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Bishop Score Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Scoring system:</label>

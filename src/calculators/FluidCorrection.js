@@ -40,7 +40,6 @@ export default function FluidCorrection() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 400 }}>
-      <h2 className="calc-title">Fluid Correction Calculator</h2>
 
       {/* Weight */}
       <div className="calc-box">

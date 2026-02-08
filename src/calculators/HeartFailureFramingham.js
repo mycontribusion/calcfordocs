@@ -53,7 +53,6 @@ export default function HeartFailureFramingham() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 500 }}>
-      <h2 className="calc-title">Heart Failure (Framingham Criteria)</h2>
 
       <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: '#333' }}>Major Criteria</h3>
       <div className="calc-box">

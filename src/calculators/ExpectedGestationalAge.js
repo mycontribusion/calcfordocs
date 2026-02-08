@@ -104,7 +104,6 @@ export default function PregnancyCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Pregnancy Calculator</h2>
 
       <div className="calc-box">
         <label className="calc-label">LMP:</label>
@@ -128,24 +127,25 @@ export default function PregnancyCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">EGA:</label>
-        <div className="calc-ega-group">
-          <div className="calc-ega-field">
+        <div style={{ display: "flex", justifyContent: "space-between" }} className="calc-ega-group">
+          <div style={{ width: "48%" }} className="calc-ega-field">
             <input
               type="number"
+              placeholder="weeks"
               value={egaWeeks}
               onChange={(e) => handleEGAChange(e.target.value, egaDays)}
               className="calc-input"
             />
-            <span className="calc-unit-label">weeks</span>
           </div>
-          <div className="calc-ega-field">
+          <div style={{ width: "48%" }} className="calc-ega-field">
             <input
+
               type="number"
+              placeholder="days"
               value={egaDays}
               onChange={(e) => handleEGAChange(egaWeeks, e.target.value)}
               className="calc-input"
             />
-            <span className="calc-unit-label">days</span>
           </div>
         </div>
       </div>

@@ -22,7 +22,6 @@ export default function GCSCalculator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">GCS Calculator</h2>
 
       {/* Eye Response */}
       <div className="calc-box">

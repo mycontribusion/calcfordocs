@@ -49,7 +49,6 @@ export default function MilestoneAgeEstimator() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-title">Pediatric Age Estimator</h2>
 
       <div className="calc-box">
         <label className="calc-label">Gross Motor:</label>
