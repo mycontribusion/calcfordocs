@@ -41,6 +41,8 @@ import SimpleCalculator from "./SimpleCalculator";
 import CURB65Calculator from "./CURB65Calculator";
 import SirirajScore from "./SirirajScore";
 import DAR2026RiskCalculator from "./DAR2026RiskCalculator";
+import MMSECalculator from "./MMSECalculator";
+import IPSSCalculator from "./IPSSCalculator";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -85,6 +87,8 @@ const CALCULATOR_MAP = {
   curb65: CURB65Calculator,
   siri: SirirajScore,
   dar: DAR2026RiskCalculator,
+  mmse: MMSECalculator,
+  ipss: IPSSCalculator,
 };
 
 export default function CalculatorRenderer({ id }) {

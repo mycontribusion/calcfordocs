@@ -285,6 +285,15 @@
     ]
   },
   {
+    "name": "Mini-Mental State Examination",
+    "id": "mmse",
+    "keywords": [
+      "mini mental state exam",
+      "mmse",
+      "cognitive impairment"
+    ]
+  },
+  {
     "name": "Ischemic / Hemmorrhagic Stroke",
     "id": "siri",
     "keywords": [
@@ -359,6 +368,15 @@
       "body mass index",
       "weight height ratio",
       "bmi"
+    ]
+  },
+  {
+    "name": "IPSS",
+    "id": "ipss",
+    "keywords": [
+      "incontinence",
+      "ipss",
+      "urinary incontinence"
     ]
   },
   {
