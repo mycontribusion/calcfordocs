@@ -20,11 +20,8 @@ export default function IPSSCalculator() {
     }, [answers]);
 
     const handleChange = (index, value) => {
-        let num = parseInt(value, 10) || 0;
-        if (num < 0) num = 0;
-        if (num > 5) num = 5;
         const newAnswers = [...answers];
-        newAnswers[index] = num;
+        newAnswers[index] = parseInt(value, 10);
         setAnswers(newAnswers);
     };
 
@@ -34,99 +31,99 @@ export default function IPSSCalculator() {
     };
 
     const getSeverity = (score) => {
-        if (score <= 7) return { label: "Mild Symptoms", color: "#16a34a" };
-        if (score <= 19) return { label: "Moderate Symptoms", color: "#d97706" };
-        return { label: "Severe Symptoms", color: "#dc2626" };
+        if (score <= 7) return { label: "MILD SYMPTOMS", color: "#16a34a" };
+        if (score <= 19) return { label: "MODERATE SYMPTOMS", color: "#d97706" };
+        return { label: "SEVERE SYMPTOMS", color: "#dc2626" };
     };
 
     const severity = getSeverity(totalScore);
 
     return (
         <div className="calc-container">
-            <h3 style={{ marginBottom: "16px", color: "#2c3e50" }}>IPSS (Prostate Score)</h3>
-
             <div className="ballard-grid">
                 {questions.map((q, i) => (
-                    <div key={i} className="calc-box">
-                        <label className="calc-label" style={{ fontWeight: "600" }}>{q}</label>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "8px" }}>
-                            <input
-                                type="number"
-                                min="0"
-                                max="5"
-                                className="calc-input"
-                                value={answers[i]}
-                                onChange={(e) => handleChange(i, e.target.value)}
-                                style={{ width: "60px", textAlign: "center" }}
-                            />
-                            <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>/ 5</span>
+                    <div key={i} className="calc-box" style={{ padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                            <label className="calc-label" style={{ marginBottom: 0 }}>{q}</label>
+                            <span style={{ fontWeight: "700", color: "#015c9c", fontSize: "0.9rem" }}>
+                                {answers[i]} <small style={{ opacity: 0.5, fontWeight: "400" }}>/ 5</small>
+                            </span>
                         </div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="5"
+                            step="1"
+                            value={answers[i]}
+                            onChange={(e) => handleChange(i, e.target.value)}
+                            style={{
+                                width: "100%",
+                                cursor: "pointer",
+                                accentColor: "#015c9c",
+                                height: "6px"
+                            }}
+                        />
                     </div>
                 ))}
 
-                {/* Quality of Life (QoL) */}
-                <div className="calc-box" style={{ borderLeft: "4px solid #3b82f6" }}>
-                    <label className="calc-label" style={{ fontWeight: "600" }}>Quality of Life</label>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "8px" }}>
-                        <input
-                            type="number"
-                            min="0"
-                            max="6"
-                            className="calc-input"
-                            value={qol}
-                            onChange={(e) => setQol(Math.min(6, Math.max(0, Number(e.target.value))))}
-                            style={{ width: "60px", textAlign: "center" }}
-                        />
-                        <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>/ 6</span>
+                <div className="calc-box" style={{ padding: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                        <label className="calc-label" style={{ marginBottom: 0 }}>Quality of Life</label>
+                        <span style={{ fontWeight: "700", color: "#015c9c", fontSize: "0.9rem" }}>
+                            {qol} <small style={{ opacity: 0.5, fontWeight: "400" }}>/ 6</small>
+                        </span>
                     </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="6"
+                        step="1"
+                        value={qol}
+                        onChange={(e) => setQol(parseInt(e.target.value, 10))}
+                        style={{
+                            width: "100%",
+                            cursor: "pointer",
+                            accentColor: "#015c9c",
+                            height: "6px"
+                        }}
+                    />
                 </div>
             </div>
 
-            <button onClick={handleReset} className="calc-btn-reset" style={{ marginTop: "16px" }}>
-                Reset
+            <button onClick={handleReset} className="calc-btn-reset" style={{ marginTop: "8px" }}>
+                Reset Assessment
             </button>
 
-            <div className="calc-result" style={{
-                marginTop: "20px",
-                borderLeft: `6px solid ${severity.color}`,
-                backgroundColor: "#f8fafc",
-                padding: "16px"
-            }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <div>
-                        <p style={{ margin: "0 0 4px", fontSize: "0.85rem", color: "#64748b" }}>Symptom Score</p>
-                        <div style={{ fontSize: "1.8rem", fontWeight: "800", color: severity.color }}>
-                            {totalScore} <span style={{ fontSize: "0.9rem", color: "#94a3b8", fontWeight: "400" }}>/ 35</span>
+            <div
+                className="calc-result"
+                style={{
+                    borderColor: severity.color,
+                    color: severity.color,
+                    backgroundColor: severity.color + '15',
+                    borderStyle: "solid",
+                    marginTop: "16px"
+                }}
+            >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <div style={{ textAlign: "left" }}>
+                        <p style={{ margin: "0 0 4px", fontSize: "0.85rem", opacity: 0.8 }}>Symptom Score</p>
+                        <div style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+                            {totalScore} <small style={{ fontSize: "0.9rem", fontWeight: "normal", opacity: 0.7 }}>/ 35</small>
                         </div>
                     </div>
                     <div style={{ textAlign: "right" }}>
-                        <p style={{ margin: "0 0 4px", fontSize: "0.85rem", color: "#64748b" }}>QoL</p>
-                        <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "#1e293b" }}>{qol}</div>
+                        <p style={{ margin: "0 0 4px", fontSize: "0.85rem", opacity: 0.8 }}>QoL Index</p>
+                        <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{qol}</div>
                     </div>
                 </div>
 
-                <div style={{
-                    fontWeight: "700",
-                    marginTop: "12px",
-                    fontSize: "1.1rem",
-                    color: severity.color
-                }}>
+                <div style={{ fontWeight: "700", marginTop: "8px" }}>
                     {severity.label}
                 </div>
 
-                <div style={{
-                    marginTop: "12px",
-                    paddingTop: "12px",
-                    borderTop: "1px solid #e2e8f0",
-                    fontSize: "0.8rem",
-                    color: "#94a3b8",
-                    display: "flex",
-                    justifyContent: "space-between"
-                }}>
-                    <span>0-7: Mild</span>
-                    <span>8-19: Moderate</span>
-                    <span>20-35: Severe</span>
-                </div>
+                <p style={{ margin: "8px 0 0", fontSize: "0.85rem" }}>
+                    0-7: Mild | 8-19: Moderate | 20-35: Severe
+                </p>
             </div>
         </div>
     );
