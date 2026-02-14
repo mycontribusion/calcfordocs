@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./CalculatorShared.css";
 
 export default function CHA2DS2VASc() {
   const criteria = [

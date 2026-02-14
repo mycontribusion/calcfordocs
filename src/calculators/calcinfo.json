@@ -12,6 +12,16 @@
     ]
   },
   {
+    "name": "Simple Calculator",
+    "id": "sc",
+    "keywords": [
+      "basic",
+      "simple",
+      "math",
+      "calculator"
+    ]
+  },
+  {
     "name": "IV Infusion Drop Rate",
     "id": "p",
     "keywords": [
@@ -352,13 +362,14 @@
     ]
   },
   {
-    "name": "Simple Calculator",
-    "id": "sc",
+    "name": "DAR Risk Assessment Tool (2026)",
+    "id": "dar",
     "keywords": [
-      "basic",
-      "simple",
-      "math",
-      "calculator"
+      "fasting",
+      "dar",
+      "risk assessment",
+      "diabetes",
+      "Ramadan"
     ]
   }
 ]

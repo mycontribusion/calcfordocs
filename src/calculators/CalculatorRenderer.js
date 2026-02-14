@@ -40,6 +40,7 @@ import SpO2FiO2Ratio from "./SpO2FiO2Ratio";
 import SimpleCalculator from "./SimpleCalculator";
 import CURB65Calculator from "./CURB65Calculator";
 import SirirajScore from "./SirirajScore";
+import DAR2026RiskCalculator from "./DAR2026RiskCalculator";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -83,6 +84,7 @@ const CALCULATOR_MAP = {
   sc: SimpleCalculator,
   curb65: CURB65Calculator,
   siri: SirirajScore,
+  dar: DAR2026RiskCalculator,
 };
 
 export default function CalculatorRenderer({ id }) {
