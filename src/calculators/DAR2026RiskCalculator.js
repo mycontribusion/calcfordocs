@@ -188,8 +188,8 @@ export default function DAR2026RiskCalculator() {
                 <div className="calc-box">
                     <label className="calc-label">7. Glucose Monitoring</label>
                     <select className="calc-select" value={monitoring} onChange={e => setMonitoring(e.target.value)}>
-                        <option value="done">Done as indicated</option>
                         <option value="cgm">Using CGM (Sensor)</option>
+                        <option value="done">Done as indicated</option>
                         <option value="suboptimal">Suboptimally done</option>
                         <option value="not">Not done</option>
                     </select>
@@ -218,7 +218,7 @@ export default function DAR2026RiskCalculator() {
 
                 {/* 10a. eGFR */}
                 <div className="calc-box">
-                    <label className="calc-label">10a. Renal Function (eGFR)</label>
+                    <label className="calc-label">10a. DM Nephropathy (eGFR)</label>
                     <select className="calc-select" value={egfr} onChange={e => setEgfr(e.target.value)}>
                         <option value=">60">&gt; 60 mL/min</option>
                         <option value="45-60">45 – 60 mL/min</option>
@@ -229,7 +229,7 @@ export default function DAR2026RiskCalculator() {
 
                 {/* 10b. Microvascular */}
                 <div className="calc-box">
-                    <label className="calc-label">10b. Other Complications</label>
+                    <label className="calc-label">10b. Other Microvascular Disease</label>
                     <select className="calc-select" value={microComp} onChange={e => setMicroComp(e.target.value)}>
                         <option value="0">0 complications</option>
                         <option value="1">1 complication</option>
@@ -261,7 +261,7 @@ export default function DAR2026RiskCalculator() {
 
                 {/* 13. Education */}
                 <div className="calc-box">
-                    <label className="calc-label">13. Pre-Ramadan Education</label>
+                    <label className="calc-label">13. Fasting Focused Education</label>
                     <select className="calc-select" value={education} onChange={e => setEducation(e.target.value === "true")}>
                         <option value="true">Yes, received education</option>
                         <option value="false">No</option>

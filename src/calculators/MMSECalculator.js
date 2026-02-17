@@ -3,13 +3,17 @@ import "./CalculatorShared.css";
 
 export default function MMSECalculator() {
     const questions = [
-        { q: "Orientation to Time", max: 5 },
-        { q: "Orientation to Place", max: 5 },
-        { q: "Registration", max: 3 },
-        { q: "Attention & Calculation", max: 5 },
-        { q: "Recall", max: 3 },
-        { q: "Language & Command", max: 8 },
-        { q: "Copying Design", max: 1 }
+        { q: "Orientation (Year, Season, Date, Day, Month)", max: 5 },
+        { q: "Orientation (State, Country, Town, Hospital, Floor)", max: 5 },
+        { q: "Registration (Name 3 objects)", max: 3 },
+        { q: "Attention & Calculation (Serial 7's or 'world' backward)", max: 5 },
+        { q: "Recall (Recall 3 objects)", max: 3 },
+        { q: "Language (Naming: Pencil and Watch)", max: 2 },
+        { q: "Language (Repetiton: 'No ifs, ands, or buts')", max: 1 },
+        { q: "Language (3-Stage Command)", max: 3 },
+        { q: "Language (Reading: 'CLOSE YOUR EYES')", max: 1 },
+        { q: "Language (Writing: Write a sentence)", max: 1 },
+        { q: "Language (Copying: Pentagon Design)", max: 1 }
     ];
 
     const [answers, setAnswers] = useState(Array(questions.length).fill(0));
