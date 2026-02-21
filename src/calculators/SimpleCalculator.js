@@ -15,13 +15,10 @@ export default function SimpleCalculator() {
 
   const handleDigit = useCallback((digit) => {
     if (hasError) return;
-    const newInput = input === '0' && digit !== '.'
-      ? String(digit)
-      : input.slice(0, cursorPos) + digit + input.slice(cursorPos);
-
+    const newInput = input.slice(0, cursorPos) + digit + input.slice(cursorPos);
     updateFields({
       input: newInput,
-      cursorPos: input === '0' && digit !== '.' ? 1 : cursorPos + String(digit).length
+      cursorPos: cursorPos + String(digit).length
     });
   }, [input, cursorPos, hasError, updateFields]);
 
@@ -30,18 +27,20 @@ export default function SimpleCalculator() {
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
       .replace(/%/g, '/100')
-      .replace(/√(\d+\.?\d*)/g, 'Math.sqrt($1)') // handles √5, √5.5
-      .replace(/√\(/g, 'Math.sqrt('); // handles √(
+      .replace(/√(\d+\.?\d*)/g, 'Math.sqrt($1)')
+      .replace(/√\(/g, 'Math.sqrt(');
   };
 
   const handleOperator = useCallback((op) => {
     if (hasError) return;
+    // Insert operator at cursor position
+    const char = ` ${op} `;
+    const newInput = input.slice(0, cursorPos) + char + input.slice(cursorPos);
     updateFields({
-      history: history + input + ' ' + op + ' ',
-      input: '',
-      cursorPos: 0
+      input: newInput,
+      cursorPos: cursorPos + char.length
     });
-  }, [input, history, hasError, updateFields]);
+  }, [input, cursorPos, hasError, updateFields]);
 
   const handleClear = useCallback(() => {
     reset();
@@ -50,20 +49,20 @@ export default function SimpleCalculator() {
   const handleEquals = useCallback(() => {
     if (hasError) return;
     try {
-      const expression = sanitizeExpression(history + input);
+      const expression = sanitizeExpression(input); // Expression is now just input
       // eslint-disable-next-line no-eval
       const result = eval(expression);
       const resStr = String(Number(result).toFixed(2).replace(/\.00$/, ''));
       updateFields({
         input: resStr,
-        history: '',
+        history: input + ' =', // Store old in history for display
         hasError: false,
         cursorPos: resStr.length
       });
     } catch (e) {
       updateFields({ input: 'Error', hasError: true, cursorPos: 5 });
     }
-  }, [input, history, hasError, updateFields]);
+  }, [input, hasError, updateFields]);
 
   const handleParentheses = useCallback(() => {
     const combined = history + input;
@@ -133,6 +132,9 @@ export default function SimpleCalculator() {
   return (
     <div className="calc-container simple-calc">
       <div className="calc-display-group" style={{ textAlign: 'right', minHeight: '120px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="calc-history" style={{ minHeight: '1.2rem', fontSize: '0.9rem', color: '#94a3b8' }}>
+          {history}
+        </div>
         <div
           ref={displayRef}
           className={`calc-main-display ${hasError ? 'error' : ''}`}
@@ -153,7 +155,6 @@ export default function SimpleCalculator() {
             }
           }}
         >
-          {history}
           {input.split('').map((char, i) => (
             <React.Fragment key={i}>
               {i === cursorPos && <span className="calc-cursor"></span>}
@@ -226,6 +227,6 @@ export default function SimpleCalculator() {
         <button className="calc-key" onClick={() => handleDigit('.')}>.</button>
         <button className="calc-key op" onClick={handleEquals}>=</button>
       </div>
-    </div>
+    </div >
   );
 }

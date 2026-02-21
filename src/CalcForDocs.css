@@ -322,6 +322,74 @@ body:has(.calcfordocs.dark) {
   margin: 10px 0 20px;
   padding: 0 16px;
   max-width: 100%;
+  position: relative;
+  /* For absolute positioned pseudo-elements */
+}
+
+/* Scroll Indicators (Shadows & Arrows) */
+.view-toggle-container::before,
+.view-toggle-container::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.view-toggle-container::before {
+  left: 16px;
+  background: linear-gradient(to right, #fff, transparent);
+  content: "‹";
+  justify-content: flex-start;
+  padding-left: 4px;
+  color: #0284c7;
+}
+
+.view-toggle-container::after {
+  right: 16px;
+  background: linear-gradient(to left, #fff, transparent);
+  content: "›";
+  justify-content: flex-end;
+  padding-right: 4px;
+  color: #0284c7;
+}
+
+.view-toggle-container.can-scroll-left::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.view-toggle-container:not(.can-scroll-left)::before {
+  transform: translateX(-10px);
+}
+
+.view-toggle-container.can-scroll-right::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.view-toggle-container:not(.can-scroll-right)::after {
+  transform: translateX(10px);
+}
+
+/* Dark Mode Shadows & Arrows */
+.calcfordocs.dark .view-toggle-container::before {
+  background: linear-gradient(to right, #000, transparent);
+  color: #fff;
+}
+
+.calcfordocs.dark .view-toggle-container::after {
+  background: linear-gradient(to left, #000, transparent);
+  color: #fff;
 }
 
 .view-toggle {
@@ -336,6 +404,7 @@ body:has(.calcfordocs.dark) {
   -ms-overflow-style: none;
   /* Hide scrollbar IE/Edge */
   -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 .view-toggle::-webkit-scrollbar {

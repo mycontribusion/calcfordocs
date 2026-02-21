@@ -15,9 +15,9 @@ const CRITERIA = [
         key: "appearance",
         label: "Appearance (Skin Color)",
         options: [
-            { value: 0, label: "Blue-gray, pale all over" },
-            { value: 1, label: "Normal color central, blue extremities" },
-            { value: 2, label: "Normal color all over" }
+            { value: 0, label: "Cyanotic / Pale all over" },
+            { value: 1, label: "Body pink, extremities blue" },
+            { value: 2, label: "Pink all over" }
         ]
     },
     {
@@ -34,8 +34,8 @@ const CRITERIA = [
         label: "Grimace (Reflex Irritability)",
         options: [
             { value: 0, label: "No response to stimulation" },
-            { value: 1, label: "Grimace on stimulation" },
-            { value: 2, label: "Cough, sneeze, or cry" }
+            { value: 1, label: "Grimace or weak cry on stimulation" },
+            { value: 2, label: "Cough, sneeze, or vigorous cry" }
         ]
     },
     {
@@ -44,7 +44,7 @@ const CRITERIA = [
         options: [
             { value: 0, label: "None / Limp" },
             { value: 1, label: "Some flexion" },
-            { value: 2, label: "Active motion" }
+            { value: 2, label: "Well flexed / Active motion" }
         ]
     },
     {
@@ -53,7 +53,7 @@ const CRITERIA = [
         options: [
             { value: 0, label: "Absent" },
             { value: 1, label: "Slow or irregular" },
-            { value: 2, label: "Good, crying" }
+            { value: 2, label: "Strong crying" }
         ]
     }
 ];
@@ -61,72 +61,105 @@ const CRITERIA = [
 export default function ApgarScore() {
     const { values: scores, updateField: handleSelect, reset } = useCalculator(INITIAL_STATE);
 
-    const totalScore = useMemo(() => {
+    const { totalScore, isComplete, hasAnySelection } = useMemo(() => {
         const scoreValues = Object.values(scores);
-        if (scoreValues.some((v) => v === null)) return null;
-        return scoreValues.reduce((sum, v) => sum + v, 0);
+        const selected = scoreValues.filter(v => v !== null);
+        return {
+            totalScore: selected.reduce((sum, v) => sum + v, 0),
+            isComplete: selected.length === 5,
+            hasAnySelection: selected.length > 0
+        };
     }, [scores]);
 
     const interpretation = useMemo(() => {
-        if (totalScore === null) return null;
+        if (!hasAnySelection) return null;
+        // Interpretations based on the current total (even if partial)
         if (totalScore >= 8) return { label: "Excellent (Normal)", color: "#16a34a" };
         if (totalScore >= 4) return { label: "Fairly Low (Moderately Depressed)", color: "#ea580c" };
         return { label: "Critically Low (Severely Depressed)", color: "#dc2626" };
-    }, [totalScore]);
+    }, [totalScore, hasAnySelection]);
 
     return (
-        <div className="calc-container">
-            <div className="calc-grid">
+        <div className="calc-container" style={{ padding: '8px' }}>
+            <div className="calc-grid" style={{ gap: '6px' }}>
                 {CRITERIA.map((criterion) => (
-                    <div key={criterion.key} className="calc-box full-width">
-                        <label className="calc-label">{criterion.label}</label>
-                        <select
-                            value={scores[criterion.key] ?? ""}
-                            onChange={(e) => handleSelect(criterion.key, parseInt(e.target.value))}
-                            className="calc-input"
-                            style={{
-                                width: "100%",
-                                padding: "8px 10px",
-                                borderRadius: "8px",
-                                backgroundColor: "rgba(0,0,0,0.02)",
-                                minHeight: "32px",
-                                cursor: "pointer",
-                                fontSize: "0.9rem"
-                            }}
-                        >
-                            <option value="" disabled>Select option...</option>
+                    <div key={criterion.key} className="calc-box full-width" style={{ padding: '8px', marginBottom: '6px' }}>
+                        <label className="calc-label" style={{ fontSize: '1.05rem', fontWeight: '700', marginBottom: '6px', lineHeight: '1.2' }}>
+                            {criterion.label}
+                        </label>
+                        <div style={{
+                            display: "flex",
+                            gap: "6px"
+                        }}>
                             {criterion.options.map((opt) => (
-                                <option key={opt.value} value={opt.value}>
-                                    {opt.value} pts: {opt.label}
-                                </option>
+                                <button
+                                    key={opt.value}
+                                    onClick={() => handleSelect(criterion.key, opt.value)}
+                                    style={{
+                                        flex: 1,
+                                        padding: "8px 2px",
+                                        borderRadius: "6px",
+                                        border: "2px solid",
+                                        borderColor: scores[criterion.key] === opt.value ? "#015c9c" : "rgba(0,0,0,0.15)",
+                                        backgroundColor: scores[criterion.key] === opt.value ? "#015c9c" : "#fff",
+                                        color: scores[criterion.key] === opt.value ? "#fff" : "inherit",
+                                        cursor: "pointer",
+                                        transition: "all 0.1s ease",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        minHeight: "50px"
+                                    }}
+                                >
+                                    <span style={{ fontWeight: "800", fontSize: "1.2rem", lineHeight: 1 }}>{opt.value}</span>
+                                    <span style={{
+                                        fontSize: "0.85rem",
+                                        fontWeight: "600",
+                                        marginTop: "2px",
+                                        textAlign: "center",
+                                        lineHeight: "1.1",
+                                        wordWrap: "break-word",
+                                        width: "100%"
+                                    }}>
+                                        {opt.label}
+                                    </span>
+                                </button>
                             ))}
-                        </select>
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {totalScore !== null && (
-                <div className="calc-result" style={{ marginTop: "24px" }}>
-                    <div className="result-item">
-                        <span className="result-label">Total score:</span>
-                        <span className="result-value" style={{ color: interpretation.color }}>
+            {hasAnySelection && (
+                <div className="calc-result" style={{ marginTop: "16px", padding: '12px' }}>
+                    <div className="result-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <span className="result-label" style={{ fontSize: '1rem', fontWeight: '600' }}>
+                            {isComplete ? "Total Apgar Score:" : "Current Partial Score:"}
+                        </span>
+                        <span className="result-value" style={{ color: interpretation?.color || "#015c9c", fontSize: '1.8rem', fontWeight: '900' }}>
                             {totalScore} / 10
                         </span>
                     </div>
-                    <div className="result-item" style={{ marginTop: "8px" }}>
-                        <span className="result-label">Interpretation:</span>
-                        <span className="result-value" style={{ color: interpretation.color, fontSize: "1.1rem" }}>
-                            {interpretation.label}
-                        </span>
-                    </div>
+                    {interpretation && (
+                        <div className="result-item" style={{ marginTop: "8px", textAlign: 'center' }}>
+                            <span className="result-value" style={{ color: interpretation.color, fontSize: "1.2rem", fontWeight: '700', lineHeight: '1.2' }}>
+                                {interpretation.label}
+                            </span>
+                        </div>
+                    )}
                 </div>
             )}
 
-            <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+            <button onClick={reset} className="calc-btn-reset" style={{ marginTop: '12px', padding: '10px', fontSize: '1.05rem', fontWeight: '700' }}>
+                Reset Calculator
+            </button>
 
-            <p className="calc-footer" style={{ marginTop: "16px", fontSize: "0.8rem", opacity: 0.7 }}>
-                Note: The APGAR score is typically calculated at 1 and 5 minutes after birth.
-            </p>
+            {!isComplete && hasAnySelection && (
+                <p style={{ margin: '10px 0 0', fontSize: '0.85rem', fontWeight: '500', opacity: 0.8, textAlign: 'center' }}>
+                    Score updates dynamically. Complete all fields for final assessment.
+                </p>
+            )}
         </div>
     );
 }

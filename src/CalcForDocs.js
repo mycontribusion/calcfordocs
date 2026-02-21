@@ -9,10 +9,10 @@ import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
 
 const ARRANGEMENTS = {
-  og: ["apgar_score", "pregnancy_calculator", "bishop_score", "ballard_score", "wells_pe_score", "lab_converter", "bmi_calculator", "dosage_calculator"],
-  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "ballard_score", "fluid_correction", "iv_infusion_rate", "blood_volume_estimator"],
+  og: ["pregnancy_calculator", "bishop_score"],
+  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "blood_volume_estimator", "ballard_score", "fluid_correction", "iv_infusion_rate"],
   electrolytes: ["serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
-  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment"],
+  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis"],
   surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
 };
 
@@ -26,6 +26,27 @@ function CalcForDocs() {
 
   const [showBanner, setShowBanner] = useState(false); // banner UI state
   const headerRef = useRef(null);
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  /* 📏 Handle Scroll Shadows */
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (el) {
+      setCanScrollLeft(el.scrollLeft > 5);
+      setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 5);
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) {
+      checkScroll();
+      window.addEventListener("resize", checkScroll);
+      return () => window.removeEventListener("resize", checkScroll);
+    }
+  }, [checkScroll]);
 
   /* 🌗 Detect System Theme */
   useEffect(() => {
@@ -113,8 +134,12 @@ function CalcForDocs() {
       />
 
       {/* 🔘 Speciality Toggle */}
-      <div className="view-toggle-container">
-        <div className="view-toggle">
+      <div className={`view-toggle-container ${canScrollLeft ? "can-scroll-left" : ""} ${canScrollRight ? "can-scroll-right" : ""}`}>
+        <div
+          className="view-toggle"
+          ref={scrollRef}
+          onScroll={checkScroll}
+        >
           {["default", "og", "peds", "electrolytes", "med", "surg"].map((v) => {
             const labels = {
               default: "Default",

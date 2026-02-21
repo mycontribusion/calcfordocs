@@ -259,6 +259,18 @@
     ]
   },
   {
+    "name": "APGAR Score",
+    "id": "apgar_score",
+    "keywords": [
+      "apgar",
+      "newborn",
+      "neonate",
+      "birth assessment",
+      "pediatric",
+      "neonatology"
+    ]
+  },
+  {
     "name": "Ballard Score Calc",
     "id": "ballard_score",
     "keywords": [
@@ -393,18 +405,6 @@
       "mini mental state exam",
       "mmse",
       "cognitive impairment"
-    ]
-  },
-  {
-    "name": "APGAR Score",
-    "id": "apgar_score",
-    "keywords": [
-      "apgar",
-      "newborn",
-      "neonate",
-      "birth assessment",
-      "pediatric",
-      "neonatology"
     ]
   }
 ]
