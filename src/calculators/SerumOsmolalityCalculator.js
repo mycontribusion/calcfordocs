@@ -81,13 +81,13 @@ export default function SerumOsmolalityCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">Serum Sodium (mmol/L):</label>
-        <input value={na} onChange={(e) => setNa(e.target.value)} placeholder="e.g., 140" className="calc-input" />
+        <input type="number" inputMode="decimal" value={na} onChange={(e) => setNa(e.target.value)} placeholder="e.g., 140" className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Serum Glucose:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <input value={glucose} onChange={(e) => setGlucose(e.target.value)} placeholder="e.g., 5.5" className="calc-input" style={{ flex: 2 }} />
+          <input type="number" inputMode="decimal" value={glucose} onChange={(e) => setGlucose(e.target.value)} placeholder="e.g., 5.5" className="calc-input" style={{ flex: 2 }} />
           <select value={glucoseUnit} onChange={(e) => setGlucoseUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="mmol/L">mmol/L</option>
             <option value="mg/dL">mg/dL</option>
@@ -98,7 +98,7 @@ export default function SerumOsmolalityCalculator() {
       <div className="calc-box">
         <label className="calc-label">Serum Urea:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <input value={urea} onChange={(e) => setUrea(e.target.value)} placeholder="e.g., 5.0" className="calc-input" style={{ flex: 2 }} />
+          <input type="number" inputMode="decimal" value={urea} onChange={(e) => setUrea(e.target.value)} placeholder="e.g., 5.0" className="calc-input" style={{ flex: 2 }} />
           <select value={ureaUnit} onChange={(e) => setUreaUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="mmol/L">mmol/L</option>
             <option value="mg/dL">mg/dL</option>
@@ -108,7 +108,7 @@ export default function SerumOsmolalityCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">Measured Osmolality (optional):</label>
-        <input value={measured} onChange={(e) => setMeasured(e.target.value)} placeholder="e.g., 290" className="calc-input" />
+        <input type="number" inputMode="decimal" value={measured} onChange={(e) => setMeasured(e.target.value)} placeholder="e.g., 290" className="calc-input" />
       </div>
 
       <button onClick={handleReset} className="calc-btn-reset">Reset</button>

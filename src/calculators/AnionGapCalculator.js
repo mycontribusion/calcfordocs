@@ -92,28 +92,30 @@ export default function AnionGapCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">Serum Sodium (Na, mmol/L)</label>
-        <input value={na} onChange={(e) => setNa(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={na} onChange={(e) => setNa(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Serum Potassium (K⁺, optional)</label>
-        <input value={k} onChange={(e) => setK(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={k} onChange={(e) => setK(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Serum Chloride (Cl, mmol/L)</label>
-        <input value={cl} onChange={(e) => setCl(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={cl} onChange={(e) => setCl(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Serum Bicarbonate (HCO₃⁻, mmol/L)</label>
-        <input value={hco3} onChange={(e) => setHco3(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={hco3} onChange={(e) => setHco3(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Albumin (optional)</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
+            type="number"
+            inputMode="decimal"
             value={alb}
             onChange={(e) => setAlb(e.target.value)}
             className="calc-input"

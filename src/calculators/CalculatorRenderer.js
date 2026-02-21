@@ -43,9 +43,11 @@ import SirirajScore from "./SirirajScore";
 import DAR2026RiskCalculator from "./DAR2026RiskCalculator";
 import MMSECalculator from "./MMSECalculator";
 import IPSSCalculator from "./IPSSCalculator";
+import UniversalLabConverter from "./UniversalLabConverter";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
+  labconv: UniversalLabConverter,
   j: HypokalemiaCorrection,
   d: GlucoseConverter,
   q1: AnionGapCalculator,

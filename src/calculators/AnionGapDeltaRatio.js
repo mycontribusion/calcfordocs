@@ -116,28 +116,30 @@ export default function AnionGapDeltaRatio() {
 
       <div className="calc-box">
         <label className="calc-label">Sodium (Na⁺, mmol/L):</label>
-        <input value={sodium} onChange={(e) => setSodium(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={sodium} onChange={(e) => setSodium(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Potassium (K⁺, mmol/L):</label>
-        <input value={potassium} onChange={(e) => setPotassium(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={potassium} onChange={(e) => setPotassium(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Chloride (Cl⁻, mmol/L):</label>
-        <input value={chloride} onChange={(e) => setChloride(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={chloride} onChange={(e) => setChloride(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Bicarbonate (HCO₃⁻, mmol/L):</label>
-        <input value={bicarbonate} onChange={(e) => setBicarbonate(e.target.value)} className="calc-input" />
+        <input type="number" inputMode="decimal" value={bicarbonate} onChange={(e) => setBicarbonate(e.target.value)} className="calc-input" />
       </div>
 
       <div className="calc-box">
         <label className="calc-label">Albumin (optional):</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
+            type="number"
+            inputMode="decimal"
             value={albumin}
             onChange={(e) => setAlbumin(e.target.value)}
             className="calc-input"

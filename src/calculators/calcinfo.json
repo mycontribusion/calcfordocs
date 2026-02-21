@@ -389,5 +389,19 @@
       "diabetes",
       "Ramadan"
     ]
+  },
+  {
+    "name": "Universal Lab Converter",
+    "id": "labconv",
+    "keywords": [
+      "lab",
+      "converter",
+      "units",
+      "si",
+      "conventional",
+      "glucose",
+      "creatinine",
+      "urea"
+    ]
   }
 ]
