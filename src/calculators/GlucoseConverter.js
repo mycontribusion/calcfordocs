@@ -1,32 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  value: "",
+  unit: "mg", // mg/dL or mmol/L
+  type: "random", // fasting or random
+  result: null,
+};
+
 export default function GlucoseConverter() {
-  const [value, setValue] = useState("");
-  const [unit, setUnit] = useState("mg"); // mg/dL or mmol/L
-  const [type, setType] = useState("random"); // fasting or random
-  const [result, setResult] = useState(null);
-
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
   const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
-
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
-  // 🔄 Auto-calculation
   useEffect(() => {
+    const { value, unit, type } = values;
     if (!value || !unit || !type) {
-      setResult(null);
+      if (values.result !== null) updateFields({ result: null });
       return;
     }
 
     const val = parseFloat(value);
     if (isNaN(val) || val <= 0) {
-      setResult({ error: "Please enter a valid glucose level." });
+      updateFields({ result: { error: "Please enter a valid glucose level." } });
       return;
     }
 
     let convertedValue, displayUnit, category, categoryColor;
 
-    // Conversion
     if (unit === "mg") {
       convertedValue = roundTo1Decimal(val / factor);
       displayUnit = "mmol/L";
@@ -35,7 +37,6 @@ export default function GlucoseConverter() {
       displayUnit = "mg/dL";
     }
 
-    // Determine category
     if (displayUnit === "mg/dL") {
       if (type === "fasting") {
         if (convertedValue < 70) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
@@ -49,7 +50,6 @@ export default function GlucoseConverter() {
         else { category = "Diabetes"; categoryColor = "#dc2626"; }
       }
     } else {
-      // mmol/L ranges
       if (type === "fasting") {
         if (convertedValue < 3.9) { category = "Hypoglycemia"; categoryColor = "#ef4444"; }
         else if (convertedValue <= 5.6) { category = "Normal"; categoryColor = "#16a34a"; }
@@ -63,7 +63,6 @@ export default function GlucoseConverter() {
       }
     }
 
-    // Reference ranges based on display unit
     const ranges =
       displayUnit === "mg/dL"
         ? type === "fasting"
@@ -73,38 +72,32 @@ export default function GlucoseConverter() {
           ? { Hypoglycemia: "<3.9", Normal: "3.9–5.6", Prediabetes: "5.7–6.9", Diabetes: "≥7.0" }
           : { Hypoglycemia: "<3.9", Normal: "3.9–7.7", Prediabetes: "7.8–11.0", Diabetes: "≥11.1" };
 
-    setResult({
-      convertedValue,
-      displayUnit,
-      category,
-      categoryColor,
-      typeLabel: type === "fasting" ? "Fasting" : "Random",
-      ranges,
+    updateFields({
+      result: {
+        convertedValue,
+        displayUnit,
+        category,
+        categoryColor,
+        typeLabel: type === "fasting" ? "Fasting" : "Random",
+        ranges,
+      }
     });
-  }, [value, unit, type]);
-
-  // 🔄 Reset button
-  const handleReset = () => {
-    setValue("");
-    setUnit("mg");
-    setType("random");
-    setResult(null);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.value, values.unit, values.type]);
 
   return (
     <div className="calc-container">
-
       <div className="calc-box">
         <label className="calc-label">Glucose Value:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={values.value}
+            onChange={(e) => setField("value", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select value={unit} onChange={(e) => setUnit(e.target.value)} className="calc-select" style={{ flex: 1 }}>
+          <select value={values.unit} onChange={(e) => setField("unit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="mg">mg/dL</option>
             <option value="mmol">mmol/L</option>
           </select>
@@ -113,34 +106,34 @@ export default function GlucoseConverter() {
 
       <div className="calc-box">
         <label className="calc-label">Type:</label>
-        <select value={type} onChange={(e) => setType(e.target.value)} className="calc-select">
+        <select value={values.type} onChange={(e) => setField("type", e.target.value)} className="calc-select">
           <option value="fasting">Fasting</option>
           <option value="random">Random</option>
         </select>
       </div>
 
-      <button onClick={handleReset} className="calc-btn-reset">Reset</button>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
 
-      {result && (
+      {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          {result.error ? (
-            <p style={{ color: "#ef4444" }}>{result.error}</p>
+          {values.result.error ? (
+            <p style={{ color: "#ef4444" }}>{values.result.error}</p>
           ) : (
             <>
               <p style={{ fontSize: '0.85rem' }}>Conversion Formula: 1 mmol/L = 18.0182 mg/dL</p>
               <p style={{ marginTop: 8 }}>
-                Converted Value: {result.convertedValue} {result.displayUnit}{" "}
-                <strong style={{ color: result.categoryColor }}>({result.category})</strong>
+                Converted Value: {values.result.convertedValue} {values.result.displayUnit}{" "}
+                <strong style={{ color: values.result.categoryColor }}>({values.result.category})</strong>
               </p>
               <div style={{ marginTop: 12, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 8, borderRadius: 4 }}>
-                <p className="calc-label">Reference Ranges ({result.typeLabel}):</p>
+                <p className="calc-label">Reference Ranges ({values.result.typeLabel}):</p>
                 <ul style={{ listStyle: "none", paddingLeft: 0, margin: '4px 0 0' }}>
-                  {Object.entries(result.ranges).map(([key, val]) => (
+                  {Object.entries(values.result.ranges).map(([key, val]) => (
                     <li
                       key={key}
-                      style={{ color: key === result.category ? result.categoryColor : "#0369a1", fontWeight: key === result.category ? 'bold' : 'normal' }}
+                      style={{ color: key === values.result.category ? values.result.categoryColor : "#0369a1", fontWeight: key === values.result.category ? 'bold' : 'normal' }}
                     >
-                      {key}: {val} {result.displayUnit}
+                      {key}: {val} {values.result.displayUnit}
                     </li>
                   ))}
                 </ul>

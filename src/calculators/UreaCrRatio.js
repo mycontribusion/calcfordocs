@@ -1,211 +1,40 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  type: "urea", analyteValue: "", analyteUnit: "mmol/L", creatinineValue: "", creatinineUnit: "µmol/L", result: null
+};
+
 export default function UreaBunCrRatio() {
-  const [type, setType] = useState("urea");
-  const [analyteValue, setAnalyteValue] = useState("");
-  const [analyteUnit, setAnalyteUnit] = useState("mmol/L");
-  const [creatinineValue, setCreatinineValue] = useState("");
-  const [creatinineUnit, setCreatinineUnit] = useState("µmol/L");
-  const [ratioStr, setRatioStr] = useState("");
-  const [interpretation, setInterpretation] = useState("");
-  const [converted, setConverted] = useState(null);
-  const [note, setNote] = useState("");
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
-  const toMgPerDl_fromBun = (val, unit) => (unit === "mmol/L" ? val * 2.8 : val);
-  const toMmoll_fromUrea = (val, unit) => (unit === "mmol/L" ? val : val / 6.0);
-  const toUmolPerL_fromCreat = (val, unit) =>
-    unit === "µmol/L" ? val : unit === "mmol/L" ? val * 1000 : val * 88.4;
-  const toMgPerDl_fromCreat = (val, unit) =>
-    unit === "µmol/L"
-      ? val / 88.4
-      : unit === "mmol/L"
-        ? (val * 1000) / 88.4
-        : val;
-
-  const fmt = (n, dp = 1) => (Number.isFinite(n) ? Number(n).toFixed(dp) : "—");
-
-  const calculate = useCallback(() => {
-    setNote("");
-    setRatioStr("");
-    setInterpretation("");
-    setConverted(null);
-
-    const aVal = parseFloat(analyteValue);
-    const cVal = parseFloat(creatinineValue);
-
-    if (!Number.isFinite(aVal) || !Number.isFinite(cVal) || cVal === 0) {
-      setNote("Please enter valid numeric values (creatinine must be non-zero).");
-      return;
-    }
-
-    if (type === "bun") {
-      const bun_mgdl = toMgPerDl_fromBun(aVal, analyteUnit);
-      const cr_mgdl = toMgPerDl_fromCreat(cVal, creatinineUnit);
-      const raw = bun_mgdl / cr_mgdl;
-      const display = raw >= 1 ? `${fmt(raw, 1)} : 1` : `1 : ${fmt(1 / raw, 1)}`;
-
-      let interp =
-        raw > 20
-          ? "High BUN/Cr — pre-renal azotemia or upper GI bleeding."
-          : raw < 10
-            ? "Low BUN/Cr — intrinsic renal disease or severe liver disease."
-            : "Normal BUN/Cr ratio.";
-
-      setRatioStr(display);
-      setInterpretation(interp);
-      setConverted({ bun_mgdl: fmt(bun_mgdl, 2), creat_mgdl: fmt(cr_mgdl, 3) });
-    } else {
-      const urea_mmolL = toMmoll_fromUrea(aVal, analyteUnit);
-      const cr_umolL = toUmolPerL_fromCreat(cVal, creatinineUnit);
-      const raw = (urea_mmolL / cr_umolL) * 1000;
-      const display = raw >= 1 ? `${fmt(raw, 1)} : 1` : `1 : ${fmt(1 / raw, 1)}`;
-
-      let interp =
-        raw > 100
-          ? "High Urea/Cr — pre-renal azotemia or upper GI bleeding."
-          : raw < 40
-            ? "Low Urea/Cr — intrinsic renal disease or severe liver disease."
-            : "Normal Urea/Cr ratio.";
-
-      setRatioStr(display);
-      setInterpretation(interp);
-      setConverted({ urea_mmolL: fmt(urea_mmolL, 3), creat_umolL: fmt(cr_umolL, 1) });
-    }
-  }, [analyteValue, creatinineValue, analyteUnit, creatinineUnit, type]);
-
-  // Auto-calc on input change
   useEffect(() => {
-    if (analyteValue !== "" && creatinineValue !== "") {
-      calculate();
+    const aVal = parseFloat(values.analyteValue);
+    const cVal = parseFloat(values.creatinineValue);
+    if (!aVal || !cVal) { if (values.result !== null) updateFields({ result: null }); return; }
+
+    let ratio = 0;
+    if (values.type === "bun") {
+      const bun = values.analyteUnit === "mmol/L" ? aVal * 2.8 : aVal;
+      const cr = values.creatinineUnit === "µmol/L" ? cVal / 88.4 : values.creatinineUnit === "mmol/L" ? (cVal * 1000) / 88.4 : cVal;
+      ratio = bun / cr;
     } else {
-      setRatioStr("");
-      setInterpretation("");
-      setConverted(null);
-      setNote("");
+      const urea = values.analyteUnit === "mmol/L" ? aVal : aVal / 6.0;
+      const cr = values.creatinineUnit === "µmol/L" ? cVal : values.creatinineUnit === "mmol/L" ? cVal * 1000 : cVal * 88.4;
+      ratio = (urea / cr) * 1000;
     }
-  }, [analyteValue, creatinineValue, analyteUnit, creatinineUnit, type, calculate]);
-
-  const reset = () => {
-    setType("urea");
-    setAnalyteValue("");
-    setAnalyteUnit("mmol/L");
-    setCreatinineValue("");
-    setCreatinineUnit("µmol/L");
-    setRatioStr("");
-    setInterpretation("");
-    setConverted(null);
-    setNote("");
-  };
-
-  const handleTypeChange = (e) => {
-    const newType = e.target.value;
-    setType(newType);
-    setAnalyteValue("");
-    setCreatinineValue("");
-    setRatioStr("");
-    setInterpretation("");
-    setConverted(null);
-    setNote("");
-
-    if (newType === "urea") {
-      setAnalyteUnit("mmol/L");
-      setCreatinineUnit("µmol/L");
-    } else {
-      setAnalyteUnit("mg/dL");
-      setCreatinineUnit("mg/dL");
-    }
-  };
+    updateFields({ result: ratio.toFixed(1) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.analyteValue, values.creatinineValue, values.analyteUnit, values.creatinineUnit, values.type]);
 
   return (
     <div className="calc-container">
-
-      <div className="calc-box">
-        <label className="calc-label">Type: </label>
-        <select value={type} onChange={handleTypeChange} className="calc-select">
-          <option value="urea">Urea (SI)</option>
-          <option value="bun">BUN (Conventional)</option>
-        </select>
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">{type === "urea" ? "Urea:" : "BUN:"}</label>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={analyteValue}
-            onChange={(e) => setAnalyteValue(e.target.value)}
-            className="calc-input"
-            style={{ flex: 1 }}
-          />
-          <select
-            value={analyteUnit}
-            onChange={(e) => setAnalyteUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="mmol/L">mmol/L</option>
-            <option value="mg/dL">mg/dL</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Creatinine:</label>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={creatinineValue}
-            onChange={(e) => setCreatinineValue(e.target.value)}
-            className="calc-input"
-            style={{ flex: 1 }}
-          />
-          <select
-            value={creatinineUnit}
-            onChange={(e) => setCreatinineUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="µmol/L">µmol/L</option>
-            <option value="mmol/L">mmol/L</option>
-            <option value="mg/dL">mg/dL</option>
-          </select>
-        </div>
-      </div>
-
-      <button onClick={reset} className="calc-btn-reset">Reset</button>
-
-      {note && <p style={{ color: "brown", marginTop: 10 }}>{note}</p>}
-
-      {converted && (
-        <div className="calc-box" style={{ marginTop: 16 }}>
-          {type === "bun" ? (
-            <>
-              <div><strong>BUN (mg/dL):</strong> {converted.bun_mgdl}</div>
-              <div><strong>Creatinine (mg/dL):</strong> {converted.creat_mgdl}</div>
-            </>
-          ) : (
-            <>
-              <div><strong>Urea (mmol/L):</strong> {converted.urea_mmolL}</div>
-              <div><strong>Creatinine (µmol/L):</strong> {converted.creat_umolL}</div>
-            </>
-          )}
-        </div>
-      )}
-
-      {ratioStr && (
-        <div className="calc-result">
-          <div><strong>Ratio:</strong> {ratioStr}</div>
-          <p style={{ margin: "4px 0 8px" }}>{interpretation}</p>
-          <div style={{ fontSize: "0.9rem", textAlign: "left", marginTop: 12 }}>
-            <p><strong>Normal Ranges:</strong></p>
-            <ul style={{ paddingLeft: 20 }}>
-              <li>BUN/Cr Ratio: 12:1 - 20:1</li>
-              <li>Urea/Cr Ratio: 40:1 - 100:1</li>
-            </ul>
-          </div>
-        </div>
-      )}
+      <div className="calc-box"><label className="calc-label">Type:</label><select value={values.type} onChange={e => updateFields({ type: e.target.value, analyteValue: "", creatinineValue: "" })} className="calc-select"><option value="urea">Urea (SI)</option><option value="bun">BUN (Conv)</option></select></div>
+      <div className="calc-box"><label className="calc-label">Value:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.analyteValue} onChange={e => setField("analyteValue", e.target.value)} className="calc-input" style={{ flex: 1 }} /><select value={values.analyteUnit} onChange={e => setField("analyteUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select></div></div>
+      <div className="calc-box"><label className="calc-label">Creatinine:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.creatinineValue} onChange={e => setField("creatinineValue", e.target.value)} className="calc-input" style={{ flex: 1 }} /><select value={values.creatinineUnit} onChange={e => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="µmol/L">µmol/L</option><option value="mg/dL">mg/dL</option></select></div></div>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      {values.result && <div className="calc-result" style={{ marginTop: 16 }}><strong>Ratio:</strong> {values.result} : 1</div>}
     </div>
   );
 }

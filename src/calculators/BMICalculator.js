@@ -1,17 +1,22 @@
 // src/calculators/BmiCalculator.js
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
-export default function BmiCalculator() {
-  const [weight, setWeight] = useState("");
-  const [weightUnit, setWeightUnit] = useState("kg");
-  const [height, setHeight] = useState("");
-  const [heightUnit, setHeightUnit] = useState("m");
-  const [result, setResult] = useState("");
+const INITIAL_STATE = {
+  weight: "",
+  weightUnit: "kg",
+  height: "",
+  heightUnit: "cm",
+  result: "",
+};
 
-  function calculateBMI() {
-    let weightKg = parseFloat(weight);
-    let heightM = parseFloat(height);
+export default function BmiCalculator() {
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+
+  useEffect(() => {
+    let weightKg = parseFloat(values.weight);
+    let heightM = parseFloat(values.height);
 
     if (
       !Number.isFinite(weightKg) ||
@@ -19,23 +24,24 @@ export default function BmiCalculator() {
       weightKg <= 0 ||
       heightM <= 0
     ) {
-      setResult("");
+      if (values.result !== "") updateFields({ result: "" });
       return;
     }
 
     // Convert weight to kg
-    if (weightUnit === "lb") {
+    if (values.weightUnit === "lb") {
       weightKg *= 0.453592;
     }
 
     // Convert height to meters
-    if (heightUnit === "cm") {
-      heightM /= 100;
-    } else if (heightUnit === "inch") {
-      heightM *= 0.0254;
+    let hM = heightM;
+    if (values.heightUnit === "cm") {
+      hM /= 100;
+    } else if (values.heightUnit === "inch") {
+      hM *= 0.0254;
     }
 
-    const bmi = weightKg / (heightM * heightM);
+    const bmi = weightKg / (hM * hM);
     let category = "";
 
     if (bmi < 18.5) category = "Underweight";
@@ -43,22 +49,12 @@ export default function BmiCalculator() {
     else if (bmi < 29.9) category = "Overweight";
     else category = "Obese";
 
-    setResult(`BMI: ${bmi.toFixed(2)} - ${category}`);
-  }
-
-  // 🔁 Auto-calculate silently
-  useEffect(() => {
-    calculateBMI();
+    const finalRes = `BMI: ${bmi.toFixed(2)} - ${category}`;
+    if (values.result !== finalRes) {
+      updateFields({ result: finalRes });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [weight, weightUnit, height, heightUnit]);
-
-  function handleReset() {
-    setWeight("");
-    setHeight("");
-    setWeightUnit("kg");
-    setHeightUnit("cm");
-    setResult("");
-  }
+  }, [values.weight, values.weightUnit, values.height, values.heightUnit]);
 
   return (
     <div className="calc-container">
@@ -69,14 +65,14 @@ export default function BmiCalculator() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            value={values.weight}
+            onChange={(e) => setField("weight", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
           <select
-            value={weightUnit}
-            onChange={(e) => setWeightUnit(e.target.value)}
+            value={values.weightUnit}
+            onChange={(e) => setField("weightUnit", e.target.value)}
             className="calc-select"
             style={{ flex: 1 }}
           >
@@ -92,14 +88,14 @@ export default function BmiCalculator() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            value={values.height}
+            onChange={(e) => setField("height", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
           <select
-            value={heightUnit}
-            onChange={(e) => setHeightUnit(e.target.value)}
+            value={values.heightUnit}
+            onChange={(e) => setField("heightUnit", e.target.value)}
             className="calc-select"
             style={{ flex: 1 }}
           >
@@ -112,15 +108,15 @@ export default function BmiCalculator() {
 
       {/* Actions */}
       <button
-        onClick={handleReset}
+        onClick={reset}
         className="calc-btn-reset"
       >
-        Reset
+        Reset Calculator
       </button>
 
-      {result && (
+      {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p className="font-medium">{result}</p>
+          <p className="font-medium">{values.result}</p>
           <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
             Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
           </p>

@@ -1,7 +1,7 @@
 [
   {
     "name": "Timer + Calc",
-    "id": "u",
+    "id": "timer_calculator",
     "keywords": [
       "timer",
       "stopwatch",
@@ -13,7 +13,7 @@
   },
   {
     "name": "Simple Calculator",
-    "id": "sc",
+    "id": "simple_calculator",
     "keywords": [
       "basic",
       "simple",
@@ -23,7 +23,7 @@
   },
   {
     "name": "Universal Lab Converter",
-    "id": "labconv",
+    "id": "lab_converter",
     "keywords": [
       "lab",
       "converter",
@@ -37,7 +37,7 @@
   },
   {
     "name": "Glucose Converter",
-    "id": "d",
+    "id": "glucose_converter",
     "keywords": [
       "blood sugar",
       "glucose",
@@ -47,7 +47,7 @@
   },
   {
     "name": "Dosage Calc",
-    "id": "o",
+    "id": "dosage_calculator",
     "keywords": [
       "dose",
       "drug",
@@ -57,7 +57,7 @@
   },
   {
     "name": "IV Infusion Drop Rate",
-    "id": "p",
+    "id": "iv_infusion_rate",
     "keywords": [
       "iv rate",
       "infusion",
@@ -67,7 +67,7 @@
   },
   {
     "name": "Body Mass Index",
-    "id": "a",
+    "id": "bmi_calculator",
     "keywords": [
       "body mass index",
       "weight height ratio",
@@ -76,7 +76,7 @@
   },
   {
     "name": "qSOFA / mSOFA",
-    "id": "sofa",
+    "id": "sofa_score",
     "keywords": [
       "qsofa",
       "msofa",
@@ -86,7 +86,7 @@
   },
   {
     "name": "SpO₂ / FiO₂ Ratio",
-    "id": "sfr",
+    "id": "spo2_fio2_ratio",
     "keywords": [
       "spo2",
       "fio2",
@@ -96,7 +96,7 @@
   },
   {
     "name": "GCS",
-    "id": "i",
+    "id": "gcs_calculator",
     "keywords": [
       "glasgow coma scale",
       "coma",
@@ -105,7 +105,7 @@
   },
   {
     "name": "Shock Index",
-    "id": "shock",
+    "id": "shock_index",
     "keywords": [
       "shock",
       "heart rate/bp",
@@ -114,7 +114,7 @@
   },
   {
     "name": "Mean Arterial Pressure",
-    "id": "e",
+    "id": "map_calculator",
     "keywords": [
       "mean arterial pressure",
       "blood pressure"
@@ -122,7 +122,7 @@
   },
   {
     "name": "Rule of 9",
-    "id": "9rule",
+    "id": "rule_of_nines",
     "keywords": [
       "burn",
       "body surface area",
@@ -132,7 +132,7 @@
   },
   {
     "name": "Fluid Correction",
-    "id": "g",
+    "id": "fluid_correction",
     "keywords": [
       "fluids",
       "maintenance",
@@ -141,7 +141,7 @@
   },
   {
     "name": "eGFR Calculator",
-    "id": "n",
+    "id": "egfr_calculator",
     "keywords": [
       "kidney",
       "gfr",
@@ -151,7 +151,7 @@
   },
   {
     "name": "Urea-Creatinine Ratio (UCR)",
-    "id": "w",
+    "id": "urea_creatinine_ratio",
     "keywords": [
       "ucr",
       "urea creatinine",
@@ -160,7 +160,7 @@
   },
   {
     "name": "AnionGap / DeltaRatio",
-    "id": "agdr",
+    "id": "anion_gap_delta_ratio",
     "keywords": [
       "delta ratio",
       "anion gap ratio",
@@ -169,7 +169,7 @@
   },
   {
     "name": "Serum Osmolality Calc",
-    "id": "q",
+    "id": "serum_osmolality",
     "keywords": [
       "osmolality",
       "serum osmol",
@@ -178,7 +178,7 @@
   },
   {
     "name": "Hypokalemia Correction",
-    "id": "j",
+    "id": "hypokalemia_correction",
     "keywords": [
       "potassium",
       "k correction",
@@ -187,7 +187,7 @@
   },
   {
     "name": "Hyponatremia Correction",
-    "id": "lowna",
+    "id": "hyponatremia_correction",
     "keywords": [
       "na correction",
       "low sodium",
@@ -196,7 +196,7 @@
   },
   {
     "name": "Corrected Sodium",
-    "id": "correctna",
+    "id": "corrected_sodium",
     "keywords": [
       "na corrected",
       "sodium",
@@ -205,7 +205,7 @@
   },
   {
     "name": "Corrected Calcium",
-    "id": "x",
+    "id": "corrected_calcium",
     "keywords": [
       "ca corrected",
       "albumin corrected calcium"
@@ -213,7 +213,7 @@
   },
   {
     "name": "Calcium Phosphate Product",
-    "id": "cak",
+    "id": "calcium_phosphate_product",
     "keywords": [
       "ca phosphate",
       "ca x phosphate",
@@ -222,7 +222,7 @@
   },
   {
     "name": "Estimated Blood Volume",
-    "id": "f",
+    "id": "blood_volume_estimator",
     "keywords": [
       "ebv",
       "blood volume",
@@ -231,7 +231,7 @@
   },
   {
     "name": "Pediatric Weight Calc",
-    "id": "m",
+    "id": "pediatric_weight_calc",
     "keywords": [
       "weight",
       "paed weight",
@@ -241,7 +241,7 @@
   },
   {
     "name": "Pediatric Age Estimator",
-    "id": "k",
+    "id": "pediatric_age_estimator",
     "keywords": [
       "pediatric age",
       "child age",
@@ -251,7 +251,7 @@
   },
   {
     "name": "Pediatric Anemia Correction",
-    "id": "l",
+    "id": "pediatric_anemia_correction",
     "keywords": [
       "anemia correction",
       "paed anemia",
@@ -260,7 +260,7 @@
   },
   {
     "name": "Ballard Score Calc",
-    "id": "v",
+    "id": "ballard_score",
     "keywords": [
       "ballard",
       "gestational age",
@@ -269,7 +269,7 @@
   },
   {
     "name": "Pregnancy Calculator",
-    "id": "r",
+    "id": "pregnancy_calculator",
     "keywords": [
       "ega",
       "edd",
@@ -281,7 +281,7 @@
   },
   {
     "name": "Bishop Score",
-    "id": "bs",
+    "id": "bishop_score",
     "keywords": [
       "bishop",
       "cervical score",
@@ -290,7 +290,7 @@
   },
   {
     "name": "Well's Score DVT",
-    "id": "welldvt",
+    "id": "wells_dvt_score",
     "keywords": [
       "dvt",
       "wells dvt",
@@ -299,7 +299,7 @@
   },
   {
     "name": "Well's Score PE",
-    "id": "wellpe",
+    "id": "wells_pe_score",
     "keywords": [
       "pe",
       "wells pe",
@@ -308,7 +308,7 @@
   },
   {
     "name": "Ischemic / Hemmorrhagic Stroke",
-    "id": "siri",
+    "id": "stroke_score_siriraj",
     "keywords": [
       "cvd",
       "stroke",
@@ -317,7 +317,7 @@
   },
   {
     "name": "AF Stroke Risk Score",
-    "id": "afstroke",
+    "id": "af_stroke_risk_cha2ds2vasc",
     "keywords": [
       "af",
       "atrial fibrillation",
@@ -327,7 +327,7 @@
   },
   {
     "name": "CURB-65 Score",
-    "id": "curb65",
+    "id": "curb65_score",
     "keywords": [
       "curb",
       "pneumonia",
@@ -338,7 +338,7 @@
   },
   {
     "name": "Framingham Criteria",
-    "id": "h",
+    "id": "heart_failure_framingham",
     "keywords": [
       "heart failure",
       "framingham",
@@ -347,7 +347,7 @@
   },
   {
     "name": "DAR Risk Assessment Tool (2026)",
-    "id": "dar",
+    "id": "dar_risk_assessment",
     "keywords": [
       "fasting",
       "dar",
@@ -358,7 +358,7 @@
   },
   {
     "name": "Cardiac Axis",
-    "id": "b",
+    "id": "cardiac_axis",
     "keywords": [
       "ecg axis",
       "heart axis"
@@ -366,7 +366,7 @@
   },
   {
     "name": "ECG Waveforms",
-    "id": "c",
+    "id": "ecg_waveforms",
     "keywords": [
       "ecg",
       "ekg",
@@ -379,7 +379,7 @@
   },
   {
     "name": "IPSS",
-    "id": "ipss",
+    "id": "ipss_score",
     "keywords": [
       "incontinence",
       "ipss",
@@ -388,11 +388,23 @@
   },
   {
     "name": "Mini-Mental State Examination",
-    "id": "mmse",
+    "id": "mmse_calculator",
     "keywords": [
       "mini mental state exam",
       "mmse",
       "cognitive impairment"
+    ]
+  },
+  {
+    "name": "APGAR Score",
+    "id": "apgar_score",
+    "keywords": [
+      "apgar",
+      "newborn",
+      "neonate",
+      "birth assessment",
+      "pediatric",
+      "neonatology"
     ]
   }
 ]

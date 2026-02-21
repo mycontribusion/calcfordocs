@@ -1,87 +1,69 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  calcium: "",
+  calciumUnit: "mmol/L",
+  albumin: "",
+  albuminUnit: "g/L",
+  result: null,
+  interpretation: "",
+};
+
 function CorrectedCalcium() {
-  const [calcium, setCalcium] = useState("");
-  const [calciumUnit, setCalciumUnit] = useState("mmol/L");
-  const [albumin, setAlbumin] = useState("");
-  const [albuminUnit, setAlbuminUnit] = useState("g/L");
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
-  const [result, setResult] = useState(null);
-  const [interpretation, setInterpretation] = useState("");
-
-  // Helper to parse positive numbers
   const parseRequired = (v) => {
     if (v === "" || v === null) return null;
     const n = Number(v);
     return Number.isFinite(n) && n > 0 ? n : null;
   };
 
-  // Auto-calc when calcium + albumin are filled
   useEffect(() => {
-    const caVal = parseRequired(calcium);
-    const albVal = parseRequired(albumin);
+    const caVal = parseRequired(values.calcium);
+    const albVal = parseRequired(values.albumin);
 
     if (caVal === null || albVal === null) {
-      setResult(null);
-      setInterpretation("");
+      if (values.result !== null) updateFields({ result: null, interpretation: "" });
       return;
     }
 
     let ca = caVal;
     let alb = albVal;
 
-    // Convert calcium to mg/dL for calculation if needed
-    if (calciumUnit === "mmol/L") ca = ca * 4.0;
+    if (values.calciumUnit === "mmol/L") ca = ca * 4.0;
+    if (values.albuminUnit === "g/L") alb = alb / 10;
 
-    // Convert albumin to g/dL for calculation
-    if (albuminUnit === "g/L") alb = alb / 10;
-
-    // Corrected calcium formula (mg/dL)
     let correctedCa = ca + 0.8 * (4 - alb);
 
-    // Interpretation
     let interp = "";
     if (correctedCa < 8.5) interp = "Low (Hypocalcemia)";
     else if (correctedCa > 10.5) interp = "High (Hypercalcemia)";
     else interp = "Normal";
 
-    // Convert back to user's calcium unit for display
-    if (calciumUnit === "mmol/L") correctedCa = correctedCa / 4.0;
+    if (values.calciumUnit === "mmol/L") correctedCa = correctedCa / 4.0;
 
-    setResult(correctedCa.toFixed(2));
-    setInterpretation(interp);
-  }, [calcium, calciumUnit, albumin, albuminUnit]);
-
-  const reset = () => {
-    setCalcium("");
-    setCalciumUnit("mg/dL");
-    setAlbumin("");
-    setAlbuminUnit("g/dL");
-    setResult(null);
-    setInterpretation("");
-  };
+    const finalRes = correctedCa.toFixed(2);
+    if (values.result !== finalRes) {
+      updateFields({ result: finalRes, interpretation: interp });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.calcium, values.calciumUnit, values.albumin, values.albuminUnit]);
 
   return (
     <div className="calc-container">
-
       <div className="calc-box">
         <label className="calc-label">Calcium:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={calcium}
-            onChange={(e) => setCalcium(e.target.value)}
-            placeholder="Enter calcium"
+            value={values.calcium}
+            onChange={(e) => setField("calcium", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select
-            value={calciumUnit}
-            onChange={(e) => setCalciumUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
+          <select value={values.calciumUnit} onChange={(e) => setField("calciumUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="mg/dL">mg/dL</option>
             <option value="mmol/L">mmol/L</option>
           </select>
@@ -93,44 +75,25 @@ function CorrectedCalcium() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={albumin}
-            onChange={(e) => setAlbumin(e.target.value)}
-            placeholder="Enter albumin"
+            value={values.albumin}
+            onChange={(e) => setField("albumin", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select
-            value={albuminUnit}
-            onChange={(e) => setAlbuminUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
+          <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="g/dL">g/dL</option>
             <option value="g/L">g/L</option>
           </select>
         </div>
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">Reset</button>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
 
-      {/* Show result only when both required inputs exist */}
-      {result !== null && (
+      {values.result !== null && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p>
-            <strong>Corrected Calcium:</strong> {result} {calciumUnit} ({interpretation})
+            <strong>Corrected Calcium:</strong> {values.result} {values.calciumUnit} ({values.interpretation})
           </p>
-
-          <p style={{ fontSize: '0.85rem', marginTop: 12 }}>
-            Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4.0 − Albumin in g/dL)
-          </p>
-
-          <div style={{ fontSize: '0.85rem', marginTop: 8, textAlign: 'left' }}>
-            <p className="calc-label">Normal Ranges:</p>
-            <ul style={{ paddingLeft: 20 }}>
-              <li>Total Calcium (mg/dL): 8.5 – 10.5</li>
-              <li>Total Calcium (mmol/L): 2.12 – 2.62</li>
-            </ul>
-          </div>
         </div>
       )}
     </div>

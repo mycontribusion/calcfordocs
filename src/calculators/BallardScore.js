@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  posture: 0,
+  squareWindow: -1,
+  armRecoil: 0,
+  poplitealAngle: -1,
+  scarfSign: -1,
+  heelToEar: -1,
+  skin: -1,
+  lanugo: -1,
+  plantar: -1,
+  breast: -1,
+  eyeEar: -1,
+  genitalsMale: -1,
+  genitalsFemale: -1,
+  sex: "male",
+};
+
 export default function BallardScoreCalculator() {
-  const [values, setValues] = useState({
-    posture: 0,
-    squareWindow: -1,
-    armRecoil: 0,
-    poplitealAngle: -1,
-    scarfSign: -1,
-    heelToEar: -1,
-    skin: -1,
-    lanugo: -1,
-    plantar: -1,
-    breast: -1,
-    eyeEar: -1,
-    genitalsMale: -1,
-    genitalsFemale: -1,
-    sex: "male", // default
-  });
+  const { values, updateField: handleChange, reset } = useCalculator(INITIAL_STATE);
 
   // ✅ Official New Ballard Score lookup chart
   const scoreMap = {
@@ -36,19 +39,7 @@ export default function BallardScoreCalculator() {
     "50": 44,
   };
 
-
-  const handleChange = (field, value) => {
-    setValues((prev) => ({
-      ...prev,
-      [field]: parseInt(value, 10),
-    }));
-  };
-
-  const handleSexChange = (sex) => {
-    setValues((prev) => ({ ...prev, sex }));
-  };
-
-  const calculateTotalScore = () => {
+  const totalScore = useMemo(() => {
     let {
       posture,
       squareWindow,
@@ -80,13 +71,11 @@ export default function BallardScoreCalculator() {
       eyeEar +
       (sex === "male" ? genitalsMale : genitalsFemale)
     );
-  };
+  }, [values]);
 
-  const totalScore = calculateTotalScore();
   const estimatedGA = scoreMap[totalScore] || "N/A";
 
   const getStatus = () => {
-
     if (estimatedGA < 28) return "Extremely preterm";
     if (estimatedGA >= 28 && estimatedGA < 32) return "Very preterm";
     if (estimatedGA >= 32 && estimatedGA < 34) return "Moderate preterm";
@@ -98,7 +87,6 @@ export default function BallardScoreCalculator() {
 
   return (
     <div className="calc-container">
-
       {/* Sex Selection */}
       <div className="calc-box">
         <label className="calc-label">Sex:</label>
@@ -109,7 +97,7 @@ export default function BallardScoreCalculator() {
               name="sex"
               value="male"
               checked={values.sex === "male"}
-              onChange={() => handleSexChange("male")}
+              onChange={() => handleChange("sex", "male")}
               style={{ marginRight: 6 }}
             />
             Male
@@ -120,7 +108,7 @@ export default function BallardScoreCalculator() {
               name="sex"
               value="female"
               checked={values.sex === "female"}
-              onChange={() => handleSexChange("female")}
+              onChange={() => handleChange("sex", "female")}
               style={{ marginRight: 6 }}
             />
             Female
@@ -128,16 +116,12 @@ export default function BallardScoreCalculator() {
         </div>
       </div>
 
-
       {/* Neuromuscular Parameters */}
       <h3 style={{ fontSize: '1rem', marginTop: 20, marginBottom: 12, color: '#333' }}>Neuromuscular Maturity</h3>
-
       <div className="ballard-grid">
-
-
         <div className="calc-box">
           <label className="calc-label">Posture</label>
-          <select className="calc-select" onChange={(e) => handleChange("posture", e.target.value)}>
+          <select className="calc-select" value={values.posture} onChange={(e) => handleChange("posture", parseInt(e.target.value))}>
             <option value="0">0 - Limp</option>
             <option value="1">1 - Some flexion</option>
             <option value="2">2 - Moderate flexion</option>
@@ -148,7 +132,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Square Window</label>
-          <select className="calc-select" onChange={(e) => handleChange("squareWindow", e.target.value)}>
+          <select className="calc-select" value={values.squareWindow} onChange={(e) => handleChange("squareWindow", parseInt(e.target.value))}>
             <option value="-1">-1 - &gt;90°</option>
             <option value="0">0 - 90°</option>
             <option value="1">1 - 60°</option>
@@ -160,7 +144,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Arm Recoil</label>
-          <select className="calc-select" onChange={(e) => handleChange("armRecoil", e.target.value)}>
+          <select className="calc-select" value={values.armRecoil} onChange={(e) => handleChange("armRecoil", parseInt(e.target.value))}>
             <option value="1">1 - 140° - 180°</option>
             <option value="2">2 - 110° - 140°</option>
             <option value="3">3 - 90° - 110°</option>
@@ -170,7 +154,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Popliteal Angle</label>
-          <select className="calc-select" onChange={(e) => handleChange("poplitealAngle", e.target.value)}>
+          <select className="calc-select" value={values.poplitealAngle} onChange={(e) => handleChange("poplitealAngle", parseInt(e.target.value))}>
             <option value="-1">-1 - 180°</option>
             <option value="0">0 - 160°</option>
             <option value="1">1 - 140°</option>
@@ -183,7 +167,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Scarf Sign</label>
-          <select className="calc-select" onChange={(e) => handleChange("scarfSign", e.target.value)}>
+          <select className="calc-select" value={values.scarfSign} onChange={(e) => handleChange("scarfSign", parseInt(e.target.value))}>
             <option value="-1">-1 - Elbow reaches neck</option>
             <option value="0">0 - Elbow at contralateral axillary line</option>
             <option value="1">1 - Elbow at contralateral nipple line</option>
@@ -195,7 +179,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Heel to Ear</label>
-          <select className="calc-select" onChange={(e) => handleChange("heelToEar", e.target.value)}>
+          <select className="calc-select" value={values.heelToEar} onChange={(e) => handleChange("heelToEar", parseInt(e.target.value))}>
             <option value="-1">-1 - Heel reaches ear</option>
             <option value="0">0 - Heel reaches nose</option>
             <option value="1">1 - Heel to chin</option>
@@ -208,12 +192,10 @@ export default function BallardScoreCalculator() {
 
       {/* Physical Maturity Parameters */}
       <h3 style={{ fontSize: '1rem', marginTop: 20, marginBottom: 12, color: '#333' }}>Physical Maturity</h3>
-
       <div className="ballard-grid">
-
         <div className="calc-box">
           <label className="calc-label">Skin</label>
-          <select className="calc-select" onChange={(e) => handleChange("skin", e.target.value)}>
+          <select className="calc-select" value={values.skin} onChange={(e) => handleChange("skin", parseInt(e.target.value))}>
             <option value="-1">-1 - Sticky, friable, transparent</option>
             <option value="0">0 - Gelatinous red, translucent</option>
             <option value="1">1 - Smooth pink, visible veins</option>
@@ -226,7 +208,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Lanugo</label>
-          <select className="calc-select" onChange={(e) => handleChange("lanugo", e.target.value)}>
+          <select className="calc-select" value={values.lanugo} onChange={(e) => handleChange("lanugo", parseInt(e.target.value))}>
             <option value="-1">-1 - None</option>
             <option value="0">0 - Sparse</option>
             <option value="1">1 - Abundant</option>
@@ -238,7 +220,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Plantar Creases</label>
-          <select className="calc-select" onChange={(e) => handleChange("plantar", e.target.value)}>
+          <select className="calc-select" value={values.plantar} onChange={(e) => handleChange("plantar", parseInt(e.target.value))}>
             <option value="-1">-1 - Heel-toe 40–50 mm</option>
             <option value="0">0 - Heel-toe &lt;50 mm, no creases</option>
             <option value="1">1 - Faint red marks</option>
@@ -250,7 +232,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Breast</label>
-          <select className="calc-select" onChange={(e) => handleChange("breast", e.target.value)}>
+          <select className="calc-select" value={values.breast} onChange={(e) => handleChange("breast", parseInt(e.target.value))}>
             <option value="-1">-1 - Imperceptible</option>
             <option value="0">0 - Barely perceptible</option>
             <option value="1">1 - Flat areola, no bud</option>
@@ -262,7 +244,7 @@ export default function BallardScoreCalculator() {
 
         <div className="calc-box">
           <label className="calc-label">Eye & Ear</label>
-          <select className="calc-select" onChange={(e) => handleChange("eyeEar", e.target.value)}>
+          <select className="calc-select" value={values.eyeEar} onChange={(e) => handleChange("eyeEar", parseInt(e.target.value))}>
             <option value="-1">-1 - Lids fused loosely</option>
             <option value="0">0 - Lids open, pinna flat</option>
             <option value="1">1 - Pinna slightly curved, slow recoil</option>
@@ -276,7 +258,7 @@ export default function BallardScoreCalculator() {
         {values.sex === "male" ? (
           <div className="calc-box">
             <label className="calc-label">Male Genitals</label>
-            <select className="calc-select" onChange={(e) => handleChange("genitalsMale", e.target.value)}>
+            <select className="calc-select" value={values.genitalsMale} onChange={(e) => handleChange("genitalsMale", parseInt(e.target.value))}>
               <option value="-1">-1 - Scrotum flat, smooth</option>
               <option value="0">0 - Faint rugae</option>
               <option value="1">1 - Few rugae, testes high</option>
@@ -288,7 +270,7 @@ export default function BallardScoreCalculator() {
         ) : (
           <div className="calc-box">
             <label className="calc-label">Female Genitals</label>
-            <select className="calc-select" onChange={(e) => handleChange("genitalsFemale", e.target.value)}>
+            <select className="calc-select" value={values.genitalsFemale} onChange={(e) => handleChange("genitalsFemale", parseInt(e.target.value))}>
               <option value="-1">-1 - Clitoris prominent, labia flat</option>
               <option value="0">0 - Prominent clitoris, small labia</option>
               <option value="1">1 - Clitoris prominent, enlarging labia</option>
@@ -306,6 +288,7 @@ export default function BallardScoreCalculator() {
         <p>Total Score: {totalScore}</p>
         <p style={{ marginTop: 8 }}>Estimated GA: {estimatedGA} weeks ({getStatus()})</p>
       </div>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

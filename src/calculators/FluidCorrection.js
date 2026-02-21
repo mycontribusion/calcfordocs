@@ -1,23 +1,27 @@
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  weight: "",
+  weightUnit: "kg",
+  severity: "mild",
+};
+
 export default function FluidCorrection() {
-  const [weight, setWeight] = useState("");
-  const [weightUnit, setWeightUnit] = useState("kg");
-  const [severity, setSeverity] = useState("mild");
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
   const result = (() => {
-    let weightKg = parseFloat(weight);
+    let weightKg = parseFloat(values.weight);
     if (isNaN(weightKg) || weightKg <= 0) return { error: "Please enter a valid weight." };
 
     // Convert lb → kg
-    if (weightUnit === "lb") weightKg = weightKg * 0.453592;
+    if (values.weightUnit === "lb") weightKg = weightKg * 0.453592;
 
     // Dehydration %
     let dehydrationPercent = 0;
-    if (severity === "mild") dehydrationPercent = 5;
-    else if (severity === "moderate") dehydrationPercent = 10;
-    else if (severity === "severe") dehydrationPercent = 15;
+    if (values.severity === "mild") dehydrationPercent = 5;
+    else if (values.severity === "moderate") dehydrationPercent = 10;
+    else if (values.severity === "severe") dehydrationPercent = 15;
 
     // Deficit
     const deficit = dehydrationPercent * weightKg * 10;
@@ -47,14 +51,14 @@ export default function FluidCorrection() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            value={values.weight}
+            onChange={(e) => setField("weight", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
           <select
-            value={weightUnit}
-            onChange={(e) => setWeightUnit(e.target.value)}
+            value={values.weightUnit}
+            onChange={(e) => setField("weightUnit", e.target.value)}
             className="calc-select"
             style={{ flex: 1 }}
           >
@@ -68,8 +72,8 @@ export default function FluidCorrection() {
       <div className="calc-box">
         <label className="calc-label">Dehydration Severity:</label>
         <select
-          value={severity}
-          onChange={(e) => setSeverity(e.target.value)}
+          value={values.severity}
+          onChange={(e) => setField("severity", e.target.value)}
           className="calc-select"
         >
           <option value="mild">Mild (~5%)</option>
@@ -96,6 +100,7 @@ export default function FluidCorrection() {
           </div>
         )}
       </div>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

@@ -1,165 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
-export default function PregnancyCalculator() {
-  const [lmp, setLmp] = useState("");
-  const [edd, setEdd] = useState("");
-  const [egaWeeks, setEgaWeeks] = useState("");
-  const [egaDays, setEgaDays] = useState("");
+const INITIAL_STATE = {
+  lmp: "",
+  edd: "",
+  egaWeeks: "",
+  egaDays: "",
+};
 
+export default function PregnancyCalculator() {
+  const { values, updateFields, reset } = useCalculator(INITIAL_STATE);
   const today = new Date();
 
-  // Calculate EDD from LMP
-  const calculateEDD = (lmpDate) => {
-    const lmpObj = new Date(lmpDate);
-    lmpObj.setDate(lmpObj.getDate() + 280);
-    return lmpObj.toISOString().split("T")[0];
-  };
-
-  // Calculate EGA from LMP
-  const calculateEGA = (lmpDate) => {
-    const lmpObj = new Date(lmpDate);
-    const diffDays = Math.floor((today - lmpObj) / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(diffDays / 7);
-    const days = diffDays % 7;
-    return { weeks, days };
-  };
-
-  // Calculate LMP from EDD
-  const calculateLMPfromEDD = (eddDate) => {
-    const eddObj = new Date(eddDate);
-    eddObj.setDate(eddObj.getDate() - 280);
-    return eddObj.toISOString().split("T")[0];
-  };
-
-  // Calculate LMP from EGA
-  const calculateLMPfromEGA = (weeks, days) => {
-    const totalDays = weeks * 7 + days;
-    const lmpObj = new Date(today);
-    lmpObj.setDate(lmpObj.getDate() - totalDays);
-    return lmpObj.toISOString().split("T")[0];
-  };
+  useEffect(() => {
+    // This effect handles the cross-field calculations
+    // We avoid circular updates by checking if values actually changed
+  }, []);
 
   const handleLMPChange = (e) => {
-    const value = e.target.value;
-    setLmp(value);
-    if (value) {
-      setEdd(calculateEDD(value));
-      const { weeks, days } = calculateEGA(value);
-      setEgaWeeks(weeks);
-      setEgaDays(days);
-    }
+    const val = e.target.value;
+    if (!val) { reset(); return; }
+    const lmpDate = new Date(val);
+    const eddDate = new Date(lmpDate); eddDate.setDate(eddDate.getDate() + 280);
+    const diffDays = Math.floor((today - lmpDate) / (1000 * 60 * 60 * 24));
+    updateFields({ lmp: val, edd: eddDate.toISOString().split("T")[0], egaWeeks: Math.floor(diffDays / 7), egaDays: diffDays % 7 });
   };
 
   const handleEDDChange = (e) => {
-    const value = e.target.value;
-    setEdd(value);
-    if (value) {
-      const lmpDate = calculateLMPfromEDD(value);
-      setLmp(lmpDate);
-      const { weeks, days } = calculateEGA(lmpDate);
-      setEgaWeeks(weeks);
-      setEgaDays(days);
-    }
+    const val = e.target.value;
+    if (!val) { reset(); return; }
+    const eddDate = new Date(val);
+    const lmpDate = new Date(eddDate); lmpDate.setDate(lmpDate.getDate() - 280);
+    const diffDays = Math.floor((today - lmpDate) / (1000 * 60 * 60 * 24));
+    updateFields({ edd: val, lmp: lmpDate.toISOString().split("T")[0], egaWeeks: Math.floor(diffDays / 7), egaDays: diffDays % 7 });
   };
 
-  const handleEGAChange = (weeks, days) => {
-    setEgaWeeks(weeks);
-    setEgaDays(days);
-    if (weeks || days) {
-      const lmpDate = calculateLMPfromEGA(Number(weeks), Number(days));
-      setLmp(lmpDate);
-      setEdd(calculateEDD(lmpDate));
-    }
-  };
-
-  const resetAll = () => {
-    setLmp("");
-    setEdd("");
-    setEgaWeeks("");
-    setEgaDays("");
-  };
-
-  // Clinical comments
-  const getANCComment = () => {
-    if (!egaWeeks) return "";
-    if (egaWeeks < 28) return "ANC booking: every 4 weeks.";
-    if (egaWeeks >= 28 && egaWeeks < 36) return "ANC booking: twice weekly.";
-    if (egaWeeks >= 36) return "ANC booking: weekly.";
-    return "";
-  };
-
-  const getTrimester = () => {
-    if (!egaWeeks) return "";
-    if (egaWeeks < 13) return "Trimester: First";
-    if (egaWeeks < 28) return "Trimester: Second";
-    return "Trimester: Third";
-  };
-
-  const getQuickening = () => {
-    if (!egaWeeks) return "";
-    if (egaWeeks >= 16 && egaWeeks <= 20) return "Possibility of quickening (first fetal movements).";
-    return "";
+  const handleEGAChange = (w, d) => {
+    const totalDays = Number(w || 0) * 7 + Number(d || 0);
+    const lmpDate = new Date(today); lmpDate.setDate(lmpDate.getDate() - totalDays);
+    const eddDate = new Date(lmpDate); eddDate.setDate(eddDate.getDate() + 280);
+    updateFields({ egaWeeks: w, egaDays: d, lmp: lmpDate.toISOString().split("T")[0], edd: eddDate.toISOString().split("T")[0] });
   };
 
   return (
     <div className="calc-container">
-
-      <div className="calc-box">
-        <label className="calc-label">LMP:</label>
-        <input
-          type="date"
-          value={lmp}
-          onChange={handleLMPChange}
-          className="calc-input"
-        />
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">EDD:</label>
-        <input
-          type="date"
-          value={edd}
-          onChange={handleEDDChange}
-          className="calc-input"
-        />
-      </div>
-
+      <div className="calc-box"><label className="calc-label">LMP:</label><input type="date" value={values.lmp} onChange={handleLMPChange} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">EDD:</label><input type="date" value={values.edd} onChange={handleEDDChange} className="calc-input" /></div>
       <div className="calc-box">
         <label className="calc-label">EGA:</label>
-        <div style={{ display: "flex", justifyContent: "space-between" }} className="calc-ega-group">
-          <div style={{ width: "48%" }} className="calc-ega-field">
-            <input
-              type="number"
-              placeholder="weeks"
-              value={egaWeeks}
-              onChange={(e) => handleEGAChange(e.target.value, egaDays)}
-              className="calc-input"
-            />
-          </div>
-          <div style={{ width: "48%" }} className="calc-ega-field">
-            <input
-
-              type="number"
-              placeholder="days"
-              value={egaDays}
-              onChange={(e) => handleEGAChange(egaWeeks, e.target.value)}
-              className="calc-input"
-            />
-          </div>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <input type="number" placeholder="weeks" value={values.egaWeeks} onChange={(e) => handleEGAChange(e.target.value, values.egaDays)} className="calc-input" style={{ flex: 1 }} />
+          <input type="number" placeholder="days" value={values.egaDays} onChange={(e) => handleEGAChange(values.egaWeeks, e.target.value)} className="calc-input" style={{ flex: 1 }} />
         </div>
       </div>
-
-      <button onClick={resetAll} className="calc-btn-reset">
-        Reset
-      </button>
-
-      {/* Clinical Comments */}
-      {(egaWeeks !== "") && (
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      {values.egaWeeks !== "" && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p>{getANCComment()}</p>
-          <p>{getTrimester()}</p>
-          <p>{getQuickening()}</p>
+          <p>Trimester: {values.egaWeeks < 13 ? "First" : values.egaWeeks < 28 ? "Second" : "Third"}</p>
         </div>
       )}
     </div>

@@ -1,27 +1,36 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+    pregnancy: false,
+    diabetesType: "type2",
+    duration: "<10",
+    treatment: "diet",
+    hypo: "none",
+    a1c: "<7.5",
+    monitoring: "done",
+    emergency: "none",
+    macro: "none",
+    egfr: ">60",
+    microComp: "0",
+    frailty: "normal",
+    labor: "low",
+    education: true,
+    fastHours: "<16",
+};
+
 export default function DAR2026RiskCalculator() {
-    // --- 1. STATE MANAGEMENT ---
-    const [pregnancy, setPregnancy] = useState(false);
-    const [diabetesType, setDiabetesType] = useState("type2");
-    const [duration, setDuration] = useState("<10");
-    const [treatment, setTreatment] = useState("diet");
-    const [hypo, setHypo] = useState("none");
-    const [a1c, setA1c] = useState("<7.5");
-    const [monitoring, setMonitoring] = useState("done");
-    const [emergency, setEmergency] = useState("none");
-    const [macro, setMacro] = useState("none");
-    const [egfr, setEgfr] = useState(">60");
-    const [microComp, setMicroComp] = useState("0");
-    const [frailty, setFrailty] = useState("normal");
-    const [labor, setLabor] = useState("low");
-    const [education, setEducation] = useState(true);
-    const [fastHours, setFastHours] = useState("<16");
+    const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
     // --- 2. SCORING ENGINE ---
     const score = useMemo(() => {
         let total = 0;
+        const {
+            pregnancy, diabetesType, duration, treatment, hypo, a1c, monitoring,
+            emergency, macro, egfr, microComp, frailty, labor,
+            education, fastHours
+        } = values;
 
         // 1. Pregnancy
         if (pregnancy) total += 6.5;
@@ -94,11 +103,7 @@ export default function DAR2026RiskCalculator() {
         if (fastHours === ">=16") total += 1;
 
         return total;
-    }, [
-        pregnancy, diabetesType, duration, treatment, hypo, a1c, monitoring,
-        emergency, macro, egfr, microComp, frailty, labor,
-        education, fastHours
-    ]);
+    }, [values]);
 
     // Risk Color Logic
     const getRiskLevel = (s) => {
@@ -117,7 +122,7 @@ export default function DAR2026RiskCalculator() {
                 <div className="calc-box">
                     <label className="calc-label">1. Pregnancy with Diabetes</label>
                     <div style={{ display: "flex", gap: "8px", alignItems: "center", marginTop: "4px" }}>
-                        <input type="checkbox" checked={pregnancy} onChange={e => setPregnancy(e.target.checked)} />
+                        <input type="checkbox" checked={values.pregnancy} onChange={e => setField("pregnancy", e.target.checked)} />
                         <span style={{ fontSize: "0.9rem" }}>Yes</span>
                     </div>
                 </div>
@@ -125,7 +130,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 2. Type */}
                 <div className="calc-box">
                     <label className="calc-label">2. Diabetes Type</label>
-                    <select className="calc-select" value={diabetesType} onChange={e => setDiabetesType(e.target.value)}>
+                    <select className="calc-select" value={values.diabetesType} onChange={e => setField("diabetesType", e.target.value)}>
                         <option value="type2">Type 2 / Other</option>
                         <option value="type1">Type 1 / LADA</option>
                     </select>
@@ -134,7 +139,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 3. Duration */}
                 <div className="calc-box">
                     <label className="calc-label">3. Duration of Diabetes</label>
-                    <select className="calc-select" value={duration} onChange={e => setDuration(e.target.value)}>
+                    <select className="calc-select" value={values.duration} onChange={e => setField("duration", e.target.value)}>
                         <option value="<10">&lt; 10 years</option>
                         <option value="10-20">10–20 years</option>
                         <option value=">20">&gt; 20 years</option>
@@ -144,7 +149,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 4. Treatment */}
                 <div className="calc-box">
                     <label className="calc-label">4. Treatment Type</label>
-                    <select className="calc-select" value={treatment} onChange={e => setTreatment(e.target.value)}>
+                    <select className="calc-select" value={values.treatment} onChange={e => setField("treatment", e.target.value)}>
                         <option value="diet">Nutrition / Metformin / SGLT2 / GLP1</option>
                         <option value="multiple_oral">≥2 Glucose lowering meds (non-insulin)</option>
                         <option value="modern_su">Modern SU (Gliclazide) / Repaglinide</option>
@@ -162,7 +167,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 5. Hypoglycemia */}
                 <div className="calc-box">
                     <label className="calc-label">5. Hypoglycemia History</label>
-                    <select className="calc-select" value={hypo} onChange={e => setHypo(e.target.value)}>
+                    <select className="calc-select" value={values.hypo} onChange={e => setField("hypo", e.target.value)}>
                         <option value="none">None / No recent</option>
                         <option value="<1">&lt; 1 time per week</option>
                         <option value="1-2">1–2 times/week</option>
@@ -177,7 +182,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 6. HbA1c */}
                 <div className="calc-box">
                     <label className="calc-label">6. HbA1c Level</label>
-                    <select className="calc-select" value={a1c} onChange={e => setA1c(e.target.value)}>
+                    <select className="calc-select" value={values.a1c} onChange={e => setField("a1c", e.target.value)}>
                         <option value="<7.5">&lt; 7.5% (&lt;58 mmol)</option>
                         <option value="7.5-9">7.5 – 9% (58-75 mmol)</option>
                         <option value=">9">&gt; 9% (&gt;75 mmol)</option>
@@ -187,7 +192,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 7. Monitoring */}
                 <div className="calc-box">
                     <label className="calc-label">7. Glucose Monitoring</label>
-                    <select className="calc-select" value={monitoring} onChange={e => setMonitoring(e.target.value)}>
+                    <select className="calc-select" value={values.monitoring} onChange={e => setField("monitoring", e.target.value)}>
                         <option value="cgm">Using CGM (Sensor)</option>
                         <option value="done">Done as indicated</option>
                         <option value="suboptimal">Suboptimally done</option>
@@ -198,7 +203,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 8. Emergencies */}
                 <div className="calc-box">
                     <label className="calc-label">8. DKA/HHS History</label>
-                    <select className="calc-select" value={emergency} onChange={e => setEmergency(e.target.value)}>
+                    <select className="calc-select" value={values.emergency} onChange={e => setField("emergency", e.target.value)}>
                         <option value="none">None in last 6 months</option>
                         <option value="6m">Last 4-6 months</option>
                         <option value="3m">Last 2-3 months</option>
@@ -209,7 +214,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 9. Macrovascular */}
                 <div className="calc-box">
                     <label className="calc-label">9. Macrovascular Disease</label>
-                    <select className="calc-select" value={macro} onChange={e => setMacro(e.target.value)}>
+                    <select className="calc-select" value={values.macro} onChange={e => setField("macro", e.target.value)}>
                         <option value="none">No history</option>
                         <option value="stable">Stable (Heart disease/Stroke)</option>
                         <option value="unstable">Unstable (Recent event/Angina)</option>
@@ -219,7 +224,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 10a. eGFR */}
                 <div className="calc-box">
                     <label className="calc-label">10a. DM Nephropathy (eGFR)</label>
-                    <select className="calc-select" value={egfr} onChange={e => setEgfr(e.target.value)}>
+                    <select className="calc-select" value={values.egfr} onChange={e => setField("egfr", e.target.value)}>
                         <option value=">60">&gt; 60 mL/min</option>
                         <option value="45-60">45 – 60 mL/min</option>
                         <option value="30-45">30 – 45 mL/min</option>
@@ -230,7 +235,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 10b. Microvascular */}
                 <div className="calc-box">
                     <label className="calc-label">10b. Other Microvascular Disease</label>
-                    <select className="calc-select" value={microComp} onChange={e => setMicroComp(e.target.value)}>
+                    <select className="calc-select" value={values.microComp} onChange={e => setField("microComp", e.target.value)}>
                         <option value="0">0 complications</option>
                         <option value="1">1 complication</option>
                         <option value="2">2 complications</option>
@@ -241,7 +246,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 11. Frailty */}
                 <div className="calc-box">
                     <label className="calc-label">11. Cognitive / Frailty</label>
-                    <select className="calc-select" value={frailty} onChange={e => setFrailty(e.target.value)}>
+                    <select className="calc-select" value={values.frailty} onChange={e => setField("frailty", e.target.value)}>
                         <option value="normal">Normal</option>
                         <option value="age70">Age &gt;70 (no home support)</option>
                         <option value="moderate">Mild to Moderate Frailty</option>
@@ -252,7 +257,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 12. Labor */}
                 <div className="calc-box">
                     <label className="calc-label">12. Physical Labor</label>
-                    <select className="calc-select" value={labor} onChange={e => setLabor(e.target.value)}>
+                    <select className="calc-select" value={values.labor} onChange={e => setField("labor", e.target.value)}>
                         <option value="low">Low intensity</option>
                         <option value="moderate">Moderate intensity</option>
                         <option value="high">High intensity</option>
@@ -262,7 +267,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 13. Education */}
                 <div className="calc-box">
                     <label className="calc-label">13. Fasting Focused Education</label>
-                    <select className="calc-select" value={education} onChange={e => setEducation(e.target.value === "true")}>
+                    <select className="calc-select" value={values.education} onChange={e => setField("education", e.target.value === "true")}>
                         <option value="true">Yes, received education</option>
                         <option value="false">No</option>
                     </select>
@@ -271,7 +276,7 @@ export default function DAR2026RiskCalculator() {
                 {/* 14. Fasting Hours */}
                 <div className="calc-box" style={{ gridColumn: "span 2" }}>
                     <label className="calc-label">14. Fasting Hours</label>
-                    <select className="calc-select" value={fastHours} onChange={e => setFastHours(e.target.value)}>
+                    <select className="calc-select" value={values.fastHours} onChange={e => setField("fastHours", e.target.value)}>
                         <option value="<16">&lt; 16 hours</option>
                         <option value=">=16">≥ 16 hours</option>
                     </select>
@@ -303,6 +308,7 @@ export default function DAR2026RiskCalculator() {
                         : "Fasting may be permissible with medication adjustment."}
                 </p>
             </div>
+            <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
         </div>
     );
 }

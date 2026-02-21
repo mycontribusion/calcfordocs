@@ -1,207 +1,91 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  sodium: "",
+  potassium: "",
+  chloride: "",
+  bicarbonate: "",
+  albumin: "",
+  albuminUnit: "g/dL",
+  result: null,
+};
+
 export default function AnionGapDeltaRatio() {
-  const [sodium, setSodium] = useState("");
-  const [potassium, setPotassium] = useState("");
-  const [chloride, setChloride] = useState("");
-  const [bicarbonate, setBicarbonate] = useState("");
-  const [albumin, setAlbumin] = useState(""); // optional
-  const [albuminUnit, setAlbuminUnit] = useState("g/dL");
-
-  const [result, setResult] = useState(null);
-
-  /* ---------- Helpers ---------- */
-  const parseNum = (v) => {
-    if (v === "" || v === null) return null;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : null;
-  };
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   const albuminToGdL = (val, unit) => {
     if (val === null) return null;
-    switch (unit) {
-      case "g/L":
-        return val / 10;
-      case "mg/mL":
-        return val / 100;
-      case "g%":
-      case "g/dL":
-      default:
-        return val;
-    }
+    return unit === "g/L" ? val / 10 : unit === "mg/mL" ? val / 100 : val;
   };
 
-  /* ---------- Auto Calculate ---------- */
   useEffect(() => {
-    const na = parseNum(sodium);
-    const k = parseNum(potassium);
-    const cl = parseNum(chloride);
-    const hco3 = parseNum(bicarbonate);
+    const na = parseFloat(values.sodium);
+    const k = parseFloat(values.potassium);
+    const cl = parseFloat(values.chloride);
+    const hco3 = parseFloat(values.bicarbonate);
 
-    // 🔒 Required fields check
-    if ([na, k, cl, hco3].some((v) => v === null)) {
-      setResult(null);
+    if (isNaN(na) || isNaN(k) || isNaN(cl) || isNaN(hco3)) {
+      if (values.result !== null) updateFields({ result: null });
       return;
     }
 
-    const albRaw = albumin === "" ? null : parseNum(albumin);
-
-    // AG (with potassium)
+    const albRaw = values.albumin === "" ? null : parseFloat(values.albumin);
     const ag = na + k - (cl + hco3);
-    const agRounded = Number(ag.toFixed(2));
 
-    // Albumin-corrected AG
     let agCorr = null;
     let albuminGdL = null;
-
-    if (albRaw !== null) {
-      albuminGdL = albuminToGdL(albRaw, albuminUnit);
-      agCorr = Number((ag + 2.5 * (4 - albuminGdL)).toFixed(2));
+    if (albRaw !== null && !isNaN(albRaw)) {
+      albuminGdL = albuminToGdL(albRaw, values.albuminUnit);
+      agCorr = ag + 2.5 * (4 - albuminGdL);
     }
 
-    const uncorrectedHigh = ag >= 12;
-    const correctedHigh = agCorr !== null && agCorr >= 12;
-
-    let deltaGap = null;
+    const agUsed = agCorr !== null && agCorr >= 12 ? agCorr : ag;
+    let deltaGap = agUsed >= 12 ? agUsed - 12 : null;
     let deltaRatio = null;
     let deltaInterpretation = null;
 
-    if (uncorrectedHigh || correctedHigh) {
-      const agUsed = correctedHigh ? agCorr : ag;
-      deltaGap = Number((agUsed - 12).toFixed(2));
-
+    if (deltaGap !== null) {
       if (Math.abs(24 - hco3) > 1e-9) {
-        deltaRatio = Number((deltaGap / (24 - hco3)).toFixed(2));
-
-        if (deltaRatio < 0.4) {
-          deltaInterpretation =
-            "ΔRatio < 0.4 → Mixed disorder: HAGMA + normal AG metabolic acidosis.";
-        } else if (deltaRatio > 2) {
-          deltaInterpretation =
-            "ΔRatio > 2 → Mixed disorder: HAGMA + metabolic alkalosis.";
-        } else {
-          deltaInterpretation =
-            "ΔRatio 0.4–2 → Primary high anion gap metabolic acidosis.";
-        }
+        deltaRatio = deltaGap / (24 - hco3);
+        deltaInterpretation = deltaRatio < 0.4 ? "ΔRatio < 0.4 → Mixed: HAGMA + NAGMA" : deltaRatio > 2 ? "ΔRatio > 2 → Mixed: HAGMA + Met Alk" : "ΔRatio 0.4–2 → Primary HAGMA";
       } else {
-        deltaInterpretation =
-          "Cannot compute ΔRatio: (24 − HCO₃⁻) equals zero.";
+        deltaInterpretation = "Cannot compute ΔRatio: HCO₃⁻ is 24";
       }
     }
 
-    setResult({
-      ag: agRounded,
-      agCorr,
-      albuminGdL,
-      deltaGap,
-      deltaRatio,
+    const res = {
+      ag: ag.toFixed(2),
+      agCorr: agCorr?.toFixed(2),
+      albuminGdL: albuminGdL?.toFixed(2),
+      deltaGap: deltaGap?.toFixed(2),
+      deltaRatio: deltaRatio?.toFixed(2),
       deltaInterpretation,
-    });
-  }, [sodium, potassium, chloride, bicarbonate, albumin, albuminUnit]);
-
-  /* ---------- Reset ---------- */
-  const reset = () => {
-    setSodium("");
-    setPotassium("");
-    setChloride("");
-    setBicarbonate("");
-    setAlbumin("");
-    setAlbuminUnit("g/dL");
-    setResult(null);
-  };
+    };
+    updateFields({ result: res });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.sodium, values.potassium, values.chloride, values.bicarbonate, values.albumin, values.albuminUnit]);
 
   return (
     <div className="calc-container">
-
-      <div className="calc-box">
-        <label className="calc-label">Sodium (Na⁺, mmol/L):</label>
-        <input type="number" inputMode="decimal" value={sodium} onChange={(e) => setSodium(e.target.value)} className="calc-input" />
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Potassium (K⁺, mmol/L):</label>
-        <input type="number" inputMode="decimal" value={potassium} onChange={(e) => setPotassium(e.target.value)} className="calc-input" />
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Chloride (Cl⁻, mmol/L):</label>
-        <input type="number" inputMode="decimal" value={chloride} onChange={(e) => setChloride(e.target.value)} className="calc-input" />
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Bicarbonate (HCO₃⁻, mmol/L):</label>
-        <input type="number" inputMode="decimal" value={bicarbonate} onChange={(e) => setBicarbonate(e.target.value)} className="calc-input" />
-      </div>
-
+      <div className="calc-box"><label className="calc-label">Sodium (Na⁺):</label><input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Potassium (K⁺):</label><input type="number" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Chloride (Cl⁻):</label><input type="number" value={values.chloride} onChange={(e) => setField("chloride", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Bicarbonate (HCO₃⁻):</label><input type="number" value={values.bicarbonate} onChange={(e) => setField("bicarbonate", e.target.value)} className="calc-input" /></div>
       <div className="calc-box">
         <label className="calc-label">Albumin (optional):</label>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            inputMode="decimal"
-            value={albumin}
-            onChange={(e) => setAlbumin(e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={albuminUnit}
-            onChange={(e) => setAlbuminUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="g/dL">g/dL</option>
-            <option value="g/L">g/L</option>
-            <option value="g%">g%</option>
-            <option value="mg/mL">mg/mL</option>
-          </select>
+          <input type="number" value={values.albumin} onChange={(e) => setField("albumin", e.target.value)} className="calc-input" style={{ flex: 2 }} />
+          <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="g/dL">g/dL</option><option value="g/L">g/L</option></select>
         </div>
       </div>
-
-      <button onClick={reset} className="calc-btn-reset">Reset</button>
-
-      {/* 🔒 NOTHING shows until required fields are filled */}
-      {result && (
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p>
-            <strong>Anion Gap:</strong> {result.ag} mmol/L
-          </p>
-
-          {result.agCorr !== null && (
-            <div style={{ marginTop: 8 }}>
-              <p>Albumin (g/dL): {result.albuminGdL.toFixed(2)}</p>
-              <p>
-                <strong>Corrected AG:</strong> {result.agCorr} mmol/L
-              </p>
-            </div>
-          )}
-
-          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
-            <p><strong>Delta Gap / Ratio</strong></p>
-
-            {result.deltaGap === null ? (
-              <p style={{ fontSize: '0.9rem' }}>ΔRatio not applicable (AG &lt; 12 mmol/L)</p>
-            ) : result.deltaRatio === null ? (
-              <p style={{ fontSize: '0.9rem' }}>ΔGap: {result.deltaGap} — cannot compute ΔRatio</p>
-            ) : (
-              <div style={{ fontSize: '0.95rem' }}>
-                <p>ΔGap: {result.deltaGap}</p>
-                <p>ΔRatio: {result.deltaRatio}</p>
-                <p style={{ fontStyle: 'italic', marginTop: 4 }}>{result.deltaInterpretation}</p>
-              </div>
-            )}
-          </div>
-
-          <div style={{ fontSize: '0.8rem', marginTop: 16, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 8, borderRadius: 4 }}>
-            <strong>Formulas</strong>
-            <br />
-            AG = (Na⁺ + K⁺) − (Cl⁻ + HCO₃⁻)
-            <br />
-            Corrected AG = AG + 2.5 × (4 − albumin[g/dL])
-            <br />
-            ΔRatio = (AG − 12) ÷ (24 − HCO₃⁻)
-          </div>
+          <p><strong>Anion Gap:</strong> {values.result.ag}</p>
+          {values.result.agCorr && <p><strong>Corrected AG:</strong> {values.result.agCorr}</p>}
+          {values.result.deltaInterpretation && <p style={{ marginTop: 8, fontStyle: 'italic' }}>{values.result.deltaInterpretation}</p>}
         </div>
       )}
     </div>

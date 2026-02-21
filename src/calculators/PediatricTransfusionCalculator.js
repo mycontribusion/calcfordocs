@@ -1,181 +1,93 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  weight: "",
+  weightUnit: "kg",
+  observedValue: "",
+  targetValue: "",
+  method: "pcv", // pcv or hb
+  bloodType: "whole", // whole, sedimented, packed, custom
+  customPCV: "",
+  useFactor: true,
+  result: null,
+};
+
 export default function PediatricTransfusionCalculator() {
-  const [weight, setWeight] = useState("");
-  const [weightUnit, setWeightUnit] = useState("kg");
-  const [observedValue, setObservedValue] = useState("");
-  const [targetValue, setTargetValue] = useState("");
-  const [method, setMethod] = useState("pcv"); // pcv or hb
-  const [bloodType, setBloodType] = useState("whole"); // whole, sedimented, packed, custom
-  const [customPCV, setCustomPCV] = useState(""); // only if custom
-  const [useFactor, setUseFactor] = useState(true);
-  const [result, setResult] = useState(null);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
-  const formulaUsed = "Transfusion Volume = Weight (kg) × (Target Hb – Observed Hb) × Factor";
+  useEffect(() => {
+    const w = values.weightUnit === "lb" ? Number(values.weight) * 0.453592 : Number(values.weight);
+    let observed = Number(values.observedValue);
+    let target = Number(values.targetValue);
 
-  const getFactor = () => {
-    if (!useFactor) return null;
-    switch (bloodType) {
-      case "whole":
-        return 6;
-      case "sedimented":
-        return 4;
-      case "packed":
-        return 3;
-      case "custom":
-        const pcvFraction = Number(customPCV) / 100;
-        if (!pcvFraction || pcvFraction <= 0) return null;
-        return 3 / pcvFraction;
-      default:
-        return 3;
+    let factor = null;
+    if (values.useFactor) {
+      switch (values.bloodType) {
+        case "whole": factor = 6; break;
+        case "sedimented": factor = 4; break;
+        case "packed": factor = 3; break;
+        case "custom":
+          const pcvFraction = Number(values.customPCV) / 100;
+          if (pcvFraction && pcvFraction > 0) factor = 3 / pcvFraction;
+          break;
+        default: factor = 3;
+      }
     }
-  };
 
-  const calculateTransfusion = () => {
-    const w = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
-    let observed = Number(observedValue);
-    let target = Number(targetValue);
-    const factor = getFactor();
-
-    if (!w || !observed || !target || target <= observed || (useFactor && factor === null)) {
-      setResult({ error: "⚠️ Please enter valid inputs." });
+    if (!w || !observed || !target || target <= observed || (values.useFactor && factor === null)) {
+      if (values.result !== null) updateFields({ result: null });
       return;
     }
 
     let conversionNote = "";
-
-    if (method === "pcv") {
+    if (values.method === "pcv") {
       observed = observed / 3;
       target = target / 3;
-      conversionNote = `Converted PCV to Hb: Observed Hb = ${observed.toFixed(
-        1
-      )}, Target Hb = ${target.toFixed(1)}`;
+      conversionNote = `Converted PCV to Hb: Observed Hb = ${observed.toFixed(1)}, Target Hb = ${target.toFixed(1)}`;
     }
 
     const transfusionVolume = w * (target - observed) * (factor ?? 1);
-
-    setResult({
-      volume: `Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`,
-      note: conversionNote,
-      formula: formulaUsed,
-      factorUsed: factor,
+    updateFields({
+      result: {
+        volume: `Transfusion Volume: ${transfusionVolume.toFixed(0)} mL`,
+        note: conversionNote,
+        formula: "Transfusion Volume = Weight (kg) × (Target Hb – Observed Hb) × Factor",
+        factorUsed: factor,
+      }
     });
-  };
-
-  // Auto-calculate
-  useEffect(() => {
-    if (weight && observedValue && targetValue && useFactor) {
-      calculateTransfusion();
-    } else {
-      setResult(null);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [weight, weightUnit, observedValue, targetValue, method, bloodType, customPCV, useFactor]);
-
-  const reset = () => {
-    setWeight("");
-    setWeightUnit("kg");
-    setObservedValue("");
-    setTargetValue("");
-    setMethod("pcv");
-    setBloodType("packed");
-    setCustomPCV("");
-    setUseFactor(true);
-    setResult(null);
-  };
+  }, [values.weight, values.weightUnit, values.observedValue, values.targetValue, values.method, values.bloodType, values.customPCV, values.useFactor]);
 
   return (
     <div className="calc-container">
-
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={weightUnit}
-            onChange={(e) => setWeightUnit(e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
+          <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} className="calc-input" style={{ flex: 2 }} />
+          <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>
         </div>
       </div>
-
       <div className="calc-box">
         <label className="calc-label">Method:</label>
-        <select value={method} onChange={(e) => setMethod(e.target.value)} className="calc-select">
-          <option value="pcv">PCV</option>
-          <option value="hb">Hb</option>
-        </select>
+        <select value={values.method} onChange={(e) => setField("method", e.target.value)} className="calc-select"><option value="pcv">PCV</option><option value="hb">Hb</option></select>
       </div>
-
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "48%" }} className="calc-box">
-          <label className="calc-label">Observed {method.toUpperCase()}:</label>
-          <input
-            type="number"
-            value={observedValue}
-            onChange={(e) => setObservedValue(e.target.value)}
-            className="calc-input"
-          />
-        </div>
-
-        <div style={{ width: "48%" }} className="calc-box">
-          <label className="calc-label">Target {method.toUpperCase()}:</label>
-          <input
-            type="number"
-            value={targetValue}
-            onChange={(e) => setTargetValue(e.target.value)}
-            className="calc-input"
-          />
-        </div>
+        <div style={{ width: "48%" }} className="calc-box"><label className="calc-label">Observed {values.method.toUpperCase()}:</label><input type="number" value={values.observedValue} onChange={(e) => setField("observedValue", e.target.value)} className="calc-input" /></div>
+        <div style={{ width: "48%" }} className="calc-box"><label className="calc-label">Target {values.method.toUpperCase()}:</label><input type="number" value={values.targetValue} onChange={(e) => setField("targetValue", e.target.value)} className="calc-input" /></div>
       </div>
-
       <div className="calc-box">
         <label className="calc-label">Blood type / Product:</label>
-        <select value={bloodType} onChange={(e) => setBloodType(e.target.value)} className="calc-select">
-          <option value="whole">Whole blood (factor 6)</option>
-          <option value="sedimented">Sedimented (factor 4)</option>
-          <option value="packed">Packed cells (factor 3)</option>
-          <option value="custom">Custom / Factor from PCV</option>
-        </select>
+        <select value={values.bloodType} onChange={(e) => setField("bloodType", e.target.value)} className="calc-select"><option value="whole">Whole blood (factor 6)</option><option value="sedimented">Sedimented (factor 4)</option><option value="packed">Packed cells (factor 3)</option><option value="custom">Custom / Factor from PCV</option></select>
       </div>
-
-      {bloodType === "custom" && (
-        <div className="calc-box">
-          <label className="calc-label">Enter PCV of donated blood (%):</label>
-          <input
-            type="number"
-            value={customPCV}
-            onChange={(e) => setCustomPCV(e.target.value)}
-            className="calc-input"
-          />
-        </div>
+      {values.bloodType === "custom" && (
+        <div className="calc-box"><label className="calc-label">Enter PCV of donated blood (%):</label><input type="number" value={values.customPCV} onChange={(e) => setField("customPCV", e.target.value)} className="calc-input" /></div>
       )}
-
-      <button onClick={reset} className="calc-btn-reset">Reset</button>
-
-      {result && (
-        <div className="calc-result" style={{ marginTop: 16 }}>
-          {result.error ? (
-            <p style={{ color: 'red' }}>{result.error}</p>
-          ) : (
-            <>
-              <p style={{ fontSize: '1.2rem', color: '#0056b3' }}>{result.volume}</p>
-              {result.note && <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 8 }}>{result.note}</p>}
-              <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 4 }}>{result.formula}</p>
-              <p style={{ fontSize: '0.9rem', color: '#555' }}>Factor used: {result.factorUsed}</p>
-            </>
-          )}
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      {values.result && (
+        <div className="calc-result">
+          {values.result.error ? <p style={{ color: 'red' }}>{values.result.error}</p> : <><p style={{ fontSize: '1.2rem', color: '#0056b3' }}>{values.result.volume}</p>{values.result.note && <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 8 }}>{values.result.note}</p>}<p style={{ fontSize: '0.9rem', color: '#555', marginTop: 4 }}>{values.result.formula}</p><p style={{ fontSize: '0.9rem', color: '#555' }}>Factor used: {values.result.factorUsed}</p></>}
         </div>
       )}
     </div>

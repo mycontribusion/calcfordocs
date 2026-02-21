@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const nasalFiO2Map = { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 };
@@ -55,18 +56,11 @@ const deviceEstimators = {
 
 const estimateFiO2 = (device, flow) => deviceEstimators[device]?.(Number(flow)) ?? 0.21;
 
-function useSpO2FiO2Ratio(spo2, device, flow) {
-  const [fio2, setFio2] = useState(0.21);
-  const [ratio, setRatio] = useState(null);
-
-  useEffect(() => {
-    const estimatedFiO2 = estimateFiO2(device, flow);
-    setFio2(estimatedFiO2);
-    setRatio(spo2 && estimatedFiO2 ? Math.round(Number(spo2) / estimatedFiO2) : null);
-  }, [spo2, device, flow]);
-
-  return { fio2, ratio };
-}
+const INITIAL_STATE = {
+  spo2: "",
+  device: "none",
+  flow: "",
+};
 
 function LabeledInput({ label, value, onChange, placeholder, type = "text" }) {
   return (
@@ -88,15 +82,17 @@ function interpretSF(ratio) {
 }
 
 export default function SpO2FiO2Ratio() {
-  const [spo2, setSpo2] = useState("");
-  const [device, setDevice] = useState("none");
-  const [flow, setFlow] = useState("");
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
-  const { fio2, ratio } = useSpO2FiO2Ratio(spo2, device, flow);
+  const { fio2, ratio } = useMemo(() => {
+    const estimatedFiO2 = estimateFiO2(values.device, values.flow);
+    const r = values.spo2 && estimatedFiO2 ? Math.round(Number(values.spo2) / estimatedFiO2) : null;
+    return { fio2: estimatedFiO2, ratio: r };
+  }, [values.spo2, values.device, values.flow]);
 
   const breakdown = [
-    ["Device", device],
-    deviceFlowConfig[device] && ["Flow / FiO₂ input", flow],
+    ["Device", values.device],
+    deviceFlowConfig[values.device] && ["Flow / FiO₂ input", values.flow],
     ["Estimated FiO₂", fio2.toFixed(2)],
   ];
 
@@ -105,8 +101,8 @@ export default function SpO2FiO2Ratio() {
 
       <LabeledInput
         label="SpO₂ (%)"
-        value={spo2}
-        onChange={(e) => setSpo2(e.target.value)}
+        value={values.spo2}
+        onChange={(e) => setField("spo2", e.target.value)}
         type="number"
         placeholder="e.g. 92"
       />
@@ -115,7 +111,7 @@ export default function SpO2FiO2Ratio() {
         <label className="calc-label">
           Oxygen device:
         </label>
-        <select value={device} onChange={(e) => setDevice(e.target.value)} className="calc-select">
+        <select value={values.device} onChange={(e) => setField("device", e.target.value)} className="calc-select">
           {devices.map((d) => (
             <option key={d.value} value={d.value}>
               {d.label}
@@ -124,11 +120,11 @@ export default function SpO2FiO2Ratio() {
         </select>
       </div>
 
-      {deviceFlowConfig[device] && (
+      {deviceFlowConfig[values.device] && (
         <LabeledInput
-          label={device === "ventilator" ? "FiO₂ (0.4 or 40)" : "Flow rate (L/min)"}
-          value={flow}
-          onChange={(e) => setFlow(e.target.value)}
+          label={values.device === "ventilator" ? "FiO₂ (0.4 or 40)" : "Flow rate (L/min)"}
+          value={values.flow}
+          onChange={(e) => setField("flow", e.target.value)}
           type="number"
         />
       )}
@@ -157,6 +153,7 @@ export default function SpO2FiO2Ratio() {
       <small style={{ display: 'block', marginTop: 12, color: '#666', fontSize: '0.75rem' }}>
         BTS/ARDSNet approximations
       </small>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

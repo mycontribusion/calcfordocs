@@ -320,6 +320,8 @@ body:has(.calcfordocs.dark) {
   display: flex;
   justify-content: center;
   margin: 10px 0 20px;
+  padding: 0 16px;
+  max-width: 100%;
 }
 
 .view-toggle {
@@ -328,6 +330,17 @@ body:has(.calcfordocs.dark) {
   padding: 4px;
   border-radius: 12px;
   gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* Hide scrollbar Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar IE/Edge */
+  -webkit-overflow-scrolling: touch;
+}
+
+.view-toggle::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar Chrome/Safari/Brave */
 }
 
 .view-btn {
@@ -339,7 +352,10 @@ body:has(.calcfordocs.dark) {
   font-weight: 600;
   cursor: pointer;
   color: #666;
+  white-space: nowrap;
+  /* Prevent text wrapping inside buttons */
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .view-btn.active {

@@ -1,16 +1,21 @@
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  ussDate: "",
+  gaWeeks: "",
+  gaDays: "",
+  currentDate: "",
+  result: null,
+};
+
 function USSBasedGestationalAge() {
-  const [ussDate, setUssDate] = useState("");
-  const [gaWeeks, setGaWeeks] = useState("");
-  const [gaDays, setGaDays] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
-  const [result, setResult] = useState(null);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   const calculateGA = () => {
+    const { ussDate, gaWeeks, gaDays, currentDate } = values;
     if (!ussDate || gaWeeks === "" || gaDays === "" || !currentDate) {
-      setResult("Please fill in all fields");
+      updateFields({ result: "Please fill in all fields" });
       return;
     }
 
@@ -33,9 +38,11 @@ function USSBasedGestationalAge() {
     const gaAtUssDays = parseInt(gaWeeks) * 7 + parseInt(gaDays);
     edd.setDate(edd.getDate() + (280 - gaAtUssDays));
 
-    setResult({
-      ga: `${newWeeks} weeks ${newDays} days`,
-      edd: edd.toDateString(),
+    updateFields({
+      result: {
+        ga: `${newWeeks} weeks ${newDays} days`,
+        edd: edd.toDateString(),
+      }
     });
   };
 
@@ -47,8 +54,8 @@ function USSBasedGestationalAge() {
           USS Date:
           <input
             type="date"
-            value={ussDate}
-            onChange={(e) => setUssDate(e.target.value)}
+            value={values.ussDate}
+            onChange={(e) => setField("ussDate", e.target.value)}
             className="calc-input"
           />
         </label>
@@ -59,8 +66,8 @@ function USSBasedGestationalAge() {
           GA at USS (weeks):
           <input
             type="number"
-            value={gaWeeks}
-            onChange={(e) => setGaWeeks(e.target.value)}
+            value={values.gaWeeks}
+            onChange={(e) => setField("gaWeeks", e.target.value)}
             className="calc-input"
           />
         </label>
@@ -71,8 +78,8 @@ function USSBasedGestationalAge() {
           GA at USS (days):
           <input
             type="number"
-            value={gaDays}
-            onChange={(e) => setGaDays(e.target.value)}
+            value={values.gaDays}
+            onChange={(e) => setField("gaDays", e.target.value)}
             className="calc-input"
           />
         </label>
@@ -83,8 +90,8 @@ function USSBasedGestationalAge() {
           Current Date:
           <input
             type="date"
-            value={currentDate}
-            onChange={(e) => setCurrentDate(e.target.value)}
+            value={values.currentDate}
+            onChange={(e) => setField("currentDate", e.target.value)}
             className="calc-input"
           />
         </label>
@@ -92,15 +99,16 @@ function USSBasedGestationalAge() {
 
       <button onClick={calculateGA} className="calc-btn-primary">Calculate</button>
 
-      {result && typeof result === "string" && (
-        <p className="calc-result" style={{ color: "#d9534f", borderColor: "#ebccd1", background: "#f2dede" }}>{result}</p>
+      {values.result && typeof values.result === "string" && (
+        <p className="calc-result" style={{ color: "#d9534f", borderColor: "#ebccd1", background: "#f2dede" }}>{values.result}</p>
       )}
-      {result && typeof result === "object" && (
+      {values.result && typeof values.result === "object" && (
         <div className="calc-result">
-          <p><strong>Current GA:</strong> {result.ga}</p>
-          <p><strong>EDD:</strong> {result.edd}</p>
+          <p><strong>Current GA:</strong> {values.result.ga}</p>
+          <p><strong>EDD:</strong> {values.result.edd}</p>
         </div>
       )}
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

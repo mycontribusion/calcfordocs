@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const ANALYTES = {
@@ -156,33 +157,36 @@ const ANALYTES = {
     }
 };
 
+const INITIAL_STATE = {
+    analyteKey: "glucose",
+    inputValue: "",
+    inputUnit: ANALYTES.glucose.units[0],
+    results: [],
+};
+
 export default function UniversalLabConverter() {
-    const [analyteKey, setAnalyteKey] = useState("glucose");
-    const [inputValue, setInputValue] = useState("");
-    const [inputUnit, setInputUnit] = useState(ANALYTES.glucose.units[0]);
-    const [results, setResults] = useState([]);
+    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
     useEffect(() => {
-        setInputUnit(ANALYTES[analyteKey].units[0]);
-        setInputValue("");
-        setResults([]);
-    }, [analyteKey]);
+        updateFields({
+            inputUnit: ANALYTES[values.analyteKey].units[0],
+            inputValue: "",
+            results: []
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values.analyteKey]);
 
     useEffect(() => {
-        const val = parseFloat(inputValue);
+        const val = parseFloat(values.inputValue);
         if (isNaN(val) || val < 0) {
-            setResults([]);
+            if (values.results.length > 0) updateFields({ results: [] });
             return;
         }
 
-        const converted = ANALYTES[analyteKey].convert(val, inputUnit);
-        setResults(converted);
-    }, [inputValue, inputUnit, analyteKey]);
-
-    const handleReset = () => {
-        setInputValue("");
-        setResults([]);
-    };
+        const converted = ANALYTES[values.analyteKey].convert(val, values.inputUnit);
+        updateFields({ results: converted });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values.inputValue, values.inputUnit, values.analyteKey]);
 
     return (
         <div className="calc-container">
@@ -190,8 +194,8 @@ export default function UniversalLabConverter() {
                 <label className="calc-label">Select Lab Test:</label>
                 <select
                     className="calc-select"
-                    value={analyteKey}
-                    onChange={(e) => setAnalyteKey(e.target.value)}
+                    value={values.analyteKey}
+                    onChange={(e) => setField("analyteKey", e.target.value)}
                 >
                     {Object.entries(ANALYTES).map(([key, data]) => (
                         <option key={key} value={key}>{data.name}</option>
@@ -206,31 +210,31 @@ export default function UniversalLabConverter() {
                         type="number"
                         inputMode="decimal"
                         className="calc-input"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        value={values.inputValue}
+                        onChange={(e) => setField("inputValue", e.target.value)}
                         placeholder="Enter value"
                         style={{ flex: 2 }}
                     />
                     <select
                         className="calc-select"
-                        value={inputUnit}
-                        onChange={(e) => setInputUnit(e.target.value)}
+                        value={values.inputUnit}
+                        onChange={(e) => setField("inputUnit", e.target.value)}
                         style={{ flex: 1.5 }}
                     >
-                        {ANALYTES[analyteKey].units.map(unit => (
+                        {ANALYTES[values.analyteKey].units.map(unit => (
                             <option key={unit} value={unit}>{unit}</option>
                         ))}
                     </select>
                 </div>
             </div>
 
-            <button className="calc-btn-reset" onClick={handleReset}>Reset</button>
+            <button className="calc-btn-reset" onClick={reset}>Reset Calculator</button>
 
-            {results.length > 0 && (
+            {values.results.length > 0 && (
                 <div className="calc-result" style={{ marginTop: '16px' }}>
                     <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>Converted Results:</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        {results.map((res, index) => (
+                        {values.results.map((res, index) => (
                             <div key={index} style={{ padding: '8px', background: 'rgba(0,0,0,0.03)', borderRadius: '4px' }}>
                                 <strong>{res.value.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 3 })}</strong> {res.unit}
                             </div>
@@ -238,16 +242,6 @@ export default function UniversalLabConverter() {
                     </div>
                 </div>
             )}
-
-            <div style={{ marginTop: '20px', fontSize: '0.8rem', opacity: 0.7, textAlign: 'left' }}>
-                <p><strong>Common Conversions:</strong></p>
-                <ul style={{ paddingLeft: '16px', marginTop: '4px' }}>
-                    <li>Glucose: 1 mmol/L = 18.02 mg/dL</li>
-                    <li>Creatinine: 1 mg/dL = 88.4 µmol/L</li>
-                    <li>Urea: 1 mmol/L = 6.01 mg/dL</li>
-                    <li>BUN: 1 mg/dL = 0.357 mmol/L (Urea)</li>
-                </ul>
-            </div>
         </div>
     );
 }

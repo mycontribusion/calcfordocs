@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
-// Move criteria outside the component to avoid missing deps warning
 const criteria = [
   { key: "cancer", label: "Active cancer (treatment within 6 months or palliative)", points: 1 },
   { key: "paralysis", label: "Paralysis, paresis, or recent immobilization of lower limb", points: 1 },
@@ -15,50 +15,50 @@ const criteria = [
   { key: "altDx", label: "Alternative diagnosis more likely than DVT", points: -2 },
 ];
 
+const INITIAL_STATE = {
+  cancer: false,
+  paralysis: false,
+  bedridden: false,
+  tenderness: false,
+  legSwollen: false,
+  calfDiff: false,
+  edema: false,
+  collateral: false,
+  prevDvt: false,
+  altDx: false,
+};
+
 export default function WellsDVTScore() {
-  const [answers, setAnswers] = useState({});
-  const [score, setScore] = useState(0);
-  const [interpretation, setInterpretation] = useState("");
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
-  // Toggle checkbox and recalc immediately
-  const toggle = (key) => {
-    const newAnswers = { ...answers, [key]: !answers[key] };
-    setAnswers(newAnswers);
-
-    // Auto-calc
+  const score = useMemo(() => {
     let total = 0;
     criteria.forEach((c) => {
-      if (newAnswers[c.key]) total += c.points;
+      if (values[c.key]) total += c.points;
     });
-    setScore(total);
+    return total;
+  }, [values]);
 
+  const interpretation = useMemo(() => {
     let interp = "";
-    if (total >= 3) interp = "High probability of DVT";
-    else if (total >= 1) interp = "Moderate probability of DVT";
+    if (score >= 3) interp = "High probability of DVT";
+    else if (score >= 1) interp = "Moderate probability of DVT";
     else interp = "Low probability of DVT";
 
-    if (total >= 2) interp += " — DVT likely.";
+    if (score >= 2) interp += " — DVT likely.";
     else interp += " — DVT unlikely.";
-
-    setInterpretation(interp);
-  };
-
-  const reset = () => {
-    setAnswers({});
-    setScore(0);
-    setInterpretation("");
-  };
+    return interp;
+  }, [score]);
 
   return (
     <div className="calc-container" style={{ maxWidth: 500 }}>
-
       <div className="calc-box">
         {criteria.map((c) => (
           <label key={c.key} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
             <input
               type="checkbox"
-              checked={!!answers[c.key]}
-              onChange={() => toggle(c.key)}
+              checked={values[c.key]}
+              onChange={(e) => setField(c.key, e.target.checked)}
               style={{ marginRight: 8 }}
             />
             {c.label} {c.points > 0 ? `(+${c.points})` : `(${c.points})`}
@@ -66,14 +66,14 @@ export default function WellsDVTScore() {
         ))}
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">
-        Reset
-      </button>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
 
-      <div className="calc-result" style={{ marginTop: 16 }}>
-        <strong>Total Score:</strong> {score} <br />
-        <strong>Interpretation:</strong> {interpretation}
-      </div>
+      {(score !== 0 || Object.values(values).some(v => v)) && (
+        <div className="calc-result" style={{ marginTop: 16 }}>
+          <strong>Total Score:</strong> {score} <br />
+          <strong>Interpretation:</strong> {interpretation}
+        </div>
+      )}
     </div>
   );
 }

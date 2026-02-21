@@ -90,12 +90,18 @@
 }
 
 .calc-btn-reset {
-    background: #f0f0f0;
-    color: #333;
+    background: #f1f5f9;
+    color: #475569;
+    margin-top: 12px;
+    padding: 10px 16px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .calc-btn-reset:hover {
-    background: #e0e0e0;
+    background: #e2e8f0;
+    color: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 /* Calculator Grid (SimpleCalculator style) */
@@ -133,8 +139,80 @@
     background: #f0f0f0;
 }
 
+.calc-key.op {
+    background: #e2e8f0;
+    /* Ash background */
+    color: #475569;
+}
+
+.calc-key.op:hover {
+    background: #cbd5e1;
+}
+
 .calc-key:active {
     background: #e0e0e0;
+}
+
+/* Simple Calculator Display */
+.calc-display-group {
+    background: #1e293b;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    text-align: right;
+    color: #fff;
+}
+
+.calc-history {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    min-height: 1.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.calc-main-display {
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    min-height: 1.2em;
+}
+
+.calc-main-display::-webkit-scrollbar {
+    display: none;
+}
+
+.calc-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    background-color: #015c9c;
+    margin: 0 1px;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+}
+
+@keyframes blink {
+
+    from,
+    to {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: #015c9c;
+    }
+}
+
+.calc-main-display.error {
+    color: #ef4444;
 }
 
 /* Dark Mode Overrides */
@@ -179,5 +257,12 @@
 .ballard-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
+}
+
+/* Mobile responsive grid */
+@media (max-width: 480px) {
+    .ballard-grid {
+        grid-template-columns: 1fr;
+    }
 }

@@ -1,5 +1,5 @@
 // src/calculators/WellsScorePE.js
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const WELLS_CRITERIA = [
@@ -12,17 +12,23 @@ const WELLS_CRITERIA = [
   { id: 7, label: "Malignancy (active, treated within 6 months, or palliative)", points: 1 },
 ];
 
+const INITIAL_STATE = {
+  selectedIds: [],
+};
+
 export default function WellsScorePE() {
-  const [selectedIds, setSelectedIds] = useState([]);
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
   const toggleCriteria = (id) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    const { selectedIds } = values;
+    const newSelected = selectedIds.includes(id)
+      ? selectedIds.filter((x) => x !== id)
+      : [...selectedIds, id];
+    setField("selectedIds", newSelected);
   };
 
   // Auto-calculate score
-  const totalScore = selectedIds
+  const totalScore = values.selectedIds
     .map((id) => WELLS_CRITERIA.find((c) => c.id === id).points)
     .reduce((sum, p) => sum + p, 0);
 
@@ -39,7 +45,7 @@ export default function WellsScorePE() {
           <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
             <input
               type="checkbox"
-              checked={selectedIds.includes(c.id)}
+              checked={values.selectedIds.includes(c.id)}
               onChange={() => toggleCriteria(c.id)}
               style={{ marginRight: 8 }}
             />
@@ -48,11 +54,12 @@ export default function WellsScorePE() {
         ))}
       </div>
 
-      {selectedIds.length > 0 && (
+      {values.selectedIds.length > 0 && (
         <div className="calc-result">
           Score: {totalScore} → {interpretation}
         </div>
       )}
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

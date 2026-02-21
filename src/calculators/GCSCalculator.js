@@ -1,24 +1,22 @@
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  eye: 4,
+  verbal: 5,
+  motor: 6,
+};
+
 export default function GCSCalculator() {
-  const [eye, setEye] = useState(4);
-  const [verbal, setVerbal] = useState(5);
-  const [motor, setMotor] = useState(6);
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
   // Total and interpretation auto-calculated
-  const total = eye + verbal + motor;
+  const total = values.eye + values.verbal + values.motor;
 
   let interpretation = "";
   if (total <= 8) interpretation = "Severe head injury (GCS ≤ 8)";
   else if (total <= 12) interpretation = "Moderate head injury (GCS 9 - 12)";
   else interpretation = "Mild head injury (GCS 13 - 15)";
-
-  const reset = () => {
-    setEye(4);
-    setVerbal(5);
-    setMotor(6);
-  };
 
   return (
     <div className="calc-container">
@@ -26,7 +24,7 @@ export default function GCSCalculator() {
       {/* Eye Response */}
       <div className="calc-box">
         <label className="calc-label">Eye Response (E)</label>
-        <select value={eye} onChange={(e) => setEye(parseInt(e.target.value))} className="calc-select">
+        <select value={values.eye} onChange={(e) => setField("eye", parseInt(e.target.value))} className="calc-select">
           <option value={4}>4 - Spontaneous</option>
           <option value={3}>3 - To speech</option>
           <option value={2}>2 - To pain</option>
@@ -37,7 +35,7 @@ export default function GCSCalculator() {
       {/* Verbal Response */}
       <div className="calc-box">
         <label className="calc-label">Verbal Response (V)</label>
-        <select value={verbal} onChange={(e) => setVerbal(parseInt(e.target.value))} className="calc-select">
+        <select value={values.verbal} onChange={(e) => setField("verbal", parseInt(e.target.value))} className="calc-select">
           <option value={5}>5 - Oriented</option>
           <option value={4}>4 - Confused</option>
           <option value={3}>3 - Inappropriate words</option>
@@ -49,7 +47,7 @@ export default function GCSCalculator() {
       {/* Motor Response */}
       <div className="calc-box">
         <label className="calc-label">Motor Response (M)</label>
-        <select value={motor} onChange={(e) => setMotor(parseInt(e.target.value))} className="calc-select">
+        <select value={values.motor} onChange={(e) => setField("motor", parseInt(e.target.value))} className="calc-select">
           <option value={6}>6 - Obeys commands</option>
           <option value={5}>5 - Localizes pain</option>
           <option value={4}>4 - Withdraws to pain</option>
@@ -66,7 +64,7 @@ export default function GCSCalculator() {
 
       {/* Reset button */}
       <button onClick={reset} className="calc-btn-reset">
-        Reset
+        Reset Calculator
       </button>
     </div>
   );

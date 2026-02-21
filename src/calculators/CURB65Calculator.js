@@ -1,37 +1,32 @@
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  confusion: false,
+  ureaHigh: false,
+  rrHigh: false,
+  bpLow: false,
+  age65: false,
+};
+
 export default function CURB65Calculator() {
-  const [confusion, setConfusion] = useState(false);
-  const [ureaHigh, setUreaHigh] = useState(false);
-  const [rrHigh, setRrHigh] = useState(false);
-  const [bpLow, setBpLow] = useState(false);
-  const [age65, setAge65] = useState(false);
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
   const score =
-    (confusion ? 1 : 0) +
-    (ureaHigh ? 1 : 0) +
-    (rrHigh ? 1 : 0) +
-    (bpLow ? 1 : 0) +
-    (age65 ? 1 : 0);
-
-  const resetCalculator = () => {
-    setConfusion(false);
-    setUreaHigh(false);
-    setRrHigh(false);
-    setBpLow(false);
-    setAge65(false);
-  };
+    (values.confusion ? 1 : 0) +
+    (values.ureaHigh ? 1 : 0) +
+    (values.rrHigh ? 1 : 0) +
+    (values.bpLow ? 1 : 0) +
+    (values.age65 ? 1 : 0);
 
   return (
     <div className="calc-container">
-
       <div className="calc-box">
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"
-            checked={confusion}
-            onChange={e => setConfusion(e.target.checked)}
+            checked={values.confusion}
+            onChange={e => setField("confusion", e.target.checked)}
             style={{ marginRight: 8 }}
           />
           Confusion
@@ -40,8 +35,8 @@ export default function CURB65Calculator() {
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"
-            checked={ureaHigh}
-            onChange={e => setUreaHigh(e.target.checked)}
+            checked={values.ureaHigh}
+            onChange={e => setField("ureaHigh", e.target.checked)}
             style={{ marginRight: 8 }}
           />
           Urea ≥ 7 mmol/L or BUN ≥ 20 mg/dL
@@ -50,8 +45,8 @@ export default function CURB65Calculator() {
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"
-            checked={rrHigh}
-            onChange={e => setRrHigh(e.target.checked)}
+            checked={values.rrHigh}
+            onChange={e => setField("rrHigh", e.target.checked)}
             style={{ marginRight: 8 }}
           />
           Respiratory rate ≥ 30 /min
@@ -60,8 +55,8 @@ export default function CURB65Calculator() {
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"
-            checked={bpLow}
-            onChange={e => setBpLow(e.target.checked)}
+            checked={values.bpLow}
+            onChange={e => setField("bpLow", e.target.checked)}
             style={{ marginRight: 8 }}
           />
           SBP &lt; 90 mmHg or DBP ≤ 60 mmHg
@@ -70,8 +65,8 @@ export default function CURB65Calculator() {
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"
-            checked={age65}
-            onChange={e => setAge65(e.target.checked)}
+            checked={values.age65}
+            onChange={e => setField("age65", e.target.checked)}
             style={{ marginRight: 8 }}
           />
           Age ≥ 65 years
@@ -79,10 +74,10 @@ export default function CURB65Calculator() {
       </div>
 
       <button
-        onClick={resetCalculator}
+        onClick={reset}
         className="calc-btn-reset"
       >
-        Reset
+        Reset Calculator
       </button>
 
       <div className="calc-result" style={{ marginTop: 16 }}>

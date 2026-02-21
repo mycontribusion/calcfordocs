@@ -1,11 +1,15 @@
 // src/calculators/EstimatedBloodVolume.js
-import { useState } from "react";
+import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
+const INITIAL_STATE = {
+  weight: "",
+  unit: "kg",
+  ageGroup: "neonate",
+};
+
 export default function EstimatedBloodVolume() {
-  const [weight, setWeight] = useState("");
-  const [unit, setUnit] = useState("kg");
-  const [ageGroup, setAgeGroup] = useState("neonate");
+  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
   const validatePositiveNumber = (n) => {
     const x = Number(n);
@@ -14,6 +18,7 @@ export default function EstimatedBloodVolume() {
 
   // Auto-calc result
   const result = (() => {
+    const { weight, unit, ageGroup } = values;
     if (!validatePositiveNumber(weight)) return "⚠️ Please enter a valid positive weight.";
 
     const weightKg = unit === "lb" ? Number(weight) * 0.453592 : Number(weight);
@@ -56,8 +61,8 @@ export default function EstimatedBloodVolume() {
           type="number"
           min="0.1"
           step="0.1"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          value={values.weight}
+          onChange={(e) => setField("weight", e.target.value)}
           className="calc-input"
         />
       </div>
@@ -65,8 +70,8 @@ export default function EstimatedBloodVolume() {
       <div className="calc-box">
         <label className="calc-label">Unit:</label>
         <select
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
+          value={values.unit}
+          onChange={(e) => setField("unit", e.target.value)}
           className="calc-select"
         >
           <option value="kg">kg</option>
@@ -77,8 +82,8 @@ export default function EstimatedBloodVolume() {
       <div className="calc-box">
         <label className="calc-label">Age Group:</label>
         <select
-          value={ageGroup}
-          onChange={(e) => setAgeGroup(e.target.value)}
+          value={values.ageGroup}
+          onChange={(e) => setField("ageGroup", e.target.value)}
           className="calc-select"
         >
           <option value="neonate">Neonate (85–90 mL/kg)</option>
@@ -92,6 +97,7 @@ export default function EstimatedBloodVolume() {
       <div className="calc-result" style={{ marginTop: 12 }}>
         {result}
       </div>
+      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
 }

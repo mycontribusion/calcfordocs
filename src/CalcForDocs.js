@@ -9,8 +9,11 @@ import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
 
 const ARRANGEMENTS = {
-  og: ["r", "bs", "v", "wellpe", "labconv", "a", "o"],
-  peds: ["m", "k", "l", "v", "g", "p", "f"]
+  og: ["apgar_score", "pregnancy_calculator", "bishop_score", "ballard_score", "wells_pe_score", "lab_converter", "bmi_calculator", "dosage_calculator"],
+  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "ballard_score", "fluid_correction", "iv_infusion_rate", "blood_volume_estimator"],
+  electrolytes: ["serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
+  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment"],
+  surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
 };
 
 function CalcForDocs() {
@@ -112,24 +115,25 @@ function CalcForDocs() {
       {/* 🔘 Speciality Toggle */}
       <div className="view-toggle-container">
         <div className="view-toggle">
-          <button
-            className={`view-btn ${view === "default" ? "active" : ""}`}
-            onClick={() => setView("default")}
-          >
-            Default
-          </button>
-          <button
-            className={`view-btn ${view === "og" ? "active" : ""}`}
-            onClick={() => setView("og")}
-          >
-            O&G
-          </button>
-          <button
-            className={`view-btn ${view === "peds" ? "active" : ""}`}
-            onClick={() => setView("peds")}
-          >
-            Pediatrics
-          </button>
+          {["default", "og", "peds", "electrolytes", "med", "surg"].map((v) => {
+            const labels = {
+              default: "Default",
+              og: "O&G",
+              peds: "Peds",
+              electrolytes: "Electrolytes",
+              med: "Med",
+              surg: "Surg"
+            };
+            return (
+              <button
+                key={v}
+                className={`view-btn ${view === v ? "active" : ""}`}
+                onClick={() => setView(v)}
+              >
+                {labels[v]}
+              </button>
+            );
+          })}
         </div>
       </div>
 
