@@ -18,8 +18,10 @@
 ========================= */
 
 .header-dropdown {
-  position: relative;            /* NOT floating */
-  width: 100%;                   /* Full header width */
+  position: relative;
+  /* NOT floating */
+  width: 100%;
+  /* Full header width */
   background: var(--card-bg, #fff);
   border-bottom: 1px solid #ddd;
   padding: 14px;
@@ -42,16 +44,16 @@
    RIGHT ACTIONS
 ========================= */
 
-.head-contact > div {
+.head-contact>div {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .header-actions-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 /* =========================
@@ -83,16 +85,38 @@
 
 .contactus {
   font-size: 0.85rem;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
   cursor: pointer;
   user-select: none;
-  background: rgba(0, 0, 0, 0.04);
-  transition: background 0.2s ease;
+  background: rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.header-icon {
+  flex-shrink: 0;
 }
 
 .contactus:hover {
   background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.feedback-btn-head {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+}
+
+.feedback-btn-head:hover {
+  background: #0369a1;
+  color: #fff;
 }
 
 /* =========================
@@ -113,11 +137,22 @@
 }
 
 .calcfordocs.dark .contactus {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
 .calcfordocs.dark .contactus:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.calcfordocs.dark .feedback-btn-head {
+  background: #0369a1;
+  border-color: #0369a1;
+}
+
+.calcfordocs.dark .feedback-btn-head:hover {
+  background: #0ea5e9;
 }
 
 /* =========================

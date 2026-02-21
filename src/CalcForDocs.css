@@ -312,3 +312,60 @@ body:has(.calcfordocs.dark) {
   cursor: pointer;
   font-size: 0.9rem;
 }
+
+/* =========================
+   7. VIEW TOGGLE
+   ========================= */
+.view-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+.view-toggle {
+  display: flex;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px;
+  border-radius: 12px;
+  gap: 4px;
+}
+
+.view-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background: #fff;
+  color: #0284c7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode View Toggle */
+.calcfordocs.dark .view-toggle {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.calcfordocs.dark .view-btn {
+  color: #aaa;
+}
+
+.calcfordocs.dark .view-btn.active {
+  background: #222;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 480px) {
+  .view-btn {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}

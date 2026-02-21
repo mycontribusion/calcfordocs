@@ -36,33 +36,13 @@
     ]
   },
   {
-    "name": "IV Infusion Drop Rate",
-    "id": "p",
+    "name": "Glucose Converter",
+    "id": "d",
     "keywords": [
-      "iv rate",
-      "infusion",
-      "drip rate",
-      "fluid rate"
-    ]
-  },
-  {
-    "name": "SpO₂ / FiO₂ Ratio",
-    "id": "sfr",
-    "keywords": [
-      "spo2",
-      "fio2",
-      "oxygen ratio",
-      "oxygenation"
-    ]
-  },
-  {
-    "name": "qSOFA / mSOFA",
-    "id": "sofa",
-    "keywords": [
-      "qsofa",
-      "msofa",
-      "sepsis score",
-      "sofa"
+      "blood sugar",
+      "glucose",
+      "mg to mmol",
+      "mmol to mg"
     ]
   },
   {
@@ -76,122 +56,51 @@
     ]
   },
   {
-    "name": "CURB-65 Score",
-    "id": "curb65",
+    "name": "IV Infusion Drop Rate",
+    "id": "p",
     "keywords": [
-      "curb",
-      "pneumonia",
-      "risk score",
-      "cap",
-      "severity"
+      "iv rate",
+      "infusion",
+      "drip rate",
+      "fluid rate"
     ]
   },
   {
-    "name": "Glucose Converter",
-    "id": "d",
+    "name": "Body Mass Index",
+    "id": "a",
     "keywords": [
-      "blood sugar",
-      "glucose",
-      "mg to mmol",
-      "mmol to mg"
+      "body mass index",
+      "weight height ratio",
+      "bmi"
     ]
   },
   {
-    "name": "Serum Osmolality Calc",
-    "id": "q",
+    "name": "qSOFA / mSOFA",
+    "id": "sofa",
     "keywords": [
-      "osmolality",
-      "serum osmol",
-      "osmolarity"
+      "qsofa",
+      "msofa",
+      "sepsis score",
+      "sofa"
     ]
   },
   {
-    "name": "Anion Gap",
-    "id": "q1",
+    "name": "SpO₂ / FiO₂ Ratio",
+    "id": "sfr",
     "keywords": [
-      "anion gap",
-      "gap",
-      "metabolic acidosis"
+      "spo2",
+      "fio2",
+      "oxygen ratio",
+      "oxygenation"
     ]
   },
   {
-    "name": "AnionGap / DeltaRatio",
-    "id": "agdr",
+    "name": "GCS",
+    "id": "i",
     "keywords": [
-      "delta ratio",
-      "anion gap ratio",
-      "gap ratio"
-    ]
-  },
-  {
-    "name": "Hypokalemia Correction",
-    "id": "j",
-    "keywords": [
-      "potassium",
-      "k correction",
-      "hypokalemia"
-    ]
-  },
-  {
-    "name": "eGFR Calculator",
-    "id": "n",
-    "keywords": [
-      "kidney",
-      "gfr",
-      "renal function",
-      "egfr"
-    ]
-  },
-  {
-    "name": "Calcium Phosphate Product",
-    "id": "cak",
-    "keywords": [
-      "ca phosphate",
-      "ca x phosphate",
-      "calcium phosphate"
-    ]
-  },
-  {
-    "name": "Urea-Creatinine Ratio (UCR)",
-    "id": "w",
-    "keywords": [
-      "ucr",
-      "urea creatinine",
-      "kidney ratio"
-    ]
-  },
-  {
-    "name": "Corrected Calcium",
-    "id": "x",
-    "keywords": [
-      "ca corrected",
-      "albumin corrected calcium"
-    ]
-  },
-  {
-    "name": "Corrected Sodium",
-    "id": "correctna",
-    "keywords": [
-      "na corrected",
-      "sodium",
-      "hyponatremia"
-    ]
-  },
-  {
-    "name": "Hyponatremia Correction",
-    "id": "lowna",
-    "keywords": [
-      "na correction",
-      "low sodium",
-      "hyponatremia"
-    ]
-  },
-  {
-    "name": "Mean Arterial Pressure",
-    "id": "e",
-    "keywords": [
-      "mean arterial pressure",
-      "blood pressure"
+      "glasgow coma scale",
+      "coma",
+      "gcs score"
     ]
   },
   {
@@ -204,79 +113,11 @@
     ]
   },
   {
-    "name": "Cardiac Axis",
-    "id": "b",
+    "name": "Mean Arterial Pressure",
+    "id": "e",
     "keywords": [
-      "ecg axis",
-      "heart axis"
-    ]
-  },
-  {
-    "name": "ECG Waveforms",
-    "id": "c",
-    "keywords": [
-      "ecg",
-      "ekg",
-      "waveforms",
-      "cardiac rhythm",
-      "rr",
-      "interval",
-      "qt"
-    ]
-  },
-  {
-    "name": "Framingham Criteria",
-    "id": "h",
-    "keywords": [
-      "heart failure",
-      "framingham",
-      "hf criteria"
-    ]
-  },
-  {
-    "name": "Well's Score DVT",
-    "id": "welldvt",
-    "keywords": [
-      "dvt",
-      "wells dvt",
-      "deep vein thrombosis"
-    ]
-  },
-  {
-    "name": "Well's Score PE",
-    "id": "wellpe",
-    "keywords": [
-      "pe",
-      "wells pe",
-      "pulmonary embolism"
-    ]
-  },
-  {
-    "name": "AF Stroke Risk Score",
-    "id": "afstroke",
-    "keywords": [
-      "af",
-      "atrial fibrillation",
-      "stroke risk",
-      "cha2ds2vasc"
-    ]
-  },
-  {
-    "name": "Estimated Blood Volume",
-    "id": "f",
-    "keywords": [
-      "ebv",
-      "blood volume",
-      "ml/kg"
-    ]
-  },
-  {
-    "name": "Fluid Correction",
-    "id": "g",
-    "keywords": [
-      "fluids",
-      "maintenance",
-      "fluid therapy"
+      "mean arterial pressure",
+      "blood pressure"
     ]
   },
   {
@@ -290,30 +131,112 @@
     ]
   },
   {
-    "name": "GCS",
-    "id": "i",
+    "name": "Fluid Correction",
+    "id": "g",
     "keywords": [
-      "glasgow coma scale",
-      "coma",
-      "gcs score"
+      "fluids",
+      "maintenance",
+      "fluid therapy"
     ]
   },
   {
-    "name": "Mini-Mental State Examination",
-    "id": "mmse",
+    "name": "eGFR Calculator",
+    "id": "n",
     "keywords": [
-      "mini mental state exam",
-      "mmse",
-      "cognitive impairment"
+      "kidney",
+      "gfr",
+      "renal function",
+      "egfr"
     ]
   },
   {
-    "name": "Ischemic / Hemmorrhagic Stroke",
-    "id": "siri",
+    "name": "Urea-Creatinine Ratio (UCR)",
+    "id": "w",
     "keywords": [
-      "cvd",
-      "stroke",
-      "siriraj"
+      "ucr",
+      "urea creatinine",
+      "kidney ratio"
+    ]
+  },
+  {
+    "name": "AnionGap / DeltaRatio",
+    "id": "agdr",
+    "keywords": [
+      "delta ratio",
+      "anion gap ratio",
+      "gap ratio"
+    ]
+  },
+  {
+    "name": "Serum Osmolality Calc",
+    "id": "q",
+    "keywords": [
+      "osmolality",
+      "serum osmol",
+      "osmolarity"
+    ]
+  },
+  {
+    "name": "Hypokalemia Correction",
+    "id": "j",
+    "keywords": [
+      "potassium",
+      "k correction",
+      "hypokalemia"
+    ]
+  },
+  {
+    "name": "Hyponatremia Correction",
+    "id": "lowna",
+    "keywords": [
+      "na correction",
+      "low sodium",
+      "hyponatremia"
+    ]
+  },
+  {
+    "name": "Corrected Sodium",
+    "id": "correctna",
+    "keywords": [
+      "na corrected",
+      "sodium",
+      "hyponatremia"
+    ]
+  },
+  {
+    "name": "Corrected Calcium",
+    "id": "x",
+    "keywords": [
+      "ca corrected",
+      "albumin corrected calcium"
+    ]
+  },
+  {
+    "name": "Calcium Phosphate Product",
+    "id": "cak",
+    "keywords": [
+      "ca phosphate",
+      "ca x phosphate",
+      "calcium phosphate"
+    ]
+  },
+  {
+    "name": "Estimated Blood Volume",
+    "id": "f",
+    "keywords": [
+      "ebv",
+      "blood volume",
+      "ml/kg"
+    ]
+  },
+  {
+    "name": "Pediatric Weight Calc",
+    "id": "m",
+    "keywords": [
+      "weight",
+      "paed weight",
+      "child weight",
+      "pediatric weight"
     ]
   },
   {
@@ -333,16 +256,6 @@
       "anemia correction",
       "paed anemia",
       "hemoglobin correction"
-    ]
-  },
-  {
-    "name": "Pediatric Weight Calc",
-    "id": "m",
-    "keywords": [
-      "weight",
-      "paed weight",
-      "child weight",
-      "pediatric weight"
     ]
   },
   {
@@ -376,12 +289,92 @@
     ]
   },
   {
-    "name": "Body Mass Index",
-    "id": "a",
+    "name": "Well's Score DVT",
+    "id": "welldvt",
     "keywords": [
-      "body mass index",
-      "weight height ratio",
-      "bmi"
+      "dvt",
+      "wells dvt",
+      "deep vein thrombosis"
+    ]
+  },
+  {
+    "name": "Well's Score PE",
+    "id": "wellpe",
+    "keywords": [
+      "pe",
+      "wells pe",
+      "pulmonary embolism"
+    ]
+  },
+  {
+    "name": "Ischemic / Hemmorrhagic Stroke",
+    "id": "siri",
+    "keywords": [
+      "cvd",
+      "stroke",
+      "siriraj"
+    ]
+  },
+  {
+    "name": "AF Stroke Risk Score",
+    "id": "afstroke",
+    "keywords": [
+      "af",
+      "atrial fibrillation",
+      "stroke risk",
+      "cha2ds2vasc"
+    ]
+  },
+  {
+    "name": "CURB-65 Score",
+    "id": "curb65",
+    "keywords": [
+      "curb",
+      "pneumonia",
+      "risk score",
+      "cap",
+      "severity"
+    ]
+  },
+  {
+    "name": "Framingham Criteria",
+    "id": "h",
+    "keywords": [
+      "heart failure",
+      "framingham",
+      "hf criteria"
+    ]
+  },
+  {
+    "name": "DAR Risk Assessment Tool (2026)",
+    "id": "dar",
+    "keywords": [
+      "fasting",
+      "dar",
+      "risk assessment",
+      "diabetes",
+      "Ramadan"
+    ]
+  },
+  {
+    "name": "Cardiac Axis",
+    "id": "b",
+    "keywords": [
+      "ecg axis",
+      "heart axis"
+    ]
+  },
+  {
+    "name": "ECG Waveforms",
+    "id": "c",
+    "keywords": [
+      "ecg",
+      "ekg",
+      "waveforms",
+      "cardiac rhythm",
+      "rr",
+      "interval",
+      "qt"
     ]
   },
   {
@@ -394,14 +387,12 @@
     ]
   },
   {
-    "name": "DAR Risk Assessment Tool (2026)",
-    "id": "dar",
+    "name": "Mini-Mental State Examination",
+    "id": "mmse",
     "keywords": [
-      "fasting",
-      "dar",
-      "risk assessment",
-      "diabetes",
-      "Ramadan"
+      "mini mental state exam",
+      "mmse",
+      "cognitive impairment"
     ]
   }
 ]
