@@ -45,6 +45,7 @@ import MMSECalculator from "./MMSECalculator";
 import IPSSCalculator from "./IPSSCalculator";
 import UniversalLabConverter from "./UniversalLabConverter";
 import ApgarScore from "./ApgarScore";
+import ParklandFormula from "./ParklandFormula";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -93,6 +94,7 @@ const CALCULATOR_MAP = {
   mmse_calculator: MMSECalculator,
   ipss_score: IPSSCalculator,
   apgar_score: ApgarScore,
+  parkland_formula: ParklandFormula,
 };
 
 export default function CalculatorRenderer({ id }) {

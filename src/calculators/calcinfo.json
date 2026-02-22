@@ -131,6 +131,16 @@
     ]
   },
   {
+    "name": "Parkland Formula",
+    "id": "parkland_formula",
+    "keywords": [
+      "burn",
+      "fluid resuscitation",
+      "parkland",
+      "resuscitation"
+    ]
+  },
+  {
     "name": "Fluid Correction",
     "id": "fluid_correction",
     "keywords": [

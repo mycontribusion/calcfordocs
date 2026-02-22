@@ -13,7 +13,7 @@ const ARRANGEMENTS = {
   peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "blood_volume_estimator", "ballard_score", "fluid_correction", "iv_infusion_rate"],
   electrolytes: ["serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
   med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis"],
-  surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
+  surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "parkland_formula", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
 };
 
 function CalcForDocs() {
