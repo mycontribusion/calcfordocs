@@ -25,7 +25,16 @@ export default function ShockIndex() {
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Shock Index:</strong> {values.result.index}</p>
-          <p>{values.result.interp}</p>
+          <p><strong>Interpretation:</strong> {values.result.interp}</p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <strong>Reference Ranges:</strong>
+            <ul style={{ listStyle: "none", padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
+              <li>&lt; 0.5: Low</li>
+              <li>0.5 – 0.7: Normal</li>
+              <li>0.8 – 0.9: Borderline</li>
+              <li>≥ 1.0: High Risk</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

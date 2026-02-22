@@ -39,7 +39,15 @@ export default function CalciumPhosphateProduct() {
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Product:</strong> {values.result.product} mg²/dL²</p>
-          <p>{values.result.interp}</p>
+          <p style={{ marginTop: 4 }}><strong>Risk:</strong> {values.result.interp}</p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <span style={{ opacity: 0.7 }}>Formula: Ca (mg/dL) × Phosphate (mg/dL)</span>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
+              <li>&lt; 55: Low risk</li>
+              <li>55–70: Moderate risk</li>
+              <li>&gt; 70: High risk of vascular calcification</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

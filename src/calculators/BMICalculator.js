@@ -120,6 +120,17 @@ export default function BmiCalculator() {
           <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
             Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
           </p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <strong>WHO Classification:</strong>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
+              <li>&lt; 18.5: Underweight</li>
+              <li>18.5 – 24.9: Normal weight</li>
+              <li>25 – 29.9: Overweight</li>
+              <li>30 – 34.9: Obese Class I</li>
+              <li>35 – 39.9: Obese Class II</li>
+              <li>≥ 40: Obese Class III (Morbid)</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

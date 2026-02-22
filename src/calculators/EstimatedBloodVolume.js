@@ -47,9 +47,7 @@ export default function EstimatedBloodVolume() {
     const ebvLow = weightKg * range[0];
     const ebvHigh = weightKg * range[1];
 
-    return ebvLow === ebvHigh
-      ? `Estimated Blood Volume: ${ebvLow.toFixed(0)} mL`
-      : `Estimated Blood Volume: ${ebvLow.toFixed(0)} – ${ebvHigh.toFixed(0)} mL`;
+    return { low: ebvLow.toFixed(0), high: ebvHigh === ebvLow ? null : ebvHigh.toFixed(0), formula: `${range[0]}${range[1] !== range[0] ? '–' + range[1] : ''} mL/kg` };
   })();
 
   return (
@@ -95,7 +93,21 @@ export default function EstimatedBloodVolume() {
       </div>
 
       <div className="calc-result" style={{ marginTop: 12 }}>
-        {result}
+        {typeof result === 'string' ? result : (
+          <>
+            <p><strong>Estimated Blood Volume:</strong> {result.low}{result.high ? ` – ${result.high}` : ''} mL</p>
+            <div style={{ marginTop: 8, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <span style={{ opacity: 0.7 }}>Formula: Weight (kg) × {result.formula}</span>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
+                <li>Neonate: 85–90 mL/kg</li>
+                <li>Infant: 75–80 mL/kg</li>
+                <li>Child: 70–75 mL/kg</li>
+                <li>Adult Male: ~70 mL/kg</li>
+                <li>Adult Female: ~65 mL/kg</li>
+              </ul>
+            </div>
+          </>
+        )}
       </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>

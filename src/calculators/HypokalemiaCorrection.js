@@ -60,6 +60,18 @@ export default function HypokalemiaCorrection() {
           <p><strong>Deficit:</strong> {values.results.deficit.toFixed(1)} mmol</p>
           <p><strong>Daily Maintenance:</strong> {values.results.maintenance.toFixed(1)} mmol/day</p>
           <p style={{ marginTop: 8, fontSize: '1.1rem', color: '#0056b3' }}><strong>Total Requirement:</strong> {values.results.total.toFixed(1)} mmol</p>
+
+          <div style={{ marginTop: 16, textAlign: 'left', background: 'rgba(0,0,0,0.02)', padding: 12, borderRadius: 8 }}>
+            <h3 style={{ fontSize: '0.95rem', margin: '0 0 8px' }}>Notes & Safety</h3>
+            <ul style={{ paddingLeft: 20, margin: 0, fontSize: '0.85rem', color: '#444' }}>
+              <li><strong>Formula:</strong> Deficit = (Target – Observed) × Weight(kg) × 0.6</li>
+              <li><strong>Maintenance:</strong> 1 mmol/kg/day</li>
+              <li>Ensure <strong>urine output</strong> ≥ 0.5 mL/kg/hr before IV replacement</li>
+              <li><strong>Max daily dose:</strong> 120 mmol/day</li>
+              <li><strong>Max infusion rate:</strong> 10–20 mmol/hr</li>
+              <li><strong>Max concentration:</strong> 40 mmol/L (peripheral line)</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

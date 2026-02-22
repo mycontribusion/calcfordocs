@@ -51,6 +51,9 @@ export default function CorrectedSodium() {
         <div className="calc-result">
           <p style={{ fontWeight: "bold" }}>{values.result}</p>
           {values.interpretation && <p>Status: <strong style={{ color: values.interpretation.color }}>{values.interpretation.status}</strong></p>}
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem', opacity: 0.7 }}>
+            Formula: Corrected Na = Na + 1.6 × ((Glucose mg/dL – 100) / 100)
+          </div>
         </div>
       )}
     </div>

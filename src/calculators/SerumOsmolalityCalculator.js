@@ -54,8 +54,27 @@ export default function SerumOsmolalityCalculator() {
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.result && (
         <div className="calc-result">
+          <div className="calc-formula-box" style={{ marginBottom: 12, fontSize: '0.85rem' }}>
+            Osm = 2×Na + Glucose + Urea (all in mmol/L)
+          </div>
           <p><strong>Calculated:</strong> {values.result.osmolality} mOsm/kg</p>
-          {values.result.gap !== null && <p><strong>Gap:</strong> {values.result.gap} mOsm/kg</p>}
+          {values.result.gap !== null && (
+            <>
+              <p><strong>Osmol Gap:</strong> {values.result.gap} mOsm/kg</p>
+              <p style={{ fontSize: '0.85rem', marginTop: 4, color: parseFloat(values.result.gap) > 10 ? '#c0392b' : '#27ae60' }}>
+                {parseFloat(values.result.gap) > 10
+                  ? '⚠️ Elevated gap (>10) — consider toxic alcohols, mannitol, or ketoacidosis'
+                  : '✅ Normal osmol gap (≤10)'}
+              </p>
+            </>
+          )}
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <strong>Reference:</strong>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
+              <li>Normal: 275–295 mOsm/kg</li>
+              <li>Normal osmol gap: &lt; 10 mOsm/kg</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

@@ -83,9 +83,33 @@ export default function AnionGapDeltaRatio() {
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p><strong>Anion Gap:</strong> {values.result.ag}</p>
-          {values.result.agCorr && <p><strong>Corrected AG:</strong> {values.result.agCorr}</p>}
-          {values.result.deltaInterpretation && <p style={{ marginTop: 8, fontStyle: 'italic' }}>{values.result.deltaInterpretation}</p>}
+          <div style={{ marginBottom: 12 }}>
+            <p><strong>Anion Gap:</strong> {values.result.ag} mmol/L</p>
+            <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7 }}>Formula: AG = (Na + K) – (Cl + HCO₃)</span>
+          </div>
+          {values.result.agCorr && (
+            <div style={{ marginBottom: 12 }}>
+              <p><strong>Corrected AG:</strong> {values.result.agCorr} mmol/L</p>
+              <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7 }}>Formula: Corrected AG = AG + 2.5 × (4 – Albumin g/dL)</span>
+            </div>
+          )}
+          {values.result.deltaInterpretation && (
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 12 }}>
+              <p><strong>ΔRatio:</strong> {values.result.deltaRatio}</p>
+              <p style={{ marginTop: 4, fontWeight: '500', color: '#0056b3' }}>{values.result.deltaInterpretation}</p>
+              <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7, marginTop: 4 }}>Formula: ΔRatio = (AGUsed – 12) / (24 – HCO₃)</span>
+
+              <div style={{ marginTop: 12, background: 'rgba(0,0,0,0.02)', padding: 10, borderRadius: 6, fontSize: '0.85rem' }}>
+                <strong>Interpretation Guide:</strong>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
+                  <li>&lt; 0.4: Mixed HAGMA + NAGMA</li>
+                  <li>0.4 – 1.0: HAGMA (RTAs, early DKA)</li>
+                  <li>1.0 – 2.0: Pure HAGMA (Lactic acidosis, DKA)</li>
+                  <li>&gt; 2.0: Mixed HAGMA + Metabolic Alkalosis</li>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

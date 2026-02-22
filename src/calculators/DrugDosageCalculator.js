@@ -18,30 +18,32 @@ export default function DrugDosageCalculator() {
   const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    if (!values.dose || !values.weight) {
+    const isWeightBased = values.doseUnit.includes("kg");
+
+    if (!values.dose || (isWeightBased && !values.weight)) {
       if (values.result !== null || values.error !== "") updateFields({ result: null, error: "" });
       return;
     }
 
     const n = Number(values.weight);
     let w = null;
-    if (Number.isFinite(n) && n > 0) {
-      switch (values.weightUnit) {
-        case "kg": w = n; break;
-        case "g": w = n / 1000; break;
-        case "lb": w = n * 0.453592; break;
-        default: w = n;
+    if (isWeightBased) {
+      if (Number.isFinite(n) && n > 0) {
+        switch (values.weightUnit) {
+          case "kg": w = n; break;
+          case "g": w = n / 1000; break;
+          case "lb": w = n * 0.453592; break;
+          default: w = n;
+        }
+      } else {
+        updateFields({ error: "Enter valid weight.", result: null });
+        return;
       }
     }
 
     const d = Number(values.dose);
     let dur = Number(values.duration);
     const nDoses = Number(values.numDoses);
-
-    if (!d || (values.doseUnit.includes("kg") && !w)) {
-      updateFields({ error: "Enter valid dose and weight.", result: null });
-      return;
-    }
 
     if ((values.doseUnit === "/min" || values.doseUnit === "/kg/min") && (!dur || dur <= 0)) {
       updateFields({ error: "Enter valid duration.", result: null });
@@ -75,15 +77,17 @@ export default function DrugDosageCalculator() {
           </select>
         </div>
       </div>
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} placeholder="Patient weight" className="calc-input" style={{ flex: 2 }} />
-          <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="kg">kg</option><option value="g">g</option><option value="lb">lb</option>
-          </select>
+      {values.doseUnit !== "/min" && (
+        <div className="calc-box">
+          <label className="calc-label">Weight:</label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} placeholder="Patient weight" className="calc-input" style={{ flex: 2 }} />
+            <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+              <option value="kg">kg</option><option value="g">g</option><option value="lb">lb</option>
+            </select>
+          </div>
         </div>
-      </div>
+      )}
       {values.doseUnit === "/kg/day" && (
         <div className="calc-box"><label className="calc-label">Number of divided doses per day:</label><input type="number" min="1" value={values.numDoses} onChange={(e) => setField("numDoses", e.target.value)} className="calc-input" /></div>
       )}

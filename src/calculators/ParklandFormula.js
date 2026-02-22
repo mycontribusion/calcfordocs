@@ -32,7 +32,7 @@ export default function ParklandFormula() {
 
             <div className="calc-grid">
                 <div className="calc-group">
-                    <label>Patient Weight (kg)</label>
+                    <label>Weight (kg)</label>
                     <input
                         type="number"
                         value={values.weight}

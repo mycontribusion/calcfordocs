@@ -72,6 +72,13 @@ export default function HyponatremiaCorrection() {
           <p><strong>ΔNa per 1 L:</strong> +{values.result.deltaPerLiter} mmol/L</p>
           <p><strong>Total Volume Needed:</strong> {values.result.totalLiters} L</p>
           <p><strong>Estimated Rate:</strong> {values.result.hourlyRate} mL/hr</p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <span style={{ opacity: 0.7 }}>Adrogue-Madias: ΔNa = (Infusate Na – Serum Na) / (TBW + 1)</span>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
+              <li>⚠️ Max correction: ≤8–10 mmol/L per 24h</li>
+              <li>⚠️ Rapid correction risks Osmotic Demyelination Syndrome (ODS)</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

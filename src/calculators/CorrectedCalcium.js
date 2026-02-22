@@ -92,8 +92,15 @@ function CorrectedCalcium() {
       {values.result !== null && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p>
-            <strong>Corrected Calcium:</strong> {values.result} {values.calciumUnit} ({values.interpretation})
+            <strong>Corrected Calcium:</strong> {values.result} {values.calciumUnit}
           </p>
+          <p style={{ marginTop: 4 }}><strong>Status:</strong> {values.interpretation}</p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <span style={{ opacity: 0.7 }}>Formula: Corrected Ca = Measured Ca + 0.8 × (4 – Albumin g/dL)</span>
+            <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
+              <li>Normal: 8.5–10.5 mg/dL (2.12–2.62 mmol/L)</li>
+            </ul>
+          </div>
         </div>
       )}
     </div>

@@ -119,12 +119,21 @@ export default function AnionGapCalculator() {
           <p>
             <strong>Anion Gap:</strong> {values.result.ag} mmol/L<br />
             <em style={{ fontWeight: "normal" }}>{values.result.agInterp}</em>
+            <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7, marginTop: 4 }}>
+              Formula: AG = Na – {values.result.usedK ? "(Cl + HCO₃ + K⁺)" : "(Cl + HCO₃)"}
+            </span>
           </p>
           {values.result.corrected !== null && (
             <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
               <p>
                 <strong>Albumin-Corrected AG:</strong> {values.result.corrected} mmol/L<br />
                 <em style={{ fontWeight: "normal" }}>{values.result.correctedInterp}</em>
+                <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7, marginTop: 4 }}>
+                  Formula: Corrected AG = AG + 2.5 × (4 – Albumin g/dL)
+                </span>
+              </p>
+              <p style={{ fontSize: '0.85rem', color: '#555', marginTop: 8 }}>
+                Normal AG ≈ 8–12 mmol/L. Low albumin can mask an elevated anion gap; corrected AG reveals the true gap.
               </p>
             </div>
           )}
