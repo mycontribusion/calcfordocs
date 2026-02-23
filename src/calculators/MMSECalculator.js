@@ -3,17 +3,17 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const QUESTIONS = [
-    { q: "Orientation (Year/Season/Date/Day/Month)", max: 5 },
-    { q: "Orientation (State/Country/Town/Hospital/Floor)", max: 5 },
-    { q: "Registration (3 objects)", max: 3 },
-    { q: "Attention/Calculation", max: 5 },
-    { q: "Recall (3 objects)", max: 3 },
-    { q: "Language (Naming)", max: 2 },
-    { q: "Repetition", max: 1 },
-    { q: "3-Stage Command", max: 3 },
-    { q: "Reading", max: 1 },
-    { q: "Writing", max: 1 },
-    { q: "Copying", max: 1 }
+    { label: "Orientation", detail: "Year · Season · Date · Day · Month", max: 5 },
+    { label: "Orientation", detail: "State · County · Town · Hospital · Floor", max: 5 },
+    { label: "Registration", detail: "3 objects", max: 3 },
+    { label: "Attention", detail: "Serial 7s / Spell WORLD", max: 5 },
+    { label: "Recall", detail: "3 objects", max: 3 },
+    { label: "Naming", detail: "Pencil & watch", max: 2 },
+    { label: "Repetition", detail: "No ifs, ands, or buts", max: 1 },
+    { label: "3-Stage Command", detail: "Take, fold, put", max: 3 },
+    { label: "Reading", detail: "Close your eyes", max: 1 },
+    { label: "Writing", detail: "Write a sentence", max: 1 },
+    { label: "Copying", detail: "Copy a figure", max: 1 }
 ];
 
 const INITIAL_STATE = { answers: Array(QUESTIONS.length).fill(0) };
@@ -26,13 +26,16 @@ export default function MMSECalculator() {
 
     return (
         <div className="calc-container">
-            <div className="calc-questions">
+            <div className="two-col-grid">
                 {QUESTIONS.map((q, i) => (
-                    <div key={i} className="calc-box" style={{ padding: "12px", marginBottom: "12px" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                            <label className="calc-label" style={{ marginBottom: 0, flex: 1 }}>{q.q}</label>
-                            <span style={{ fontWeight: "700", color: "#015c9c", fontSize: "0.9rem", marginLeft: "8px" }}>
-                                {values.answers[i]} / {q.max}
+                    <div key={i} className="calc-box">
+                        <div style={{ marginBottom: "3px", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontWeight: 700, fontSize: "0.78rem", lineHeight: 1.2 }}>{q.label}</div>
+                                <div style={{ fontSize: "0.62rem", color: "#888", lineHeight: 1.3, marginTop: "1px" }}>{q.detail}</div>
+                            </div>
+                            <span style={{ fontWeight: "700", color: "#015c9c", fontSize: "0.78rem", marginLeft: "4px", whiteSpace: "nowrap" }}>
+                                {values.answers[i]}/{q.max}
                             </span>
                         </div>
                         <input type="range" min="0" max={q.max} step="1" value={values.answers[i]} onChange={e => {

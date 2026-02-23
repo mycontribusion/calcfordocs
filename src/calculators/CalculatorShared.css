@@ -280,6 +280,13 @@
     }
 }
 
+/* Always-2-column grid (IPSS, MMSE) */
+.two-col-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
 /* Parkland Refinements */
 .calc-formula-box {
     background: #f8fafc;

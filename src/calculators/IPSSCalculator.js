@@ -13,7 +13,7 @@ export default function IPSSCalculator() {
 
     return (
         <div className="calc-container">
-            <div className="ballard-grid">
+            <div className="two-col-grid">
                 {QUESTIONS.map((q, i) => (
                     <div key={i} className="calc-box">
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
