@@ -10,12 +10,11 @@ import UpdateBanner from "./components/UpdateBanner";
 
 const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
-  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "dextrose_fortifier", "drug_volume_calc", "blood_volume_estimator", "ballard_score", "fluid_correction", "iv_infusion_rate"],
-  electrolytes: ["serum_osmolality", "dextrose_fortifier", "electrolyte_builder", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
-  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis", "drug_volume_calc"],
-
-
-  surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "parkland_formula", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
+  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "dextrose_fortifier", "blood_volume_estimator", "ballard_score"],
+  electrolytes: ["glucose_converter", "serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
+  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis"],
+  meds: ["drug_volume_calc", "dosage_calculator", "iv_infusion_rate", "parkland_formula", "dextrose_fortifier", "electrolyte_unit_conv"],
+  surg: ["rule_of_nines", "parkland_formula", "ipss_score"]
 };
 
 function CalcForDocs() {
@@ -142,14 +141,15 @@ function CalcForDocs() {
           ref={scrollRef}
           onScroll={checkScroll}
         >
-          {["default", "og", "peds", "electrolytes", "med", "surg"].map((v) => {
+          {["default", "og", "peds", "electrolytes", "meds", "med", "surg"].map((v) => {
             const labels = {
               default: "Default",
               og: "O&G",
               peds: "Peds",
-              electrolytes: "Electrolytes",
-              med: "Med",
-              surg: "Surg"
+              electrolytes: "Lab",
+              meds: "Drugs",
+              med: "Medicine",
+              surg: "Surgery"
             };
             return (
               <button

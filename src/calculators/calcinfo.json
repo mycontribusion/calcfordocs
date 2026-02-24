@@ -67,6 +67,18 @@
     ]
   },
   {
+    "name": "Drug Unit Converter",
+    "id": "electrolyte_unit_conv",
+    "keywords": [
+      "mmol to mg",
+      "mg to mmol",
+      "grams to mmol",
+      "kcl",
+      "nacl",
+      "electrolyte units"
+    ]
+  },
+  {
     "name": "IV Infusion Drop Rate",
     "id": "iv_infusion_rate",
     "keywords": [
@@ -292,7 +304,7 @@
     ]
   },
   {
-    "name": "Dextrose Fortifier",
+    "name": "IVF + Dextrose Calculator",
     "id": "dextrose_fortifier",
     "keywords": [
       "dextrose",
@@ -303,18 +315,6 @@
       "D50",
       "D10",
       "D12.5"
-    ]
-  },
-  {
-    "name": "Electrolyte Fluid Builder",
-    "id": "electrolyte_builder",
-    "keywords": [
-      "medical fluid",
-      "fluid therapy",
-      "electrolyte",
-      "nacl",
-      "kcl",
-      "bicarbonate"
     ]
   },
   {

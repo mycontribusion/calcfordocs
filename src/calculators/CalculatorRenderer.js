@@ -48,6 +48,7 @@ import ParklandFormula from "./ParklandFormula";
 import DextroseFortifier from "./DextroseFortifier";
 import ElectrolyteBuilder from "./ElectrolyteBuilder";
 import DrugVolumeCalculator from "./DrugVolumeCalculator";
+import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -99,6 +100,7 @@ const CALCULATOR_MAP = {
   dextrose_fortifier: DextroseFortifier,
   electrolyte_builder: ElectrolyteBuilder,
   drug_volume_calc: DrugVolumeCalculator,
+  electrolyte_unit_conv: ElectrolyteUnitConverter,
 };
 
 export default function CalculatorRenderer({ id }) {
