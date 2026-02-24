@@ -22,7 +22,6 @@ import USSBasedGestationalAge from "./USSBasedGestationalAge";
 import LMPFromUSS from "./LMPFromUSS";
 import RateCounter from "./RateCounter";
 import BallardScore from "./BallardScore";
-import AnionGapCalculator from "./AnionGapCalculator";
 import UreaCrRatio from "./UreaCrRatio";
 import CorrectedCalcium from "./CorrectedCalcium";
 import WellsDVTScore from "./WellsDVTScore";
@@ -46,13 +45,15 @@ import IPSSCalculator from "./IPSSCalculator";
 import UniversalLabConverter from "./UniversalLabConverter";
 import ApgarScore from "./ApgarScore";
 import ParklandFormula from "./ParklandFormula";
+import DextroseFortifier from "./DextroseFortifier";
+import ElectrolyteBuilder from "./ElectrolyteBuilder";
+import DrugVolumeCalculator from "./DrugVolumeCalculator";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
   lab_converter: UniversalLabConverter,
   hypokalemia_correction: HypokalemiaCorrection,
   glucose_converter: GlucoseConverter,
-  anion_gap_calculator: AnionGapCalculator,
   urea_creatinine_ratio: UreaCrRatio,
   corrected_calcium: CorrectedCalcium,
   egfr_calculator: EGFRCalculator,
@@ -95,6 +96,9 @@ const CALCULATOR_MAP = {
   ipss_score: IPSSCalculator,
   apgar_score: ApgarScore,
   parkland_formula: ParklandFormula,
+  dextrose_fortifier: DextroseFortifier,
+  electrolyte_builder: ElectrolyteBuilder,
+  drug_volume_calc: DrugVolumeCalculator,
 };
 
 export default function CalculatorRenderer({ id }) {

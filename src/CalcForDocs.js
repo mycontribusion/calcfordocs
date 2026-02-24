@@ -10,9 +10,11 @@ import UpdateBanner from "./components/UpdateBanner";
 
 const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
-  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "blood_volume_estimator", "ballard_score", "fluid_correction", "iv_infusion_rate"],
-  electrolytes: ["serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
-  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis"],
+  peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "dextrose_fortifier", "drug_volume_calc", "blood_volume_estimator", "ballard_score", "fluid_correction", "iv_infusion_rate"],
+  electrolytes: ["serum_osmolality", "dextrose_fortifier", "electrolyte_builder", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
+  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis", "drug_volume_calc"],
+
+
   surg: ["map_calculator", "shock_index", "gcs_calculator", "rule_of_nines", "parkland_formula", "blood_volume_estimator", "ipss_score", "bmi_calculator"]
 };
 
@@ -168,7 +170,15 @@ function CalcForDocs() {
         activeCalc={activeCalc}
         toggleCalc={toggleCalc}
       />
-      <p style={{ marginBottom: "4rem" }}></p>
+      {/* 📜 Footer Disclaimer */}
+      <footer className="app-footer">
+        <p className="disclaimer">
+          <strong>Disclaimer:</strong> This tool is intended for use by healthcare professionals for informational purposes only.
+          It is not a substitute for clinical judgment. All calculations should be verified independently before
+          making clinical decisions. The authors assume no liability for errors or clinical outcomes.
+        </p>
+        <p className="copyright">© {new Date().getFullYear()} CalcForDocs</p>
+      </footer>
     </div>
   );
 }

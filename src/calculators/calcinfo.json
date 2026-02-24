@@ -56,6 +56,17 @@
     ]
   },
   {
+    "name": "Drug Volume Calc",
+    "id": "drug_volume_calc",
+    "keywords": [
+      "volume",
+      "drug",
+      "medication",
+      "meds",
+      "ml"
+    ]
+  },
+  {
     "name": "IV Infusion Drop Rate",
     "id": "iv_infusion_rate",
     "keywords": [
@@ -278,6 +289,32 @@
       "birth assessment",
       "pediatric",
       "neonatology"
+    ]
+  },
+  {
+    "name": "Dextrose Fortifier",
+    "id": "dextrose_fortifier",
+    "keywords": [
+      "dextrose",
+      "sugar",
+      "peds",
+      "pediatric",
+      "glucose",
+      "D50",
+      "D10",
+      "D12.5"
+    ]
+  },
+  {
+    "name": "Electrolyte Fluid Builder",
+    "id": "electrolyte_builder",
+    "keywords": [
+      "medical fluid",
+      "fluid therapy",
+      "electrolyte",
+      "nacl",
+      "kcl",
+      "bicarbonate"
     ]
   },
   {
