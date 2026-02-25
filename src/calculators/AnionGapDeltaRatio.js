@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   chloride: "",
   bicarb: "",
   albumin: "",
-  albuminUnit: "g/dL",
+  albuminUnit: "g/L",
   result: null,
 };
 

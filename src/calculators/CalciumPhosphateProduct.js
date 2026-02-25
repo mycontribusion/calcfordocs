@@ -9,8 +9,9 @@ const INITIAL_STATE = {
   phosphate: "",
   phosphateUnit: "mg/dL",
   albumin: "",
-  albuminUnit: "g/dL",
+  albuminUnit: "g/L",
   product: null,
+  productInterp: null,
   correctedCalcium: null,
 };
 
@@ -23,7 +24,7 @@ export default function CalciumPhosphateProduct() {
     const albVal = parseFloat(values.albumin);
 
     if (isNaN(caVal) || isNaN(phVal)) {
-      if (values.product !== null) updateFields({ product: null, correctedCalcium: null });
+      if (values.product !== null) updateFields({ product: null, productInterp: null, correctedCalcium: null });
       return;
     }
 
@@ -32,15 +33,31 @@ export default function CalciumPhosphateProduct() {
 
     let finalCa = caMgdl;
     if (!isNaN(albVal)) {
-      finalCa = caMgdl + 0.8 * (4.0 - albVal);
+      const albGdL = values.albuminUnit === "g/L" ? albVal / 10 : albVal;
+      finalCa = caMgdl + 0.8 * (4.0 - albGdL);
+    }
+
+    const productValue = finalCa * phMgdl;
+    let interp = "";
+    let color = "#16a34a"; // Normal/Green
+
+    if (productValue > 70) {
+      interp = "High risk of vascular calcification (>70)";
+      color = "#dc2626"; // Red
+    } else if (productValue >= 55) {
+      interp = "Moderate risk (55–70)";
+      color = "#ea580c"; // Orange
+    } else {
+      interp = "Low risk (<55)";
     }
 
     updateFields({
-      product: (finalCa * phMgdl).toFixed(1),
+      product: productValue.toFixed(1),
+      productInterp: { text: interp, color },
       correctedCalcium: !isNaN(albVal) ? finalCa.toFixed(1) : null
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.calcium, values.calciumUnit, values.phosphate, values.phosphateUnit, values.albumin]);
+  }, [values.calcium, values.calciumUnit, values.phosphate, values.phosphateUnit, values.albumin, values.albuminUnit]);
 
   return (
     <div className="calc-container">
@@ -49,7 +66,10 @@ export default function CalciumPhosphateProduct() {
         <SyncSuggestion field="calcium" suggestion={suggestions.calcium} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.calcium} onChange={(e) => setField("calcium", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.calciumUnit} onChange={(e) => setField("calciumUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>
+          <select value={values.calciumUnit} onChange={(e) => setField("calciumUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
+          </select>
         </div>
       </div>
       <div className="calc-box">
@@ -57,7 +77,10 @@ export default function CalciumPhosphateProduct() {
         <SyncSuggestion field="phosphate" suggestion={suggestions.phosphate} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.phosphate} onChange={(e) => setField("phosphate", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.phosphateUnit} onChange={(e) => setField("phosphateUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>
+          <select value={values.phosphateUnit} onChange={(e) => setField("phosphateUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
+          </select>
         </div>
       </div>
       <div className="calc-box">
@@ -65,14 +88,22 @@ export default function CalciumPhosphateProduct() {
         <SyncSuggestion field="albumin" suggestion={suggestions.albumin} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.albumin} onChange={(e) => setField("albumin", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="g/dL">g/dL</option></select>
+          <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="g/L">g/L</option>
+            <option value="g/dL">g/dL</option>
+          </select>
         </div>
       </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.product && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Product:</strong> {values.product} mg²/dL²</p>
-          {values.correctedCalcium && <p style={{ marginTop: 4 }}><strong>Corrected Calcium:</strong> {values.correctedCalcium} mg/dL</p>}
+          {values.productInterp && (
+            <p style={{ marginTop: 4, color: values.productInterp.color, fontWeight: 'bold' }}>
+              {values.productInterp.text}
+            </p>
+          )}
+          {values.correctedCalcium && <p style={{ marginTop: 8 }}><strong>Corrected Calcium:</strong> {values.correctedCalcium} mg/dL</p>}
           <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
             <span style={{ opacity: 0.7 }}>Formula: Ca (mg/dL) × Phosphate (mg/dL)</span>
             <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>

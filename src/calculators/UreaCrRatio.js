@@ -26,7 +26,15 @@ export default function UreaCrRatio() {
 
     // Convert to mg/dL for consistent BUN/Cr ratio (Standard is 10-20)
     const ureaMgdl = values.ureaUnit === "mmol/L" ? urea * 2.801 : urea;
-    const crMgdl = values.creatinineUnit === "µmol/L" ? cr / 88.4 : cr;
+
+    let crMgdl;
+    if (values.creatinineUnit === "µmol/L") {
+      crMgdl = cr / 88.4;
+    } else if (values.creatinineUnit === "mmol/L") {
+      crMgdl = (cr * 1000) / 88.4;
+    } else {
+      crMgdl = cr;
+    }
 
     const ratio = ureaMgdl / crMgdl;
     const interp = ratio > 20
@@ -73,6 +81,7 @@ export default function UreaCrRatio() {
           <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="µmol/L">µmol/L</option>
             <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
           </select>
         </div>
       </div>

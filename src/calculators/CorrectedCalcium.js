@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   calcium: "",
   calciumUnit: "mg/dL",
   albumin: "",
-  albuminUnit: "g/dL",
+  albuminUnit: "g/L",
   result: null,
   interpretation: "",
   // Global Sync Keys

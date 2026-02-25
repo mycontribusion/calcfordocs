@@ -30,7 +30,20 @@ export default function SerumOsmolalityCalculator() {
     const measVal = values.measured === "" ? null : parseFloat(values.measured);
     const gap = (measVal !== null && !isNaN(measVal)) ? (measVal - osm).toFixed(1) : null;
 
-    updateFields({ result: { osmolality: osm.toFixed(1), gap } });
+    let osmInterp = "";
+    let osmColor = "#16a34a"; // Normal
+
+    if (osm < 275) {
+      osmInterp = "Low (hypo-osmolality)";
+      osmColor = "#d97706"; // Amber
+    } else if (osm > 295) {
+      osmInterp = "High (hyper-osmolality)";
+      osmColor = "#dc2626"; // Red
+    } else {
+      osmInterp = "Normal";
+    }
+
+    updateFields({ result: { osmolality: osm.toFixed(1), gap, osmInterp, osmColor } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.sodium, values.glucose, values.glucoseUnit, values.urea, values.ureaUnit, values.measured]);
 
@@ -46,7 +59,10 @@ export default function SerumOsmolalityCalculator() {
         <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.glucose} onChange={(e) => setField("glucose", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select>
+          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
         </div>
       </div>
       <div className="calc-box">
@@ -54,7 +70,10 @@ export default function SerumOsmolalityCalculator() {
         <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.urea} onChange={(e) => setField("urea", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select>
+          <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mmol/L">mmol/L</option>
+            <option value="mg/dL">mg/dL</option>
+          </select>
         </div>
       </div>
       <div className="calc-box"><label className="calc-label">Measured Osmolality (optional):</label><input type="number" value={values.measured} onChange={(e) => setField("measured", e.target.value)} className="calc-input" /></div>
@@ -64,11 +83,14 @@ export default function SerumOsmolalityCalculator() {
           <div className="calc-formula-box" style={{ marginBottom: 12, fontSize: '0.85rem' }}>
             Osm = 2×Na + Glucose + Urea (all in mmol/L)
           </div>
-          <p><strong>Calculated:</strong> {values.result.osmolality} mOsm/kg</p>
+          <p>
+            <strong>Calculated:</strong> {values.result.osmolality} mOsm/kg &nbsp;
+            <span style={{ color: values.result.osmColor, fontWeight: 'bold' }}>({values.result.osmInterp})</span>
+          </p>
           {values.result.gap !== null && (
             <>
               <p><strong>Osmol Gap:</strong> {values.result.gap} mOsm/kg</p>
-              <p style={{ fontSize: '0.85rem', marginTop: 4, color: parseFloat(values.result.gap) > 10 ? '#c0392b' : '#27ae60' }}>
+              <p style={{ fontSize: '0.85rem', marginTop: 4, color: parseFloat(values.result.gap) > 10 ? '#dc2626' : '#16a34a' }}>
                 {parseFloat(values.result.gap) > 10
                   ? '⚠️ Elevated gap (>10) — consider toxic alcohols, mannitol, or ketoacidosis'
                   : '✅ Normal osmol gap (≤10)'}

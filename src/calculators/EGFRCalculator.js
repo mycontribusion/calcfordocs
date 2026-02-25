@@ -39,7 +39,15 @@ function EGFRCalculator() {
       return;
     }
 
-    const scrMgdl = values.creatinineUnit === "µmol/L" ? scrVal / 88.4 : scrVal;
+    let scrMgdl;
+    if (values.creatinineUnit === "µmol/L") {
+      scrMgdl = scrVal / 88.4;
+    } else if (values.creatinineUnit === "mmol/L") {
+      scrMgdl = (scrVal * 1000) / 88.4;
+    } else {
+      scrMgdl = scrVal;
+    }
+
     const kappa = values.sex === "male" ? 0.9 : 0.7;
     const alpha = values.sex === "male" ? -0.302 : -0.241;
 
@@ -77,6 +85,7 @@ function EGFRCalculator() {
           <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
             <option value="µmol/L">µmol/L</option>
             <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
           </select>
         </div>
       </div>
