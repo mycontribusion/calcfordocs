@@ -5,9 +5,9 @@ import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   calcium: "",
-  calciumUnit: "mg/dL",
+  calciumUnit: "mmol/L",
   phosphate: "",
-  phosphateUnit: "mg/dL",
+  phosphateUnit: "mmol/L",
   albumin: "",
   albuminUnit: "g/L",
   product: null,

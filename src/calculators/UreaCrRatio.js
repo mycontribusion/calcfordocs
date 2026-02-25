@@ -16,27 +16,38 @@ export default function UreaCrRatio() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    const urea = parseFloat(values.urea);
-    const cr = parseFloat(values.creatinine);
+    const ureaVal = parseFloat(values.urea);
+    const crVal = parseFloat(values.creatinine);
 
-    if (isNaN(urea) || isNaN(cr) || cr === 0) {
+    if (isNaN(ureaVal) || isNaN(crVal) || crVal === 0) {
       if (values.ratio !== null) updateFields({ ratio: null, interpretation: "" });
       return;
     }
 
-    // Convert to mg/dL for consistent BUN/Cr ratio (Standard is 10-20)
-    const ureaMgdl = values.ureaUnit === "mmol/L" ? urea * 2.801 : urea;
+    // Standard Ratio is BUN (mg/dL) / Creatinine (mg/dL)
+    // 1 mmol/L Urea = 2.8 mg/dL BUN
+    // 1 mg/dL Urea = 1 / 2.14 mg/dL BUN (approx 0.467)
+
+    let bunMgdl;
+    if (values.ureaUnit === "mmol/L") {
+      bunMgdl = ureaVal * 2.801;
+    } else if (values.ureaUnit === "mg/dL") {
+      bunMgdl = ureaVal / 2.14;
+    } else {
+      // BUN (mg/dL)
+      bunMgdl = ureaVal;
+    }
 
     let crMgdl;
     if (values.creatinineUnit === "µmol/L") {
-      crMgdl = cr / 88.4;
+      crMgdl = crVal / 88.4;
     } else if (values.creatinineUnit === "mmol/L") {
-      crMgdl = (cr * 1000) / 88.4;
+      crMgdl = (crVal * 1000) / 88.4;
     } else {
-      crMgdl = cr;
+      crMgdl = crVal;
     }
 
-    const ratio = ureaMgdl / crMgdl;
+    const ratio = bunMgdl / crMgdl;
     const interp = ratio > 20
       ? "Suggests pre-renal cause (e.g., dehydration, GI bleed)"
       : ratio < 10
@@ -60,9 +71,10 @@ export default function UreaCrRatio() {
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="mmol/L">mmol/L</option>
-            <option value="mg/dL">mg/dL</option>
+          <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1.5 }}>
+            <option value="mmol/L">Urea (mmol/L)</option>
+            <option value="mg/dL">Urea (mg/dL)</option>
+            <option value="BUN (mg/dL)">BUN (mg/dL)</option>
           </select>
         </div>
       </div>
@@ -78,7 +90,7 @@ export default function UreaCrRatio() {
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+          <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1.5 }}>
             <option value="µmol/L">µmol/L</option>
             <option value="mg/dL">mg/dL</option>
             <option value="mmol/L">mmol/L</option>
@@ -99,6 +111,9 @@ export default function UreaCrRatio() {
               <li>• 10–20:1: Normal/Postrenal</li>
               <li>• &lt; 10:1: Intrarenal</li>
             </ul>
+            <p style={{ fontSize: '0.75rem', marginTop: 8, fontStyle: 'italic' }}>
+              Note: Ratio is calculated based on BUN (mg/dL) equivalent.
+            </p>
           </div>
         </div>
       )}

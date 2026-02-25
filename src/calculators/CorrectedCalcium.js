@@ -5,7 +5,7 @@ import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   calcium: "",
-  calciumUnit: "mg/dL",
+  calciumUnit: "mmol/L",
   albumin: "",
   albuminUnit: "g/L",
   result: null,
