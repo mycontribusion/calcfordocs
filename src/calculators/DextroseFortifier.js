@@ -8,10 +8,6 @@ const INITIAL_STATE = {
     targetConc: 10,       // Goal %
     stockConc: 50,        // Source % (D50)
     result: null,
-    // Global Sync Keys
-    weight: "",
-    age: "",
-    sex: "male",
 };
 
 export default function DextroseFortifier() {

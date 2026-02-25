@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -33,15 +34,14 @@ const INITIAL_STATE = {
 };
 
 export default function SOFA() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   // Helper to map numeric creatinine to SOFA dropdown values
   useEffect(() => {
     const cr = parseFloat(values.creatinine);
     if (!isNaN(cr) && cr > 0) {
-      // We check if it's already a range string. If it's a number, we "snap" it to the range for the UI
-      // but keep the numeric value for other calculators.
-      // This is a bit tricky if the user wants to select a range manually.
+      // Integration logic for numeric vs dropdown can be complex; 
+      // here we just let the standard suggestions show up above the select.
     }
   }, [values.creatinine, values.creatinineUnit]);
 
@@ -134,42 +134,137 @@ export default function SOFA() {
         </select>
       </div>
       <button onClick={reset} className="calc-btn-reset" style={{ marginBottom: 16 }}>Reset Calculator</button>
+
       {values.mode === "qsofa" && (
         <>
           <div className="calc-box">
-            <label style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}><input type="checkbox" checked={values.rrHigh} onChange={() => setField("rrHigh", !values.rrHigh)} style={{ marginRight: 10 }} /> RR ≥ 22</label>
-            <label style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}><input type="checkbox" checked={values.sbpLow} onChange={() => setField("sbpLow", !values.sbpLow)} style={{ marginRight: 10 }} /> SBP ≤ 100</label>
-            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}><input type="checkbox" checked={values.gcsLow} onChange={() => setField("gcsLow", !values.gcsLow)} style={{ marginRight: 10 }} /> GCS &lt; 15</label>
+            <label style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
+              <input type="checkbox" checked={values.rrHigh} onChange={() => setField("rrHigh", !values.rrHigh)} style={{ marginRight: 10 }} />
+              RR ≥ 22
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
+              <input type="checkbox" checked={values.sbpLow} onChange={() => setField("sbpLow", !values.sbpLow)} style={{ marginRight: 10 }} />
+              SBP ≤ 100
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+              <input type="checkbox" checked={values.gcsLow} onChange={() => setField("gcsLow", !values.gcsLow)} style={{ marginRight: 10 }} />
+              GCS &lt; 15
+            </label>
           </div>
-          <div className="calc-result"><p><strong>Score:</strong> {values.qsofaScore} / 3</p><p>{values.qsofaInterp}</p></div>
+          <div className="calc-result">
+            <p><strong>Score:</strong> {values.qsofaScore} / 3</p>
+            <p>{values.qsofaInterp}</p>
+          </div>
         </>
       )}
+
       {values.mode === "msofa" && (
         <>
           <div className="calc-box">
             <label className="calc-label">SpO₂ / FiO₂:</label>
             <select className="calc-select" value={values.spo2fio2} onChange={e => setField("spo2fio2", e.target.value)}>
-              <option value="">Select</option><option value="≤150">≤150</option><option value="151-235">151–235</option><option value="236-315">236–315</option><option value="316-400">316–400</option><option value=">400">&gt;400</option>
+              <option value="">Select</option>
+              <option value="≤150">≤150</option>
+              <option value="151-235">151–235</option>
+              <option value="236-315">236–315</option>
+              <option value="316-400">316–400</option>
+              <option value=">400">&gt;400</option>
             </select>
           </div>
-          <div className="calc-box"><label className="calc-label">Jaundice:</label><div style={{ display: "flex", gap: "16px" }}><label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}><input type="radio" name="liver" value="none" checked={values.liver === "none"} onChange={e => setField("liver", e.target.value)} style={{ marginRight: 6 }} /> No</label><label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}><input type="radio" name="liver" value="jaundice" checked={values.liver === "jaundice"} onChange={e => setField("liver", e.target.value)} style={{ marginRight: 6 }} /> Yes</label></div></div>
+
           <div className="calc-box">
-            <label className="calc-label">MAP:</label>
-            <select className="calc-select" value={values.map} onChange={e => setField("map", e.target.value)} style={{ marginBottom: 8 }}><option value="">Select</option><option value="<70">&lt;70</option><option value="≥70">≥70</option></select>
-            <select className="calc-select" value={values.vasopressor} onChange={e => setField("vasopressor", e.target.value)}><option value="none">No Vasopressor</option><option value="dopamineLow">Dopamine ≤5</option><option value="dopamineMid">Dopamine &gt;5</option><option value="dopamineHigh">Dopamine &gt;15</option><option value="dobutamine">Dobutamine</option><option value="epiLow">Epinephrine ≤0.1</option><option value="epiHigh">Epinephrine &gt;0.1</option><option value="norepiLow">Norepinephrine ≤0.1</option><option value="norepiHigh">Norepinephrine &gt;0.1</option></select>
-          </div>
-          <div className="calc-box">
-            <label className="calc-label">GCS:</label>
-            <select className="calc-select" value={values.gcsM} onChange={e => setField("gcsM", e.target.value)}><option value="">Select</option><option value="3-5">3–5</option><option value="6-9">6–9</option><option value="10-12">10–12</option><option value="13-14">13–14</option><option value="15">15</option></select>
-          </div>
-          <div className="calc-box">
-            <label className="calc-label">Creatinine:</label>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <select className="calc-select" value={values.creatinine} onChange={e => setField("creatinine", e.target.value)} style={{ flex: 2 }}><option value="">Select</option>{values.creatinineUnit === "µmol/L" ? <><option value="≥442">≥442</option><option value="309-441">309–441</option><option value="177-308">177–308</option><option value="106-176">106–176</option><option value="<106">&lt;106</option></> : <><option value="≥5">≥5</option><option value="3.5-4.9">3.5–4.9</option><option value="2-3.4">2–3.4</option><option value="1.2-1.9">1.2–1.9</option><option value="<1.2">&lt;1.2</option></>}</select>
-              <select className="calc-select" value={values.creatinineUnit} onChange={e => setField("creatinineUnit", e.target.value)} style={{ flex: 1 }}><option value="µmol/L">µmol/L</option><option value="mg/dL">mg/dL</option></select>
+            <label className="calc-label">Jaundice:</label>
+            <div style={{ display: "flex", gap: "16px" }}>
+              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <input type="radio" name="liver" value="none" checked={values.liver === "none"} onChange={e => setField("liver", e.target.value)} style={{ marginRight: 6 }} />
+                No
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <input type="radio" name="liver" value="jaundice" checked={values.liver === "jaundice"} onChange={e => setField("liver", e.target.value)} style={{ marginRight: 6 }} />
+                Yes
+              </label>
             </div>
           </div>
-          <div className="calc-result"><p><strong>Score:</strong> {values.msofaResult.total} / 19</p><p>{values.msofaResult.interpretation}</p></div>
+
+          <div className="calc-box">
+            <label className="calc-label">MAP & Vitals:</label>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: 8 }}>
+              <div style={{ flex: 1 }}>
+                <label className="calc-label" style={{ fontSize: '0.7rem' }}>SBP</label>
+                <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
+                <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" placeholder="SBP" />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label className="calc-label" style={{ fontSize: '0.7rem' }}>HR</label>
+                <SyncSuggestion field="heartRate" suggestion={suggestions.heartRate} onSync={syncField} />
+                <input type="number" value={values.heartRate} onChange={e => setField("heartRate", e.target.value)} className="calc-input" placeholder="HR" />
+              </div>
+            </div>
+            <select className="calc-select" value={values.map} onChange={e => setField("map", e.target.value)} style={{ marginBottom: 8 }}>
+              <option value="">Select MAP</option>
+              <option value="<70">&lt;70</option>
+              <option value="≥70">≥70</option>
+            </select>
+            <select className="calc-select" value={values.vasopressor} onChange={e => setField("vasopressor", e.target.value)}>
+              <option value="none">No Vasopressor</option>
+              <option value="dopamineLow">Dopamine ≤5</option>
+              <option value="dopamineMid">Dopamine &gt;5</option>
+              <option value="dopamineHigh">Dopamine &gt;15</option>
+              <option value="dobutamine">Dobutamine</option>
+              <option value="epiLow">Epinephrine ≤0.1</option>
+              <option value="epiHigh">Epinephrine &gt;0.1</option>
+              <option value="norepiLow">Norepinephrine ≤0.1</option>
+              <option value="norepiHigh">Norepinephrine &gt;0.1</option>
+            </select>
+          </div>
+
+          <div className="calc-box">
+            <label className="calc-label">GCS:</label>
+            <select className="calc-select" value={values.gcsM} onChange={e => setField("gcsM", e.target.value)}>
+              <option value="">Select GCS</option>
+              <option value="3-5">3–5</option>
+              <option value="6-9">6–9</option>
+              <option value="10-12">10–12</option>
+              <option value="13-14">13–14</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+
+          <div className="calc-box">
+            <label className="calc-label">Creatinine:</label>
+            <SyncSuggestion field="creatinine" suggestion={suggestions.creatinine} onSync={syncField} />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <select className="calc-select" value={values.creatinine} onChange={e => setField("creatinine", e.target.value)} style={{ flex: 2 }}>
+                <option value="">Select Range</option>
+                {values.creatinineUnit === "µmol/L" ? (
+                  <>
+                    <option value="≥442">≥442</option>
+                    <option value="309-441">309–441</option>
+                    <option value="177-308">177–308</option>
+                    <option value="106-176">106–176</option>
+                    <option value="<106">&lt;106</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="≥5">≥5</option>
+                    <option value="3.5-4.9">3.5–4.9</option>
+                    <option value="2-3.4">2–3.4</option>
+                    <option value="1.2-1.9">1.2–1.9</option>
+                    <option value="<1.2">&lt;1.2</option>
+                  </>
+                )}
+              </select>
+              <select className="calc-select" value={values.creatinineUnit} onChange={e => setField("creatinineUnit", e.target.value)} style={{ flex: 1 }}>
+                <option value="µmol/L">µmol/L</option>
+                <option value="mg/dL">mg/dL</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="calc-result">
+            <p><strong>Score:</strong> {values.msofaResult.total} / 19</p>
+            <p>{values.msofaResult.interpretation}</p>
+          </div>
         </>
       )}
     </div>

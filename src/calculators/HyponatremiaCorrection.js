@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -17,7 +18,7 @@ const INITIAL_STATE = {
 };
 
 export default function HyponatremiaCorrection() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
   const getInfusateNa = (fluidType) => ({ ns: 154, hts: 513, rl: 130 }[fluidType] || 0);
 
   useEffect(() => {
@@ -67,8 +68,16 @@ export default function HyponatremiaCorrection() {
   return (
     <div className="calc-container">
       <div style={{ display: "flex", gap: "8px" }}>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Serum Na (mmol/L)</label><input type="number" value={values.sodium} onChange={e => setField("sodium", e.target.value)} className="calc-input" /></div>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Weight (kg)</label><input type="number" value={values.weight} onChange={e => setField("weight", e.target.value)} className="calc-input" /></div>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Serum Na (mmol/L)</label>
+          <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
+          <input type="number" value={values.sodium} onChange={e => setField("sodium", e.target.value)} className="calc-input" />
+        </div>
+        <div className="calc-box" style={{ flex: 1 }}>
+          <label className="calc-label">Weight (kg)</label>
+          <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
+          <input type="number" value={values.weight} onChange={e => setField("weight", e.target.value)} className="calc-input" />
+        </div>
       </div>
       <div style={{ display: "flex", gap: "8px" }}>
         <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Sex</label><select value={values.sex} onChange={e => setField("sex", e.target.value)} className="calc-select"><option value="male">Male</option><option value="female">Female</option></select></div>

@@ -361,3 +361,35 @@
     background: rgba(1, 92, 156, 0.3);
     color: #38bdf8;
 }
+
+/* Sync Suggestions */
+.sync-suggestion {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 123, 255, 0.08);
+    color: #007bff;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border: 1px solid rgba(0, 123, 255, 0.15);
+    transition: all 0.2s ease;
+    width: fit-content;
+}
+
+.sync-suggestion:hover {
+    background: rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.sync-suggestion-icon {
+    font-size: 0.8rem;
+}
+
+.calcfordocs.dark .sync-suggestion {
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.2);
+}

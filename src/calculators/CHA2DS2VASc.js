@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const CRITERIA = [
@@ -28,7 +29,7 @@ const INITIAL_STATE = {
 };
 
 export default function CHA2DS2VASc() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   // Auto-set age and sex criteria based on global patient state
   useEffect(() => {
@@ -73,6 +74,8 @@ export default function CHA2DS2VASc() {
   return (
     <div className="calc-container">
       <div className="calc-box">
+        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
+        <SyncSuggestion field="sex" suggestion={suggestions.sex} onSync={syncField} />
         {CRITERIA.map((c) => (
           <label key={c.key} style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
             <input

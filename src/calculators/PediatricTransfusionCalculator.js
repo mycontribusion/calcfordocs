@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -18,7 +19,7 @@ const INITIAL_STATE = {
 };
 
 export default function PediatricTransfusionCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const w = values.weightUnit === "lb" ? Number(values.weight) * 0.453592 : Number(values.weight);
@@ -67,6 +68,7 @@ export default function PediatricTransfusionCalculator() {
     <div className="calc-container">
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
+        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} className="calc-input" style={{ flex: 2 }} />
           <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>

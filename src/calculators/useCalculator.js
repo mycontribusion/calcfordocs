@@ -15,30 +15,20 @@ const SYNC_KEYS = [
 export default function useCalculator(initialState) {
     const { patientData, updatePatient } = usePatient();
     const [values, setValues] = useState(() => {
-        // Initialize with global data if key matches
-        const initial = { ...initialState };
+        return { ...initialState };
+    });
+    const [suggestions, setSuggestions] = useState({});
+
+    // Identify Discrepancies for Suggestions
+    useEffect(() => {
+        const newSuggestions = {};
         SYNC_KEYS.forEach(key => {
-            if (key in initial && patientData[key]) {
-                initial[key] = patientData[key];
+            if (key in values && patientData[key] && patientData[key] !== values[key]) {
+                newSuggestions[key] = patientData[key];
             }
         });
-        return initial;
-    });
-
-    // Sync from Global to Local
-    useEffect(() => {
-        setValues(prev => {
-            const next = { ...prev };
-            let changed = false;
-            SYNC_KEYS.forEach(key => {
-                if (key in next && patientData[key] !== next[key]) {
-                    next[key] = patientData[key];
-                    changed = true;
-                }
-            });
-            return changed ? next : prev;
-        });
-    }, [patientData]);
+        setSuggestions(newSuggestions);
+    }, [patientData, values]);
 
     // Update a specific field
     const updateField = useCallback((field, value) => {
@@ -87,11 +77,20 @@ export default function useCalculator(initialState) {
         setValues(initialState);
     }, [initialState]);
 
+    // Accept a suggestion
+    const syncField = useCallback((field) => {
+        if (suggestions[field]) {
+            updateField(field, suggestions[field]);
+        }
+    }, [suggestions, updateField]);
+
     return {
         values,
+        suggestions,
         setValues,
         updateField,
         updateFields,
+        syncField,
         reset,
     };
 }

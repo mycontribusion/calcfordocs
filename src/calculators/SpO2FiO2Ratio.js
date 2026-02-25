@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const nasalFiO2Map = { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 };
@@ -64,27 +65,8 @@ const INITIAL_STATE = {
   heartRate: "",
 };
 
-function LabeledInput({ label, value, onChange, placeholder, type = "text" }) {
-  return (
-    <div className="calc-box">
-      <label className="calc-label">
-        {label}
-      </label>
-      <input type={type} value={value} onChange={onChange} placeholder={placeholder} className="calc-input" />
-    </div>
-  );
-}
-
-function interpretSF(ratio) {
-  if (!ratio) return "";
-  if (ratio > 315) return "Normal oxygenation";
-  if (ratio >= 235) return "Mild hypoxemia";
-  if (ratio >= 150) return "Moderate hypoxemia";
-  return "Severe hypoxemia";
-}
-
 export default function SpO2FiO2Ratio() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const { fio2, ratio } = useMemo(() => {
     const estimatedFiO2 = estimateFiO2(values.device, values.flow);
@@ -101,13 +83,17 @@ export default function SpO2FiO2Ratio() {
   return (
     <div className="calc-container">
 
-      <LabeledInput
-        label="SpO₂ (%)"
-        value={values.spo2}
-        onChange={(e) => setField("spo2", e.target.value)}
-        type="number"
-        placeholder="e.g. 92"
-      />
+      <div className="calc-box">
+        <label className="calc-label">SpO₂ (%)</label>
+        <SyncSuggestion field="spo2" suggestion={suggestions.spo2} onSync={syncField} />
+        <input
+          type="number"
+          value={values.spo2}
+          onChange={(e) => setField("spo2", e.target.value)}
+          placeholder="e.g. 92"
+          className="calc-input"
+        />
+      </div>
 
       <div className="calc-box">
         <label className="calc-label">
@@ -123,12 +109,15 @@ export default function SpO2FiO2Ratio() {
       </div>
 
       {deviceFlowConfig[values.device] && (
-        <LabeledInput
-          label={values.device === "ventilator" ? "FiO₂ (0.4 or 40)" : "Flow rate (L/min)"}
-          value={values.flow}
-          onChange={(e) => setField("flow", e.target.value)}
-          type="number"
-        />
+        <div className="calc-box">
+          <label className="calc-label">{values.device === "ventilator" ? "FiO₂ (0.4 or 40)" : "Flow rate (L/min)"}</label>
+          <input
+            type="number"
+            value={values.flow}
+            onChange={(e) => setField("flow", e.target.value)}
+            className="calc-input"
+          />
+        </div>
       )}
 
       <div style={{ marginTop: "12px" }}>
@@ -158,4 +147,12 @@ export default function SpO2FiO2Ratio() {
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>
   );
+}
+
+function interpretSF(ratio) {
+  if (!ratio) return "";
+  if (ratio > 315) return "Normal oxygenation";
+  if (ratio >= 235) return "Mild hypoxemia";
+  if (ratio >= 150) return "Moderate hypoxemia";
+  return "Severe hypoxemia";
 }

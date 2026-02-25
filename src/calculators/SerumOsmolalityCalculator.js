@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -13,7 +14,7 @@ const INITIAL_STATE = {
 };
 
 export default function SerumOsmolalityCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const naVal = parseFloat(values.sodium);
@@ -35,9 +36,14 @@ export default function SerumOsmolalityCalculator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box"><label className="calc-label">Sodium (mmol/L):</label><input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box">
+        <label className="calc-label">Sodium (mmol/L):</label>
+        <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
+        <input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" />
+      </div>
       <div className="calc-box">
         <label className="calc-label">Glucose:</label>
+        <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.glucose} onChange={(e) => setField("glucose", e.target.value)} className="calc-input" style={{ flex: 2 }} />
           <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select>
@@ -45,6 +51,7 @@ export default function SerumOsmolalityCalculator() {
       </div>
       <div className="calc-box">
         <label className="calc-label">Urea:</label>
+        <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.urea} onChange={(e) => setField("urea", e.target.value)} className="calc-input" style={{ flex: 2 }} />
           <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select>

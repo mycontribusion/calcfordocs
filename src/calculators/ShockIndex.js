@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = { heartRate: "", sbp: "", result: null };
 
 export default function ShockIndex() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const hr = parseFloat(values.heartRate);
@@ -19,8 +20,16 @@ export default function ShockIndex() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box"><label className="calc-label">Heart Rate (bpm):</label><input type="number" value={values.heartRate} onChange={e => setField("heartRate", e.target.value)} className="calc-input" /></div>
-      <div className="calc-box"><label className="calc-label">Systolic BP (mmHg):</label><input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box">
+        <label className="calc-label">Heart Rate (bpm):</label>
+        <SyncSuggestion field="heartRate" suggestion={suggestions.heartRate} onSync={syncField} />
+        <input type="number" value={values.heartRate} onChange={e => setField("heartRate", e.target.value)} className="calc-input" />
+      </div>
+      <div className="calc-box">
+        <label className="calc-label">Systolic BP (mmHg):</label>
+        <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
+        <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" />
+      </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>

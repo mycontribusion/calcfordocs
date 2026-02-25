@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -10,7 +11,7 @@ const INITIAL_STATE = {
 };
 
 export default function GlucoseConverter() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
   const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
@@ -89,6 +90,7 @@ export default function GlucoseConverter() {
     <div className="calc-container">
       <div className="calc-box">
         <label className="calc-label">Glucose Value:</label>
+        <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"

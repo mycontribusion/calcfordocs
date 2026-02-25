@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = { sbp: "", dbp: "", map: null, pp: null };
 
 export default function MapCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const s = parseFloat(values.sbp);
@@ -22,8 +23,16 @@ export default function MapCalculator() {
       <div className="calc-formula-box">
         MAP = DBP + (SBP - DBP) / 3
       </div>
-      <div className="calc-box"><label className="calc-label">Systolic BP:</label><input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" /></div>
-      <div className="calc-box"><label className="calc-label">Diastolic BP:</label><input type="number" value={values.dbp} onChange={e => setField("dbp", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box">
+        <label className="calc-label">Systolic BP:</label>
+        <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
+        <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" />
+      </div>
+      <div className="calc-box">
+        <label className="calc-label">Diastolic BP:</label>
+        <SyncSuggestion field="dbp" suggestion={suggestions.dbp} onSync={syncField} />
+        <input type="number" value={values.dbp} onChange={e => setField("dbp", e.target.value)} className="calc-input" />
+      </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.map && (
         <div className="calc-result" style={{ marginTop: 16 }}>

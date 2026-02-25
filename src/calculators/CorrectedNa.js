@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -8,14 +9,10 @@ const INITIAL_STATE = {
   glucoseUnit: "mg/dL",
   result: "",
   interpretation: null,
-  // Global Sync Keys
-  age: "",
-  sex: "male",
-  weight: "",
 };
 
 export default function CorrectedSodium() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const na = parseFloat(values.sodium);
@@ -26,7 +23,10 @@ export default function CorrectedSodium() {
       return;
     }
 
+    // Convert glucose to mg/dL if in mmol/L
     if (values.glucoseUnit === "mmol/L") glu = glu * 18.0182;
+
+    // Corrected Na = Na + 1.6 * ((Glucose - 100) / 100)
     const correctedNa = na + 1.6 * ((glu - 100) / 100);
     const roundedNa = parseFloat(correctedNa.toFixed(2));
 
@@ -42,9 +42,14 @@ export default function CorrectedSodium() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box"><label className="calc-label">Sodium (mmol/L):</label><input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box">
+        <label className="calc-label">Sodium (mmol/L):</label>
+        <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
+        <input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" />
+      </div>
       <div className="calc-box">
         <label className="calc-label">Glucose:</label>
+        <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.glucose} onChange={(e) => setField("glucose", e.target.value)} className="calc-input" style={{ flex: 2 }} />
           <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>

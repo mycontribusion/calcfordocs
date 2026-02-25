@@ -1,4 +1,6 @@
+import React from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -11,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function FluidCorrection() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const result = (() => {
     let weightKg = parseFloat(values.weight);
@@ -51,6 +53,7 @@ export default function FluidCorrection() {
       {/* Weight */}
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
+        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"

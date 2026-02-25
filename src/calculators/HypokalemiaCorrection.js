@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function HypokalemiaCorrection() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     if (!values.weight || !values.potassium || !values.desiredK) {
@@ -46,13 +47,21 @@ export default function HypokalemiaCorrection() {
     <div className="calc-container">
       <div className="calc-box">
         <label className="calc-label">Weight: </label>
+        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} className="calc-input" style={{ flex: 2 }} />
           <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>
         </div>
       </div>
-      <div className="calc-box"><label className="calc-label">Observed Serum K⁺ (mmol/L): </label><input type="number" step="0.1" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" /></div>
-      <div className="calc-box"><label className="calc-label">Target Serum K⁺ (mmol/L): </label><input type="number" step="0.1" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box">
+        <label className="calc-label">Observed Serum K⁺ (mmol/L): </label>
+        <SyncSuggestion field="potassium" suggestion={suggestions.potassium} onSync={syncField} />
+        <input type="number" step="0.1" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" />
+      </div>
+      <div className="calc-box">
+        <label className="calc-label">Target Serum K⁺ (mmol/L): </label>
+        <input type="number" step="0.1" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" />
+      </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.message && <div className="calc-result" style={{ marginTop: 16, borderColor: values.message.includes("✅") ? '#16a34a' : '#ea580c', color: values.message.includes("✅") ? '#16a34a' : '#ea580c' }}><p>{values.message}</p></div>}
       {values.results && (

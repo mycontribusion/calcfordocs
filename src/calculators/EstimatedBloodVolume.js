@@ -1,6 +1,6 @@
-// src/calculators/EstimatedBloodVolume.js
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function EstimatedBloodVolume() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
 
   // Auto-set ageGroup based on age and sex global state
   useEffect(() => {
@@ -71,6 +71,7 @@ export default function EstimatedBloodVolume() {
 
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
+        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
         <input
           type="number"
           min="0.1"

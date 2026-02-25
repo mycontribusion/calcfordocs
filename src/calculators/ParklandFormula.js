@@ -1,5 +1,6 @@
 import React from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function ParklandFormula() {
-    const { values, updateField, reset } = useCalculator(INITIAL_STATE);
+    const { values, suggestions, updateField, syncField, reset } = useCalculator(INITIAL_STATE);
 
     const weight = parseFloat(values.weight) || 0;
     const tbsaInput = parseFloat(values.tbsa) || 0;
@@ -37,6 +38,7 @@ export default function ParklandFormula() {
             <div className="calc-grid">
                 <div className="calc-group">
                     <label>Weight (kg)</label>
+                    <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
                     <input
                         type="number"
                         value={values.weight}
@@ -46,21 +48,19 @@ export default function ParklandFormula() {
                 </div>
                 <div className="calc-group">
                     <label>TBSA Burned (%)</label>
-                    <div style={{ position: 'relative' }}>
-                        <input
-                            type="number"
-                            value={values.tbsa}
-                            onChange={(e) => updateField("tbsa", e.target.value)}
-                            className={`calc-input ${isCapped ? 'input-warning' : ''}`}
-                            min="0"
-                            max="100"
-                        />
-                        {isCapped && (
-                            <div className="calc-info-badge">
-                                Capped at 50% for calculation
-                            </div>
-                        )}
-                    </div>
+                    <input
+                        type="number"
+                        value={values.tbsa}
+                        onChange={(e) => updateField("tbsa", e.target.value)}
+                        className={`calc-input ${isCapped ? 'input-warning' : ''}`}
+                        min="0"
+                        max="100"
+                    />
+                    {isCapped && (
+                        <div className="calc-info-badge">
+                            Capped at 50% for calculation
+                        </div>
+                    )}
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -12,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 function EGFRCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const interpretEGFR = (value) => {
     if (value >= 90) return "G1: Normal kidney function (≥90)";
@@ -63,6 +64,7 @@ function EGFRCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">Serum Creatinine:</label>
+        <SyncSuggestion field="creatinine" suggestion={suggestions.creatinine} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
@@ -81,6 +83,7 @@ function EGFRCalculator() {
 
       <div className="calc-box">
         <label className="calc-label">Age (years):</label>
+        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
         <input
           type="number"
           value={values.age}

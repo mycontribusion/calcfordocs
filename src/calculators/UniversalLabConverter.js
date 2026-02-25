@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const ANALYTES = {
@@ -168,7 +169,7 @@ const INITIAL_STATE = {
     inputValue: "",
     inputUnit: ANALYTES.sodium.units[0],
     results: [],
-    // SYNC KEYS: These will auto-sync with global state via useCalculator
+    // SYNC KEYS for auto-detection
     creatinine: "",
     creatinineUnit: "µmol/L",
     albumin: "",
@@ -180,34 +181,27 @@ const INITIAL_STATE = {
     calciumUnit: "mg/dL",
     phosphate: "",
     phosphateUnit: "mg/dL",
-    albuminUnit: "g/dL",
 };
 
 export default function UniversalLabConverter() {
-    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+    const { values, suggestions, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
-    // When analyteKey or global sync values change, update the active inputValue
+    // Initial sync when analyte changes or suggestions appear
     useEffect(() => {
         const analyte = values.analyteKey;
-        if (analyte === "creatinine") {
+        if (analyte === "creatinine" && values.creatinine) {
             updateFields({ inputValue: values.creatinine, inputUnit: values.creatinineUnit });
-        } else if (analyte === "albumin") {
-            updateFields({ inputValue: values.albumin, inputUnit: ANALYTES.albumin.units[0] });
-        } else if (analyte === "sodium") {
+        } else if (analyte === "albumin" && values.albumin) {
+            updateFields({ inputValue: values.albumin, inputUnit: "g/dL" });
+        } else if (analyte === "sodium" && values.sodium) {
             updateFields({ inputValue: values.sodium, inputUnit: "mmol/L" });
-        } else if (analyte === "potassium") {
+        } else if (analyte === "potassium" && values.potassium) {
             updateFields({ inputValue: values.potassium, inputUnit: "mmol/L" });
-        } else if (analyte === "urea") {
+        } else if (analyte === "urea" && values.urea) {
             updateFields({ inputValue: values.urea, inputUnit: values.ureaUnit || "mmol/L" });
-        } else {
-            updateFields({
-                inputUnit: ANALYTES[values.analyteKey].units[0],
-                inputValue: "",
-                results: []
-            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values.analyteKey, values.creatinine, values.creatinineUnit, values.albumin, values.sodium, values.potassium, values.urea]);
+    }, [values.analyteKey]);
 
     useEffect(() => {
         const val = parseFloat(values.inputValue);
@@ -216,7 +210,6 @@ export default function UniversalLabConverter() {
             return;
         }
 
-        // Push updates BACK to global sync storage if applicable
         const updates = {};
         if (values.analyteKey === "creatinine") {
             updates.creatinine = values.inputValue;
@@ -253,6 +246,11 @@ export default function UniversalLabConverter() {
 
             <div className="calc-box">
                 <label className="calc-label">Value:</label>
+                <SyncSuggestion
+                    field="inputValue"
+                    suggestion={suggestions[values.analyteKey]}
+                    onSync={(field) => setField(field, suggestions[values.analyteKey])}
+                />
                 <div style={{ display: 'flex', gap: '8px' }}>
                     <input
                         type="number"

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -16,7 +17,7 @@ const INITIAL_STATE = {
 };
 
 export default function CURB65Calculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   // Auto-set criteria based on global demographics, labs, and vitals
   useEffect(() => {
@@ -52,6 +53,11 @@ export default function CURB65Calculator() {
   return (
     <div className="calc-container">
       <div className="calc-box">
+        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
+        <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />
+        <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
+        <SyncSuggestion field="dbp" suggestion={suggestions.dbp} onSync={syncField} />
+
         <label style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
           <input
             type="checkbox"

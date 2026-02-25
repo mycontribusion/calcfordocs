@@ -1,6 +1,6 @@
-// src/calculators/BmiCalculator.js
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function BmiCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     let weightKg = parseFloat(values.weight);
@@ -62,6 +62,7 @@ export default function BmiCalculator() {
       {/* Weight */}
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
+        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
@@ -85,6 +86,7 @@ export default function BmiCalculator() {
       {/* Height */}
       <div className="calc-box">
         <label className="calc-label">Height:</label>
+        <SyncSuggestion field="height" suggestion={suggestions.height} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"

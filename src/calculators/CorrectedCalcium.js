@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -15,8 +16,8 @@ const INITIAL_STATE = {
   sex: "male",
 };
 
-function CorrectedCalcium() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+export default function CorrectedCalcium() {
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const parseRequired = (v) => {
     if (v === "" || v === null) return null;
@@ -59,6 +60,7 @@ function CorrectedCalcium() {
     <div className="calc-container">
       <div className="calc-box">
         <label className="calc-label">Calcium:</label>
+        <SyncSuggestion field="calcium" suggestion={suggestions.calcium} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
@@ -76,6 +78,7 @@ function CorrectedCalcium() {
 
       <div className="calc-box">
         <label className="calc-label">Albumin:</label>
+        <SyncSuggestion field="albumin" suggestion={suggestions.albumin} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
@@ -110,5 +113,3 @@ function CorrectedCalcium() {
     </div>
   );
 }
-
-export default CorrectedCalcium;

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -15,7 +16,7 @@ const INITIAL_STATE = {
 };
 
 export default function PediatricWeightEstimator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const ageInMonths = () => {
     if (!values.age) return 0;
@@ -68,6 +69,7 @@ export default function PediatricWeightEstimator() {
     <div className="calc-container">
       <div className="calc-box">
         <label className="calc-label">Age:</label>
+        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.age} onChange={(e) => setField("age", Number(e.target.value))} className="calc-input" style={{ flex: 2 }} />
           <select value={values.ageUnit} onChange={(e) => setField("ageUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="days">Days</option><option value="months">Months</option><option value="years">Years</option></select>
