@@ -18,8 +18,6 @@ import DrugDosageCalculator from "./DrugDosageCalculator";
 import IVInfusionCalculator from "./IVInfusionCalculator";
 import SerumOsmolalityCalculator from "./SerumOsmolalityCalculator";
 import ExpectedGestationalAge from "./ExpectedGestationalAge";
-import USSBasedGestationalAge from "./USSBasedGestationalAge";
-import LMPFromUSS from "./LMPFromUSS";
 import RateCounter from "./RateCounter";
 import BallardScore from "./BallardScore";
 import UreaCrRatio from "./UreaCrRatio";
@@ -46,7 +44,6 @@ import UniversalLabConverter from "./UniversalLabConverter";
 import ApgarScore from "./ApgarScore";
 import ParklandFormula from "./ParklandFormula";
 import DextroseFortifier from "./DextroseFortifier";
-import ElectrolyteBuilder from "./ElectrolyteBuilder";
 import DrugVolumeCalculator from "./DrugVolumeCalculator";
 import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
 
@@ -82,8 +79,6 @@ const CALCULATOR_MAP = {
   pediatric_weight_calc: WeightEstimator,
   ballard_score: BallardScore,
   pregnancy_calculator: ExpectedGestationalAge,
-  gestational_age_uss: USSBasedGestationalAge,
-  pregnancy_lmp_from_uss: LMPFromUSS,
   bishop_score: BishopScore,
   bmi_calculator: BMICalculator,
   gcs_calculator: GCSCalculator,
@@ -98,7 +93,6 @@ const CALCULATOR_MAP = {
   apgar_score: ApgarScore,
   parkland_formula: ParklandFormula,
   dextrose_fortifier: DextroseFortifier,
-  electrolyte_builder: ElectrolyteBuilder,
   drug_volume_calc: DrugVolumeCalculator,
   electrolyte_unit_conv: ElectrolyteUnitConverter,
 };
