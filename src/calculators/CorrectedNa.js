@@ -5,9 +5,13 @@ import "./CalculatorShared.css";
 const INITIAL_STATE = {
   sodium: "",
   glucose: "",
-  glucoseUnit: "mg",
+  glucoseUnit: "mg/dL",
   result: "",
   interpretation: null,
+  // Global Sync Keys
+  age: "",
+  sex: "male",
+  weight: "",
 };
 
 export default function CorrectedSodium() {
@@ -22,7 +26,7 @@ export default function CorrectedSodium() {
       return;
     }
 
-    if (values.glucoseUnit === "mmol") glu = glu * 18.0182;
+    if (values.glucoseUnit === "mmol/L") glu = glu * 18.0182;
     const correctedNa = na + 1.6 * ((glu - 100) / 100);
     const roundedNa = parseFloat(correctedNa.toFixed(2));
 
@@ -43,7 +47,7 @@ export default function CorrectedSodium() {
         <label className="calc-label">Glucose:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.glucose} onChange={(e) => setField("glucose", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg">mg/dL</option><option value="mmol">mmol/L</option></select>
+          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>
         </div>
       </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>

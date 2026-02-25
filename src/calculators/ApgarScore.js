@@ -3,11 +3,10 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
-    appearance: null,
-    pulse: null,
-    grimace: null,
-    activity: null,
-    respiration: null
+    respiration: null,
+    // Global Sync Keys
+    age: "",
+    sex: "male",
 };
 
 const CRITERIA = [

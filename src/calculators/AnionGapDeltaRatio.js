@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   sodium: "",
   potassium: "",
   chloride: "",
-  bicarbonate: "",
+  bicarb: "",
   albumin: "",
   albuminUnit: "g/dL",
   result: null,
@@ -24,7 +24,7 @@ export default function AnionGapDeltaRatio() {
     const na = parseFloat(values.sodium);
     const k = values.potassium === "" ? NaN : parseFloat(values.potassium);
     const cl = parseFloat(values.chloride);
-    const hco3 = parseFloat(values.bicarbonate);
+    const hco3 = parseFloat(values.bicarb);
 
     if (isNaN(na) || isNaN(cl) || isNaN(hco3)) {
       if (values.result !== null) updateFields({ result: null });
@@ -84,14 +84,14 @@ export default function AnionGapDeltaRatio() {
     };
     updateFields({ result: res });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.sodium, values.potassium, values.chloride, values.bicarbonate, values.albumin, values.albuminUnit]);
+  }, [values.sodium, values.potassium, values.chloride, values.bicarb, values.albumin, values.albuminUnit]);
 
   return (
     <div className="calc-container">
       <div className="calc-box"><label className="calc-label">Sodium (Na⁺):</label><input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" /></div>
       <div className="calc-box"><label className="calc-label">Potassium (K⁺, optional):</label><input type="number" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" /></div>
       <div className="calc-box"><label className="calc-label">Chloride (Cl⁻):</label><input type="number" value={values.chloride} onChange={(e) => setField("chloride", e.target.value)} className="calc-input" /></div>
-      <div className="calc-box"><label className="calc-label">Bicarbonate (HCO₃⁻):</label><input type="number" value={values.bicarbonate} onChange={(e) => setField("bicarbonate", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Bicarbonate (HCO₃⁻):</label><input type="number" value={values.bicarb} onChange={(e) => setField("bicarb", e.target.value)} className="calc-input" /></div>
       <div className="calc-box">
         <label className="calc-label">Albumin (optional):</label>
         <div style={{ display: 'flex', gap: '8px' }}>

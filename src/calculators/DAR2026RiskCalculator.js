@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -18,10 +18,28 @@ const INITIAL_STATE = {
     labor: "low",
     education: true,
     fastHours: "<16",
+    // Global Sync Keys
+    age: "",
+    sex: "male",
 };
 
 export default function DAR2026RiskCalculator() {
-    const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+
+    // Auto-sync logic
+    useEffect(() => {
+        const ageVal = parseFloat(values.age);
+        const updates = {};
+
+        if (!isNaN(ageVal) && ageVal >= 70 && values.frailty === "normal") {
+            updates.frailty = "age70";
+        }
+
+        if (Object.keys(updates).length > 0) {
+            updateFields(updates);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [values.age, values.sex]);
 
     // --- 2. SCORING ENGINE ---
     const score = useMemo(() => {

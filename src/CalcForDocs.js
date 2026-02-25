@@ -7,6 +7,35 @@ import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
+import { PatientProvider, usePatient } from './calculators/PatientContext';
+
+function PatientBanner() {
+  const { patientData, resetPatient } = usePatient();
+  const hasData = Object.values(patientData).some(v => v !== "" && v !== "male" && v !== "years" && v !== "umol");
+
+  if (!hasData) return null;
+
+  const displayItems = [];
+  if (patientData.weight) displayItems.push(`Wt: ${patientData.weight}kg`);
+  if (patientData.age) displayItems.push(`Age: ${patientData.age}${patientData.ageUnit === 'months' ? 'm' : 'y'}`);
+  if (patientData.sex) displayItems.push(`Sex: ${patientData.sex === 'male' ? 'M' : 'F'}`);
+
+  if (displayItems.length === 0) return null;
+
+  return (
+    <div className="patient-banner">
+      <div className="patient-info-text">
+        {displayItems.join(' • ')}
+      </div>
+      <button
+        className="patient-clear-btn"
+        onClick={resetPatient}
+      >
+        Clear Patient
+      </button>
+    </div>
+  );
+}
 
 const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
@@ -17,7 +46,7 @@ const ARRANGEMENTS = {
   surg: ["rule_of_nines", "parkland_formula", "ipss_score"]
 };
 
-function CalcForDocs() {
+function MainApp() {
   const [activeCalc, setActiveCalc] = useState(null);
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
@@ -164,6 +193,9 @@ function CalcForDocs() {
         </div>
       </div>
 
+      {/* Global Patient Banner */}
+      <PatientBanner />
+
       {/* 🧮 Calculator Grid */}
       <CalculatorGrid
         calcs={filteredCalcs}
@@ -172,6 +204,28 @@ function CalcForDocs() {
       />
       {/* 📜 Footer Disclaimer */}
       <footer className="app-footer">
+        <div style={{ marginBottom: 12 }}>
+          <button
+            className="footer-feedback-btn"
+            onClick={() => {
+              setActivePanel("feedback");
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#007bff',
+              cursor: 'pointer',
+              fontSize: '0.9rem',
+              fontWeight: '500',
+              padding: '8px 12px',
+              borderRadius: '6px',
+              backgroundColor: 'rgba(0,123,255,0.05)'
+            }}
+          >
+            💡 Provide Feedback / Report Bug
+          </button>
+        </div>
         <p className="disclaimer">
           <strong>Disclaimer:</strong> This tool is intended for use by healthcare professionals for informational purposes only.
           It is not a substitute for clinical judgment. All calculations should be verified independently before
@@ -183,4 +237,10 @@ function CalcForDocs() {
   );
 }
 
-export default CalcForDocs;
+export default function CalcForDocs() {
+  return (
+    <PatientProvider>
+      <MainApp />
+    </PatientProvider>
+  );
+}

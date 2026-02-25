@@ -17,6 +17,8 @@ const INITIAL_STATE = {
   genitalsMale: -1,
   genitalsFemale: -1,
   sex: "male",
+  // Global Sync Keys
+  age: "",
 };
 
 export default function BallardScoreCalculator() {

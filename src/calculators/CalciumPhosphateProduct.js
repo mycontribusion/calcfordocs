@@ -4,10 +4,13 @@ import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   calcium: "",
+  calciumUnit: "mg/dL",
   phosphate: "",
-  caUnit: "mmol",
-  phUnit: "mmol",
+  phosphateUnit: "mg/dL",
   result: null,
+  // Global Sync Keys
+  albumin: "",
+  albuminUnit: "g/dL",
 };
 
 export default function CalciumPhosphateProduct() {
@@ -22,19 +25,19 @@ export default function CalciumPhosphateProduct() {
       return;
     }
 
-    const caMg = values.caUnit === "mmol" ? ca / 0.2495 : ca;
-    const phMg = values.phUnit === "mmol" ? ph / 0.3229 : ph;
+    const caMg = values.calciumUnit === "mmol/L" ? ca / 0.2495 : ca;
+    const phMg = values.phosphateUnit === "mmol/L" ? ph / 0.3229 : ph;
     const product = caMg * phMg;
 
     let interp = product < 55 ? "Low risk of calcification" : product <= 70 ? "Moderate risk" : "High risk";
     updateFields({ result: { product: product.toFixed(2), interp } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.calcium, values.phosphate, values.caUnit, values.phUnit]);
+  }, [values.calcium, values.phosphate, values.calciumUnit, values.phosphateUnit]);
 
   return (
     <div className="calc-container">
-      <div className="calc-box"><label className="calc-label">Calcium:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.calcium} onChange={(e) => setField("calcium", e.target.value)} className="calc-input" style={{ flex: 2 }} /><select value={values.caUnit} onChange={(e) => setField("caUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol">mmol/L</option><option value="mg">mg/dL</option></select></div></div>
-      <div className="calc-box"><label className="calc-label">Phosphate:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.phosphate} onChange={(e) => setField("phosphate", e.target.value)} className="calc-input" style={{ flex: 2 }} /><select value={values.phUnit} onChange={(e) => setField("phUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol">mmol/L</option><option value="mg">mg/dL</option></select></div></div>
+      <div className="calc-box"><label className="calc-label">Calcium:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.calcium} onChange={(e) => setField("calcium", e.target.value)} className="calc-input" style={{ flex: 2 }} /><select value={values.calciumUnit} onChange={(e) => setField("calciumUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select></div></div>
+      <div className="calc-box"><label className="calc-label">Phosphate:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" value={values.phosphate} onChange={(e) => setField("phosphate", e.target.value)} className="calc-input" style={{ flex: 2 }} /><select value={values.phosphateUnit} onChange={(e) => setField("phosphateUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mmol/L">mmol/L</option><option value="mg/dL">mg/dL</option></select></div></div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>

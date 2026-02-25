@@ -3,8 +3,8 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
-  scr: "",
-  unit: "umol",
+  creatinine: "",
+  creatinineUnit: "µmol/L",
   age: "",
   sex: "male",
   egfr: null,
@@ -30,7 +30,7 @@ function EGFRCalculator() {
   };
 
   useEffect(() => {
-    const scrVal = parseRequired(values.scr);
+    const scrVal = parseRequired(values.creatinine);
     const ageVal = parseRequired(values.age);
 
     if (scrVal === null || ageVal === null) {
@@ -38,7 +38,7 @@ function EGFRCalculator() {
       return;
     }
 
-    const scrMgdl = values.unit === "umol" ? scrVal / 88.4 : scrVal;
+    const scrMgdl = values.creatinineUnit === "µmol/L" ? scrVal / 88.4 : scrVal;
     const kappa = values.sex === "male" ? 0.9 : 0.7;
     const alpha = values.sex === "male" ? -0.302 : -0.241;
 
@@ -55,7 +55,7 @@ function EGFRCalculator() {
       updateFields({ egfr: rounded, interpretation: interpretEGFR(rounded) });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.scr, values.unit, values.age, values.sex]);
+  }, [values.creatinine, values.creatinineUnit, values.age, values.sex]);
 
   return (
     <div className="calc-container">
@@ -66,15 +66,15 @@ function EGFRCalculator() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={values.scr}
-            onChange={(e) => setField("scr", e.target.value)}
+            value={values.creatinine}
+            onChange={(e) => setField("creatinine", e.target.value)}
             placeholder="e.g., 80"
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select value={values.unit} onChange={(e) => setField("unit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="umol">µmol/L</option>
-            <option value="mgdl">mg/dL</option>
+          <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="µmol/L">µmol/L</option>
+            <option value="mg/dL">mg/dL</option>
           </select>
         </div>
       </div>

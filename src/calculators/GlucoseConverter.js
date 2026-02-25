@@ -3,8 +3,8 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
-  value: "",
-  unit: "mg", // mg/dL or mmol/L
+  glucose: "",
+  glucoseUnit: "mg/dL", // Standardized: was "mg"
   type: "random", // fasting or random
   result: null,
 };
@@ -15,13 +15,13 @@ export default function GlucoseConverter() {
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
   useEffect(() => {
-    const { value, unit, type } = values;
-    if (!value || !unit || !type) {
+    const { glucose, glucoseUnit, type } = values;
+    if (!glucose || !glucoseUnit || !type) {
       if (values.result !== null) updateFields({ result: null });
       return;
     }
 
-    const val = parseFloat(value);
+    const val = parseFloat(glucose);
     if (isNaN(val) || val <= 0) {
       updateFields({ result: { error: "Please enter a valid glucose level." } });
       return;
@@ -29,7 +29,7 @@ export default function GlucoseConverter() {
 
     let convertedValue, displayUnit, category, categoryColor;
 
-    if (unit === "mg") {
+    if (glucoseUnit === "mg/dL") {
       convertedValue = roundTo1Decimal(val / factor);
       displayUnit = "mmol/L";
     } else {
@@ -74,7 +74,7 @@ export default function GlucoseConverter() {
 
     updateFields({
       result: {
-        convertedValue,
+        convertedValue: convertedValue.toFixed(1),
         displayUnit,
         category,
         categoryColor,
@@ -83,7 +83,7 @@ export default function GlucoseConverter() {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.value, values.unit, values.type]);
+  }, [values.glucose, values.glucoseUnit, values.type]);
 
   return (
     <div className="calc-container">
@@ -92,14 +92,14 @@ export default function GlucoseConverter() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
-            value={values.value}
-            onChange={(e) => setField("value", e.target.value)}
+            value={values.glucose}
+            onChange={(e) => setField("glucose", e.target.value)}
             className="calc-input"
             style={{ flex: 2 }}
           />
-          <select value={values.unit} onChange={(e) => setField("unit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="mg">mg/dL</option>
-            <option value="mmol">mmol/L</option>
+          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="mg/dL">mg/dL</option>
+            <option value="mmol/L">mmol/L</option>
           </select>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -22,10 +22,29 @@ const INITIAL_STATE = {
   vd: false,
   age64: false,
   female: false,
+  // Global Sync Keys
+  age: "",
+  sex: "male",
 };
 
 export default function CHA2DS2VASc() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+
+  // Auto-set age and sex criteria based on global patient state
+  useEffect(() => {
+    const ageVal = parseFloat(values.age);
+    const isFemale = values.sex === "female";
+
+    const updates = {};
+    if (!isNaN(ageVal)) {
+      updates.age75 = ageVal >= 75;
+      updates.age64 = ageVal >= 65 && ageVal < 75;
+    }
+    updates.female = isFemale;
+
+    updateFields(updates);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.age, values.sex]);
 
   const score = useMemo(() => {
     let sum = 0;

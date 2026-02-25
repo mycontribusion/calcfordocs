@@ -60,6 +60,8 @@ const INITIAL_STATE = {
   spo2: "",
   device: "none",
   flow: "",
+  // Global Sync Keys
+  heartRate: "",
 };
 
 function LabeledInput({ label, value, onChange, placeholder, type = "text" }) {

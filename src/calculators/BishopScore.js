@@ -12,6 +12,9 @@ const INITIAL_STATE = {
   modDilation: 0,
   cervicalLength: 0,
   modStation: 0,
+  // Global Sync Keys
+  age: "",
+  sex: "female",
 };
 
 export default function BishopScore() {

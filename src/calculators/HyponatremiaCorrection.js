@@ -3,9 +3,11 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
-  serumNa: "",
+  sodium: "",
   weight: "",
+  weightUnit: "kg",
   sex: "male",
+  age: "",
   ageGroup: "nonelderly",
   volumeStatus: "hypovolemic",
   targetRise: "6",
@@ -19,9 +21,17 @@ export default function HyponatremiaCorrection() {
   const getInfusateNa = (fluidType) => ({ ns: 154, hts: 513, rl: 130 }[fluidType] || 0);
 
   useEffect(() => {
-    const na = parseFloat(values.serumNa);
+    const na = parseFloat(values.sodium);
     const wt = parseFloat(values.weight);
     const target = parseFloat(values.targetRise);
+
+    // Auto-set ageGroup based on global age
+    if (values.age) {
+      const ageVal = parseFloat(values.age);
+      if (!isNaN(ageVal)) {
+        updateFields({ ageGroup: ageVal >= 65 ? "elderly" : "nonelderly" });
+      }
+    }
 
     if (isNaN(na) || isNaN(wt) || isNaN(target)) {
       if (values.result !== null || values.warning !== "") updateFields({ result: null, warning: "" });
@@ -29,6 +39,10 @@ export default function HyponatremiaCorrection() {
     }
 
     let warn = "";
+    if (na >= 135) {
+      updateFields({ warning: "✅ Serum sodium is within normal range (≥ 135 mmol/L). This tool is for hyponatremia only.", result: null });
+      return;
+    }
     if (values.volumeStatus !== "hypovolemic" && values.fluid === "ns") warn = "⚠️ NS may worsen hyponatremia in euvolemic/hypervolemic states.";
     else warn = "Aim for ≤8 mmol/L rise in 24h. Avoid rapid correction.";
 
@@ -48,12 +62,12 @@ export default function HyponatremiaCorrection() {
       warning: warn
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.serumNa, values.weight, values.ageGroup, values.sex, values.fluid, values.volumeStatus, values.targetRise]);
+  }, [values.sodium, values.weight, values.ageGroup, values.sex, values.fluid, values.volumeStatus, values.targetRise, values.age]);
 
   return (
     <div className="calc-container">
       <div style={{ display: "flex", gap: "8px" }}>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Serum Na (mmol/L)</label><input type="number" value={values.serumNa} onChange={e => setField("serumNa", e.target.value)} className="calc-input" /></div>
+        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Serum Na (mmol/L)</label><input type="number" value={values.sodium} onChange={e => setField("sodium", e.target.value)} className="calc-input" /></div>
         <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Weight (kg)</label><input type="number" value={values.weight} onChange={e => setField("weight", e.target.value)} className="calc-input" /></div>
       </div>
       <div style={{ display: "flex", gap: "8px" }}>

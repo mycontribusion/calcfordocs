@@ -12,6 +12,9 @@ const INITIAL_STATE = {
   customPCV: "",
   useFactor: true,
   result: null,
+  // Global Sync Keys
+  age: "",
+  sex: "male",
 };
 
 export default function PediatricTransfusionCalculator() {

@@ -3,9 +3,9 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
-  na: "",
+  sodium: "",
   glucose: "",
-  glucoseUnit: "mmol/L",
+  glucoseUnit: "mg/dL",
   urea: "",
   ureaUnit: "mmol/L",
   measured: "",
@@ -16,7 +16,7 @@ export default function SerumOsmolalityCalculator() {
   const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    const naVal = parseFloat(values.na);
+    const naVal = parseFloat(values.sodium);
     const gluVal = values.glucoseUnit === "mg/dL" ? parseFloat(values.glucose) / 18 : parseFloat(values.glucose);
     const ureaVal = values.ureaUnit === "mg/dL" ? parseFloat(values.urea) / 2.8 : parseFloat(values.urea);
 
@@ -31,11 +31,11 @@ export default function SerumOsmolalityCalculator() {
 
     updateFields({ result: { osmolality: osm.toFixed(1), gap } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.na, values.glucose, values.glucoseUnit, values.urea, values.ureaUnit, values.measured]);
+  }, [values.sodium, values.glucose, values.glucoseUnit, values.urea, values.ureaUnit, values.measured]);
 
   return (
     <div className="calc-container">
-      <div className="calc-box"><label className="calc-label">Sodium (mmol/L):</label><input type="number" value={values.na} onChange={(e) => setField("na", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Sodium (mmol/L):</label><input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" /></div>
       <div className="calc-box">
         <label className="calc-label">Glucose:</label>
         <div style={{ display: 'flex', gap: '8px' }}>

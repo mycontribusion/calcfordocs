@@ -4,11 +4,15 @@ import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   calcium: "",
-  calciumUnit: "mmol/L",
+  calciumUnit: "mg/dL",
   albumin: "",
-  albuminUnit: "g/L",
+  albuminUnit: "g/dL",
   result: null,
   interpretation: "",
+  // Global Sync Keys
+  weight: "",
+  age: "",
+  sex: "male",
 };
 
 function CorrectedCalcium() {

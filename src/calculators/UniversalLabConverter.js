@@ -3,14 +3,20 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const ANALYTES = {
-    glucose: {
-        name: "Glucose",
-        units: ["mmol/L", "mg/dL"],
+    sodium: {
+        name: "Sodium",
+        units: ["mmol/L", "mEq/L", "mg/dL"],
         convert: (val, from) => {
-            const factor = 18.0182;
-            return from === "mmol/L"
-                ? [{ value: val * factor, unit: "mg/dL" }]
-                : [{ value: val / factor, unit: "mmol/L" }];
+            if (from === "mg/dL") return [{ value: val / 2.3, unit: "mmol/L" }, { value: val / 2.3, unit: "mEq/L" }];
+            return from === "mmol/L" ? [{ value: val, unit: "mEq/L" }] : [{ value: val, unit: "mmol/L" }];
+        }
+    },
+    potassium: {
+        name: "Potassium",
+        units: ["mmol/L", "mEq/L", "mg/dL"],
+        convert: (val, from) => {
+            if (from === "mg/dL") return [{ value: val / 3.9, unit: "mmol/L" }, { value: val / 3.9, unit: "mEq/L" }];
+            return from === "mmol/L" ? [{ value: val, unit: "mEq/L" }] : [{ value: val, unit: "mmol/L" }];
         }
     },
     creatinine: {
@@ -37,22 +43,22 @@ const ANALYTES = {
     },
     urea: {
         name: "Urea / BUN",
-        units: ["mmol/L (Urea)", "mg/dL (Urea)", "mg/dL (BUN)"],
+        units: ["mmol/L", "mg/dL", "BUN (mg/dL)"],
         convert: (val, from) => {
-            if (from === "mmol/L (Urea)") {
+            if (from === "mmol/L") {
                 return [
-                    { value: val * 6.006, unit: "mg/dL (Urea)" },
-                    { value: val * 2.8, unit: "mg/dL (BUN)" }
+                    { value: val * 6.006, unit: "mg/dL" },
+                    { value: val * 2.8, unit: "BUN (mg/dL)" }
                 ];
-            } else if (from === "mg/dL (Urea)") {
+            } else if (from === "mg/dL") {
                 return [
-                    { value: val / 6.006, unit: "mmol/L (Urea)" },
-                    { value: val / 2.14, unit: "mg/dL (BUN)" }
+                    { value: val / 6.006, unit: "mmol/L" },
+                    { value: val / 2.14, unit: "BUN (mg/dL)" }
                 ];
             } else {
                 return [
-                    { value: val / 2.8, unit: "mmol/L (Urea)" },
-                    { value: val * 2.14, unit: "mg/dL (Urea)" }
+                    { value: val / 2.8, unit: "mmol/L" },
+                    { value: val * 2.14, unit: "mg/dL" }
                 ];
             }
         }
@@ -158,23 +164,50 @@ const ANALYTES = {
 };
 
 const INITIAL_STATE = {
-    analyteKey: "glucose",
+    analyteKey: "sodium",
     inputValue: "",
-    inputUnit: ANALYTES.glucose.units[0],
+    inputUnit: ANALYTES.sodium.units[0],
     results: [],
+    // SYNC KEYS: These will auto-sync with global state via useCalculator
+    creatinine: "",
+    creatinineUnit: "µmol/L",
+    albumin: "",
+    sodium: "",
+    potassium: "",
+    urea: "",
+    ureaUnit: "mmol/L",
+    calcium: "",
+    calciumUnit: "mg/dL",
+    phosphate: "",
+    phosphateUnit: "mg/dL",
+    albuminUnit: "g/dL",
 };
 
 export default function UniversalLabConverter() {
     const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
+    // When analyteKey or global sync values change, update the active inputValue
     useEffect(() => {
-        updateFields({
-            inputUnit: ANALYTES[values.analyteKey].units[0],
-            inputValue: "",
-            results: []
-        });
+        const analyte = values.analyteKey;
+        if (analyte === "creatinine") {
+            updateFields({ inputValue: values.creatinine, inputUnit: values.creatinineUnit });
+        } else if (analyte === "albumin") {
+            updateFields({ inputValue: values.albumin, inputUnit: ANALYTES.albumin.units[0] });
+        } else if (analyte === "sodium") {
+            updateFields({ inputValue: values.sodium, inputUnit: "mmol/L" });
+        } else if (analyte === "potassium") {
+            updateFields({ inputValue: values.potassium, inputUnit: "mmol/L" });
+        } else if (analyte === "urea") {
+            updateFields({ inputValue: values.urea, inputUnit: values.ureaUnit || "mmol/L" });
+        } else {
+            updateFields({
+                inputUnit: ANALYTES[values.analyteKey].units[0],
+                inputValue: "",
+                results: []
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values.analyteKey]);
+    }, [values.analyteKey, values.creatinine, values.creatinineUnit, values.albumin, values.sodium, values.potassium, values.urea]);
 
     useEffect(() => {
         const val = parseFloat(values.inputValue);
@@ -183,8 +216,23 @@ export default function UniversalLabConverter() {
             return;
         }
 
+        // Push updates BACK to global sync storage if applicable
+        const updates = {};
+        if (values.analyteKey === "creatinine") {
+            updates.creatinine = values.inputValue;
+            updates.creatinineUnit = values.inputUnit;
+        } else if (values.analyteKey === "albumin") {
+            updates.albumin = values.inputValue;
+        } else if (values.analyteKey === "sodium" && values.inputUnit === "mmol/L") {
+            updates.sodium = values.inputValue;
+        } else if (values.analyteKey === "potassium" && values.inputUnit === "mmol/L") {
+            updates.potassium = values.inputValue;
+        } else if (values.analyteKey === "urea" && (values.inputUnit === "mmol/L" || values.inputUnit === "mg/dL")) {
+            updates.urea = values.inputValue;
+            updates.ureaUnit = values.inputUnit;
+        }
         const converted = ANALYTES[values.analyteKey].convert(val, values.inputUnit);
-        updateFields({ results: converted });
+        updateFields({ ...updates, results: converted });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.inputValue, values.inputUnit, values.analyteKey]);
 

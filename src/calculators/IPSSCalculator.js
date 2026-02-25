@@ -3,7 +3,12 @@ import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const QUESTIONS = ["Incomplete Emptying", "Frequency", "Intermittency", "Urgency", "Weak Stream", "Straining", "Nocturia"];
-const INITIAL_STATE = { answers: Array(QUESTIONS.length).fill(0), qol: 0 };
+const INITIAL_STATE = {
+    answers: Array(QUESTIONS.length).fill(0), qol: 0,
+    // Global Sync Keys
+    age: "",
+    sex: "male",
+};
 
 export default function IPSSCalculator() {
     const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);

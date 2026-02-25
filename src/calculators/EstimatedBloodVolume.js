@@ -1,15 +1,31 @@
 // src/calculators/EstimatedBloodVolume.js
+import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   weight: "",
-  unit: "kg",
+  weightUnit: "kg",
   ageGroup: "neonate",
+  // Global Sync Keys
+  age: "",
+  sex: "male",
 };
 
 export default function EstimatedBloodVolume() {
   const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+
+  // Auto-set ageGroup based on age and sex global state
+  useEffect(() => {
+    const ageVal = parseFloat(values.age);
+    if (!isNaN(ageVal)) {
+      if (ageVal < 0.1) setField("ageGroup", "neonate");
+      else if (ageVal < 1) setField("ageGroup", "infant");
+      else if (ageVal < 18) setField("ageGroup", "child");
+      else setField("ageGroup", values.sex === "female" ? "adultFemale" : "adultMale");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.age, values.sex]);
 
   const validatePositiveNumber = (n) => {
     const x = Number(n);
@@ -18,10 +34,10 @@ export default function EstimatedBloodVolume() {
 
   // Auto-calc result
   const result = (() => {
-    const { weight, unit, ageGroup } = values;
+    const { weight, weightUnit, ageGroup } = values;
     if (!validatePositiveNumber(weight)) return "⚠️ Please enter a valid positive weight.";
 
-    const weightKg = unit === "lb" ? Number(weight) * 0.453592 : Number(weight);
+    const weightKg = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
 
     let range = [70, 70]; // default adult male
     switch (ageGroup) {
@@ -68,8 +84,8 @@ export default function EstimatedBloodVolume() {
       <div className="calc-box">
         <label className="calc-label">Unit:</label>
         <select
-          value={values.unit}
-          onChange={(e) => setField("unit", e.target.value)}
+          value={values.weightUnit}
+          onChange={(e) => setField("weightUnit", e.target.value)}
           className="calc-select"
         >
           <option value="kg">kg</option>

@@ -4,7 +4,11 @@ import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
     weight: "",
+    weightUnit: "kg",
     tbsa: "",
+    // Global Sync Keys
+    age: "",
+    sex: "male",
 };
 
 export default function ParklandFormula() {

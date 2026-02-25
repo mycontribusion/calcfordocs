@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   vomiting: 0,
   headache: 0,
   dbp: "70",
+  sbp: "",
   atheroma: 0,
 };
 

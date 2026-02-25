@@ -5,7 +5,7 @@ import "./CalculatorShared.css";
 const INITIAL_STATE = {
   weight: "",
   weightUnit: "kg",
-  observedK: "",
+  potassium: "",
   desiredK: "4.0",
   results: null,
   message: "",
@@ -15,13 +15,13 @@ export default function HypokalemiaCorrection() {
   const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    if (!values.weight || !values.observedK || !values.desiredK) {
+    if (!values.weight || !values.potassium || !values.desiredK) {
       if (values.results !== null || values.message !== "") updateFields({ results: null, message: "" });
       return;
     }
 
     let weightKg = parseFloat(values.weight);
-    let currentK = parseFloat(values.observedK);
+    let currentK = parseFloat(values.potassium);
     let targetK = parseFloat(values.desiredK);
 
     if (isNaN(currentK) || currentK <= 0) { updateFields({ message: "⚠️ Please enter a valid observed serum K⁺ (mmol/L).", results: null }); return; }
@@ -40,7 +40,7 @@ export default function HypokalemiaCorrection() {
 
     updateFields({ results: { deficit, maintenance, total }, message: "" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.weight, values.weightUnit, values.observedK, values.desiredK]);
+  }, [values.weight, values.weightUnit, values.potassium, values.desiredK]);
 
   return (
     <div className="calc-container">
@@ -51,7 +51,7 @@ export default function HypokalemiaCorrection() {
           <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>
         </div>
       </div>
-      <div className="calc-box"><label className="calc-label">Observed Serum K⁺ (mmol/L): </label><input type="number" step="0.1" value={values.observedK} onChange={(e) => setField("observedK", e.target.value)} className="calc-input" /></div>
+      <div className="calc-box"><label className="calc-label">Observed Serum K⁺ (mmol/L): </label><input type="number" step="0.1" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" /></div>
       <div className="calc-box"><label className="calc-label">Target Serum K⁺ (mmol/L): </label><input type="number" step="0.1" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" /></div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {values.message && <div className="calc-result" style={{ marginTop: 16, borderColor: values.message.includes("✅") ? '#16a34a' : '#ea580c', color: values.message.includes("✅") ? '#16a34a' : '#ea580c' }}><p>{values.message}</p></div>}

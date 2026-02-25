@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -45,24 +45,49 @@ const MILESTONES = {
   coop: { m: 36, label: "Cooperative play" }
 };
 
-const INITIAL_STATE = { grossMotor: "", fineMotor: "", language: "", social: "" };
+const INITIAL_STATE = {
+  grossMotor: "",
+  fineMotor: "",
+  language: "",
+  social: "",
+  // SYNC KEYS
+  age: "",
+  ageUnit: "months"
+};
 
 export default function MilestoneAgeEstimator() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
-  const result = useMemo(() => {
+  const estimation = useMemo(() => {
     const selected = [values.grossMotor, values.fineMotor, values.language, values.social].filter(Boolean);
-    if (!selected.length) return "Select milestones to estimate age";
+    if (!selected.length) return null;
 
     const maxMonths = Math.max(...selected.map(m => MILESTONES[m].m));
+    return maxMonths;
+  }, [values.grossMotor, values.fineMotor, values.language, values.social]);
 
-    if (maxMonths < 1) return "~ weeks";
-    if (maxMonths < 12) return `~${maxMonths} months`;
+  const displayResult = useMemo(() => {
+    if (estimation === null) return "Select milestones to estimate age";
 
-    const years = Math.floor(maxMonths / 12);
-    const months = maxMonths % 12;
+    if (estimation < 1) return "~ weeks";
+    if (estimation < 12) return `~${estimation} months`;
+
+    const years = Math.floor(estimation / 12);
+    const months = estimation % 12;
     return `~${years} yr ${months ? months + " mo" : ""}`;
-  }, [values]);
+  }, [estimation]);
+
+  // SYNC: Update global age when estimation changes
+  useEffect(() => {
+    if (estimation !== null) {
+      if (estimation >= 12) {
+        updateFields({ age: (estimation / 12).toFixed(1), ageUnit: "years" });
+      } else {
+        updateFields({ age: estimation, ageUnit: "months" });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [estimation]);
 
   const renderSelect = (label, field, keys) => (
     <div className="calc-box">
@@ -91,7 +116,7 @@ export default function MilestoneAgeEstimator() {
 
       <div className="calc-result" style={{ marginTop: 16 }}>
         <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>Estimated Developmental Age:</p>
-        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#0056b3', margin: '4px 0' }}>{result}</p>
+        <p style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#0056b3', margin: '4px 0' }}>{displayResult}</p>
         <p style={{ fontSize: '0.7rem', fontStyle: 'italic', marginTop: 8 }}>
           *Estimation based on highest achieved milestone.
         </p>

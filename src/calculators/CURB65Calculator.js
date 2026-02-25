@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -7,10 +8,39 @@ const INITIAL_STATE = {
   rrHigh: false,
   bpLow: false,
   age65: false,
+  age: "",
+  // Global Sync Keys
+  urea: "",
+  sbp: "",
+  dbp: "",
 };
 
 export default function CURB65Calculator() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+
+  // Auto-set criteria based on global demographics, labs, and vitals
+  useEffect(() => {
+    const ageVal = parseFloat(values.age);
+    const ureaVal = parseFloat(values.urea);
+    const sbpVal = parseFloat(values.sbp);
+    const dbpVal = parseFloat(values.dbp);
+
+    const updates = {};
+    if (!isNaN(ageVal)) updates.age65 = ageVal >= 65;
+    if (!isNaN(ureaVal)) updates.ureaHigh = ureaVal >= 7;
+    if (!isNaN(sbpVal)) {
+      if (sbpVal < 90) updates.bpLow = true;
+      else if (!isNaN(dbpVal) && dbpVal <= 60) updates.bpLow = true;
+      else updates.bpLow = false;
+    } else if (!isNaN(dbpVal)) {
+      updates.bpLow = dbpVal <= 60;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      updateFields(updates);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.age, values.urea, values.sbp, values.dbp]);
 
   const score =
     (values.confusion ? 1 : 0) +

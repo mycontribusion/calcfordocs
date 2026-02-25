@@ -5,6 +5,9 @@ const INITIAL_STATE = {
   weight: "",
   weightUnit: "kg",
   severity: "mild",
+  // Global Sync Keys
+  age: "",
+  sex: "male",
 };
 
 export default function FluidCorrection() {

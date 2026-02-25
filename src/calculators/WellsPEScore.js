@@ -1,4 +1,5 @@
 // src/calculators/WellsScorePE.js
+import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -14,10 +15,12 @@ const WELLS_CRITERIA = [
 
 const INITIAL_STATE = {
   selectedIds: [],
+  // Global Sync Keys
+  heartRate: "",
 };
 
 export default function WellsScorePE() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
 
   const toggleCriteria = (id) => {
     const { selectedIds } = values;
@@ -26,6 +29,20 @@ export default function WellsScorePE() {
       : [...selectedIds, id];
     setField("selectedIds", newSelected);
   };
+
+  // Auto-sync heart rate criteria
+  useEffect(() => {
+    const hr = parseFloat(values.heartRate);
+    if (!isNaN(hr)) {
+      const hasHrCriteria = values.selectedIds.includes(3);
+      if (hr > 100 && !hasHrCriteria) {
+        updateFields({ selectedIds: [...values.selectedIds, 3] });
+      } else if (hr <= 100 && hasHrCriteria) {
+        updateFields({ selectedIds: values.selectedIds.filter(id => id !== 3) });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.heartRate]);
 
   // Auto-calculate score
   const totalScore = values.selectedIds

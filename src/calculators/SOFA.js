@@ -10,10 +10,15 @@ const INITIAL_STATE = {
   spo2fio2: "",
   liver: "none",
   map: "",
+  sbp: "",
+  heartRate: "",
   vasopressor: "none",
   gcsM: "",
+  // Global Sync Keys
   creatinine: "",
-  creatinineUnit: "umol",
+  creatinineUnit: "µmol/L",
+  age: "",
+  sex: "male",
   qsofaScore: 0,
   qsofaInterp: "Low immediate risk",
   msofaResult: {
@@ -29,6 +34,34 @@ const INITIAL_STATE = {
 
 export default function SOFA() {
   const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+
+  // Helper to map numeric creatinine to SOFA dropdown values
+  useEffect(() => {
+    const cr = parseFloat(values.creatinine);
+    if (!isNaN(cr) && cr > 0) {
+      // We check if it's already a range string. If it's a number, we "snap" it to the range for the UI
+      // but keep the numeric value for other calculators.
+      // This is a bit tricky if the user wants to select a range manually.
+    }
+  }, [values.creatinine, values.creatinineUnit]);
+
+  // Auto-toggling based on vitals
+  useEffect(() => {
+    const sbpVal = parseFloat(values.sbp);
+    const updates = {};
+    if (!isNaN(sbpVal)) {
+      if (sbpVal <= 100 && !values.sbpLow) updates.sbpLow = true;
+      if (sbpVal > 100 && values.sbpLow) updates.sbpLow = false;
+
+      if (sbpVal < 70 && values.map !== "<70") updates.map = "<70";
+      if (sbpVal >= 70 && values.map !== "≥70") updates.map = "≥70";
+    }
+
+    if (Object.keys(updates).length > 0) {
+      updateFields(updates);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.sbp]);
 
   useEffect(() => {
     const score = (values.rrHigh ? 1 : 0) + (values.sbpLow ? 1 : 0) + (values.gcsLow ? 1 : 0);
@@ -61,9 +94,20 @@ export default function SOFA() {
     else if (values.gcsM === "13-14") cns = 1;
 
     let renal = 0;
-    let crMg = values.creatinineUnit === "umol"
-      ? values.creatinine === "≥442" ? 5 : values.creatinine === "309-441" ? 3.5 : values.creatinine === "177-308" ? 2 : values.creatinine === "106-176" ? 1.2 : 0
-      : values.creatinine === "≥5" ? 5 : values.creatinine === "3.5-4.9" ? 3.5 : values.creatinine === "2-3.4" ? 2 : values.creatinine === "1.2-1.9" ? 1.2 : 0;
+    const cr = values.creatinine;
+    let crMg = 0;
+
+    // Support both numeric and dropdown strings
+    const numericCr = parseFloat(cr);
+    if (!isNaN(numericCr)) {
+      crMg = values.creatinineUnit === "µmol/L" ? numericCr / 88.4 : numericCr;
+    } else {
+      // Handle dropdown strings
+      crMg = values.creatinineUnit === "µmol/L"
+        ? cr === "≥442" ? 5 : cr === "309-441" ? 3.5 : cr === "177-308" ? 2 : cr === "106-176" ? 1.2 : 0
+        : cr === "≥5" ? 5 : cr === "3.5-4.9" ? 3.5 : cr === "2-3.4" ? 2 : cr === "1.2-1.9" ? 1.2 : 0;
+    }
+
     if (crMg >= 5) renal = 4;
     else if (crMg >= 3.5) renal = 3;
     else if (crMg >= 2) renal = 2;
@@ -78,7 +122,7 @@ export default function SOFA() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.spo2fio2, values.liver, values.map, values.vasopressor, values.gcsM, values.creatinine, values.creatinineUnit]);
+  }, [values.spo2fio2, values.liver, values.map, values.vasopressor, values.gcsM, values.creatinine, values.creatinineUnit, values.sex, values.age]);
 
   return (
     <div className="calc-container">
@@ -121,8 +165,8 @@ export default function SOFA() {
           <div className="calc-box">
             <label className="calc-label">Creatinine:</label>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <select className="calc-select" value={values.creatinine} onChange={e => setField("creatinine", e.target.value)} style={{ flex: 2 }}><option value="">Select</option>{values.creatinineUnit === "umol" ? <><option value="≥442">≥442</option><option value="309-441">309–441</option><option value="177-308">177–308</option><option value="106-176">106–176</option><option value="<106">&lt;106</option></> : <><option value="≥5">≥5</option><option value="3.5-4.9">3.5–4.9</option><option value="2-3.4">2–3.4</option><option value="1.2-1.9">1.2–1.9</option><option value="<1.2">&lt;1.2</option></>}</select>
-              <select className="calc-select" value={values.creatinineUnit} onChange={e => setField("creatinineUnit", e.target.value)} style={{ flex: 1 }}><option value="umol">µmol/L</option><option value="mg">mg/dL</option></select>
+              <select className="calc-select" value={values.creatinine} onChange={e => setField("creatinine", e.target.value)} style={{ flex: 2 }}><option value="">Select</option>{values.creatinineUnit === "µmol/L" ? <><option value="≥442">≥442</option><option value="309-441">309–441</option><option value="177-308">177–308</option><option value="106-176">106–176</option><option value="<106">&lt;106</option></> : <><option value="≥5">≥5</option><option value="3.5-4.9">3.5–4.9</option><option value="2-3.4">2–3.4</option><option value="1.2-1.9">1.2–1.9</option><option value="<1.2">&lt;1.2</option></>}</select>
+              <select className="calc-select" value={values.creatinineUnit} onChange={e => setField("creatinineUnit", e.target.value)} style={{ flex: 1 }}><option value="µmol/L">µmol/L</option><option value="mg/dL">mg/dL</option></select>
             </div>
           </div>
           <div className="calc-result"><p><strong>Score:</strong> {values.msofaResult.total} / 19</p><p>{values.msofaResult.interpretation}</p></div>
