@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { usePatient } from "./PatientContext";
 
 const SYNC_KEYS = [
@@ -14,61 +14,64 @@ const SYNC_KEYS = [
  */
 export default function useCalculator(initialState) {
     const { patientData, updatePatient } = usePatient();
-    const [values, setValues] = useState(() => {
-        return { ...initialState };
-    });
+    const [values, setValues] = useState(() => ({ ...initialState }));
     const [suggestions, setSuggestions] = useState({});
 
-    // Identify Discrepancies for Suggestions
+    // Ref to track latest values to avoid stale closures in effects if needed, 
+    // but here we mostly use it for shallow comparison of suggestions.
+    const prevSuggestionsRef = useRef({});
+
+    // Identify Discrepancies for Suggestions (Optimized)
     useEffect(() => {
         const newSuggestions = {};
+        let hasChanges = false;
+
         SYNC_KEYS.forEach(key => {
-            if (key in values && patientData[key] && patientData[key] !== values[key]) {
+            if (key in values && patientData[key] !== undefined && patientData[key] !== null && patientData[key] !== "" && patientData[key] !== values[key]) {
                 newSuggestions[key] = patientData[key];
+                if (prevSuggestionsRef.current[key] !== patientData[key]) {
+                    hasChanges = true;
+                }
             }
         });
-        setSuggestions(newSuggestions);
+
+        // Also check if any previously existing suggestions were REMOVED
+        if (!hasChanges) {
+            const currentKeys = Object.keys(newSuggestions);
+            const prevKeys = Object.keys(prevSuggestionsRef.current);
+            if (currentKeys.length !== prevKeys.length) {
+                hasChanges = true;
+            }
+        }
+
+        if (hasChanges) {
+            setSuggestions(newSuggestions);
+            prevSuggestionsRef.current = newSuggestions;
+        }
     }, [patientData, values]);
 
     // Update a specific field
     const updateField = useCallback((field, value) => {
         setValues((prev) => {
             if (prev[field] === value) return prev;
-
-            // Sync to Global if key matches
-            if (SYNC_KEYS.includes(field)) {
-                updatePatient(field, value);
-            }
-
-            return {
-                ...prev,
-                [field]: value,
-            };
+            return { ...prev, [field]: value };
         });
+
+        // Sync to Global (Side effect outside of setValues)
+        if (SYNC_KEYS.includes(field)) {
+            updatePatient(field, value);
+        }
     }, [updatePatient]);
 
     // Update multiple fields at once
     const updateFields = useCallback((newFields) => {
-        setValues((prev) => {
-            const next = { ...prev, ...newFields };
+        setValues((prev) => ({ ...prev, ...newFields }));
 
-            // Sync to Global
-            const globalUpdates = {};
-            let hasGlobalUpdate = false;
-            SYNC_KEYS.forEach(key => {
-                if (key in newFields) {
-                    globalUpdates[key] = newFields[key];
-                    hasGlobalUpdate = true;
-                }
-            });
-
-            if (hasGlobalUpdate) {
-                // Since updatePatient is stable and doesn't trigger re-render of THIS component 
-                // directly (only via the useEffect above), we can safely call it.
-                Object.entries(globalUpdates).forEach(([k, v]) => updatePatient(k, v));
+        // Sync to Global (Side effect outside of setValues)
+        Object.entries(newFields).forEach(([field, value]) => {
+            if (SYNC_KEYS.includes(field)) {
+                updatePatient(field, value);
             }
-
-            return next;
         });
     }, [updatePatient]);
 
@@ -79,7 +82,7 @@ export default function useCalculator(initialState) {
 
     // Accept a suggestion
     const syncField = useCallback((field) => {
-        if (suggestions[field]) {
+        if (suggestions[field] !== undefined) {
             updateField(field, suggestions[field]);
         }
     }, [suggestions, updateField]);

@@ -54,6 +54,9 @@ export default function SirirajScore() {
         <select className="calc-select" value={values.atheroma} onChange={(e) => setField("atheroma", Number(e.target.value))}>
           <option value={0}>Absent</option><option value={1}>Present</option>
         </select>
+        <div style={{ fontSize: '0.75rem', marginTop: '6px', opacity: 0.8, fontStyle: 'italic', lineHeight: '1.2' }}>
+          Guide: DM, Claudication, Angina/ACS, or History of TIA.
+        </div>
       </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
       {score !== null && (

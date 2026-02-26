@@ -56,7 +56,7 @@
     ]
   },
   {
-    "name": "Drug Volume Calc",
+    "name": "(U/mL) ⇒ (mL)",
     "id": "drug_volume_calc",
     "keywords": [
       "volume",
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "name": "Drug Unit Converter",
+    "name": "Unit Conversion (Mass ⇔ Mole)",
     "id": "electrolyte_unit_conv",
     "keywords": [
       "mmol to mg",

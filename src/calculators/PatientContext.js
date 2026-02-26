@@ -77,8 +77,15 @@ export const PatientProvider = ({ children }) => {
         });
     }, []);
 
+    const value = React.useMemo(() => ({
+        patientData,
+        updatePatient,
+        updateMultiple,
+        resetPatient
+    }), [patientData, updatePatient, updateMultiple, resetPatient]);
+
     return (
-        <PatientContext.Provider value={{ patientData, updatePatient, updateMultiple, resetPatient }}>
+        <PatientContext.Provider value={value}>
             {children}
         </PatientContext.Provider>
     );

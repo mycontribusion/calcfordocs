@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
+import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -15,7 +16,7 @@ const INITIAL_STATE = {
 };
 
 export default function DrugDosageCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
     const isWeightBased = values.doseUnit.includes("kg");
@@ -72,7 +73,7 @@ export default function DrugDosageCalculator() {
         <label className="calc-label">Dose:</label>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" inputMode="decimal" value={values.dose} onChange={(e) => setField("dose", e.target.value)} placeholder="Enter dose" className="calc-input" style={{ flex: 2 }} />
-          <select value={values.doseUnit} onChange={(e) => setField("doseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+          <select value={values.doseUnit} onChange={(e) => setField("doseUnit", e.target.value)} className="calc-select" style={{ flex: 1.5 }}>
             <option value="/kg">/kg</option><option value="/kg/day">/kg/day</option><option value="/min">/min</option><option value="/kg/min">/kg/min</option>
           </select>
         </div>
@@ -80,6 +81,7 @@ export default function DrugDosageCalculator() {
       {values.doseUnit !== "/min" && (
         <div className="calc-box">
           <label className="calc-label">Weight:</label>
+          <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
           <div style={{ display: 'flex', gap: '8px' }}>
             <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} placeholder="Patient weight" className="calc-input" style={{ flex: 2 }} />
             <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
