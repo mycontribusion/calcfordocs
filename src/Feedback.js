@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./components/Dropdowns.css";
 
+const LinkedInIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 8 }}>
+    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+  </svg>
+);
+
 const WhatsAppIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 8 }}>
     <path d="M12.031 6.172c-2.32 0-4.525 1.232-5.717 3.208-.557.924-.844 1.99-.844 3.09 0 1.238.358 2.454 1.037 3.5l-1.092 3.987 4.085-1.072a7.17 7.17 0 0 0 3.531.917c2.321 0 4.525-1.232 5.717-3.208s1.144-4.32-.424-6.32a7.152 7.152 0 0 0-6.293-3.098v-.004zm0 1.018c1.942 0 3.805 1.03 4.811 2.68 1.31 2.147.962 4.962-1.123 6.643-1.011 1.66-2.874 2.69-4.816 2.69-.971 0-1.928-.246-2.775-.724l-2.39.627.632-2.305a5.137 5.137 0 0 1-.894-2.859c0-1.94 1.031-3.804 2.68-4.81a5.137 5.137 0 0 1 3.875-.94v-.002zm2.67 3.298c-.146-.073-.865-.427-.999-.475s-.232-.073-.329.073-.378.475-.463.573-.17.11-.316.037c-.146-.073-.618-.228-1.178-.727-.435-.389-.728-.868-.813-1.015s-.009-.227.064-.3s.146-.17.219-.256c.073-.085.097-.146.146-.244s.024-.183-.012-.256-.329-.793-.451-1.086c-.12-.288-.242-.248-.332-.253-.085-.005-.183-.005-.281-.005s-.256.037-.39.183c-.134.146-.512.5-.512 1.22s.524 1.415.597 1.512 1.03 1.574 2.508 2.212c.35.15.624.241.838.31.352.112.673.096.926.059.282-.041.865-.354 1.085-.695s.22-.634.152-.756-.25-.183-.396-.256z" />
@@ -86,6 +92,32 @@ export default function FeedbackDropdown() {
           </button>
         </div>
       </form>
+
+      <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(0,0,0,0.08)', textAlign: 'center' }}>
+        <p className="dropdown-title" style={{ fontSize: '0.8rem', marginBottom: 12, opacity: 0.7 }}>Developer</p>
+        <a
+          href="https://www.linkedin.com/in/ahmad-m-musa-b93587156/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="dropdown-btn"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#0077b5',
+            background: 'linear-gradient(135deg, #0077b5, #005a87)',
+            textDecoration: 'none',
+            color: '#fff',
+            padding: '8px 20px',
+            borderRadius: '8px',
+            fontSize: '0.9rem',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}
+        >
+          <LinkedInIcon /> Connect on LinkedIn
+        </a>
+      </div>
     </div>
   );
 }

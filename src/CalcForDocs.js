@@ -7,35 +7,8 @@ import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
-import { PatientProvider, usePatient } from './calculators/PatientContext';
+import { PatientProvider } from './calculators/PatientContext';
 
-function PatientBanner() {
-  const { patientData, resetPatient } = usePatient();
-  const hasData = Object.values(patientData).some(v => v !== "" && v !== "male" && v !== "years" && v !== "umol");
-
-  if (!hasData) return null;
-
-  const displayItems = [];
-  if (patientData.weight) displayItems.push(`Wt: ${patientData.weight}kg`);
-  if (patientData.age) displayItems.push(`Age: ${patientData.age}${patientData.ageUnit === 'months' ? 'm' : 'y'}`);
-  if (patientData.sex) displayItems.push(`Sex: ${patientData.sex === 'male' ? 'M' : 'F'}`);
-
-  if (displayItems.length === 0) return null;
-
-  return (
-    <div className="patient-banner">
-      <div className="patient-info-text">
-        {displayItems.join(' • ')}
-      </div>
-      <button
-        className="patient-clear-btn"
-        onClick={resetPatient}
-      >
-        Clear Patient
-      </button>
-    </div>
-  );
-}
 
 const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
@@ -192,9 +165,6 @@ function MainApp() {
           })}
         </div>
       </div>
-
-      {/* Global Patient Banner */}
-      <PatientBanner />
 
       {/* 🧮 Calculator Grid */}
       <CalculatorGrid
