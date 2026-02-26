@@ -67,7 +67,7 @@
     ]
   },
   {
-    "name": "Unit Conversion (Mass ⇔ Mole)",
+    "name": "(grams ⇔ mmol)",
     "id": "electrolyte_unit_conv",
     "keywords": [
       "mmol to mg",
@@ -79,7 +79,7 @@
     ]
   },
   {
-    "name": "IV Infusion Drop Rate",
+    "name": "IVF Drop Rate",
     "id": "iv_infusion_rate",
     "keywords": [
       "iv rate",
@@ -366,7 +366,7 @@
     ]
   },
   {
-    "name": "Ischemic / Hemmorrhagic Stroke",
+    "name": "Ischemic / Hemmorrhagic",
     "id": "stroke_score_siriraj",
     "keywords": [
       "cvd",
@@ -405,7 +405,7 @@
     ]
   },
   {
-    "name": "DAR Risk Assessment Tool (2026)",
+    "name": "DAR Risk Assessment (2026)",
     "id": "dar_risk_assessment",
     "keywords": [
       "fasting",
@@ -446,7 +446,7 @@
     ]
   },
   {
-    "name": "Mini-Mental State Examination",
+    "name": "Mini-Mental State Exam",
     "id": "mmse_calculator",
     "keywords": [
       "mini mental state exam",
