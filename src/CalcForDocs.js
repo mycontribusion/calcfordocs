@@ -2,6 +2,7 @@ import "./CalcForDocs.css";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import calcinfo from "./calculators/calcinfo.json";
 import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
+import { track } from "@vercel/analytics";
 
 import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
@@ -79,7 +80,13 @@ function MainApp() {
   }, []);
 
   const toggleCalc = useCallback((id) => {
-    setActiveCalc((prev) => (prev === id ? null : id));
+    setActiveCalc((prev) => {
+      const newActive = prev === id ? null : id;
+      if (newActive) {
+        track("calculator_opened", { calculatorId: newActive });
+      }
+      return newActive;
+    });
   }, []);
 
   /* 🔍 Filtered & Ordered Calculators */
@@ -157,7 +164,10 @@ function MainApp() {
               <button
                 key={v}
                 className={`view-btn ${view === v ? "active" : ""}`}
-                onClick={() => setView(v)}
+                onClick={() => {
+                  setView(v);
+                  track("category_viewed", { category: labels[v] });
+                }}
               >
                 {labels[v]}
               </button>
