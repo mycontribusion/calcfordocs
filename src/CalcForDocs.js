@@ -21,11 +21,17 @@ const ARRANGEMENTS = {
 };
 
 function MainApp() {
-  const [activeCalc, setActiveCalc] = useState(null);
+  const [activeCalc, setActiveCalc] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("calc") || null;
+  });
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
   const [activePanel, setActivePanel] = useState(null); // dropdown state
-  const [view, setView] = useState("default"); // 'default', 'og', 'peds'
+  const [view, setView] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("view") || "default";
+  });
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
 
   const [showBanner, setShowBanner] = useState(false); // banner UI state
@@ -73,6 +79,61 @@ function MainApp() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  /* 🔗 Sync State with URL */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    let changed = false;
+
+    if (activeCalc) {
+      if (params.get("calc") !== activeCalc) {
+        params.set("calc", activeCalc);
+        changed = true;
+      }
+    } else if (params.has("calc")) {
+      params.delete("calc");
+      changed = true;
+    }
+
+    if (view && view !== "default") {
+      if (params.get("view") !== view) {
+        params.set("view", view);
+        changed = true;
+      }
+    } else if (params.has("view")) {
+      params.delete("view");
+      changed = true;
+    }
+
+    if (changed) {
+      const newSearch = params.toString() ? `?${params.toString()}` : "";
+      window.history.pushState(null, "", newSearch || window.location.pathname);
+    }
+  }, [activeCalc, view]);
+
+  /* 🔄 Handle Browser Navigation (Back/Forward) */
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setActiveCalc(params.get("calc") || null);
+      setView(params.get("view") || "default");
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  /* 🏷 Dynamic Page Title for SEO */
+  useEffect(() => {
+    if (activeCalc) {
+      const calc = calcinfo.find((c) => c.id === activeCalc);
+      if (calc) {
+        document.title = `${calc.name} - CalcForDocs`;
+      }
+    } else {
+      document.title = "CalcForDocs - Clinical Decision Support Tools";
+    }
+  }, [activeCalc]);
 
   /* 🛠 Handlers */
   const toggleTheme = useCallback(() => {
