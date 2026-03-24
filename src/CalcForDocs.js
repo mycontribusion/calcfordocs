@@ -28,10 +28,12 @@ function MainApp() {
   });
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activePanel, setActivePanel] = useState(null); // dropdown state
+  const [activePanel, setActivePanel] = useState(() => {
+    return window.location.pathname === "/feedback" ? "feedback" : null;
+  }); // dropdown state
   const [view, setView] = useState(() => {
     const path = window.location.pathname;
-    if (path.startsWith("/calc/")) return "default"; // or track original view?
+    if (path.startsWith("/calc/") || path === "/feedback") return "default";
     const match = path.match(/^\/view\/([^/]+)/);
     return match ? match[1] : "default";
   });
@@ -88,7 +90,9 @@ function MainApp() {
     const currentPath = window.location.pathname;
     let newPath = "/";
 
-    if (activeCalc) {
+    if (activePanel === "feedback") {
+      newPath = "/feedback";
+    } else if (activeCalc) {
       newPath = `/calc/${activeCalc}`;
     } else if (view && view !== "default") {
       newPath = `/view/${view}`;
@@ -97,7 +101,7 @@ function MainApp() {
     if (currentPath !== newPath) {
       window.history.pushState(null, "", newPath);
     }
-  }, [activeCalc, view]);
+  }, [activeCalc, view, activePanel]);
 
   /* 🔄 Handle Browser Navigation (Back/Forward) */
   useEffect(() => {
@@ -105,11 +109,14 @@ function MainApp() {
       const path = window.location.pathname;
       const calcMatch = path.match(/^\/calc\/([^/]+)/);
       const viewMatch = path.match(/^\/view\/([^/]+)/);
+      const isFeedback = path === "/feedback";
 
+      setActivePanel(isFeedback ? "feedback" : null);
       setActiveCalc(calcMatch ? calcMatch[1] : null);
+
       if (viewMatch) {
         setView(viewMatch[1]);
-      } else if (!calcMatch) {
+      } else if (!calcMatch && !isFeedback) {
         setView("default");
       }
     };
@@ -120,7 +127,9 @@ function MainApp() {
 
   /* 🏷 Dynamic Page Title for SEO */
   useEffect(() => {
-    if (activeCalc) {
+    if (activePanel === "feedback") {
+      document.title = "Feedback - CalcForDocs";
+    } else if (activeCalc) {
       const calc = calcinfo.find((c) => c.id === activeCalc);
       if (calc) {
         document.title = `${calc.name} - CalcForDocs`;
@@ -128,7 +137,7 @@ function MainApp() {
     } else {
       document.title = "CalcForDocs - Clinical Decision Support Tools";
     }
-  }, [activeCalc]);
+  }, [activeCalc, activePanel]);
 
   /* 📜 Auto-Scroll to Active Calculator */
   useEffect(() => {
