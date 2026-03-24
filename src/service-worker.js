@@ -5,10 +5,23 @@ import { registerRoute } from 'workbox-routing';
 import { NetworkFirst, CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 
+import { createHandlerBoundToURL } from 'workbox-precaching';
+import { NavigationRoute } from 'workbox-routing';
+
 clientsClaim();
 
 // Auto-inject all build assets (JS, CSS, images, etc.)
 precacheAndRoute(self.__WB_MANIFEST);
+
+// ✅ Allow offline deep-links (App Shell pattern)
+// This ensures that any navigation request for a URL that isn't precached 
+// (like /?calc=gcs) is served the cached index.html.
+const handler = createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html');
+const navigationRoute = new NavigationRoute(handler, {
+  // Exclude URLs that aren't navigation (e.g. /api, /static)
+  denylist: [/^\/(api|_)|(?:\.(?:js|css|json|png|jpg|jpeg|svg|gif|ico|woff2|woff|ttf)$)/i],
+});
+registerRoute(navigationRoute);
 
 // ✅ Cache API responses (adjust domain/path as needed)
 registerRoute(
