@@ -135,6 +135,20 @@ function MainApp() {
     }
   }, [activeCalc]);
 
+  /* 📜 Auto-Scroll to Active Calculator */
+  useEffect(() => {
+    if (activeCalc) {
+      // Small timeout to allow the transition/render to begin
+      const timeout = setTimeout(() => {
+        const element = document.getElementById(activeCalc);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+      return () => clearTimeout(timeout);
+    }
+  }, [activeCalc]);
+
   /* 🛠 Handlers */
   const toggleTheme = useCallback(() => {
     setTheme((p) => (p === "light" ? "dark" : "light"));

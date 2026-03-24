@@ -8,7 +8,7 @@ export default function CalculatorGrid({
   return (
     <div className="button-grid">
       {calcs.map((item) => (
-        <div key={item.id} className="button-wrapper-container">
+        <div key={item.id} id={item.id} className="button-wrapper-container">
           <div className="button-wrapper">
             <button
               className={`calc-btn ${activeCalc === item.id ? "active" : ""}`}
