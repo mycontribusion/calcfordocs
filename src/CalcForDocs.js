@@ -22,15 +22,18 @@ const ARRANGEMENTS = {
 
 function MainApp() {
   const [activeCalc, setActiveCalc] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("calc") || null;
+    const path = window.location.pathname;
+    const match = path.match(/^\/calc\/([^/]+)/);
+    return match ? match[1] : null;
   });
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
   const [activePanel, setActivePanel] = useState(null); // dropdown state
   const [view, setView] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("view") || "default";
+    const path = window.location.pathname;
+    if (path.startsWith("/calc/")) return "default"; // or track original view?
+    const match = path.match(/^\/view\/([^/]+)/);
+    return match ? match[1] : "default";
   });
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
 
@@ -80,43 +83,35 @@ function MainApp() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  /* 🔗 Sync State with URL */
+  /* 🔗 Sync State with URL Path (for SEO & Vercel Analytics) */
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let changed = false;
+    const currentPath = window.location.pathname;
+    let newPath = "/";
 
     if (activeCalc) {
-      if (params.get("calc") !== activeCalc) {
-        params.set("calc", activeCalc);
-        changed = true;
-      }
-    } else if (params.has("calc")) {
-      params.delete("calc");
-      changed = true;
+      newPath = `/calc/${activeCalc}`;
+    } else if (view && view !== "default") {
+      newPath = `/view/${view}`;
     }
 
-    if (view && view !== "default") {
-      if (params.get("view") !== view) {
-        params.set("view", view);
-        changed = true;
-      }
-    } else if (params.has("view")) {
-      params.delete("view");
-      changed = true;
-    }
-
-    if (changed) {
-      const newSearch = params.toString() ? `?${params.toString()}` : "";
-      window.history.pushState(null, "", newSearch || window.location.pathname);
+    if (currentPath !== newPath) {
+      window.history.pushState(null, "", newPath);
     }
   }, [activeCalc, view]);
 
   /* 🔄 Handle Browser Navigation (Back/Forward) */
   useEffect(() => {
     const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      setActiveCalc(params.get("calc") || null);
-      setView(params.get("view") || "default");
+      const path = window.location.pathname;
+      const calcMatch = path.match(/^\/calc\/([^/]+)/);
+      const viewMatch = path.match(/^\/view\/([^/]+)/);
+
+      setActiveCalc(calcMatch ? calcMatch[1] : null);
+      if (viewMatch) {
+        setView(viewMatch[1]);
+      } else if (!calcMatch) {
+        setView("default");
+      }
     };
 
     window.addEventListener("popstate", handlePopState);
