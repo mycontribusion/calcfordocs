@@ -1,4 +1,5 @@
 import CalculatorRenderer from "../calculators/CalculatorRenderer";
+import CopyResultWrapper from "./CopyResultWrapper";
 
 export default function CalculatorGrid({
   calcs,
@@ -20,7 +21,9 @@ export default function CalculatorGrid({
 
           {activeCalc === item.id && (
             <div className="calc-row">
-              <CalculatorRenderer id={item.id} />
+              <CopyResultWrapper>
+                <CalculatorRenderer id={item.id} />
+              </CopyResultWrapper>
             </div>
           )}
         </div>

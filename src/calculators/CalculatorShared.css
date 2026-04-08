@@ -393,3 +393,60 @@
     color: #38bdf8;
     border-color: rgba(56, 189, 248, 0.2);
 }
+
+/* Copy Result Feature */
+.copy-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.copy-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.copy-result-btn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.copy-result-btn:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.copy-result-btn.copied {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #a7f3d0;
+}
+
+.calcfordocs.dark .copy-result-btn {
+    background: #333;
+    color: #e2e8f0;
+    border-color: #444;
+}
+
+.calcfordocs.dark .copy-result-btn:hover {
+    background: #444;
+}
+
+.calcfordocs.dark .copy-result-btn.copied {
+    background: #064e3b;
+    color: #34d399;
+    border-color: #065f46;
+}
