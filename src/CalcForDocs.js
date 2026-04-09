@@ -1,5 +1,5 @@
 import "./CalcForDocs.css";
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, useDeferredValue } from "react";
 import calcinfo from "./calculators/calcinfo.json";
 import useServiceWorkerUpdate from "./useServiceWorkerUpdate";
 import { track } from "@vercel/analytics";
@@ -169,8 +169,9 @@ function MainApp() {
   }, []);
 
   /* 🔍 Filtered & Ordered Calculators */
+  const deferredSearchTerm = useDeferredValue(searchTerm);
   const filteredCalcs = useMemo(() => {
-    const lowerTerm = searchTerm.toLowerCase();
+    const lowerTerm = deferredSearchTerm.toLowerCase();
     let base = calcinfo.filter(
       (item) =>
         item.name.toLowerCase().includes(lowerTerm) ||
@@ -191,7 +192,7 @@ function MainApp() {
     }
 
     return base;
-  }, [searchTerm, view]);
+  }, [deferredSearchTerm, view]);
 
   return (
     <div className={`calcfordocs ${theme}`}>
