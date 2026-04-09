@@ -1,51 +1,53 @@
+import { Suspense, lazy } from "react";
+import ChunkErrorBoundary from "../components/ChunkErrorBoundary";
 // calculators/CalculatorRenderer.jsx
 
-import AxisInterpreter from "./AxisInterpreter";
-import BMICalculator from "./BMICalculator";
-import ECGInterpreter from "./ECGInterpreter";
-import FluidCorrection from "./FluidCorrection";
-import GCSCalculator from "./GCSCalculator";
-import GlucoseConverter from "./GlucoseConverter";
-import HeartFailureFramingham from "./HeartFailureFramingham";
-import MapCalculator from "./MAPCalculator";
-import WeightEstimator from "./WeightEstimator";
-import HypokalemiaCorrection from "./HypokalemiaCorrection";
-import EstimatedBloodVolume from "./EstimatedBloodVolume";
-import PediatricTransfusionCalculator from "./PediatricTransfusionCalculator";
-import MilestoneAgeEstimator from "./MilestoneAgeEstimator";
-import EGFRCalculator from "./EGFRCalculator";
-import DrugDosageCalculator from "./DrugDosageCalculator";
-import IVInfusionCalculator from "./IVInfusionCalculator";
-import SerumOsmolalityCalculator from "./SerumOsmolalityCalculator";
-import ExpectedGestationalAge from "./ExpectedGestationalAge";
-import RateCounter from "./RateCounter";
-import BallardScore from "./BallardScore";
-import UreaCrRatio from "./UreaCrRatio";
-import CorrectedCalcium from "./CorrectedCalcium";
-import WellsDVTScore from "./WellsDVTScore";
-import WellsScorePE from "./WellsPEScore";
-import ShockIndex from "./ShockIndex";
-import CorrectedSodium from "./CorrectedNa";
-import AnionGapDeltaRatio from "./AnionGapDeltaRatio";
-import CalciumPhosphateProduct from "./CalciumPhosphateProduct";
-import RuleOfNines from "./RuleOfNines";
-import CHA2DS2VASc from "./CHA2DS2VASc";
-import SOFA from "./SOFA";
-import BishopScore from "./BishopScore";
-import HyponatremiaCorrection from "./HyponatremiaCorrection";
-import SpO2FiO2Ratio from "./SpO2FiO2Ratio";
-import SimpleCalculator from "./SimpleCalculator";
-import CURB65Calculator from "./CURB65Calculator";
-import SirirajScore from "./SirirajScore";
-import DAR2026RiskCalculator from "./DAR2026RiskCalculator";
-import MMSECalculator from "./MMSECalculator";
-import IPSSCalculator from "./IPSSCalculator";
-import UniversalLabConverter from "./UniversalLabConverter";
-import ApgarScore from "./ApgarScore";
-import ParklandFormula from "./ParklandFormula";
-import DextroseFortifier from "./DextroseFortifier";
-import DrugVolumeCalculator from "./DrugVolumeCalculator";
-import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
+const AxisInterpreter = lazy(() => import("./AxisInterpreter"));
+const BMICalculator = lazy(() => import("./BMICalculator"));
+const ECGInterpreter = lazy(() => import("./ECGInterpreter"));
+const FluidCorrection = lazy(() => import("./FluidCorrection"));
+const GCSCalculator = lazy(() => import("./GCSCalculator"));
+const GlucoseConverter = lazy(() => import("./GlucoseConverter"));
+const HeartFailureFramingham = lazy(() => import("./HeartFailureFramingham"));
+const MapCalculator = lazy(() => import("./MAPCalculator"));
+const WeightEstimator = lazy(() => import("./WeightEstimator"));
+const HypokalemiaCorrection = lazy(() => import("./HypokalemiaCorrection"));
+const EstimatedBloodVolume = lazy(() => import("./EstimatedBloodVolume"));
+const PediatricTransfusionCalculator = lazy(() => import("./PediatricTransfusionCalculator"));
+const MilestoneAgeEstimator = lazy(() => import("./MilestoneAgeEstimator"));
+const EGFRCalculator = lazy(() => import("./EGFRCalculator"));
+const DrugDosageCalculator = lazy(() => import("./DrugDosageCalculator"));
+const IVInfusionCalculator = lazy(() => import("./IVInfusionCalculator"));
+const SerumOsmolalityCalculator = lazy(() => import("./SerumOsmolalityCalculator"));
+const ExpectedGestationalAge = lazy(() => import("./ExpectedGestationalAge"));
+const RateCounter = lazy(() => import("./RateCounter"));
+const BallardScore = lazy(() => import("./BallardScore"));
+const UreaCrRatio = lazy(() => import("./UreaCrRatio"));
+const CorrectedCalcium = lazy(() => import("./CorrectedCalcium"));
+const WellsDVTScore = lazy(() => import("./WellsDVTScore"));
+const WellsScorePE = lazy(() => import("./WellsPEScore"));
+const ShockIndex = lazy(() => import("./ShockIndex"));
+const CorrectedSodium = lazy(() => import("./CorrectedNa"));
+const AnionGapDeltaRatio = lazy(() => import("./AnionGapDeltaRatio"));
+const CalciumPhosphateProduct = lazy(() => import("./CalciumPhosphateProduct"));
+const RuleOfNines = lazy(() => import("./RuleOfNines"));
+const CHA2DS2VASc = lazy(() => import("./CHA2DS2VASc"));
+const SOFA = lazy(() => import("./SOFA"));
+const BishopScore = lazy(() => import("./BishopScore"));
+const HyponatremiaCorrection = lazy(() => import("./HyponatremiaCorrection"));
+const SpO2FiO2Ratio = lazy(() => import("./SpO2FiO2Ratio"));
+const SimpleCalculator = lazy(() => import("./SimpleCalculator"));
+const CURB65Calculator = lazy(() => import("./CURB65Calculator"));
+const SirirajScore = lazy(() => import("./SirirajScore"));
+const DAR2026RiskCalculator = lazy(() => import("./DAR2026RiskCalculator"));
+const MMSECalculator = lazy(() => import("./MMSECalculator"));
+const IPSSCalculator = lazy(() => import("./IPSSCalculator"));
+const UniversalLabConverter = lazy(() => import("./UniversalLabConverter"));
+const ApgarScore = lazy(() => import("./ApgarScore"));
+const ParklandFormula = lazy(() => import("./ParklandFormula"));
+const DextroseFortifier = lazy(() => import("./DextroseFortifier"));
+const DrugVolumeCalculator = lazy(() => import("./DrugVolumeCalculator"));
+const ElectrolyteUnitConverter = lazy(() => import("./ElectrolyteUnitConverter"));
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -94,10 +96,15 @@ const CALCULATOR_MAP = {
   parkland_formula: ParklandFormula,
   dextrose_fortifier: DextroseFortifier,
   drug_volume_calc: DrugVolumeCalculator,
-  electrolyte_unit_conv: ElectrolyteUnitConverter,
 };
 
 export default function CalculatorRenderer({ id }) {
   const Component = CALCULATOR_MAP[id];
-  return Component ? <Component /> : null;
+  return Component ? (
+    <ChunkErrorBoundary>
+      <Suspense fallback={<div style={{ textAlign: "center", padding: "20px", color: "#666" }}>Loading calculator...</div>}>
+        <Component />
+      </Suspense>
+    </ChunkErrorBoundary>
+  ) : null;
 }
