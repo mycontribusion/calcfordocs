@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-export default function CopyResultWrapper({ children }) {
+export default function CopyResultWrapper({ children, calcName }) {
     const containerRef = useRef(null);
     const [hasResult, setHasResult] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -57,7 +57,7 @@ export default function CopyResultWrapper({ children }) {
             });
 
             // Extract main result text
-            const textToCopy = Array.from(resultEls)
+            const extractedText = Array.from(resultEls)
                 .map(el => el.innerText.trim())
                 .filter(text => text.length > 0)
                 .join('\n\n');
@@ -66,6 +66,8 @@ export default function CopyResultWrapper({ children }) {
             hiddenNodes.forEach(({ el, origDisplay }) => {
                 el.style.display = origDisplay;
             });
+
+            const textToCopy = (calcName ? `${calcName}\n${extractedText}` : extractedText).trim();
 
             if (textToCopy) {
                 navigator.clipboard.writeText(textToCopy).then(() => {

@@ -63,11 +63,15 @@ function MainApp() {
     }
   }, [checkScroll]);
 
-  /* 🌗 Detect System Theme */
+  /* 🌗 Detect System Theme & Sync with Body */
   useEffect(() => {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     setTheme(prefersDark ? "dark" : "light");
   }, []);
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
 
   /* 🔔 Show banner when SW update becomes available */
   useEffect(() => {

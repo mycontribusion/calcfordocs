@@ -187,7 +187,8 @@ textarea::placeholder {
 /* =========================
    6. DARK MODE
 ========================= */
-.calcfordocs.dark {
+.calcfordocs.dark,
+body.dark {
   background: #000;
   color: #fff;
 }
@@ -235,8 +236,8 @@ textarea::placeholder {
   border-top: 1px solid #333;
 }
 
-/* Body sync */
-body:has(.calcfordocs.dark) {
+/* Body sync (legacy) */
+body.dark {
   background: #000;
 }
 

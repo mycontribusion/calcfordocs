@@ -21,7 +21,7 @@ export default function CalculatorGrid({
 
           {activeCalc === item.id && (
             <div className="calc-row">
-              <CopyResultWrapper>
+              <CopyResultWrapper calcName={item.name}>
                 <CalculatorRenderer id={item.id} />
               </CopyResultWrapper>
             </div>
