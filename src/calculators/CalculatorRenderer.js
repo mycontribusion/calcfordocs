@@ -96,6 +96,7 @@ const CALCULATOR_MAP = {
   parkland_formula: ParklandFormula,
   dextrose_fortifier: DextroseFortifier,
   drug_volume_calc: DrugVolumeCalculator,
+  electrolyte_unit_conv: ElectrolyteUnitConverter,
 };
 
 export default function CalculatorRenderer({ id }) {
