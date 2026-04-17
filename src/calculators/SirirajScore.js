@@ -14,15 +14,19 @@ const INITIAL_STATE = {
 export default function SirirajScore() {
   const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
 
-  const { score, interpretation } = useMemo(() => {
+  const { score, interpretation, suggests } = useMemo(() => {
     if (values.dbp === "") return { score: null, interpretation: "" };
     const dbpVal = Number(values.dbp) || 0;
     const result = (2.5 * values.consciousness) + (2 * values.vomiting) + (2 * values.headache) + (0.1 * dbpVal) - (3 * values.atheroma) - 12;
     let interp = "";
+    let actionStr = "";
     if (result > 1) interp = "Likely Hemorrhagic Stroke";
     else if (result < -1) interp = "Likely Ischemic Stroke";
-    else interp = "Indeterminate (Grey Zone) → Imaging required";
-    return { score: result.toFixed(2), interpretation: interp };
+    else {
+      interp = "Indeterminate (Grey Zone)";
+      actionStr = "Action: Imaging required";
+    }
+    return { score: result.toFixed(2), interpretation: interp, suggests: actionStr };
   }, [values]);
 
   return (
@@ -62,6 +66,11 @@ export default function SirirajScore() {
       {score !== null && (
         <div className="calc-result">
           <p><strong>Score:</strong> {score}</p><p><strong>Interpretation:</strong> {interpretation}</p>
+          {suggests && (
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <p style={{ color: '#0056b3', marginTop: 4 }}>{suggests}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

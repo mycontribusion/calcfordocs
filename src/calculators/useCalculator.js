@@ -5,7 +5,8 @@ const SYNC_KEYS = [
     "weight", "height", "age", "ageUnit", "sex",
     "creatinine", "creatinineUnit", "albumin", "albuminUnit",
     "glucose", "glucoseUnit", "sodium", "potassium", "chloride", "bicarb",
-    "sbp", "dbp", "urea", "ureaUnit", "spo2", "heartRate", "calcium", "calciumUnit", "phosphate", "phosphateUnit"
+    "sbp", "dbp", "urea", "ureaUnit", "spo2", "heartRate", "calcium", "calciumUnit", "phosphate", "phosphateUnit",
+    "ascitesAlbumin", "preBUN", "postBUN"
 ];
 
 /**

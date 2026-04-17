@@ -38,16 +38,16 @@ export default function BishopScore() {
     );
   }, [values]);
 
-  const interpretation = useMemo(() => {
+  const { interpretation, suggests } = useMemo(() => {
     if (values.mode === "traditional") {
       return totalScore > 8
-        ? "Favorable cervix (high likelihood of successful induction)"
-        : "Unfavorable cervix (low likelihood of successful induction)";
+        ? { interpretation: "Favorable cervix", suggests: "High likelihood of successful induction" }
+        : { interpretation: "Unfavorable cervix", suggests: "Low likelihood of successful induction" };
     }
 
     return totalScore >= 5
-      ? "Favorable cervix"
-      : "Unfavorable cervix";
+      ? { interpretation: "Favorable cervix", suggests: "High likelihood of successful induction" }
+      : { interpretation: "Unfavorable cervix", suggests: "Low likelihood of successful induction" };
   }, [values.mode, totalScore]);
 
   return (
@@ -153,6 +153,11 @@ export default function BishopScore() {
       <div className="calc-result">
         <h3>Total Score: {totalScore}</h3>
         <p style={{ margin: 0, fontWeight: "normal", fontSize: "0.9rem" }}>{interpretation}</p>
+        {suggests && (
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <p style={{ color: '#0056b3', marginTop: 4 }}>{suggests}</p>
+          </div>
+        )}
       </div>
       <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
     </div>

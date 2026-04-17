@@ -44,3 +44,5 @@ timer_calculator
 urea_creatinine_ratio
 wells_dvt_score
 wells_pe_score
+dialysis_adequacy
+saag_calculator

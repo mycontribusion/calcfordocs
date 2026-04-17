@@ -33,12 +33,12 @@ export default function CopyResultWrapper({ children, calcName }) {
 
         if (resultEls.length > 0) {
             const hiddenNodes = [];
-            const isNoteMatch = (text) => /formula|classification|reference|note:|disclaimer/i.test(text);
+            const isNoteMatch = (text) => /formula|classification|reference|note:|disclaimer|interpretation guide|scoring:|criteria:/i.test(text);
 
             // Hide unwanted elements to exclude them from innerText
             resultEls.forEach(resultEl => {
-                // 1. Hide known utility classes often used for notes
-                const subElements = resultEl.querySelectorAll('.text-sm, .text-gray-600, .calc-result-sub, ul, small, .disclaimer, .calc-formula-box');
+                // 1. Hide known utility classes often used for notes, plus block elements used for guides
+                const subElements = resultEl.querySelectorAll('.text-sm, .text-gray-600, .calc-result-sub, ul, ol, div, small, .disclaimer, .calc-formula-box');
                 subElements.forEach(el => {
                     if (el.style.display !== 'none') {
                         hiddenNodes.push({ el, origDisplay: el.style.display });
@@ -67,7 +67,7 @@ export default function CopyResultWrapper({ children, calcName }) {
                 el.style.display = origDisplay;
             });
 
-            const textToCopy = (calcName ? `${calcName}\n${extractedText}` : extractedText).trim();
+            const textToCopy = extractedText.trim();
 
             if (textToCopy) {
                 navigator.clipboard.writeText(textToCopy).then(() => {

@@ -39,15 +39,14 @@ export default function WellsDVTScore() {
     return total;
   }, [values]);
 
-  const interpretation = useMemo(() => {
+  const { interpretation, suggests } = useMemo(() => {
     let interp = "";
-    if (score >= 3) interp = "High probability of DVT";
-    else if (score >= 1) interp = "Moderate probability of DVT";
-    else interp = "Low probability of DVT";
+    let sug = "";
+    if (score >= 3) { interp = "High probability of DVT"; sug = "DVT likely"; }
+    else if (score >= 1) { interp = "Moderate probability of DVT"; sug = score >= 2 ? "DVT likely" : "DVT unlikely"; }
+    else { interp = "Low probability of DVT"; sug = "DVT unlikely"; }
 
-    if (score >= 2) interp += " — DVT likely.";
-    else interp += " — DVT unlikely.";
-    return interp;
+    return { interpretation: interp, suggests: sug };
   }, [score]);
 
   return (
@@ -72,6 +71,11 @@ export default function WellsDVTScore() {
         <div className="calc-result" style={{ marginTop: 16 }}>
           <strong>Total Score:</strong> {score} <br />
           <strong>Interpretation:</strong> {interpretation}
+          {suggests && (
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <p style={{ color: '#0056b3', marginTop: 4 }}>Action: {suggests}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

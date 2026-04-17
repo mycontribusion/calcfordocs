@@ -55,20 +55,21 @@ export default function CHA2DS2VASc() {
     return sum;
   }, [values]);
 
-  const interpretation = useMemo(() => {
+  const { interpretation, suggests } = useMemo(() => {
     let sex = values.female ? "female" : "male";
     let text = "";
+    let sug = "";
 
     if (sex === "male") {
-      if (score === 0) text = "Low risk — no anticoagulation needed.";
-      else if (score === 1) text = "Intermediate risk — consider anticoagulation.";
-      else text = "High risk — anticoagulation recommended.";
+      if (score === 0) { text = "Low risk"; sug = "No anticoagulation needed."; }
+      else if (score === 1) { text = "Intermediate risk"; sug = "Consider anticoagulation."; }
+      else { text = "High risk"; sug = "Anticoagulation recommended."; }
     } else {
-      if (score === 1) text = "Low risk — no anticoagulation needed.";
-      else if (score === 2) text = "Intermediate risk — consider anticoagulation.";
-      else if (score >= 3) text = "High risk — anticoagulation recommended.";
+      if (score === 1) { text = "Low risk"; sug = "No anticoagulation needed."; }
+      else if (score === 2) { text = "Intermediate risk"; sug = "Consider anticoagulation."; }
+      else { text = "High risk"; sug = "Anticoagulation recommended."; }
     }
-    return text;
+    return { interpretation: text, suggests: sug };
   }, [score, values.female]);
 
   return (
@@ -95,6 +96,11 @@ export default function CHA2DS2VASc() {
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Total Score:</strong> {score}</p>
           <p><strong>Interpretation:</strong> {interpretation}</p>
+          {suggests && (
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <p style={{ color: '#0056b3', marginTop: 4 }}>{suggests}</p>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -65,9 +65,11 @@ export default function SOFA() {
 
   useEffect(() => {
     const score = (values.rrHigh ? 1 : 0) + (values.sbpLow ? 1 : 0) + (values.gcsLow ? 1 : 0);
-    const interpretation = score === 0 ? "Low immediate risk" : score === 1 ? "Intermediate risk → close monitoring" : "High risk → urgent sepsis assessment";
+    const interpretation = score === 0 ? "Low immediate risk" : score === 1 ? "Intermediate risk" : "High risk";
+    const suggests = score === 0 ? "" : score === 1 ? "Action: Close monitoring" : "Action: Urgent sepsis assessment";
+
     if (values.qsofaScore !== score) {
-      updateFields({ qsofaScore: score, qsofaInterp: interpretation });
+      updateFields({ qsofaScore: score, qsofaInterp: interpretation, qsofaSuggests: suggests });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.rrHigh, values.sbpLow, values.gcsLow]);
@@ -114,11 +116,12 @@ export default function SOFA() {
     else if (crMg >= 1.2) renal = 1;
 
     const total = resp + liverScore + cardio + cns + renal;
-    const interpretation = total === 0 ? "No organ dysfunction detected" : total <= 4 ? "Mild organ dysfunction" : total <= 9 ? "Moderate dysfunction → increased mortality risk" : "Severe dysfunction → ICU-level care likely required";
+    const interpretation = total === 0 ? "No organ dysfunction detected" : total <= 4 ? "Mild organ dysfunction" : total <= 9 ? "Moderate dysfunction" : "Severe dysfunction";
+    const msofaSuggests = total === 0 ? "" : total <= 4 ? "" : total <= 9 ? "Suggests increased mortality risk" : "ICU-level care likely required";
 
     if (values.msofaResult.total !== total) {
       updateFields({
-        msofaResult: { resp, liver: liverScore, cardio, cns, renal, total, interpretation }
+        msofaResult: { resp, liver: liverScore, cardio, cns, renal, total, interpretation, msofaSuggests }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,6 +157,11 @@ export default function SOFA() {
           <div className="calc-result">
             <p><strong>Score:</strong> {values.qsofaScore} / 3</p>
             <p>{values.qsofaInterp}</p>
+            {values.qsofaSuggests && (
+              <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+                <p style={{ color: '#0056b3', marginTop: 4 }}>{values.qsofaSuggests}</p>
+              </div>
+            )}
           </div>
         </>
       )}
@@ -264,6 +272,11 @@ export default function SOFA() {
           <div className="calc-result">
             <p><strong>Score:</strong> {values.msofaResult.total} / 19</p>
             <p>{values.msofaResult.interpretation}</p>
+            {values.msofaResult.msofaSuggests && (
+              <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+                <p style={{ color: '#0056b3', marginTop: 4 }}>{values.msofaResult.msofaSuggests}</p>
+              </div>
+            )}
           </div>
         </>
       )}

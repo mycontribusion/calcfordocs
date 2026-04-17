@@ -89,7 +89,7 @@
     ]
   },
   {
-    "name": "Body Mass Index",
+    "name": "Body Mass Index (BMI)",
     "id": "bmi_calculator",
     "keywords": [
       "body mass index",
@@ -136,7 +136,7 @@
     ]
   },
   {
-    "name": "Mean Arterial Pressure",
+    "name": "Mean Arterial Pressure (MAP)",
     "id": "map_calculator",
     "keywords": [
       "mean arterial pressure",
@@ -452,6 +452,29 @@
       "mini mental state exam",
       "mmse",
       "cognitive impairment"
+    ]
+  },
+  {
+    "name": "SAAG Calculator",
+    "id": "saag_calculator",
+    "keywords": [
+      "saag",
+      "serum ascites albumin gradient",
+      "albumin",
+      "ascites",
+      "portal hypertension",
+      "gradient"
+    ]
+  },
+  {
+    "name": "Dialysis Adequacy",
+    "id": "dialysis_adequacy",
+    "keywords": [
+      "dialysis adequacy",
+      "urr",
+      "kt/v",
+      "urea reduction ratio",
+      "hemodialysis"
     ]
   }
 ]

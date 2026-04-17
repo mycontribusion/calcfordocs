@@ -49,12 +49,18 @@ export default function UreaCrRatio() {
 
     const ratio = bunMgdl / crMgdl;
     const interp = ratio > 20
+      ? "Prerenal"
+      : ratio < 10
+        ? "Intrarenal"
+        : "Normal/Postrenal";
+
+    const suggests = ratio > 20
       ? "Suggests pre-renal cause (e.g., dehydration, GI bleed)"
       : ratio < 10
         ? "Suggests intra-renal cause (e.g., ATN)"
         : "Normal or post-renal cause";
 
-    updateFields({ ratio: ratio.toFixed(1), interpretation: interp });
+    updateFields({ ratio: ratio.toFixed(1), interpretation: interp, suggests });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.urea, values.ureaUnit, values.creatinine, values.creatinineUnit]);
 
@@ -105,6 +111,7 @@ export default function UreaCrRatio() {
           <p><strong>BUN/Cr Ratio:</strong> {values.ratio} : 1</p>
           <p style={{ marginTop: 4, color: '#0056b3' }}>{values.interpretation}</p>
           <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem', opacity: 0.8 }}>
+            <p style={{ color: '#0056b3', marginBottom: 8, opacity: 1, fontWeight: 500 }}>{values.suggests}</p>
             <strong>Interpretation Guide:</strong>
             <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0' }}>
               <li>• &gt; 20:1: Prerenal</li>

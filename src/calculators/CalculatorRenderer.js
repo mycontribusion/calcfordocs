@@ -47,6 +47,9 @@ import DextroseFortifier from "./DextroseFortifier";
 import DrugVolumeCalculator from "./DrugVolumeCalculator";
 import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
 
+import DialysisAdequacy from "./DialysisAdequacy";
+import SAAGCalculator from "./SAAGCalculator";
+
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
   lab_converter: UniversalLabConverter,
@@ -95,6 +98,8 @@ const CALCULATOR_MAP = {
   dextrose_fortifier: DextroseFortifier,
   drug_volume_calc: DrugVolumeCalculator,
   electrolyte_unit_conv: ElectrolyteUnitConverter,
+  saag_calculator: SAAGCalculator,
+  dialysis_adequacy: DialysisAdequacy,
 };
 
 export default function CalculatorRenderer({ id }) {

@@ -31,6 +31,9 @@ export const PatientProvider = ({ children }) => {
         calciumUnit: "mg/dL",
         phosphate: "",
         phosphateUnit: "mg/dL",
+        ascitesAlbumin: "",
+        preBUN: "",
+        postBUN: "",
     });
 
     const updatePatient = useCallback((key, value) => {
@@ -74,6 +77,9 @@ export const PatientProvider = ({ children }) => {
             calciumUnit: "mg/dL",
             phosphate: "",
             phosphateUnit: "mg/dL",
+            ascitesAlbumin: "",
+            preBUN: "",
+            postBUN: "",
         });
     }, []);
 
