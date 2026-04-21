@@ -15,7 +15,7 @@ const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
   peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "dextrose_fortifier", "blood_volume_estimator", "ballard_score"],
   electrolytes: ["glucose_converter", "serum_osmolality", "anion_gap_delta_ratio", "hypokalemia_correction", "hyponatremia_correction", "corrected_sodium", "corrected_calcium", "calcium_phosphate_product", "lab_converter", "egfr_calculator", "urea_creatinine_ratio"],
-  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis"],
+  med: ["sofa_score", "curb65_score", "af_stroke_risk_cha2ds2vasc", "wells_dvt_score", "wells_pe_score", "stroke_score_siriraj", "ecg_waveforms", "mmse_calculator", "dar_risk_assessment", "heart_failure_framingham", "cardiac_axis", "saag_calculator", "dialysis_adequacy", "dialysis_prescription"],
   meds: ["drug_volume_calc", "dosage_calculator", "iv_infusion_rate", "parkland_formula", "dextrose_fortifier", "electrolyte_unit_conv"],
   surg: ["rule_of_nines", "parkland_formula", "ipss_score"]
 };
