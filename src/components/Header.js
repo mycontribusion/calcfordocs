@@ -1,7 +1,10 @@
+import { lazy, Suspense } from "react";
 import "./Header.css";
-import Feedback from "../Feedback";
+// import Feedback from "../Feedback"; // Replaced with lazy import
 import InstallGuide from "./InstallGuide";
 import usePWAInstall from "../hooks/usePWAInstall";
+
+const Feedback = lazy(() => import("../Feedback"));
 
 const InstallIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="header-icon">
@@ -61,7 +64,9 @@ export default function Header({ theme, toggleTheme, activePanel, setActivePanel
 
       {activePanel === "feedback" && (
         <div className="header-dropdown">
-          <Feedback />
+          <Suspense fallback={<div style={{ padding: 20, textAlign: 'center', opacity: 0.6, fontSize: '0.9rem' }}>Loading Feedback...</div>}>
+            <Feedback />
+          </Suspense>
         </div>
       )}
     </div>
