@@ -472,9 +472,22 @@
     "keywords": [
       "dialysis adequacy",
       "urr",
+      "hd",
       "kt/v",
       "urea reduction ratio",
       "hemodialysis"
+    ]
+  },
+  {
+    "name": "Dialysis Prescription (Coming Soon)",
+    "id": "dialysis_prescription",
+    "keywords": [
+      "dialysis prescription",
+      "ultrafiltration goal",
+      "uf rate",
+      "hemodialysis",
+      "hd",
+      "fluid removal"
     ]
   }
 ]

@@ -2,8 +2,9 @@
 import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst, StaleWhileRevalidate, NetworkOnly } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
+import { BackgroundSyncPlugin } from 'workbox-background-sync';
 
 clientsClaim();
 
@@ -31,4 +32,17 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: 'google-fonts',
   })
+);
+
+// ✅ Offline Analytics (Background Sync for Vercel Analytics)
+registerRoute(
+  ({ url }) => url.pathname === '/_analytics',
+  new NetworkOnly({
+    plugins: [
+      new BackgroundSyncPlugin('analytics-queue', {
+        maxRetentionTime: 24 * 60, // Retry for up to 24 hours (in minutes)
+      }),
+    ],
+  }),
+  'POST'
 );

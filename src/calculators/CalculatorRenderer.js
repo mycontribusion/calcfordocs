@@ -49,6 +49,8 @@ import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
 
 import DialysisAdequacy from "./DialysisAdequacy";
 import SAAGCalculator from "./SAAGCalculator";
+import DialysisPrescription from "./DialysisPrescription";
+import ComingSoon from "./ComingSoon";
 
 /* 🔑 Calculator Map */
 const CALCULATOR_MAP = {
@@ -98,8 +100,9 @@ const CALCULATOR_MAP = {
   dextrose_fortifier: DextroseFortifier,
   drug_volume_calc: DrugVolumeCalculator,
   electrolyte_unit_conv: ElectrolyteUnitConverter,
-  saag_calculator: SAAGCalculator,
-  dialysis_adequacy: DialysisAdequacy,
+  "saag_calculator": SAAGCalculator,
+  "dialysis_adequacy": DialysisAdequacy,
+  "dialysis_prescription": () => <ComingSoon name="Dialysis Prescription" />
 };
 
 export default function CalculatorRenderer({ id }) {

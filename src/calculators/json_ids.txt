@@ -46,3 +46,4 @@ wells_dvt_score
 wells_pe_score
 dialysis_adequacy
 saag_calculator
+dialysis_prescription
