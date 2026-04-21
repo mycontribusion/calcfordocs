@@ -49,7 +49,6 @@ import ElectrolyteUnitConverter from "./ElectrolyteUnitConverter";
 
 import DialysisAdequacy from "./DialysisAdequacy";
 import SAAGCalculator from "./SAAGCalculator";
-import DialysisPrescription from "./DialysisPrescription";
 import ComingSoon from "./ComingSoon";
 
 /* 🔑 Calculator Map */
