@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://calcfordocs.com/sitemap.xml
+Sitemap: https://calcfordocs.vercel.app/sitemap.xml
