@@ -9,6 +9,7 @@ import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
 import { PatientProvider } from './calculators/PatientContext';
+import { FavoritesProvider, useFavorites } from './calculators/FavoritesContext';
 
 
 const ARRANGEMENTS = {
@@ -38,6 +39,7 @@ function MainApp() {
     return match ? match[1] : "default";
   });
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
+  const { favorites } = useFavorites();
 
   const [showBanner, setShowBanner] = useState(false); // banner UI state
   const headerRef = useRef(null);
@@ -182,7 +184,9 @@ function MainApp() {
         item.keywords?.some((k) => k.toLowerCase().includes(lowerTerm))
     );
 
-    if (view !== "default" && ARRANGEMENTS[view]) {
+    if (view === "favorites") {
+      base = base.filter(item => favorites.includes(item.id));
+    } else if (view !== "default" && ARRANGEMENTS[view]) {
       const priority = ARRANGEMENTS[view];
       base = [...base].sort((a, b) => {
         const indexA = priority.indexOf(a.id);
@@ -196,7 +200,7 @@ function MainApp() {
     }
 
     return base;
-  }, [deferredSearchTerm, view]);
+  }, [deferredSearchTerm, view, favorites]);
 
   return (
     <div className={`calcfordocs ${theme}`}>
@@ -234,8 +238,9 @@ function MainApp() {
           ref={scrollRef}
           onScroll={checkScroll}
         >
-          {["default", "og", "peds", "electrolytes", "meds", "med", "surg"].map((v) => {
+          {["favorites", "default", "og", "peds", "electrolytes", "meds", "med", "surg"].map((v) => {
             const labels = {
+              favorites: "Favorites",
               default: "Default",
               og: "O&G",
               peds: "Peds",
@@ -303,8 +308,10 @@ function MainApp() {
 
 export default function CalcForDocs() {
   return (
-    <PatientProvider>
-      <MainApp />
-    </PatientProvider>
+    <FavoritesProvider>
+      <PatientProvider>
+        <MainApp />
+      </PatientProvider>
+    </FavoritesProvider>
   );
 }
