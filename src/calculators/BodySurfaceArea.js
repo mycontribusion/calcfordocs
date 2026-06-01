@@ -1,5 +1,6 @@
 // src/calculators/BodySurfaceArea.js
 import React, { useEffect } from "react";
+import { toKg, toCm } from "../utils/unitConversion";
 import useCalculator from "./useCalculator";
 import "./CalculatorShared.css";
 
@@ -23,9 +24,8 @@ export default function BodySurfaceArea() {
       return;
     }
     // Convert weight to kilograms
-    const wKg = values.weightUnit === "kg" ? wRaw : values.weightUnit === "g" ? wRaw / 1000 : wRaw * 0.453592;
-    // Convert height to centimeters
-    const hCm = values.heightUnit === "cm" ? hRaw : values.heightUnit === "m" ? hRaw * 100 : hRaw * 2.54;
+    const wKg = toKg(wRaw, values.weightUnit);
+    const hCm = toCm(hRaw, values.heightUnit);
     const bsa = Math.sqrt((wKg * hCm) / 3600);
     const formatted = bsa.toFixed(2);
     updateFields({ bsa: formatted, interpretation: `Body Surface Area = ${formatted} m²` });

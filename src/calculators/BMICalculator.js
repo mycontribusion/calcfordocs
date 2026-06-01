@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { toKg, toM } from "../utils/unitConversion";
+
 
 const INITIAL_STATE = {
   weight: "",
@@ -15,33 +16,13 @@ export default function BmiCalculator() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    let weightKg = parseFloat(values.weight);
-    let heightM = parseFloat(values.height);
-
-    if (
-      !Number.isFinite(weightKg) ||
-      !Number.isFinite(heightM) ||
-      weightKg <= 0 ||
-      heightM <= 0
-    ) {
+    const weightKg = toKg(values.weight, values.weightUnit);
+    const heightM = toM(values.height, values.heightUnit);
+    if (isNaN(weightKg) || isNaN(heightM) || weightKg <= 0 || heightM <= 0) {
       if (values.result !== "") updateFields({ result: "" });
       return;
     }
-
-    // Convert weight to kg
-    if (values.weightUnit === "lb") {
-      weightKg *= 0.453592;
-    }
-
-    // Convert height to meters
-    let hM = heightM;
-    if (values.heightUnit === "cm") {
-      hM /= 100;
-    } else if (values.heightUnit === "inch") {
-      hM *= 0.0254;
-    }
-
-    const bmi = weightKg / (hM * hM);
+    const bmi = weightKg / (heightM * heightM);
     let category = "";
 
     if (bmi < 18.5) category = "Underweight";
@@ -66,6 +47,7 @@ export default function BmiCalculator() {
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
             type="number"
+            min="0"
             value={values.weight}
             onChange={(e) => setField("weight", e.target.value)}
             className="calc-input"

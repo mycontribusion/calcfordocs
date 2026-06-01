@@ -1,7 +1,7 @@
 import React from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
     weight: "",
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 export default function ParklandFormula() {
     const { values, suggestions, updateField, syncField, reset } = useCalculator(INITIAL_STATE);
 
-    const weight = parseFloat(values.weight) || 0;
+    const weight = toKg(values.weight, values.weightUnit) || 0;
     const tbsaInput = parseFloat(values.tbsa) || 0;
 
     // Cap calculation at 50% TBSA
@@ -37,14 +37,18 @@ export default function ParklandFormula() {
 
             <div className="calc-grid">
                 <div className="calc-group">
-                    <label>Weight (kg)</label>
-                    <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-                    <input
-                        type="number"
-                        value={values.weight}
-                        onChange={(e) => updateField("weight", e.target.value)}
-                        className="calc-input"
-                    />
+            <label>Weight (kg)</label>
+            <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
+            <input
+                type="number"
+                value={values.weight}
+                onChange={(e) => updateField("weight", e.target.value)}
+                className="calc-input"
+            />
+            <select value={values.weightUnit} onChange={(e) => updateField("weightUnit", e.target.value)} className="calc-select">
+                <option value="kg">kg</option>
+                <option value="lb">lb</option>
+            </select>
                 </div>
                 <div className="calc-group">
                     <label>TBSA Burned (%)</label>

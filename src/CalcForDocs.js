@@ -99,7 +99,12 @@ function MainApp() {
     if (activePanel === "feedback") {
       newPath = "/feedback";
     } else if (activeCalc) {
-      newPath = `/calc/${activeCalc}`;
+      // If currently viewing favorites, prefix with /favorite for SEO-friendly URLs
+      if (view === "favorites") {
+        newPath = `/favorite/${activeCalc}`;
+      } else {
+        newPath = `/calc/${activeCalc}`;
+      }
     } else if (view && view !== "default") {
       newPath = `/view/${view}`;
     }
@@ -123,6 +128,29 @@ function MainApp() {
       if (viewMatch) {
         setView(viewMatch[1]);
       } else if (!calcMatch && !isFeedback) {
+        setView("default");
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Adjust popstate handling to support /favorite/:id routes
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const calcMatch = path.match(/^\/calc\/([^/]+)/);
+      const favoriteMatch = path.match(/^\/favorite\/([^/]+)/);
+      const viewMatch = path.match(/^\/view\/([^/]+)/);
+      const isFeedback = path === "/feedback";
+
+      setActivePanel(isFeedback ? "feedback" : null);
+      setActiveCalc(calcMatch ? calcMatch[1] : favoriteMatch ? favoriteMatch[1] : null);
+
+      if (viewMatch) {
+        setView(viewMatch[1]);
+      } else if (!calcMatch && !favoriteMatch && !isFeedback) {
         setView("default");
       }
     };

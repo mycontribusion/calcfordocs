@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
   dose: "",
@@ -30,12 +30,7 @@ export default function DrugDosageCalculator() {
     let w = null;
     if (isWeightBased) {
       if (Number.isFinite(n) && n > 0) {
-        switch (values.weightUnit) {
-          case "kg": w = n; break;
-          case "g": w = n / 1000; break;
-          case "lb": w = n * 0.453592; break;
-          default: w = n;
-        }
+        w = toKg(values.weight, values.weightUnit);
       } else {
         updateFields({ error: "Enter valid weight.", result: null });
         return;

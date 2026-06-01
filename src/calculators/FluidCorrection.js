@@ -2,6 +2,7 @@ import React from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
+import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
   weight: "",
@@ -16,13 +17,8 @@ export default function FluidCorrection() {
   const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
 
   const result = (() => {
-    let weightKg = parseFloat(values.weight);
+    const weightKg = toKg(values.weight, values.weightUnit);
     if (isNaN(weightKg) || weightKg <= 0) return { error: "Please enter a valid weight." };
-
-    // Convert lb → kg
-    if (values.weightUnit === "lb") weightKg = weightKg * 0.453592;
-
-    // Dehydration %
     let dehydrationPercent = 0;
     if (values.severity === "mild") dehydrationPercent = 5;
     else if (values.severity === "moderate") dehydrationPercent = 10;

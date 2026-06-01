@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
+import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
   weight: "",
@@ -37,7 +38,7 @@ export default function EstimatedBloodVolume() {
     const { weight, weightUnit, ageGroup } = values;
     if (!validatePositiveNumber(weight)) return "⚠️ Please enter a valid positive weight.";
 
-    const weightKg = weightUnit === "lb" ? Number(weight) * 0.453592 : Number(weight);
+    const weightKg = toKg(weight, weightUnit);
 
     let range = [70, 70]; // default adult male
     switch (ageGroup) {

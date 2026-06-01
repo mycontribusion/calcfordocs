@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
   sodium: "",
@@ -23,7 +23,7 @@ export default function HyponatremiaCorrection() {
 
   useEffect(() => {
     const na = parseFloat(values.sodium);
-    const wt = parseFloat(values.weight);
+    const weightKg = toKg(values.weight, values.weightUnit);
     const target = parseFloat(values.targetRise);
 
     // Auto-set ageGroup based on global age
@@ -34,7 +34,7 @@ export default function HyponatremiaCorrection() {
       }
     }
 
-    if (isNaN(na) || isNaN(wt) || isNaN(target)) {
+    if (isNaN(na) || isNaN(weightKg) || isNaN(target)) {
       if (values.result !== null || values.warning !== "") updateFields({ result: null, warning: "" });
       return;
     }
@@ -50,7 +50,7 @@ export default function HyponatremiaCorrection() {
     if (target > 8) { updateFields({ warning: "⚠️ Target correction exceeds safe limit (≤8 mmol/L).", result: null }); return; }
 
     let tbwFactor = values.sex === "male" ? (values.ageGroup === "nonelderly" ? 0.6 : 0.5) : (values.ageGroup === "nonelderly" ? 0.5 : 0.45);
-    const tbw = wt * tbwFactor;
+    const tbw = weightKg * tbwFactor;
     const deltaPerLiter = (getInfusateNa(values.fluid) - na) / (tbw + 1);
 
     if (deltaPerLiter <= 0) { updateFields({ warning: "⚠️ Selected fluid will not raise serum sodium.", result: null }); return; }

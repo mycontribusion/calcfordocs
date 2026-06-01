@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { toKg } from "../utils/unitConversion";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
 import "./CalculatorShared.css";
@@ -21,7 +22,7 @@ export default function HypokalemiaCorrection() {
       return;
     }
 
-    let weightKg = parseFloat(values.weight);
+    const weightKg = toKg(values.weight, values.weightUnit);
     let currentK = parseFloat(values.potassium);
     let targetK = parseFloat(values.desiredK);
 
@@ -32,7 +33,6 @@ export default function HypokalemiaCorrection() {
     if (currentK > 5.5) { updateFields({ message: "⚠️ Observed K⁺ > 5.5 mmol/L — this tool is for hypokalemia only.", results: null }); return; }
     if (currentK >= 3.5 && currentK <= 5.5) { updateFields({ message: "✅ Serum potassium is within normal range (3.5–5.5 mmol/L).", results: null }); return; }
 
-    if (values.weightUnit === "lb") weightKg = weightKg * 0.453592;
     if (targetK <= currentK) { updateFields({ message: "⚠️ Target K⁺ must be greater than observed K⁺.", results: null }); return; }
 
     const deficit = (targetK - currentK) * weightKg * 0.6;
