@@ -20,6 +20,7 @@ import SerumOsmolalityCalculator from "./SerumOsmolalityCalculator";
 import ExpectedGestationalAge from "./ExpectedGestationalAge";
 import RateCounter from "./RateCounter";
 import BallardScore from "./BallardScore";
+import BodySurfaceArea from "./BodySurfaceArea";
 import UreaCrRatio from "./UreaCrRatio";
 import CorrectedCalcium from "./CorrectedCalcium";
 import WellsDVTScore from "./WellsDVTScore";
@@ -101,6 +102,7 @@ const CALCULATOR_MAP = {
   electrolyte_unit_conv: ElectrolyteUnitConverter,
   "saag_calculator": SAAGCalculator,
   "dialysis_adequacy": DialysisAdequacy,
+  bsa_calculator: BodySurfaceArea,
   "dialysis_prescription": () => <ComingSoon name="Dialysis Prescription" />
 };
 
