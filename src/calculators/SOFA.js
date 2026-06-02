@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toCrMgdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -102,7 +103,7 @@ export default function SOFA() {
     // Support both numeric and dropdown strings
     const numericCr = parseFloat(cr);
     if (!isNaN(numericCr)) {
-      crMg = values.creatinineUnit === "µmol/L" ? numericCr / 88.4 : numericCr;
+      crMg = toCrMgdl(numericCr, values.creatinineUnit);
     } else {
       // Handle dropdown strings
       crMg = values.creatinineUnit === "µmol/L"

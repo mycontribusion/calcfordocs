@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toCalciumMgdl, fromCalciumMgdl, toAlbuminGdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -34,22 +35,18 @@ export default function CorrectedCalcium() {
       return;
     }
 
-    let ca = caVal;
-    let alb = albVal;
+    const caMgdl = toCalciumMgdl(caVal, values.calciumUnit);
+    const albGdl = toAlbuminGdl(albVal, values.albuminUnit);
 
-    if (values.calciumUnit === "mmol/L") ca = ca * 4.0;
-    if (values.albuminUnit === "g/L") alb = alb / 10;
-
-    let correctedCa = ca + 0.8 * (4 - alb);
+    let correctedCa = caMgdl + 0.8 * (4 - albGdl);
 
     let interp = "";
     if (correctedCa < 8.5) interp = "Low (Hypocalcemia)";
     else if (correctedCa > 10.5) interp = "High (Hypercalcemia)";
     else interp = "Normal";
 
-    if (values.calciumUnit === "mmol/L") correctedCa = correctedCa / 4.0;
-
-    const finalRes = correctedCa.toFixed(2);
+    const finalCaInUnit = fromCalciumMgdl(correctedCa, values.calciumUnit);
+    const finalRes = finalCaInUnit.toFixed(2);
     if (values.result !== finalRes) {
       updateFields({ result: finalRes, interpretation: interp });
     }

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toKg } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -22,7 +23,7 @@ export default function PediatricTransfusionCalculator() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
   useEffect(() => {
-    const w = values.weightUnit === "lb" ? Number(values.weight) * 0.453592 : Number(values.weight);
+    const w = toKg(values.weight, values.weightUnit);
     let observed = Number(values.observedValue);
     let target = Number(values.targetValue);
 

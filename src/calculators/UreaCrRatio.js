@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toBunMgdl, toCrMgdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -28,24 +29,8 @@ export default function UreaCrRatio() {
     // 1 mmol/L Urea = 2.8 mg/dL BUN
     // 1 mg/dL Urea = 1 / 2.14 mg/dL BUN (approx 0.467)
 
-    let bunMgdl;
-    if (values.ureaUnit === "mmol/L") {
-      bunMgdl = ureaVal * 2.801;
-    } else if (values.ureaUnit === "mg/dL") {
-      bunMgdl = ureaVal / 2.14;
-    } else {
-      // BUN (mg/dL)
-      bunMgdl = ureaVal;
-    }
-
-    let crMgdl;
-    if (values.creatinineUnit === "µmol/L") {
-      crMgdl = crVal / 88.4;
-    } else if (values.creatinineUnit === "mmol/L") {
-      crMgdl = (crVal * 1000) / 88.4;
-    } else {
-      crMgdl = crVal;
-    }
+    const bunMgdl = toBunMgdl(ureaVal, values.ureaUnit);
+    const crMgdl  = toCrMgdl(crVal, values.creatinineUnit);
 
     const ratio = bunMgdl / crMgdl;
     const interp = ratio > 20

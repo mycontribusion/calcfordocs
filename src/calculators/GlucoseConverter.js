@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toGlucoseMmol, toGlucoseMgdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -12,7 +13,6 @@ const INITIAL_STATE = {
 
 export default function GlucoseConverter() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
-  const factor = 18.0182; // 1 mmol/L = 18.0182 mg/dL
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
   useEffect(() => {
@@ -31,10 +31,10 @@ export default function GlucoseConverter() {
     let convertedValue, displayUnit, category, categoryColor;
 
     if (glucoseUnit === "mg/dL") {
-      convertedValue = roundTo1Decimal(val / factor);
+      convertedValue = roundTo1Decimal(toGlucoseMmol(val, "mg/dL"));
       displayUnit = "mmol/L";
     } else {
-      convertedValue = roundTo1Decimal(val * factor);
+      convertedValue = roundTo1Decimal(toGlucoseMgdl(val, "mmol/L"));
       displayUnit = "mg/dL";
     }
 

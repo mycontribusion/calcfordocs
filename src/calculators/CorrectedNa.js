@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toGlucoseMgdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -23,11 +24,11 @@ export default function CorrectedSodium() {
       return;
     }
 
-    // Convert glucose to mg/dL if in mmol/L
-    if (values.glucoseUnit === "mmol/L") glu = glu * 18.0182;
+    // Convert glucose to mg/dL if needed
+    const gluMgdl = toGlucoseMgdl(glu, values.glucoseUnit);
 
     // Corrected Na = Na + 1.6 * ((Glucose - 100) / 100)
-    const correctedNa = na + 1.6 * ((glu - 100) / 100);
+    const correctedNa = na + 1.6 * ((gluMgdl - 100) / 100);
     const roundedNa = parseFloat(correctedNa.toFixed(2));
 
     let status = roundedNa < 135 ? "Hyponatremia" : roundedNa > 145 ? "Hypernatremia" : "Normal";

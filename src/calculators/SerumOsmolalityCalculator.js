@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toGlucoseMmol, toUreaMmol } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -18,8 +19,8 @@ export default function SerumOsmolalityCalculator() {
 
   useEffect(() => {
     const naVal = parseFloat(values.sodium);
-    const gluVal = values.glucoseUnit === "mg/dL" ? parseFloat(values.glucose) / 18 : parseFloat(values.glucose);
-    const ureaVal = values.ureaUnit === "mg/dL" ? parseFloat(values.urea) / 2.8 : parseFloat(values.urea);
+    const gluVal  = toGlucoseMmol(values.glucose, values.glucoseUnit);
+    const ureaVal = toUreaMmol(values.urea, values.ureaUnit);
 
     if (isNaN(naVal) || isNaN(gluVal) || isNaN(ureaVal)) {
       if (values.result !== null) updateFields({ result: null });

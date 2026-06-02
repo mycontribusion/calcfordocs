@@ -2,6 +2,21 @@
    CALCULATOR SHARED STYLES
 ========================= */
 
+/* Block negative input visually — JS hook (useCalculator) strips '-' on change */
+.calc-input[type="number"]::-webkit-outer-spin-button,
+.calc-input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.calc-input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
+/* Suppress browser red :invalid outline when user types '-' before a digit */
+.calc-input[type="number"]:invalid {
+    box-shadow: none;
+    border-color: #da0b1f;
+}
+
 .calc-container {
     max-width: 360px;
     margin: 0 auto;

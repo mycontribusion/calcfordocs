@@ -91,6 +91,17 @@ function MainApp() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  /* 🚫 Block '-' key on all clinical number inputs globally */
+  useEffect(() => {
+    const blockNegative = (e) => {
+      if (e.key === "-" && e.target.matches('input[type="number"].calc-input')) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", blockNegative);
+    return () => document.removeEventListener("keydown", blockNegative);
+  }, []);
+
   /* 🔗 Sync State with URL Path (for SEO & Vercel Analytics) */
   useEffect(() => {
     const currentPath = window.location.pathname;

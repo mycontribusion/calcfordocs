@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toAlbuminGdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -16,10 +17,6 @@ const INITIAL_STATE = {
 export default function AnionGapDeltaRatio() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
 
-  const albuminToGdL = (val, unit) => {
-    if (val === null) return null;
-    return unit === "g/L" ? val / 10 : unit === "mg/mL" ? val / 100 : val;
-  };
 
   useEffect(() => {
     const na = parseFloat(values.sodium);
@@ -51,7 +48,7 @@ export default function AnionGapDeltaRatio() {
     let agCorr = null;
     let albuminGdL = null;
     if (albRaw !== null && !isNaN(albRaw)) {
-      albuminGdL = albuminToGdL(albRaw, values.albuminUnit);
+      albuminGdL = toAlbuminGdl(albRaw, values.albuminUnit);
       agCorr = ag + 2.5 * (4 - albuminGdL);
     }
 

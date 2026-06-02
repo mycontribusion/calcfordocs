@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toCalciumMgdl, toAlbuminGdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -28,12 +29,12 @@ export default function CalciumPhosphateProduct() {
       return;
     }
 
-    const caMgdl = values.calciumUnit === "mmol/L" ? caVal * 4.01 : caVal;
+    const caMgdl = toCalciumMgdl(caVal, values.calciumUnit);
     const phMgdl = values.phosphateUnit === "mmol/L" ? phVal * 3.1 : phVal;
 
     let finalCa = caMgdl;
     if (!isNaN(albVal)) {
-      const albGdL = values.albuminUnit === "g/L" ? albVal / 10 : albVal;
+      const albGdL = toAlbuminGdl(albVal, values.albuminUnit);
       finalCa = caMgdl + 0.8 * (4.0 - albGdL);
     }
 

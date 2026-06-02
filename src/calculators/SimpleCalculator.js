@@ -9,6 +9,9 @@ const INITIAL_STATE = {
   cursorPos: 1
 };
 
+const OPERATOR_CHARS = new Set(['+', '-', '×', '÷', '%']);
+
+
 export default function SimpleCalculator() {
   const { values, updateFields, reset } = useCalculator(INITIAL_STATE);
   const { input, history, hasError, cursorPos } = values;
@@ -33,7 +36,11 @@ export default function SimpleCalculator() {
 
   const handleOperator = useCallback((op) => {
     if (hasError) return;
-    // Insert operator at cursor position
+    // Find the last non-space char before the cursor
+    const before = input.slice(0, cursorPos).trimEnd();
+    const lastChar = before[before.length - 1] || '';
+    // Block if: nothing before cursor, or last meaningful char is already an operator or √
+    if (before.length === 0 || OPERATOR_CHARS.has(lastChar) || lastChar === '√') return;
     const char = ` ${op} `;
     const newInput = input.slice(0, cursorPos) + char + input.slice(cursorPos);
     updateFields({
@@ -77,6 +84,9 @@ export default function SimpleCalculator() {
 
   const handleSqrt = useCallback(() => {
     if (hasError) return;
+    // Block consecutive √ symbols
+    const lastChar = input[cursorPos - 1] || '';
+    if (lastChar === '√') return;
     updateFields({
       input: input.slice(0, cursorPos) + '√' + input.slice(cursorPos),
       cursorPos: cursorPos + 1
@@ -88,7 +98,7 @@ export default function SimpleCalculator() {
     if (cursorPos > 0) {
       const newInput = input.slice(0, cursorPos - 1) + input.slice(cursorPos);
       updateFields({
-        input: newInput || (history ? '' : '0'),
+        input: newInput,
         cursorPos: Math.max(0, cursorPos - 1)
       });
     } else if (history.length > 0) {

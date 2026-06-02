@@ -51,16 +51,25 @@ export default function useCalculator(initialState) {
         }
     }, [patientData, values]);
 
+    // Sanitize a value — strip negatives from numeric strings
+    const sanitizeValue = (value) => {
+        if (typeof value === 'string' && value.startsWith('-')) {
+            return value.slice(1);
+        }
+        return value;
+    };
+
     // Update a specific field
     const updateField = useCallback((field, value) => {
+        const sanitized = sanitizeValue(value);
         setValues((prev) => {
-            if (prev[field] === value) return prev;
-            return { ...prev, [field]: value };
+            if (prev[field] === sanitized) return prev;
+            return { ...prev, [field]: sanitized };
         });
 
         // Sync to Global (Side effect outside of setValues)
         if (SYNC_KEYS.includes(field)) {
-            updatePatient(field, value);
+            updatePatient(field, sanitized);
         }
     }, [updatePatient]);
 

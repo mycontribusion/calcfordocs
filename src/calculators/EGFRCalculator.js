@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
+import { toCrMgdl } from "../utils/unitConversion";
 import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
@@ -39,14 +40,7 @@ function EGFRCalculator() {
       return;
     }
 
-    let scrMgdl;
-    if (values.creatinineUnit === "µmol/L") {
-      scrMgdl = scrVal / 88.4;
-    } else if (values.creatinineUnit === "mmol/L") {
-      scrMgdl = (scrVal * 1000) / 88.4;
-    } else {
-      scrMgdl = scrVal;
-    }
+    const scrMgdl = toCrMgdl(scrVal, values.creatinineUnit);
 
     const kappa = values.sex === "male" ? 0.9 : 0.7;
     const alpha = values.sex === "male" ? -0.302 : -0.241;
