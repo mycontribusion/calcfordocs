@@ -48,34 +48,28 @@ export default function SerumOsmolalityCalculator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Sodium (mmol/L):</label>
-        <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
-        <input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Glucose:</label>
-        <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" value={values.glucose} onChange={(e) => setField("glucose", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="mmol/L">mmol/L</option>
-            <option value="mg/dL">mg/dL</option>
-          </select>
-        </div>
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Urea:</label>
-        <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" value={values.urea} onChange={(e) => setField("urea", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.ureaUnit} onChange={(e) => setField("ureaUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="mmol/L">mmol/L</option>
-            <option value="mg/dL">mg/dL</option>
-          </select>
-        </div>
-      </div>
-      <div className="calc-box"><label className="calc-label">Measured Osmolality (optional):</label><input type="number" value={values.measured} onChange={(e) => setField("measured", e.target.value)} className="calc-input" /></div>
+      <NumberField label="Sodium (mmol/L):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField
+        label="Glucose:"
+        field="glucose"
+        values={values}
+        setField={setField}
+        suggestions={suggestions}
+        syncField={syncField}
+        units={[{ value: "mmol/L", label: "mmol/L" }, { value: "mg/dL", label: "mg/dL" }]}
+      />
+      <NumberField
+        label="Urea:"
+        field="urea"
+        values={values}
+        setField={setField}
+        suggestions={suggestions}
+        syncField={syncField}
+        units={[{ value: "mmol/L", label: "mmol/L" }, { value: "mg/dL", label: "mg/dL" }]}
+      />
+      <CalcBox label="Measured Osmolality (optional):">
+        <input type="number" value={values.measured} onChange={(e) => setField("measured", e.target.value)} className="calc-input" />
+      </CalcBox>
       <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">

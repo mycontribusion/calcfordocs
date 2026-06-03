@@ -1,4 +1,4 @@
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { useMemo } from "react";
 
 const INITIAL_STATE = {
@@ -51,13 +51,7 @@ export default function BishopScore() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Scoring system:</label>
-        <select value={values.mode} onChange={(e) => setField("mode", e.target.value)} className="calc-select">
-          <option value="traditional">Traditional Bishop Score</option>
-          <option value="modified">Modified Bishop Score</option>
-        </select>
-      </div>
+      <SelectField label="Scoring system:" field="mode" values={values} setField={setField} options={[{value: "traditional", label: "Traditional Bishop Score"}, {value: "modified", label: "Modified Bishop Score"}]} />
 
       {values.mode === "traditional" && (
         <div className="calc-box">

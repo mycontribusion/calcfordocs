@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -68,45 +68,11 @@ export default function EstimatedBloodVolume() {
   return (
     <div className="calc-container" style={{ maxWidth: 360 }}>
 
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-        <input
-          type="number"
-          min="0.1"
-          step="0.1"
-          value={values.weight}
-          onChange={(e) => setField("weight", e.target.value)}
-          className="calc-input"
-        />
-      </div>
+      <NumberField label="Weight:" field="weight" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
 
-      <div className="calc-box">
-        <label className="calc-label">Unit:</label>
-        <select
-          value={values.weightUnit}
-          onChange={(e) => setField("weightUnit", e.target.value)}
-          className="calc-select"
-        >
-          <option value="kg">kg</option>
-          <option value="lb">lb</option>
-        </select>
-      </div>
+      <SelectField label="Unit:" field="weightUnit" values={values} setField={setField} options={[{value: "kg", label: "kg"}, {value: "lb", label: "lb"}]} />
 
-      <div className="calc-box">
-        <label className="calc-label">Age Group:</label>
-        <select
-          value={values.ageGroup}
-          onChange={(e) => setField("ageGroup", e.target.value)}
-          className="calc-select"
-        >
-          <option value="neonate">Neonate (85–90 mL/kg)</option>
-          <option value="infant">Infant (75–80 mL/kg)</option>
-          <option value="child">Child (70–75 mL/kg)</option>
-          <option value="adultMale">Adult Male (~70 mL/kg)</option>
-          <option value="adultFemale">Adult Female (~65 mL/kg)</option>
-        </select>
-      </div>
+      <SelectField label="Age Group:" field="ageGroup" values={values} setField={setField} options={[{value: "neonate", label: "Neonate (85–90 mL/kg)"}, {value: "infant", label: "Infant (75–80 mL/kg)"}, {value: "child", label: "Child (70–75 mL/kg)"}, {value: "adultMale", label: "Adult Male (~70 mL/kg)"}, {value: "adultFemale", label: "Adult Female (~65 mL/kg)"}]} />
 
       <div className="calc-result" style={{ marginTop: 12 }}>
         {typeof result === 'string' ? result : (

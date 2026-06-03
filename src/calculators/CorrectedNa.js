@@ -41,11 +41,7 @@ export default function CorrectedSodium() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Sodium (mmol/L):</label>
-        <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
-        <input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" />
-      </div>
+      <NumberField label="Sodium (mmol/L):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <div className="calc-box">
         <label className="calc-label">Glucose:</label>
         <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />

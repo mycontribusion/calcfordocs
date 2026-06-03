@@ -18,16 +18,8 @@ export default function ShockIndex() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Heart Rate (bpm):</label>
-        <SyncSuggestion field="heartRate" suggestion={suggestions.heartRate} onSync={syncField} />
-        <input type="number" value={values.heartRate} onChange={e => setField("heartRate", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Systolic BP (mmHg):</label>
-        <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
-        <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" />
-      </div>
+      <NumberField label="Heart Rate (bpm):" field="heartRate" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Systolic BP (mmHg):" field="sbp" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>

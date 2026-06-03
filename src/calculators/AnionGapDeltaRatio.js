@@ -84,26 +84,10 @@ export default function AnionGapDeltaRatio() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Sodium (Na⁺):</label>
-        <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
-        <input type="number" value={values.sodium} onChange={(e) => setField("sodium", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Potassium (K⁺, optional):</label>
-        <SyncSuggestion field="potassium" suggestion={suggestions.potassium} onSync={syncField} />
-        <input type="number" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Chloride (Cl⁻):</label>
-        <SyncSuggestion field="chloride" suggestion={suggestions.chloride} onSync={syncField} />
-        <input type="number" value={values.chloride} onChange={(e) => setField("chloride", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Bicarbonate (HCO₃⁻):</label>
-        <SyncSuggestion field="bicarb" suggestion={suggestions.bicarb} onSync={syncField} />
-        <input type="number" value={values.bicarb} onChange={(e) => setField("bicarb", e.target.value)} className="calc-input" />
-      </div>
+      <NumberField label="Sodium (Na⁺):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Potassium (K⁺, optional):" field="potassium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Chloride (Cl⁻):" field="chloride" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Bicarbonate (HCO₃⁻):" field="bicarb" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <div className="calc-box">
         <label className="calc-label">Albumin (optional):</label>
         <SyncSuggestion field="albumin" suggestion={suggestions.albumin} onSync={syncField} />

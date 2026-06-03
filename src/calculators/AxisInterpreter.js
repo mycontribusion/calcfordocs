@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -41,8 +41,8 @@ export default function AxisInterpreter() {
     <div className="calc-container" style={{ maxWidth: 720 }}>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
         <div style={{ flex: "1 1 280px" }}>
-          <div className="calc-box"><label className="calc-label">Lead I: </label><select value={values.lead1} onChange={(e) => setField("lead1", e.target.value)} className="calc-select"><option value="positive">Positive</option><option value="negative">Negative</option></select></div>
-          <div className="calc-box"><label className="calc-label">Lead aVF: </label><select value={values.leadAvf} onChange={(e) => setField("leadAvf", e.target.value)} className="calc-select"><option value="positive">Positive</option><option value="negative">Negative</option></select></div>
+          <SelectField label="Lead I: " field="lead1" values={values} setField={setField} options={[{value: "positive", label: "Positive"}, {value: "negative", label: "Negative"}]} />
+          <SelectField label="Lead aVF: " field="leadAvf" values={values} setField={setField} options={[{value: "positive", label: "Positive"}, {value: "negative", label: "Negative"}]} />
           <ResetButton onClick={reset} />
           <div className="calc-result" style={{ marginTop: 16 }}>
             <p><strong>Interpretation:</strong> {result.interpretation}</p>

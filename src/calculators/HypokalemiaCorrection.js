@@ -43,23 +43,11 @@ export default function HypokalemiaCorrection() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Weight: </label>
-        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>
-        </div>
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Observed Serum K⁺ (mmol/L): </label>
-        <SyncSuggestion field="potassium" suggestion={suggestions.potassium} onSync={syncField} />
-        <input type="number" step="0.1" value={values.potassium} onChange={(e) => setField("potassium", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Target Serum K⁺ (mmol/L): </label>
-        <input type="number" step="0.1" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" />
-      </div>
+      <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Observed Serum K⁺ (mmol/L):" field="potassium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <CalcBox label="Target Serum K⁺ (mmol/L):">
+        <input type="number" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" />
+      </CalcBox>
       <ResetButton onClick={reset} />
       {values.message && <div className="calc-result" style={{ marginTop: 16, borderColor: values.message.includes("✅") ? '#16a34a' : '#ea580c', color: values.message.includes("✅") ? '#16a34a' : '#ea580c' }}><p>{values.message}</p></div>}
       {values.results && (

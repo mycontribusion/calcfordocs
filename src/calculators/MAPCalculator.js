@@ -21,16 +21,8 @@ export default function MapCalculator() {
       <div className="calc-formula-box">
         MAP = DBP + (SBP - DBP) / 3
       </div>
-      <div className="calc-box">
-        <label className="calc-label">Systolic BP:</label>
-        <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
-        <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" />
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Diastolic BP:</label>
-        <SyncSuggestion field="dbp" suggestion={suggestions.dbp} onSync={syncField} />
-        <input type="number" value={values.dbp} onChange={e => setField("dbp", e.target.value)} className="calc-input" />
-      </div>
+      <NumberField label="Systolic BP:" field="sbp" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <NumberField label="Diastolic BP:" field="dbp" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <ResetButton onClick={reset} />
       {values.map && (
         <div className="calc-result" style={{ marginTop: 16 }}>

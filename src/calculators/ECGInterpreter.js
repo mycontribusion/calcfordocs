@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   wave: "pWave",
@@ -127,48 +127,13 @@ export default function ECGInterpreter() {
   return (
     <div className="calc-container">
 
-      <div className="calc-box">
-        <label className="calc-label">Wave/Interval:</label>
-        <select value={values.wave} onChange={(e) => setField("wave", e.target.value)} className="calc-select">
-          <option value="pWave">P Wave</option>
-          <option value="prInterval">PR Interval</option>
-          <option value="qrsWave">QRS Complex</option>
-          <option value="qtInterval">QT Interval</option>
-          <option value="stSegment">ST Segment</option>
-          <option value="tWave">T Wave</option>
-          <option value="heartRate">RR Interval</option>
-        </select>
-      </div>
+      <SelectField label="Wave/Interval:" field="wave" values={values} setField={setField} options={[{value: "pWave", label: "P Wave"}, {value: "prInterval", label: "PR Interval"}, {value: "qrsWave", label: "QRS Complex"}, {value: "qtInterval", label: "QT Interval"}, {value: "stSegment", label: "ST Segment"}, {value: "tWave", label: "T Wave"}, {value: "heartRate", label: "RR Interval"}]} />
 
       {values.wave !== "heartRate" && (
-        <div className="calc-box">
-          <label className="calc-label">Measurement Type:</label>
-          <select value={values.measurementType} onChange={(e) => setField("measurementType", e.target.value)} className="calc-select">
-            <option value="duration">Duration</option>
-            <option value="voltage">Voltage</option>
-          </select>
-        </div>
+        <SelectField label="Measurement Type:" field="measurementType" values={values} setField={setField} options={[{value: "duration", label: "Duration"}, {value: "voltage", label: "Voltage"}]} />
       )}
 
-      <div className="calc-box">
-        <label className="calc-label">Unit:</label>
-        <select value={values.valueType} onChange={(e) => setField("valueType", e.target.value)} className="calc-select">
-          {values.wave === "heartRate" || values.measurementType === "duration" ? (
-            <>
-              <option value="milliseconds">Milliseconds</option>
-              <option value="seconds">Seconds</option>
-              <option value="smallSquares">Small Squares</option>
-              <option value="largeSquares">Large Squares</option>
-            </>
-          ) : (
-            <>
-              <option value="millivolts">Millivolts</option>
-              <option value="smallSquares">Small Squares</option>
-              <option value="largeSquares">Large Squares</option>
-            </>
-          )}
-        </select>
-      </div>
+      <SelectField label="Unit:" field="valueType" values={values} setField={setField} options={[{value: "milliseconds", label: "Milliseconds"}, {value: "seconds", label: "Seconds"}, {value: "smallSquares", label: "Small Squares"}, {value: "largeSquares", label: "Large Squares"}, {value: "millivolts", label: "Millivolts"}, {value: "smallSquares", label: "Small Squares"}, {value: "largeSquares", label: "Large Squares"}]} />
 
       <div className="calc-box">
         <input type="number" placeholder="Enter value" value={values.numericalValue} onChange={(e) => setField("numericalValue", e.target.value)} className="calc-input" />

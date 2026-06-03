@@ -92,50 +92,13 @@ export default function DialysisPrescription() {
         <div className="calc-container">
             <h3 style={{ textAlign: "center", marginBottom: 16 }}>Ultrafiltration Goal Calculator</h3>
 
-            <div className="calc-box">
-                <label className="calc-label">Pre-Dialysis Weight (kg):</label>
-                <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-                <input
-                    type="number"
-                    value={values.weight}
-                    onChange={(e) => setField("weight", e.target.value)}
-                    className="calc-input"
-                    placeholder="e.g. 72.5"
-                />
-            </div>
+            <NumberField label="Pre-Dialysis Weight (kg):" field="weight" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
 
-            <div className="calc-box">
-                <label className="calc-label">Target / Dry Weight (kg):</label>
-                <input
-                    type="number"
-                    value={values.dryWeight}
-                    onChange={(e) => setField("dryWeight", e.target.value)}
-                    className="calc-input"
-                    placeholder="e.g. 70.0"
-                />
-            </div>
+            <NumberField label="Target / Dry Weight (kg):" field="dryWeight" values={values} setField={setField} />
 
-            <div className="calc-box">
-                <label className="calc-label">Treatment Time (Hours):</label>
-                <input
-                    type="number"
-                    value={values.duration}
-                    onChange={(e) => setField("duration", e.target.value)}
-                    className="calc-input"
-                    placeholder="e.g. 4"
-                />
-            </div>
+            <NumberField label="Treatment Time (Hours):" field="duration" values={values} setField={setField} />
 
-            <div className="calc-box">
-                <label className="calc-label">Intradialytic Intake / Flushes (mL):</label>
-                <input
-                    type="number"
-                    value={values.intakeVolume}
-                    onChange={(e) => setField("intakeVolume", e.target.value)}
-                    className="calc-input"
-                    placeholder="e.g. 250 (Optional)"
-                />
-            </div>
+            <NumberField label="Intradialytic Intake / Flushes (mL):" field="intakeVolume" values={values} setField={setField} />
 
             <div className="calc-box">
                 <label className="calc-label">Clinical Considerations:</label>

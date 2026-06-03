@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   age: "",
@@ -65,18 +65,17 @@ export default function PediatricWeightEstimator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Age:</label>
-        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
+      <CalcBox label="Age:" field="age" suggestions={suggestions} syncField={syncField}>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.age} onChange={(e) => setField("age", Number(e.target.value))} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.ageUnit} onChange={(e) => setField("ageUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="days">Days</option><option value="months">Months</option><option value="years">Years</option></select>
+          <select value={values.ageUnit} onChange={(e) => setField("ageUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
+            <option value="days">Days</option>
+            <option value="months">Months</option>
+            <option value="years">Years</option>
+          </select>
         </div>
-      </div>
-      <div className="calc-box">
-        <label className="calc-label">Formula:</label>
-        <select value={values.formula} onChange={(e) => setField("formula", e.target.value)} className="calc-select"><option value="nelson">Nelson</option><option value="bestGuess">Best Guess</option><option value="default">Default</option></select>
-      </div>
+      </CalcBox>
+      <SelectField label="Formula:" field="formula" values={values} setField={setField} options={[{ value: "nelson", label: "Nelson" }, { value: "bestGuess", label: "Best Guess" }, { value: "default", label: "Default" }]} />
       {values.formula === "default" && ageInMonths() <= 3 && (
         <div className="calc-box"><label className="calc-label">Birth Weight (grams):</label><input type="number" value={values.birthWeight} onChange={(e) => setField("birthWeight", Number(e.target.value))} className="calc-input" /></div>
       )}

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -128,13 +128,7 @@ export default function SOFA() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Mode:</label>
-        <select className="calc-select" value={values.mode} onChange={e => setField("mode", e.target.value)}>
-          <option value="qsofa">qSOFA</option>
-          <option value="msofa">mSOFA</option>
-        </select>
-      </div>
+      <SelectField label="Mode:" field="mode" values={values} setField={setField} options={[{ value: "qsofa", label: "qSOFA" }, { value: "msofa", label: "mSOFA" }]} />
       <ResetButton onClick={reset} style={{ marginBottom: 16 }} />
 
       {values.mode === "qsofa" && (

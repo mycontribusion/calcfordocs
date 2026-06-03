@@ -81,9 +81,7 @@ export default function SpO2FiO2Ratio() {
   return (
     <div className="calc-container">
 
-      <div className="calc-box">
-        <label className="calc-label">SpO₂ (%)</label>
-        <SyncSuggestion field="spo2" suggestion={suggestions.spo2} onSync={syncField} />
+      <CalcBox label="SpO₂ (%):" field="spo2" suggestions={suggestions} syncField={syncField}>
         <input
           type="number"
           value={values.spo2}
@@ -91,7 +89,7 @@ export default function SpO2FiO2Ratio() {
           placeholder="e.g. 92"
           className="calc-input"
         />
-      </div>
+      </CalcBox>
 
       <div className="calc-box">
         <label className="calc-label">
@@ -109,12 +107,7 @@ export default function SpO2FiO2Ratio() {
       {deviceFlowConfig[values.device] && (
         <div className="calc-box">
           <label className="calc-label">{values.device === "ventilator" ? "FiO₂ (0.4 or 40)" : "Flow rate (L/min)"}</label>
-          <input
-            type="number"
-            value={values.flow}
-            onChange={(e) => setField("flow", e.target.value)}
-            className="calc-input"
-          />
+          <input type="number" value={values.flow} onChange={(e) => setField("flow", e.target.value)} className="calc-input" />
         </div>
       )}
 

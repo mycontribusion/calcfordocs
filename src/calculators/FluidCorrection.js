@@ -1,5 +1,5 @@
 import React from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -45,42 +45,10 @@ export default function FluidCorrection() {
     <div className="calc-container" style={{ maxWidth: 400 }}>
 
       {/* Weight */}
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={values.weight}
-            onChange={(e) => setField("weight", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={values.weightUnit}
-            onChange={(e) => setField("weightUnit", e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
-        </div>
-      </div>
+      <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
 
       {/* Severity */}
-      <div className="calc-box">
-        <label className="calc-label">Dehydration Severity:</label>
-        <select
-          value={values.severity}
-          onChange={(e) => setField("severity", e.target.value)}
-          className="calc-select"
-        >
-          <option value="mild">Mild (~5%)</option>
-          <option value="moderate">Moderate (~10%)</option>
-          <option value="severe">Severe (~15%)</option>
-        </select>
-      </div>
+      <SelectField label="Dehydration Severity:" field="severity" values={values} setField={setField} options={[{ value: "mild", label: "Mild (~5%)" }, { value: "moderate", label: "Moderate (~10%)" }, { value: "severe", label: "Severe (~15%)" }]} />
 
       {/* Result */}
       <div style={{ marginTop: 16 }}>

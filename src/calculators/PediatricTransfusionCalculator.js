@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -65,28 +65,32 @@ export default function PediatricTransfusionCalculator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} className="calc-input" style={{ flex: 2 }} />
-          <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="kg">kg</option><option value="lb">lb</option></select>
+      <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <SelectField label="Method:" field="method" values={values} setField={setField} options={[{ value: "pcv", label: "PCV" }, { value: "hb", label: "Hb" }]} />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "48%" }} className="calc-box">
+          <label className="calc-label">Observed {values.method.toUpperCase()}:</label>
+          <input type="number" value={values.observedValue} onChange={(e) => setField("observedValue", e.target.value)} className="calc-input" />
+        </div>
+        <div style={{ width: "48%" }} className="calc-box">
+          <label className="calc-label">Target {values.method.toUpperCase()}:</label>
+          <input type="number" value={values.targetValue} onChange={(e) => setField("targetValue", e.target.value)} className="calc-input" />
         </div>
       </div>
       <div className="calc-box">
-        <label className="calc-label">Method:</label>
-        <select value={values.method} onChange={(e) => setField("method", e.target.value)} className="calc-select"><option value="pcv">PCV</option><option value="hb">Hb</option></select>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ width: "48%" }} className="calc-box"><label className="calc-label">Observed {values.method.toUpperCase()}:</label><input type="number" value={values.observedValue} onChange={(e) => setField("observedValue", e.target.value)} className="calc-input" /></div>
-        <div style={{ width: "48%" }} className="calc-box"><label className="calc-label">Target {values.method.toUpperCase()}:</label><input type="number" value={values.targetValue} onChange={(e) => setField("targetValue", e.target.value)} className="calc-input" /></div>
-      </div>
-      <div className="calc-box">
         <label className="calc-label">Blood type / Product:</label>
-        <select value={values.bloodType} onChange={(e) => setField("bloodType", e.target.value)} className="calc-select"><option value="whole">Whole blood (factor 6)</option><option value="sedimented">Sedimented (factor 4)</option><option value="packed">Packed cells (factor 3)</option><option value="custom">Custom / Factor from PCV</option></select>
+        <select value={values.bloodType} onChange={(e) => setField("bloodType", e.target.value)} className="calc-select">
+          <option value="whole">Whole blood (factor 6)</option>
+          <option value="sedimented">Sedimented (factor 4)</option>
+          <option value="packed">Packed cells (factor 3)</option>
+          <option value="custom">Custom / Factor from PCV</option>
+        </select>
       </div>
       {values.bloodType === "custom" && (
-        <div className="calc-box"><label className="calc-label">Enter PCV of donated blood (%):</label><input type="number" value={values.customPCV} onChange={(e) => setField("customPCV", e.target.value)} className="calc-input" /></div>
+        <div className="calc-box">
+          <label className="calc-label">Enter PCV of donated blood (%):</label>
+          <input type="number" value={values.customPCV} onChange={(e) => setField("customPCV", e.target.value)} className="calc-input" />
+        </div>
       )}
       <ResetButton onClick={reset} />
       {values.result && (

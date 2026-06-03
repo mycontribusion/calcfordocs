@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -62,29 +62,17 @@ function EGFRCalculator() {
     <div className="calc-container">
       <h3 style={{ textAlign: 'center', marginBottom: '16px' }}>CKD-EPI 2021</h3>
 
-      <div className="calc-box">
-        <label className="calc-label">Serum Creatinine:</label>
-        <SyncSuggestion field="creatinine" suggestion={suggestions.creatinine} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={values.creatinine}
-            onChange={(e) => setField("creatinine", e.target.value)}
-            placeholder="e.g., 80"
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select value={values.creatinineUnit} onChange={(e) => setField("creatinineUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="µmol/L">µmol/L</option>
-            <option value="mg/dL">mg/dL</option>
-            <option value="mmol/L">mmol/L</option>
-          </select>
-        </div>
-      </div>
+      <NumberField
+        label="Serum Creatinine:"
+        field="creatinine"
+        values={values}
+        setField={setField}
+        suggestions={suggestions}
+        syncField={syncField}
+        units={[{ value: "µmol/L", label: "µmol/L" }, { value: "mg/dL", label: "mg/dL" }, { value: "mmol/L", label: "mmol/L" }]}
+      />
 
-      <div className="calc-box">
-        <label className="calc-label">Age (years):</label>
-        <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
+      <CalcBox label="Age (years):" field="age" suggestions={suggestions} syncField={syncField}>
         <input
           type="number"
           value={values.age}
@@ -92,15 +80,9 @@ function EGFRCalculator() {
           placeholder="e.g., 40"
           className="calc-input"
         />
-      </div>
+      </CalcBox>
 
-      <div className="calc-box">
-        <label className="calc-label">Sex: </label>
-        <select value={values.sex} onChange={(e) => setField("sex", e.target.value)} className="calc-select">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
+      <SelectField label="Sex:" field="sex" values={values} setField={setField} options={[{ value: "male", label: "Male" }, { value: "female", label: "Female" }]} />
 
       <ResetButton onClick={reset} />
 

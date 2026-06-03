@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
 import { toGlucoseMmol, toGlucoseMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -86,31 +86,17 @@ export default function GlucoseConverter() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Glucose Value:</label>
-        <SyncSuggestion field="glucose" suggestion={suggestions.glucose} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={values.glucose}
-            onChange={(e) => setField("glucose", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-            <option value="mg/dL">mg/dL</option>
-            <option value="mmol/L">mmol/L</option>
-          </select>
-        </div>
-      </div>
+      <NumberField
+        label="Glucose Value:"
+        field="glucose"
+        values={values}
+        setField={setField}
+        suggestions={suggestions}
+        syncField={syncField}
+        units={[{ value: "mg/dL", label: "mg/dL" }, { value: "mmol/L", label: "mmol/L" }]}
+      />
 
-      <div className="calc-box">
-        <label className="calc-label">Type:</label>
-        <select value={values.type} onChange={(e) => setField("type", e.target.value)} className="calc-select">
-          <option value="fasting">Fasting</option>
-          <option value="random">Random</option>
-        </select>
-      </div>
+      <SelectField label="Type:" field="type" values={values} setField={setField} options={[{ value: "fasting", label: "Fasting" }, { value: "random", label: "Random" }]} />
 
       <ResetButton onClick={reset} />
 
