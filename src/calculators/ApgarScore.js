@@ -1,4 +1,4 @@
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc } from "./CalcFields";
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 
 const INITIAL_STATE = {

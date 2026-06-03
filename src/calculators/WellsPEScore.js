@@ -1,6 +1,6 @@
 // src/calculators/WellsScorePE.js
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton } from "./CalcFields";
 
 const WELLS_CRITERIA = [
   { id: 1, label: "Clinical signs of DVT", points: 3 },

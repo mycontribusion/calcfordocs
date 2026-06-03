@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SelectField, SyncSuggestion } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {

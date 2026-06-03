@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton } from "./CalcFields";
 
 const QUESTIONS = [
     { label: "Orientation", detail: "Year · Season · Date · Day · Month", max: 5 },

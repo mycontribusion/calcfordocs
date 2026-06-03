@@ -1,6 +1,6 @@
 // src/calculators/BodySurfaceArea.js
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc } from "./CalcFields";
 import { toKg, toCm } from "../utils/unitConversion";
 
 const INITIAL_STATE = {

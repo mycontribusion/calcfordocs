@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton } from "./CalcFields";
 
 const QUESTIONS = ["Incomplete Emptying", "Frequency", "Intermittency", "Urgency", "Weak Stream", "Straining", "Nocturia"];
 const INITIAL_STATE = {

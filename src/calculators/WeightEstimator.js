@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
+import { useCalc, CalcBox, ResetButton, SelectField } from "./CalcFields";
 
 const INITIAL_STATE = {
   age: "",

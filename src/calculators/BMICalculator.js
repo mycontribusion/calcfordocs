@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SyncSuggestion, SelectField } from "./CalcFields";
+import { useCalc, WeightField, HeightField, ResetButton, ResultBox } from "./CalcFields";
 import { toKg, toM } from "../utils/unitConversion";
 
 

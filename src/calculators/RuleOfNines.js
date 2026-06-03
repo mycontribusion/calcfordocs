@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton } from "./CalcFields";
 
 const PARTS = [
   { label: "Anterior Head", value: 4.5, key: "ah" }, { label: "Posterior Head", value: 4.5, key: "ph" },

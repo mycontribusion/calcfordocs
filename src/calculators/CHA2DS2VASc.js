@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion } from "./CalcFields";
 
 const CRITERIA = [
   { label: "Congestive heart failure / LV dysfunction", value: 1, key: "chf" },

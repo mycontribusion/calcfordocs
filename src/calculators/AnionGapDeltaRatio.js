@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SyncSuggestion } from "./CalcFields";
 import { toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {

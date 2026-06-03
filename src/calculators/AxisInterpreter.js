@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SelectField, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SelectField } from "./CalcFields";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;

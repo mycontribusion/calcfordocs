@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
+import { useCalc, SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     albumin: "",
