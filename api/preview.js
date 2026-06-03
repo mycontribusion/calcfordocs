@@ -16,10 +16,28 @@ export default function handler(req, res) {
   const calc = calculators.find(c => c.id === slug);
 
   const title = calc ? `${calc.name} – CalcForDocs` : 'CalcForDocs';
-  const description = calc?.description || 'Clinical decision‑support calculator';
+  const description = calc?.description || (calc ? `${calc.name} calculator for healthcare professionals. ${calc.keywords?.join(", ")}` : 'Clinical decision‑support calculator');
   const url = `https://${req.headers.host}/calc/${slug || ''}`;
   // Use shared calculator icon for all previews
   const image = `https://${req.headers.host}/calculator-icon.png`;
+
+  const structuredData = calc ? {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": title,
+    "description": description,
+    "url": url,
+    "medicalAudience": "Healthcare Professionals",
+    "keywords": calc.keywords?.join(", ") || "medical calculator"
+  } : {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "CalcForDocs",
+    "description": "Professional medical calculators for healthcare providers.",
+    "url": `https://${req.headers.host}/`,
+    "medicalAudience": "Healthcare Professionals",
+    "keywords": "medical calculator, doctor tools, clinical scores, GCS, eGFR, BMI"
+  };
 
   const html = `<!doctype html>
 <html lang="en">
@@ -39,6 +57,11 @@ export default function handler(req, res) {
   <meta name="twitter:title" content="${title}" />
   <meta name="twitter:description" content="${description}" />
   <meta name="twitter:image" content="${image}" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+    ${JSON.stringify(structuredData)}
+  </script>
 
   <script>
     // After meta tags are read by crawlers, redirect real users to the SPA
