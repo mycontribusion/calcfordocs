@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import useCalculator from './useCalculator';
-import './CalculatorShared.css';
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   input: '',
@@ -13,7 +12,7 @@ const OPERATOR_CHARS = new Set(['+', '-', '×', '÷', '%']);
 
 
 export default function SimpleCalculator() {
-  const { values, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateFields, reset } = useCalc(INITIAL_STATE);
   const { input, history, hasError, cursorPos } = values;
 
   const handleDigit = useCallback((digit) => {

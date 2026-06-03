@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     // Global sync keys
@@ -16,7 +14,7 @@ const INITIAL_STATE = {
 };
 
 export default function DialysisPrescription() {
-    const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+    const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
     useEffect(() => {
         const preWeight = parseFloat(values.weight);

@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     albumin: "",
@@ -11,7 +9,7 @@ const INITIAL_STATE = {
 };
 
 export default function SAAGCalculator() {
-    const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+    const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
     useEffect(() => {
         const serumVal = parseFloat(values.albumin);

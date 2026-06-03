@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   age: "",
@@ -16,7 +14,7 @@ const INITIAL_STATE = {
 };
 
 export default function PediatricWeightEstimator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   const ageInMonths = () => {
     if (!values.age) return 0;
@@ -82,7 +80,7 @@ export default function PediatricWeightEstimator() {
       {values.formula === "default" && ageInMonths() <= 3 && (
         <div className="calc-box"><label className="calc-label">Birth Weight (grams):</label><input type="number" value={values.birthWeight} onChange={(e) => setField("birthWeight", Number(e.target.value))} className="calc-input" /></div>
       )}
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.weightResult && <div className="calc-result"><p><strong>{values.weightResult}</strong></p>{values.formulaResult && <p style={{ fontSize: "0.9em", marginTop: 5 }}>{values.formulaResult}</p>}</div>}
     </div>
   );

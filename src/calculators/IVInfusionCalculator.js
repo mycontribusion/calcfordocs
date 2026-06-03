@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   volume: "",
@@ -11,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export default function IVInfusionCalculator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
   const dropFactors = { iv: 20, blood: 15, soluset: 60 };
 
   useEffect(() => {

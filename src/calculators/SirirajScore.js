@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   consciousness: 0,
@@ -12,7 +11,7 @@ const INITIAL_STATE = {
 };
 
 export default function SirirajScore() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const { score, interpretation, suggests } = useMemo(() => {
     if (values.dbp === "") return { score: null, interpretation: "" };
@@ -62,7 +61,7 @@ export default function SirirajScore() {
           Guide: DM, Claudication, Angina/ACS, or History of TIA.
         </div>
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {score !== null && (
         <div className="calc-result">
           <p><strong>Score:</strong> {score}</p><p><strong>Interpretation:</strong> {interpretation}</p>

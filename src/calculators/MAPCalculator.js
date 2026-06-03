@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = { sbp: "", dbp: "", map: null, pp: null };
 
 export default function MapCalculator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const s = parseFloat(values.sbp);
@@ -33,7 +31,7 @@ export default function MapCalculator() {
         <SyncSuggestion field="dbp" suggestion={suggestions.dbp} onSync={syncField} />
         <input type="number" value={values.dbp} onChange={e => setField("dbp", e.target.value)} className="calc-input" />
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.map && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>MAP:</strong> {values.map} mmHg &nbsp;

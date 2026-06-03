@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toAlbuminGdl } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   sodium: "",
@@ -15,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function AnionGapDeltaRatio() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
 
   useEffect(() => {
@@ -114,7 +112,7 @@ export default function AnionGapDeltaRatio() {
           <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="g/dL">g/dL</option><option value="g/L">g/L</option></select>
         </div>
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <div style={{ marginBottom: 12 }}>

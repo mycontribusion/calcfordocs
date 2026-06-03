@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toGlucoseMgdl } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   sodium: "",
@@ -13,7 +11,7 @@ const INITIAL_STATE = {
 };
 
 export default function CorrectedSodium() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const na = parseFloat(values.sodium);
@@ -56,7 +54,7 @@ export default function CorrectedSodium() {
           <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>
         </div>
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">
           <p style={{ fontWeight: "bold" }}>{values.result}</p>

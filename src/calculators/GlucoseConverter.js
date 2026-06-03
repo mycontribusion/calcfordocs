@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toGlucoseMmol, toGlucoseMgdl } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   glucose: "",
@@ -12,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export default function GlucoseConverter() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
   useEffect(() => {
@@ -114,7 +112,7 @@ export default function GlucoseConverter() {
         </select>
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
 
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>

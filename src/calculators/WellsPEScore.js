@@ -1,7 +1,6 @@
 // src/calculators/WellsScorePE.js
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const WELLS_CRITERIA = [
   { id: 1, label: "Clinical signs of DVT", points: 3 },
@@ -20,7 +19,7 @@ const INITIAL_STATE = {
 };
 
 export default function WellsScorePE() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
   const toggleCriteria = (id) => {
     const { selectedIds } = values;
@@ -76,7 +75,7 @@ export default function WellsScorePE() {
           Score: {totalScore} → {interpretation}
         </div>
       )}
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

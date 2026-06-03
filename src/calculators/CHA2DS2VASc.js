@@ -1,7 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const CRITERIA = [
   { label: "Congestive heart failure / LV dysfunction", value: 1, key: "chf" },
@@ -29,7 +27,7 @@ const INITIAL_STATE = {
 };
 
 export default function CHA2DS2VASc() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   // Auto-set age and sex criteria based on global patient state
   useEffect(() => {
@@ -90,7 +88,7 @@ export default function CHA2DS2VASc() {
         ))}
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
 
       {(score > 0 || (values.female && score >= 1)) && (
         <div className="calc-result" style={{ marginTop: 16 }}>

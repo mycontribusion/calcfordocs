@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   lmp: "",
@@ -10,7 +9,7 @@ const INITIAL_STATE = {
 };
 
 export default function PregnancyCalculator() {
-  const { values, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateFields, reset } = useCalc(INITIAL_STATE);
   const today = new Date();
 
   useEffect(() => {
@@ -54,7 +53,7 @@ export default function PregnancyCalculator() {
           <input type="number" placeholder="days" value={values.egaDays} onChange={(e) => handleEGAChange(values.egaWeeks, e.target.value)} className="calc-input" style={{ flex: 1 }} />
         </div>
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.egaWeeks !== "" && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p>Trimester: {values.egaWeeks < 13 ? "First" : values.egaWeeks < 28 ? "Second" : "Third"}</p>

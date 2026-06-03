@@ -1,6 +1,5 @@
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   mode: "traditional",
@@ -18,7 +17,7 @@ const INITIAL_STATE = {
 };
 
 export default function BishopScore() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const totalScore = useMemo(() => {
     if (values.mode === "traditional") {
@@ -159,7 +158,7 @@ export default function BishopScore() {
           </div>
         )}
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

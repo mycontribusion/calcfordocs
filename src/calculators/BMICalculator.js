@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SyncSuggestion, SelectField } from "./CalcFields";
 import { toKg, toM } from "../utils/unitConversion";
 
 
@@ -13,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function BmiCalculator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const weightKg = toKg(values.weight, values.weightUnit);
@@ -40,83 +39,32 @@ export default function BmiCalculator() {
   return (
     <div className="calc-container">
 
-      {/* Weight */}
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            min="0"
-            value={values.weight}
-            onChange={(e) => setField("weight", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={values.weightUnit}
-            onChange={(e) => setField("weightUnit", e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
-        </div>
-      </div>
+      <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <HeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+      <ResetButton onClick={reset} />
 
-      {/* Height */}
-      <div className="calc-box">
-        <label className="calc-label">Height:</label>
-        <SyncSuggestion field="height" suggestion={suggestions.height} onSync={syncField} />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input
-            type="number"
-            value={values.height}
-            onChange={(e) => setField("height", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={values.heightUnit}
-            onChange={(e) => setField("heightUnit", e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="cm">cm</option>
-            <option value="m">m</option>
-            <option value="inch">inch</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <button
-        onClick={reset}
-        className="calc-btn-reset"
-      >
-        Reset Calculator
-      </button>
-
-      {values.result && (
-        <div className="calc-result" style={{ marginTop: 16 }}>
-          <p className="font-medium">{values.result}</p>
-          <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
-            Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
-          </p>
-          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
-            <strong>WHO Classification:</strong>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
-              <li>&lt; 18.5: Underweight</li>
-              <li>18.5 – 24.9: Normal weight</li>
-              <li>25 – 29.9: Overweight</li>
-              <li>30 – 34.9: Obese Class I</li>
-              <li>35 – 39.9: Obese Class II</li>
-              <li>≥ 40: Obese Class III (Morbid)</li>
-            </ul>
-          </div>
-        </div>
-      )}
+      {/* Results */}
+      <ResultBox show={!!values.result}>
+        {values.result && (
+          <>
+            <p className="font-medium">{values.result}</p>
+            <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
+              Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
+            </p>
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <strong>WHO Classification:</strong>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '4px 0 0', opacity: 0.8 }}>
+                <li>&lt; 18.5: Underweight</li>
+                <li>18.5 – 24.9: Normal weight</li>
+                <li>25 – 29.9: Overweight</li>
+                <li>30 – 34.9: Obese Class I</li>
+                <li>35 – 39.9: Obese Class II</li>
+                <li>≥ 40: Obese Class III (Morbid)</li>
+              </ul>
+            </div>
+          </>
+        )}
+      </ResultBox>
     </div>
   );
 }

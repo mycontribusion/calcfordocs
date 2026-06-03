@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 // Updated with Clinically Accurate Hydrated Molecular Weights and Valence (z)
 const ELECTROLYTES = {
@@ -23,7 +22,7 @@ const INITIAL_STATE = {
 };
 
 export default function ElectrolyteUnitConverter() {
-    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
     useEffect(() => {
         const salt = ELECTROLYTES[values.type];

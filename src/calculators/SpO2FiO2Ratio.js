@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const nasalFiO2Map = { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 };
 const venturiFiO2Map = {
@@ -66,7 +64,7 @@ const INITIAL_STATE = {
 };
 
 export default function SpO2FiO2Ratio() {
-  const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, syncField, reset } = useCalc(INITIAL_STATE);
 
   const { fio2, ratio } = useMemo(() => {
     const estimatedFiO2 = estimateFiO2(values.device, values.flow);
@@ -144,7 +142,7 @@ export default function SpO2FiO2Ratio() {
       <small style={{ display: 'block', marginTop: 12, color: '#666', fontSize: '0.75rem' }}>
         BTS/ARDSNet approximations
       </small>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

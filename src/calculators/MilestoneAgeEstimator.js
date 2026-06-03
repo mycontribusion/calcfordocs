@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const MILESTONES = {
   // Gross Motor
@@ -56,7 +55,7 @@ const INITIAL_STATE = {
 };
 
 export default function MilestoneAgeEstimator() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
   const estimation = useMemo(() => {
     const selected = [values.grossMotor, values.fineMotor, values.language, values.social].filter(Boolean);
@@ -112,7 +111,7 @@ export default function MilestoneAgeEstimator() {
       {renderSelect("Language", "language", ["cooing", "laughing", "babbling", "mamaPapa", "words10", "phrases2", "sentences3", "story"])}
       {renderSelect("Social & Personal", "social", ["smile", "stranger", "bye", "spoon", "parallel", "coop"])}
 
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
 
       <div className="calc-result" style={{ marginTop: 16 }}>
         <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>Estimated Developmental Age:</p>

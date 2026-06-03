@@ -1,6 +1,5 @@
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
 
 const majorCriteria = [
   { id: "pnd", label: "Paroxysmal Nocturnal Dyspnea" },
@@ -28,7 +27,7 @@ const INITIAL_STATE = {
 };
 
 export default function HeartFailureFramingham() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const result = useMemo(() => {
     let majorCount = majorCriteria.filter((c) => values.selected[c.id]).length;
@@ -62,7 +61,7 @@ export default function HeartFailureFramingham() {
           </label>
         ))}
       </div>
-      <button onClick={reset} className="calc-btn-reset" style={{ marginTop: 10 }}>Reset Calculator</button>
+      <ResetButton onClick={reset} style={{ marginTop: 10 }} />
       <div className="calc-result" style={{ marginTop: 15 }}><strong>Diagnosis:</strong> {result}</div>
     </div>
   );

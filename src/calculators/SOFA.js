@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   mode: "qsofa",
@@ -35,7 +33,7 @@ const INITIAL_STATE = {
 };
 
 export default function SOFA() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   // Helper to map numeric creatinine to SOFA dropdown values
   useEffect(() => {
@@ -137,7 +135,7 @@ export default function SOFA() {
           <option value="msofa">mSOFA</option>
         </select>
       </div>
-      <button onClick={reset} className="calc-btn-reset" style={{ marginBottom: 16 }}>Reset Calculator</button>
+      <ResetButton onClick={reset} style={{ marginBottom: 16 }} />
 
       {values.mode === "qsofa" && (
         <>

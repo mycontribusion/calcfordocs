@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const PARTS = [
   { label: "Anterior Head", value: 4.5, key: "ah" }, { label: "Posterior Head", value: 4.5, key: "ph" },
@@ -18,7 +17,7 @@ const PARTS = [
 const INITIAL_STATE = PARTS.reduce((acc, p) => ({ ...acc, [p.key]: false }), {});
 
 export default function RuleOfNines() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const total = useMemo(() => {
     let sum = 0;
@@ -35,7 +34,7 @@ export default function RuleOfNines() {
           </label>
         ))}
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       <div className="calc-result"><strong>Total Burn Area:</strong> {total}%</div>
     </div>
   );

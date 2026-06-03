@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SyncSuggestion, SelectField } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -16,7 +15,7 @@ const INITIAL_STATE = {
 };
 
 export default function DrugDosageCalculator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const isWeightBased = values.doseUnit.includes("kg");
@@ -64,36 +63,29 @@ export default function DrugDosageCalculator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-box">
-        <label className="calc-label">Dose:</label>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <input type="number" inputMode="decimal" value={values.dose} onChange={(e) => setField("dose", e.target.value)} placeholder="Enter dose" className="calc-input" style={{ flex: 2 }} />
-          <select value={values.doseUnit} onChange={(e) => setField("doseUnit", e.target.value)} className="calc-select" style={{ flex: 1.5 }}>
-            <option value="/kg">/kg</option><option value="/kg/day">/kg/day</option><option value="/min">/min</option><option value="/kg/min">/kg/min</option>
-          </select>
-        </div>
-      </div>
+      <NumberField
+        label="Dose:" field="dose" values={values} setField={setField} placeholder="Enter dose"
+        units={[{value:"/kg",label:"/kg"},{value:"/kg/day",label:"/kg/day"},{value:"/min",label:"/min"},{value:"/kg/min",label:"/kg/min"}]}
+        unitField="doseUnit" unitFlex={1.5}
+      />
       {values.doseUnit !== "/min" && (
-        <div className="calc-box">
-          <label className="calc-label">Weight:</label>
-          <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <input type="number" value={values.weight} onChange={(e) => setField("weight", e.target.value)} placeholder="Patient weight" className="calc-input" style={{ flex: 2 }} />
-            <select value={values.weightUnit} onChange={(e) => setField("weightUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}>
-              <option value="kg">kg</option><option value="g">g</option><option value="lb">lb</option>
-            </select>
-          </div>
-        </div>
+        <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} includeGrams={true} />
       )}
       {values.doseUnit === "/kg/day" && (
-        <div className="calc-box"><label className="calc-label">Number of divided doses per day:</label><input type="number" min="1" value={values.numDoses} onChange={(e) => setField("numDoses", e.target.value)} className="calc-input" /></div>
+        <NumberField label="Number of divided doses per day:" field="numDoses" values={values} setField={setField} min="1" />
       )}
       {(values.doseUnit === "/min" || values.doseUnit === "/kg/min") && (
-        <div className="calc-box"><label className="calc-label">Duration:</label><div style={{ display: 'flex', gap: '8px' }}><input type="number" min="1" value={values.duration} onChange={(e) => setField("duration", e.target.value)} className="calc-input" style={{ flex: 2 }} /><select value={values.durationUnit} onChange={(e) => setField("durationUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="hours">hours</option><option value="minutes">minutes</option></select></div></div>
+        <NumberField
+          label="Duration:" field="duration" values={values} setField={setField} min="1"
+          units={[{value:"hours",label:"hours"},{value:"minutes",label:"minutes"}]}
+          unitField="durationUnit"
+        />
       )}
-      <button type="button" onClick={reset} className="calc-btn-reset">Reset Calculator</button>
-      {values.error && <div className="calc-result" style={{ marginTop: 16, color: '#ef4444', borderColor: '#ef4444' }}>{values.error}</div>}
-      {values.result !== null && !values.error && <div className="calc-result" style={{ marginTop: 16 }}><strong>Total Dose:</strong> {values.result}</div>}
+      <ResetButton onClick={reset} />
+      {values.error && <ResultBox style={{ color: '#ef4444', borderColor: '#ef4444' }}>{values.error}</ResultBox>}
+      <ResultBox show={values.result !== null && !values.error}>
+        <strong>Total Dose:</strong> {values.result}
+      </ResultBox>
     </div>
   );
 }

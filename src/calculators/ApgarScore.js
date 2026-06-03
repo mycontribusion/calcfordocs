@@ -1,6 +1,5 @@
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
     activeTab: "m1", // "m1", "m5", "m10"
@@ -61,7 +60,7 @@ const CRITERIA = [
 ];
 
 export default function ApgarScore() {
-    const { values, updateField: handleSelect, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: handleSelect, reset } = useCalc(INITIAL_STATE);
 
     // Timer State
     const [seconds, setSeconds] = useState(0);

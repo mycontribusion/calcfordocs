@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -24,7 +23,7 @@ const SECTORS = {
 const INITIAL_STATE = { lead1: "positive", leadAvf: "positive" };
 
 export default function AxisInterpreter() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const result = useMemo(() => {
     const { lead1, leadAvf } = values;
@@ -44,7 +43,7 @@ export default function AxisInterpreter() {
         <div style={{ flex: "1 1 280px" }}>
           <div className="calc-box"><label className="calc-label">Lead I: </label><select value={values.lead1} onChange={(e) => setField("lead1", e.target.value)} className="calc-select"><option value="positive">Positive</option><option value="negative">Negative</option></select></div>
           <div className="calc-box"><label className="calc-label">Lead aVF: </label><select value={values.leadAvf} onChange={(e) => setField("leadAvf", e.target.value)} className="calc-select"><option value="positive">Positive</option><option value="negative">Negative</option></select></div>
-          <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+          <ResetButton onClick={reset} />
           <div className="calc-result" style={{ marginTop: 16 }}>
             <p><strong>Interpretation:</strong> {result.interpretation}</p>
             <p><strong>Equiphasic lead:</strong> {result.equiphasic}</p>

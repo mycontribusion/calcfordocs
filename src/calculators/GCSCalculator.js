@@ -1,5 +1,4 @@
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   eye: 4,
@@ -8,7 +7,7 @@ const INITIAL_STATE = {
 };
 
 export default function GCSCalculator() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   // Total and interpretation auto-calculated
   const total = values.eye + values.verbal + values.motor;

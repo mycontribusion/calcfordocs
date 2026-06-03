@@ -1,8 +1,7 @@
 // src/calculators/BodySurfaceArea.js
 import React, { useEffect } from "react";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toKg, toCm } from "../utils/unitConversion";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   weight: "",
@@ -14,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function BodySurfaceArea() {
-  const { values, updateFields, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateFields, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const wRaw = parseFloat(values.weight);

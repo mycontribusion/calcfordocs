@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox, SyncSuggestion, SelectField } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -18,7 +17,7 @@ const INITIAL_STATE = {
 };
 
 export default function HyponatremiaCorrection() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
   const getInfusateNa = (fluidType) => ({ ns: 154, hts: 513, rl: 130 }[fluidType] || 0);
 
   useEffect(() => {
@@ -68,42 +67,36 @@ export default function HyponatremiaCorrection() {
   return (
     <div className="calc-container">
       <div style={{ display: "flex", gap: "8px" }}>
-        <div className="calc-box" style={{ flex: 1 }}>
-          <label className="calc-label">Serum Na (mmol/L)</label>
-          <SyncSuggestion field="sodium" suggestion={suggestions.sodium} onSync={syncField} />
-          <input type="number" value={values.sodium} onChange={e => setField("sodium", e.target.value)} className="calc-input" />
-        </div>
-        <div className="calc-box" style={{ flex: 1 }}>
-          <label className="calc-label">Weight (kg)</label>
-          <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-          <input type="number" value={values.weight} onChange={e => setField("weight", e.target.value)} className="calc-input" />
-        </div>
+        <NumberField label="Serum Na (mmol/L)" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} style={{ flex: 1 }} />
+        <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} style={{ flex: 1 }} />
       </div>
       <div style={{ display: "flex", gap: "8px" }}>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Sex</label><select value={values.sex} onChange={e => setField("sex", e.target.value)} className="calc-select"><option value="male">Male</option><option value="female">Female</option></select></div>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Age Group</label><select value={values.ageGroup} onChange={e => setField("ageGroup", e.target.value)} className="calc-select"><option value="nonelderly">Non-elderly</option><option value="elderly">Elderly</option></select></div>
+        <SelectField label="Sex" field="sex" values={values} setField={setField} options={[{value:"male",label:"Male"}, {value:"female",label:"Female"}]} style={{ flex: 1 }} />
+        <SelectField label="Age Group" field="ageGroup" values={values} setField={setField} options={[{value:"nonelderly",label:"Non-elderly"}, {value:"elderly",label:"Elderly"}]} style={{ flex: 1 }} />
       </div>
       <div style={{ display: "flex", gap: "8px" }}>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Volume Status</label><select value={values.volumeStatus} onChange={e => setField("volumeStatus", e.target.value)} className="calc-select"><option value="hypovolemic">Hypovolemic</option><option value="euvolemic">Euvolemic (SIADH)</option><option value="hypervolemic">Hypervolemic</option></select></div>
-        <div className="calc-box" style={{ flex: 1 }}><label className="calc-label">Infusate</label><select value={values.fluid} onChange={e => setField("fluid", e.target.value)} className="calc-select"><option value="ns">0.9% NS</option><option value="hts">3% HTS</option><option value="rl">RL</option></select></div>
+        <SelectField label="Volume Status" field="volumeStatus" values={values} setField={setField} options={[{value:"hypovolemic",label:"Hypovolemic"}, {value:"euvolemic",label:"Euvolemic (SIADH)"}, {value:"hypervolemic",label:"Hypervolemic"}]} style={{ flex: 1 }} />
+        <SelectField label="Infusate" field="fluid" values={values} setField={setField} options={[{value:"ns",label:"0.9% NS"}, {value:"hts",label:"3% HTS"}, {value:"rl",label:"RL"}]} style={{ flex: 1 }} />
       </div>
-      <div className="calc-box"><label className="calc-label">Target Rise (mmol/24h)</label><input type="number" value={values.targetRise} onChange={e => setField("targetRise", e.target.value)} className="calc-input" /></div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <NumberField label="Target Rise (mmol/24h)" field="targetRise" values={values} setField={setField} />
+      <ResetButton onClick={reset} />
       {values.warning && <p className="calc-result" style={{ color: "darkred" }}>{values.warning}</p>}
-      {values.result && (
-        <div className="calc-result">
-          <p><strong>ΔNa per 1 L:</strong> +{values.result.deltaPerLiter} mmol/L</p>
-          <p><strong>Total Volume Needed:</strong> {values.result.totalLiters} L</p>
-          <p><strong>Estimated Rate:</strong> {values.result.hourlyRate} mL/hr</p>
-          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
-            <span style={{ opacity: 0.7 }}>Adrogue-Madias: ΔNa = (Infusate Na – Serum Na) / (TBW + 1)</span>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
-              <li>⚠️ Max correction: ≤8–10 mmol/L per 24h</li>
-              <li>⚠️ Rapid correction risks Osmotic Demyelination Syndrome (ODS)</li>
-            </ul>
-          </div>
-        </div>
-      )}
+      <ResultBox show={!!values.result}>
+        {values.result && (
+          <>
+            <p><strong>ΔNa per 1 L:</strong> +{values.result.deltaPerLiter} mmol/L</p>
+            <p><strong>Total Volume Needed:</strong> {values.result.totalLiters} L</p>
+            <p><strong>Estimated Rate:</strong> {values.result.hourlyRate} mL/hr</p>
+            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+              <span style={{ opacity: 0.7 }}>Adrogue-Madias: ΔNa = (Infusate Na – Serum Na) / (TBW + 1)</span>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
+                <li>⚠️ Max correction: ≤8–10 mmol/L per 24h</li>
+                <li>⚠️ Rapid correction risks Osmotic Demyelination Syndrome (ODS)</li>
+              </ul>
+            </div>
+          </>
+        )}
+      </ResultBox>
     </div>
   );
 }

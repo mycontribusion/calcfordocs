@@ -1,6 +1,5 @@
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
 
 const criteria = [
   { key: "cancer", label: "Active cancer (treatment within 6 months or palliative)", points: 1 },
@@ -29,7 +28,7 @@ const INITIAL_STATE = {
 };
 
 export default function WellsDVTScore() {
-  const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
   const score = useMemo(() => {
     let total = 0;
@@ -65,7 +64,7 @@ export default function WellsDVTScore() {
         ))}
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
 
       {(score !== 0 || Object.values(values).some(v => v)) && (
         <div className="calc-result" style={{ marginTop: 16 }}>

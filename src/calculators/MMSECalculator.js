@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const QUESTIONS = [
     { label: "Orientation", detail: "Year · Season · Date · Day · Month", max: 5 },
@@ -19,7 +18,7 @@ const QUESTIONS = [
 const INITIAL_STATE = { answers: Array(QUESTIONS.length).fill(0) };
 
 export default function MMSECalculator() {
-    const { values, updateField: setField, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, reset } = useCalc(INITIAL_STATE);
 
     const total = useMemo(() => values.answers.reduce((a, b) => a + b, 0), [values.answers]);
     const status = total >= 24 ? { label: "Normal", color: "#16a34a" } : total >= 18 ? { label: "Mild Impairment", color: "#d97706" } : { label: "Severe Impairment", color: "#dc2626" };
@@ -45,7 +44,7 @@ export default function MMSECalculator() {
                     </div>
                 ))}
             </div>
-            <button onClick={reset} className="calc-btn-reset">Reset Assessment</button>
+            <ResetButton onClick={reset} />
             <div className="calc-result" style={{ color: status.color, marginTop: 16 }}>
                 <p><strong>Score:</strong> {total} / 30 — {status.label}</p>
                 <div style={{ fontSize: "0.8rem", marginTop: "8px", fontWeight: "normal", opacity: 0.9 }}>

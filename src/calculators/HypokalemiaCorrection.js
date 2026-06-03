@@ -1,8 +1,6 @@
 import { useEffect } from "react";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   weight: "",
@@ -14,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function HypokalemiaCorrection() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     if (!values.weight || !values.potassium || !values.desiredK) {
@@ -62,7 +60,7 @@ export default function HypokalemiaCorrection() {
         <label className="calc-label">Target Serum K⁺ (mmol/L): </label>
         <input type="number" step="0.1" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" />
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.message && <div className="calc-result" style={{ marginTop: 16, borderColor: values.message.includes("✅") ? '#16a34a' : '#ea580c', color: values.message.includes("✅") ? '#16a34a' : '#ea580c' }}><p>{values.message}</p></div>}
       {values.results && (
         <div className="calc-result" style={{ marginTop: 16 }}>

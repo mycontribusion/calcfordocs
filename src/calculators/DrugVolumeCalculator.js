@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     dose: "",
@@ -11,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export default function DrugVolumeCalculator() {
-    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
     useEffect(() => {
         const d = parseFloat(values.dose);
@@ -91,7 +90,7 @@ export default function DrugVolumeCalculator() {
                 </span>
             </div>
 
-            <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+            <ResetButton onClick={reset} />
 
             {values.result && (
                 <div className="calc-result" style={{ marginTop: 16 }}>

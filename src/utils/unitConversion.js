@@ -168,3 +168,15 @@ export function toAlbuminGdl(value, unit) {
   if (unit === "mg/mL") return n / 100;
   return NaN;
 }
+
+// ─── Input Parsing ───────────────────────────────────────────────────────────
+/**
+ * Parse a required positive numeric value.
+ * @param {string|number} v - The value to parse
+ * @returns {number|null} The parsed positive number, or null if invalid/empty.
+ */
+export function parsePositive(v) {
+  if (v === "" || v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}

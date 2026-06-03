@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -14,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function EstimatedBloodVolume() {
-  const { values, suggestions, updateField: setField, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, syncField, reset } = useCalc(INITIAL_STATE);
 
   // Auto-set ageGroup based on age and sex global state
   useEffect(() => {
@@ -127,7 +125,7 @@ export default function EstimatedBloodVolume() {
           </>
         )}
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

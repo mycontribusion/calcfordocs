@@ -1,6 +1,5 @@
 import React from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -13,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function ParklandFormula() {
-    const { values, suggestions, updateField, syncField, reset } = useCalculator(INITIAL_STATE);
+    const { values, suggestions, updateField, syncField, reset } = useCalc(INITIAL_STATE);
 
     const weight = toKg(values.weight, values.weightUnit) || 0;
     const tbsaInput = parseFloat(values.tbsa) || 0;

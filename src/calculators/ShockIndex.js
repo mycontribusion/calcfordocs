@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = { heartRate: "", sbp: "", result: null };
 
 export default function ShockIndex() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const hr = parseFloat(values.heartRate);
@@ -30,7 +28,7 @@ export default function ShockIndex() {
         <SyncSuggestion field="sbp" suggestion={suggestions.sbp} onSync={syncField} />
         <input type="number" value={values.sbp} onChange={e => setField("sbp", e.target.value)} className="calc-input" />
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Shock Index:</strong> {values.result.index}</p>

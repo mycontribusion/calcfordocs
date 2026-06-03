@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     bagVolume: 500,        // Default (mL)
@@ -11,7 +10,7 @@ const INITIAL_STATE = {
 };
 
 export default function DextroseFortifier() {
-    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
     useEffect(() => {
         const { bagVolume, currentConc, targetConc, stockConc } = values;
@@ -81,7 +80,7 @@ export default function DextroseFortifier() {
                 />
             </div>
 
-            <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+            <ResetButton onClick={reset} />
 
             {values.result && (
                 <div className="calc-result" style={{ marginTop: 16 }}>

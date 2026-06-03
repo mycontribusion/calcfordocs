@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toGlucoseMmol, toUreaMmol } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   sodium: "",
@@ -15,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default function SerumOsmolalityCalculator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const naVal = parseFloat(values.sodium);
@@ -78,7 +76,7 @@ export default function SerumOsmolalityCalculator() {
         </div>
       </div>
       <div className="calc-box"><label className="calc-label">Measured Osmolality (optional):</label><input type="number" value={values.measured} onChange={(e) => setField("measured", e.target.value)} className="calc-input" /></div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">
           <div className="calc-formula-box" style={{ marginBottom: 12, fontSize: '0.85rem' }}>

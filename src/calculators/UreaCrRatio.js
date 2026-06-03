@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toBunMgdl, toCrMgdl } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   urea: "",
@@ -14,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function UreaCrRatio() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const ureaVal = parseFloat(values.urea);
@@ -89,7 +87,7 @@ export default function UreaCrRatio() {
         </div>
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
 
       {values.ratio !== null && (
         <div className="calc-result" style={{ marginTop: 16 }}>

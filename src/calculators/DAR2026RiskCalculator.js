@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
     pregnancy: false,
@@ -24,7 +23,7 @@ const INITIAL_STATE = {
 };
 
 export default function DAR2026RiskCalculator() {
-    const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+    const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
     // Auto-sync logic
     useEffect(() => {
@@ -326,7 +325,7 @@ export default function DAR2026RiskCalculator() {
                         : "Fasting may be permissible with medication adjustment."}
                 </p>
             </div>
-            <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+            <ResetButton onClick={reset} />
         </div>
     );
 }

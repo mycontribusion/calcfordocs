@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   posture: 0,
@@ -22,7 +21,7 @@ const INITIAL_STATE = {
 };
 
 export default function BallardScoreCalculator() {
-  const { values, updateField: handleChange, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: handleChange, reset } = useCalc(INITIAL_STATE);
 
   // ✅ Official New Ballard Score lookup chart
   const scoreMap = {
@@ -290,7 +289,7 @@ export default function BallardScoreCalculator() {
         <p>Total Score: {totalScore}</p>
         <p style={{ marginTop: 8 }}>Estimated GA: {estimatedGA} weeks ({getStatus()})</p>
       </div>
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

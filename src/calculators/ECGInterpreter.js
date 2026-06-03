@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import "./CalculatorShared.css";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 
 const INITIAL_STATE = {
   wave: "pWave",
@@ -13,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function ECGInterpreter() {
-  const { values, updateField: setField, updateFields, reset } = useCalculator(INITIAL_STATE);
+  const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
   // Conversion factors
   const durationFactors = {
@@ -203,7 +202,7 @@ export default function ECGInterpreter() {
           {values.result}
         </div>
       )}
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
     </div>
   );
 }

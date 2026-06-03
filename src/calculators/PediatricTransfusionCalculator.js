@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import useCalculator from "./useCalculator";
-import SyncSuggestion from "./SyncSuggestion";
+import { useCalc, CalcBox, NumberField, WeightField, HeightField, ResetButton, ResultBox , SyncSuggestion } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
-import "./CalculatorShared.css";
 
 const INITIAL_STATE = {
   weight: "",
@@ -20,7 +18,7 @@ const INITIAL_STATE = {
 };
 
 export default function PediatricTransfusionCalculator() {
-  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalculator(INITIAL_STATE);
+  const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const w = toKg(values.weight, values.weightUnit);
@@ -90,7 +88,7 @@ export default function PediatricTransfusionCalculator() {
       {values.bloodType === "custom" && (
         <div className="calc-box"><label className="calc-label">Enter PCV of donated blood (%):</label><input type="number" value={values.customPCV} onChange={(e) => setField("customPCV", e.target.value)} className="calc-input" /></div>
       )}
-      <button onClick={reset} className="calc-btn-reset">Reset Calculator</button>
+      <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">
           {values.result.error ? <p style={{ color: 'red' }}>{values.result.error}</p> : <><p style={{ fontSize: '1.2rem', color: '#0056b3' }}>{values.result.volume}</p>{values.result.note && <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 8 }}>{values.result.note}</p>}<p style={{ fontSize: '0.9rem', color: '#555', marginTop: 4 }}>{values.result.formula}</p><p style={{ fontSize: '0.9rem', color: '#555' }}>Factor used: {values.result.factorUsed}</p></>}
