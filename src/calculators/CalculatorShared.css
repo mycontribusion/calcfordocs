@@ -67,14 +67,14 @@
 .calc-select,
 .calc-input {
   width: 100%;
-  padding: 6px 12px;
+  padding: 4px 8px;
   font-size: 0.9rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   background: var(--bg-input);
   color: var(--text-primary);
   box-sizing: border-box;
-  height: 38px; /* Slightly taller for modern ease-of-use */
+  height: 32px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
