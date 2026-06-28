@@ -1,3 +1,6 @@
+/* ==========================================================================
+   FEEDBACK INPUT CONTAINER
+   ========================================================================== */
 .feedback-container {
   width: 100%;
   background: transparent;
@@ -7,37 +10,56 @@
 }
 
 .feedback-container h2 {
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 12px;
   text-align: center;
+  color: var(--text-primary);
 }
 
 .feedback-form input, 
 .feedback-form textarea {
   width: 100%;
-  box-sizing: border-box; /* Crucial for alignment */
+  box-sizing: border-box;
   padding: 12px;
   margin-bottom: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feedback-form input:focus,
+.feedback-form textarea:focus {
+  border-color: var(--border-focus);
+  background-color: var(--bg-card);
+  outline: none;
+  box-shadow: var(--shadow-active);
 }
 
 .feedback-form button {
   width: 100%;
   padding: 12px;
-  background: #015c9c;
+  background: linear-gradient(135deg, var(--accent), var(--accent));
   color: white;
   border: none;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark mode overrides for internal feedback elements */
-.calcfordocs.dark .feedback-form input,
-.calcfordocs.dark .feedback-form textarea {
-  background: #000;
-  color: #fff;
-  border-color: #444;
+.feedback-form button:hover {
+  background: var(--accent);
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+}
+
+.feedback-form button:active {
+  transform: translateY(0);
 }

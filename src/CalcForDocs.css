@@ -1,70 +1,194 @@
-/* =========================
-   GLOBAL FIX
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   CSS CUSTOM PROPERTIES (THEME DESIGN SYSTEM)
+   ========================================================================== */
+:root {
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  /* Brand Clinical Colors */
+  --primary: #0284c7;       /* Sky-600 */
+  --primary-hover: #0369a1; /* Sky-700 */
+  --primary-light: #f0f9ff; /* Sky-50 */
+  --primary-glow: rgba(14, 165, 233, 0.15);
+  
+  --accent: #0d9488;        /* Teal-600 */
+  --accent-light: #f0fdfa;  /* Teal-50 */
+  
+  /* Base Neutral Theme (Light) */
+  --bg-app: #f8fafc;        /* Slate-50 */
+  --bg-card: #ffffff;
+  --bg-input: #ffffff;
+  --border-color: #e2e8f0;   /* Slate-200 */
+  --border-hover: #cbd5e1;   /* Slate-300 */
+  --border-focus: #38bdf8;   /* Sky-400 */
+  
+  /* Text Theme */
+  --text-primary: #0f172a;   /* Slate-900 */
+  --text-secondary: #475569; /* Slate-600 */
+  --text-muted: #94a3b8;     /* Slate-400 */
+  
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 12px 20px -8px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-active: 0 0 0 4px rgba(14, 165, 233, 0.12);
+  
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-blur: blur(16px);
+  
+  /* Statuses */
+  --status-success: #10b981;
+  --status-success-bg: #ecfdf5;
+  --status-warning: #f59e0b;
+  --status-warning-bg: #fffbeb;
+  --status-error: #ef4444;
+  --status-error-bg: #fef2f2;
+}
+
+.calcfordocs.dark,
+body.dark {
+  /* Brand Clinical Colors (Dark) */
+  --primary: #38bdf8;       /* Sky-400 */
+  --primary-hover: #7dd3fc; /* Sky-300 */
+  --primary-light: #075985; /* Sky-800 */
+  --primary-glow: rgba(56, 189, 248, 0.25);
+  
+  --accent: #2dd4bf;        /* Teal-400 */
+  --accent-light: #115e59;  /* Teal-800 */
+  
+  /* Base Neutral Theme (Dark) */
+  --bg-app: #090d16;        /* Deep clinical dark space */
+  --bg-card: #111827;       /* Gray-900 */
+  --bg-input: #1f2937;      /* Gray-800 */
+  --border-color: #1f2937;   /* Gray-800 */
+  --border-hover: #374151;   /* Gray-700 */
+  --border-focus: #38bdf8;   /* Sky-400 */
+  
+  /* Text Theme (Dark) */
+  --text-primary: #f9fafb;   /* Gray-50 */
+  --text-secondary: #d1d5db; /* Gray-300 */
+  --text-muted: #9ca3af;     /* Gray-400 */
+  
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 12px 24px -10px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+  --shadow-active: 0 0 0 4px rgba(56, 189, 248, 0.15);
+  
+  --glass-bg: rgba(17, 24, 39, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Statuses */
+  --status-success-bg: rgba(16, 185, 129, 0.12);
+  --status-warning-bg: rgba(245, 158, 11, 0.12);
+  --status-error-bg: rgba(239, 68, 68, 0.12);
+}
+
+/* ==========================================================================
+   GLOBAL RULES & RESET
+   ========================================================================== */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* =========================
-   1. BASE STYLES
-========================= */
-.calcfordocs {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 16px;
-  font-family: Arial, sans-serif;
-  color: #015c9c;
-  transition: background 0.3s ease, color 0.3s ease;
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.calcfordocs {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Typography Base */
 .title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #da0b1f;
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+  margin: 0;
 }
 
 input,
 select,
 button,
 textarea {
-  border: 1px solid #da0b1f;
-  color: #015c9c;
+  font-family: var(--font-family);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Placeholders */
 input::placeholder,
 textarea::placeholder {
-  color: #015c9c;
-  opacity: 0.4;
+  color: var(--text-muted);
+  opacity: 0.8;
 }
 
-/* =========================
-   HEADER
-========================= */
-.head-contact {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
+/* ==========================================================================
+   HEADER ACTIONS & INSTALL MODAL (Sticky styled separately in Header.css)
+   ========================================================================== */
 .contactus {
   display: flex;
   align-items: center;
-  font-weight: bold;
-  color: #015c9c;
+  justify-content: center;
+  font-weight: 600;
   cursor: pointer;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
-/* =========================
-   2. BUTTON GRID
-========================= */
+.contactus:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.calcfordocs.dark .contactus:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+}
+
+/* ==========================================================================
+   BUTTON GRID & CALCULATOR CARDS
+   ========================================================================== */
 .button-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 16px;
+  margin-top: 12px;
+}
+
+.button-wrapper-container {
+  display: flex;
+  flex-direction: column;
 }
 
 .button-wrapper {
@@ -72,373 +196,215 @@ textarea::placeholder {
   display: block;
 }
 
+/* Favorite Star button */
 .fav-btn {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
-  font-size: 1rem;
-  color: #ccc;
+  font-size: 1.1rem;
+  color: var(--text-muted);
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s ease, transform 0.2s ease;
-  z-index: 2;
+  transition: all 0.2s ease;
+  z-index: 5;
+  border-radius: 50%;
 }
 
 .fav-btn:hover {
-  color: #f1c40f;
-  transform: scale(1.15);
+  color: #f59e0b;
+  transform: translateY(-50%) scale(1.15);
+  background: rgba(245, 158, 11, 0.08);
 }
 
 .fav-btn.active {
-  color: #f1c40f;
+  color: #f59e0b;
 }
 
+/* Base Calculator Button Card */
 .calc-btn {
   width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: #f8f9fa;
-  font-size: 16px;
+  padding: 14px 44px 14px 16px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  z-index: 1;
+  overflow: hidden;
 }
 
 .calc-btn:hover {
-  background: #e9ecef;
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
 }
 
 .calc-btn.active {
-  background: #dbeafe;
-  border-color: #60a5fa;
+  background: linear-gradient(135deg, var(--bg-card), var(--primary-light));
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: var(--shadow-md), var(--shadow-active);
 }
 
-/* =========================
-   3. CALCULATOR CONTAINER
-========================= */
+/* Active Calculator Container - Spans full width of grid row */
 .calc-row {
   grid-column: 1 / -1;
-  margin-top: 4px;
-  /* Reduced from 10px */
-  padding: 8px;
-  /* Reduced from 16px */
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-top: 8px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* =========================
-   4. UPDATE BANNER
-========================= */
+/* ==========================================================================
+   UPDATE BANNER
+   ========================================================================== */
 .update-banner {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1a1a1a;
-  color: #fff;
-  padding: 20px;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  padding: 18px;
   z-index: 3000;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
-  animation: slideUp 0.4s ease-out;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .update-btns {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 12px;
 }
 
 .update-confirm {
-  background: #da0b1f;
+  background: var(--primary);
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 16px;
   border-radius: 8px;
-  font-weight: bold;
+  font-weight: 700;
+  cursor: pointer;
   flex: 1;
+  transition: background 0.2s;
+}
+
+.update-confirm:hover {
+  background: var(--primary-hover);
 }
 
 .update-cancel {
   background: transparent;
-  color: #ccc;
-  border: 1px solid #444;
-  padding: 10px 20px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 10px 16px;
   border-radius: 8px;
+  cursor: pointer;
   flex: 1;
+  transition: all 0.2s;
 }
 
-/* =========================
-   5. FEEDBACK DROPDOWN
-========================= */
-.feedback-dropdown {
-  width: 260px;
-  padding: 10px;
-  background: #fff;
-  border: 1px solid #da0b1f;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+.update-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.feedback-form {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.calcfordocs.dark .update-cancel:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.feedback-form input,
-.feedback-form textarea {
-  width: 100%;
-  padding: 6px 8px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  resize: none;
-}
-
-.feedback-form button {
-  padding: 6px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #4a90e2;
-  color: #fff;
-}
-
-/* =========================
-   6. DARK MODE
-========================= */
-.calcfordocs.dark,
-body.dark {
-  background: #000;
-  color: #fff;
-}
-
-.calcfordocs.dark .title,
-.calcfordocs.dark .contactus {
-  color: #fff;
-}
-
-.calcfordocs.dark .calc-btn,
-.calcfordocs.dark .calc-row {
-  background: #000;
-  border: 1px solid #fff;
-  color: #fff;
-}
-
-.calcfordocs.dark input,
-.calcfordocs.dark select,
-.calcfordocs.dark textarea,
-.calcfordocs.dark button:not(.update-confirm) {
-  background: #000;
-  color: #fff;
-  border: 1px solid #444;
-}
-
-.calcfordocs.dark input::placeholder,
-.calcfordocs.dark textarea::placeholder {
-  color: #aaa;
-}
-
-/* Feedback dropdown dark */
-.calcfordocs.dark .feedback-dropdown {
-  background: #111;
-  border: 1px solid #333;
-}
-
-.calcfordocs.dark .feedback-form button {
-  background: #000;
-  border: 1px solid #fff;
-}
-
-/* Update banner dark */
-.calcfordocs.dark .update-banner {
-  background: #111;
-  border-top: 1px solid #333;
-}
-
-/* Body sync (legacy) */
-body.dark {
-  background: #000;
-}
-
-/* =========================
-   ANIMATION
-========================= */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  animation: slideDown 0.2s ease-out;
-}
-
-.dropdown-close {
-  align-self: flex-end;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-@keyframes slideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.install-dropdown {
-  width: 100%;
-  /* full width of header container */
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  box-sizing: border-box;
-}
-
-.install-dropdown p {
-  margin: 0 0 8px;
-}
-
-.install-btn {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-/* =========================
-   7. VIEW TOGGLE
-   ========================= */
+/* ==========================================================================
+   SPECIALTY TOGGLE CAPSULES
+   ========================================================================== */
 .view-toggle-container {
   display: flex;
   justify-content: center;
-  margin: 10px 0 20px;
-  padding: 0 16px;
+  margin: 8px 0 16px;
+  padding: 0;
   max-width: 100%;
   position: relative;
-  /* For absolute positioned pseudo-elements */
 }
 
-/* Scroll Indicators (Shadows & Arrows) */
+/* Scroll Shadows */
 .view-toggle-container::before,
 .view-toggle-container::after {
   content: "";
   position: absolute;
-  top: 4px;
-  bottom: 4px;
+  top: 2px;
+  bottom: 2px;
   width: 40px;
-  z-index: 2;
+  z-index: 10;
   pointer-events: none;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: bold;
 }
 
 .view-toggle-container::before {
-  left: 16px;
-  background: linear-gradient(to right, #fff, transparent);
+  left: 0;
+  background: linear-gradient(to right, var(--bg-app), transparent);
   content: "‹";
   justify-content: flex-start;
-  padding-left: 4px;
-  color: #0284c7;
+  padding-left: 8px;
+  color: var(--primary);
 }
 
 .view-toggle-container::after {
-  right: 16px;
-  background: linear-gradient(to left, #fff, transparent);
+  right: 0;
+  background: linear-gradient(to left, var(--bg-app), transparent);
   content: "›";
   justify-content: flex-end;
-  padding-right: 4px;
-  color: #0284c7;
+  padding-right: 8px;
+  color: var(--primary);
 }
 
 .view-toggle-container.can-scroll-left::before {
   opacity: 1;
-  transform: translateX(0);
-}
-
-.view-toggle-container:not(.can-scroll-left)::before {
-  transform: translateX(-10px);
 }
 
 .view-toggle-container.can-scroll-right::after {
   opacity: 1;
-  transform: translateX(0);
-}
-
-.view-toggle-container:not(.can-scroll-right)::after {
-  transform: translateX(10px);
-}
-
-/* Dark Mode Shadows & Arrows */
-.calcfordocs.dark .view-toggle-container::before {
-  background: linear-gradient(to right, #000, transparent);
-  color: #fff;
-}
-
-.calcfordocs.dark .view-toggle-container::after {
-  background: linear-gradient(to left, #000, transparent);
-  color: #fff;
 }
 
 .view-toggle {
   display: flex;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--border-color);
   padding: 4px;
   border-radius: 12px;
   gap: 4px;
   overflow-x: auto;
-  scrollbar-width: none;
-  /* Hide scrollbar Firefox */
-  -ms-overflow-style: none;
-  /* Hide scrollbar IE/Edge */
+  scrollbar-width: none; /* Hide scrollbar Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
   -webkit-overflow-scrolling: touch;
   width: 100%;
 }
 
 .view-toggle::-webkit-scrollbar {
   display: none;
-  /* Hide scrollbar Chrome/Safari/Brave */
 }
 
 .view-btn {
@@ -449,129 +415,122 @@ body.dark {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  color: #666;
+  color: var(--text-secondary);
   white-space: nowrap;
-  /* Prevent text wrapping inside buttons */
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
 
+.view-btn:hover {
+  color: var(--text-primary);
+}
+
 .view-btn.active {
-  background: #fff;
-  color: #0284c7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Dark Mode View Toggle */
-.calcfordocs.dark .view-toggle {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.calcfordocs.dark .view-btn {
-  color: #aaa;
-}
-
-.calcfordocs.dark .view-btn.active {
-  background: #222;
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-@media (max-width: 480px) {
-  .view-btn {
-    padding: 6px 12px;
-    font-size: 0.75rem;
-  }
-}
-
-/* =========================
-   PATIENT BANNER
-   ========================= */
+/* ==========================================================================
+   PATIENT INFORMATION ALERT BANNER
+   ========================================================================== */
 .patient-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(0, 86, 179, 0.06);
-  border: 1px solid rgba(0, 86, 179, 0.12);
+  padding: 12px 16px;
+  background: var(--primary-light);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary);
   border-radius: 12px;
-  margin: 0 16px 16px;
+  margin: 0 0 16px 0;
   font-size: 0.85rem;
-  color: #0056b3;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 .patient-info-text {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .patient-clear-btn {
-  background: none;
-  border: none;
-  color: #e74c3c;
+  background: var(--status-error-bg);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--status-error);
   cursor: pointer;
   font-size: 0.75rem;
-  font-weight: bold;
+  font-weight: 700;
   padding: 4px 8px;
-  transition: opacity 0.2s;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
 .patient-clear-btn:hover {
-  opacity: 0.7;
+  background: var(--status-error);
+  color: #fff;
+  border-color: var(--status-error);
 }
 
-.calcfordocs.dark .patient-banner {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #60a5fa;
-}
-
-.calcfordocs.dark .patient-clear-btn {
-  color: #f87171;
-}
-
-/* =========================
-   8. FOOTER & DISCLAIMER
-   ========================= */
+/* ==========================================================================
+   APP FOOTER & DISCLAIMERS
+   ========================================================================== */
 .app-footer {
-  margin-top: 40px;
-  padding: 24px 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: auto;
+  padding: 32px 16px 16px;
+  border-top: 1px solid var(--border-color);
   text-align: center;
+}
+
+.footer-feedback-btn {
+  transition: all 0.2s ease;
+}
+
+.footer-feedback-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  background-color: var(--primary-glow) !important;
 }
 
 .disclaimer {
   font-size: 0.75rem;
-  line-height: 1.5;
-  color: #666;
-  max-width: 700px;
-  margin: 0 auto 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 16px auto 12px;
   text-align: center;
-  font-style: italic;
+  opacity: 0.85;
 }
 
 .copyright {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--text-muted);
   margin: 0;
 }
 
-.calcfordocs.dark .app-footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+/* ==========================================================================
+   TRANSITIONS & ANIMATIONS
+   ========================================================================== */
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.calcfordocs.dark .disclaimer {
-  color: #aaa;
-}
-
-.calcfordocs.dark .copyright {
-  color: #666;
-}
-
-@media (max-width: 480px) {
-  .disclaimer {
-    font-size: 0.7rem;
-    padding: 0 8px;
+@keyframes slideDown {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

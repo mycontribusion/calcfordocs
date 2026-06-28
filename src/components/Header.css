@@ -1,166 +1,135 @@
-/* =========================
-   HEADER CONTAINER
-========================= */
+/* ==========================================================================
+   STICKY GLASS HEADER CONTAINER
+   ========================================================================== */
+.head-contact-container {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 8px;
+}
 
 .head-contact {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 14px;
-  background: inherit;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  top: 0;
-  z-index: 100;
+  padding: 14px 16px;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-/* =========================
-   FULL-WIDTH DROPDOWN
-========================= */
-
+/* ==========================================================================
+   DROPDOWN OVERLAYS (Install Guide & Feedback Panel)
+   ========================================================================== */
 .header-dropdown {
-  position: relative;
-  /* NOT floating */
   width: 100%;
-  /* Full header width */
-  background: var(--card-bg, #fff);
-  border-bottom: 1px solid #ddd;
-  padding: 14px;
-  z-index: 90;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 8px 16px 16px;
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* =========================
-   TITLE
-========================= */
-
-.title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
-
-/* =========================
-   RIGHT ACTIONS
-========================= */
-
-.head-contact>div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
+/* ==========================================================================
+   ACTIONS CONTAINER
+   ========================================================================== */
 .header-actions-container {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
-
-/* =========================
-   THEME TOGGLE
-========================= */
-
-.theme-toggle {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 4px 6px;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-.theme-toggle:hover {
-  background: rgba(0, 0, 0, 0.08);
-}
-
-/* =========================
-   LINKS
-========================= */
 
 .contact-links {
   display: flex;
   gap: 8px;
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 1.15rem;
+  padding: 6px 8px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.theme-toggle:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
 
+/* SVG icon alignments */
 .header-icon {
-  flex-shrink: 0;
+  stroke: var(--text-secondary);
+  transition: stroke 0.2s, transform 0.2s;
+  display: block;
 }
 
-.contactus:hover {
-  background: rgba(0, 0, 0, 0.1);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* Pulse animation for message icon */
-@keyframes pulseMessageIcon {
-  0% { transform: scale(1); stroke: #ffffff; }
-  50% { transform: scale(1.2); stroke: #007bff; }
-  100% { transform: scale(1); stroke: #ffffff; }
-}
-.feedback-btn-head .header-icon {
-  animation: pulseMessageIcon 2s infinite ease-in-out;
+.contactus:hover .header-icon {
+  stroke: var(--primary);
+  transform: scale(1.08);
 }
 
 .feedback-btn-head:hover {
-  background: #0369a1;
-  color: #fff;
+  background: var(--accent-light) !important;
+  border-color: var(--accent) !important;
 }
 
-/* =========================
-   DARK MODE SUPPORT
-========================= */
-
-.calcfordocs.dark .head-contact {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+.feedback-btn-head:hover .header-icon {
+  stroke: var(--accent);
 }
 
-.calcfordocs.dark .header-dropdown {
-  background: #111;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+/* Pulsing action attention for feedback when inactive/loaded */
+@keyframes pulseMessageIcon {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+.feedback-btn-head .header-icon {
+  animation: pulseMessageIcon 3s infinite ease-in-out;
 }
 
+/* Dark mode specific transitions */
 .calcfordocs.dark .theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.calcfordocs.dark .contactus {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background: var(--primary-light);
 }
 
 .calcfordocs.dark .contactus:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.calcfordocs.dark .feedback-btn-head {
-  background: #0369a1;
-  border-color: #0369a1;
+  background: var(--primary-light);
 }
 
 .calcfordocs.dark .feedback-btn-head:hover {
-  background: #0ea5e9;
+  background: var(--accent-light) !important;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
+/* ==========================================================================
+   RESPONSIVE LAYOUT
+   ========================================================================== */
 @media (max-width: 520px) {
+  .head-contact {
+    padding: 10px 12px;
+  }
+
   .title {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
   }
 
   .contactus {
-    font-size: 0.75rem;
-    padding: 5px 8px;
+    padding: 6px 10px;
   }
-
+  
   .theme-toggle {
+    padding: 5px 7px;
     font-size: 1rem;
   }
 }

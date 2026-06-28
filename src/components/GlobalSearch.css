@@ -1,33 +1,27 @@
-/* =========================
-   GLOBAL SEARCH
-========================= */
-
+/* ==========================================================================
+   GLOBAL SEARCH INPUT BAR
+   ========================================================================== */
 .global-search-container {
-    margin: 10px 0;
+  margin: 10px 0 14px 0;
 }
 
 .global-search-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 18px;
+  border-radius: 99px; /* Modern capsule shape */
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .global-search-input:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-/* Dark mode support if parent has .dark class */
-.calcfordocs.dark .global-search-input {
-    background: #222;
-    color: #fff;
-    border-color: #444;
-}
-
-.calcfordocs.dark .global-search-input:focus {
-    border-color: #4da3ff;
+  border-color: var(--border-focus);
+  background-color: var(--bg-card);
+  outline: none;
+  box-shadow: var(--shadow-active), var(--shadow-md);
+  transform: translateY(-1px);
 }
