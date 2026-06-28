@@ -20,13 +20,11 @@
 .calc-container {
   max-width: 480px; /* Slightly wider for clean structure */
   margin: 0 auto;
-  padding: 16px;
-  border-radius: 12px;
-  background: var(--bg-card);
-  box-shadow: var(--shadow-sm);
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
   font-family: inherit;
-  border: 1px solid var(--border-color);
-  transition: background 0.3s, border-color 0.3s;
+  border: none;
 }
 
 .calc-grid {
@@ -52,12 +50,10 @@
 }
 
 .calc-box {
-  border: 1px solid var(--border-color);
-  padding: 12px;
-  border-radius: 8px;
+  border: none;
+  padding: 0;
   margin-bottom: 12px;
-  background: var(--bg-app);
-  transition: background 0.3s, border-color 0.3s;
+  background: transparent;
 }
 
 .calc-label {
@@ -98,10 +94,12 @@
   font-size: 0.95rem;
   margin-bottom: 12px;
   padding: 16px;
-  background: linear-gradient(135deg, var(--primary-light), rgba(13, 148, 136, 0.04));
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
   border-radius: 10px;
   text-align: center;
   border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary);
+  border-right: 4px solid var(--accent);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
 }
