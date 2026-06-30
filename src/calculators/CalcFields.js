@@ -74,7 +74,7 @@ export function NumberField({
   label, field, values, setField,
   suggestions, syncField,
   placeholder, min = "0",
-  inputStyle, inputFlex = 2,
+  inputStyle, inputFlex = 1,
   units, unitField, unitFlex = 1,
   style,
 }) {
@@ -98,7 +98,7 @@ export function NumberField({
             value={values[uField]}
             onChange={(e) => setField(uField, e.target.value)}
             className="calc-select"
-            style={{ flex: unitFlex }}
+            style={{ flex: unitFlex, minWidth: "90px" }}
           >
             {units.map((u) => (
               <option key={u.value} value={u.value}>{u.label}</option>

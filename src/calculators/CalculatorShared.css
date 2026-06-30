@@ -8,9 +8,12 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
 .calc-input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
+
 /* Suppress browser red outline */
 .calc-input[type="number"]:invalid {
   box-shadow: none;
@@ -18,7 +21,8 @@
 }
 
 .calc-container {
-  max-width: 480px; /* Slightly wider for clean structure */
+  max-width: 480px;
+  /* Slightly wider for clean structure */
   margin: 0 auto;
   padding: 0;
   background: transparent;
@@ -237,8 +241,15 @@
 }
 
 @keyframes blink {
-  from, to { background-color: transparent; }
-  50% { background-color: var(--primary); }
+
+  from,
+  to {
+    background-color: transparent;
+  }
+
+  50% {
+    background-color: var(--primary);
+  }
 }
 
 .calc-main-display.error {
