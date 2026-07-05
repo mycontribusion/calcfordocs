@@ -24,13 +24,25 @@ registerRoute(
   })
 );
 
-// ✅ Cache Google Fonts
+// ✅ Cache Google Fonts CSS
 registerRoute(
-  ({ url }) =>
-    url.origin === 'https://fonts.googleapis.com' ||
-    url.origin === 'https://fonts.gstatic.com',
+  ({ url }) => url.origin === 'https://fonts.googleapis.com',
   new StaleWhileRevalidate({
-    cacheName: 'google-fonts',
+    cacheName: 'google-fonts-stylesheets',
+  })
+);
+
+// ✅ Cache Google Fonts (WOFF2 files)
+registerRoute(
+  ({ url }) => url.origin === 'https://fonts.gstatic.com',
+  new CacheFirst({
+    cacheName: 'google-fonts-webfonts',
+    plugins: [
+      new ExpirationPlugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365, // Cache for 1 year
+        maxEntries: 30, // Don't cache more than 30 fonts
+      }),
+    ],
   })
 );
 
