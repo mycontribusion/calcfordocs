@@ -62,9 +62,13 @@ export default function FluidCorrection() {
 
             <hr style={{ margin: "12px 0", borderColor: 'rgba(0,0,0,0.1)' }} />
 
-            <p style={{ fontSize: '0.9rem' }}><strong>Formulas Used:</strong></p>
-            <p style={{ fontSize: '0.85rem' }}>Deficit = % dehydration × Weight (kg) × 10</p>
-            <p style={{ fontSize: '0.85rem' }}>Maintenance: Holliday–Segar method</p>
+            <p style={{ fontSize: '0.85rem', marginBottom: 6 }}>Deficit = % dehydration × Weight (kg) × 10</p>
+            <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4, opacity: 0.7 }}>Maintenance (Holliday–Segar):</p>
+            <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', opacity: 0.85, display: 'inline-block' }}>
+                100 mL/kg (first 10 kg) + 50 mL/kg (next 10 kg) + 20 mL/kg (remainder)
+              </span>
+            </div>
           </div>
         )}
       </div>

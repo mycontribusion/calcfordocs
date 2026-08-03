@@ -1,6 +1,6 @@
 [
   {
-    "name": "Timer + Calc",
+    "name": "Timer & Calculator",
     "id": "timer_calculator",
     "keywords": [
       "timer",
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "name": "Simple Calculator",
+    "name": "Basic Calculator",
     "id": "simple_calculator",
     "keywords": [
       "basic",
@@ -22,7 +22,7 @@
     ]
   },
   {
-    "name": "Universal Lab Converter",
+    "name": "Laboratory Unit Converter",
     "id": "lab_converter",
     "keywords": [
       "lab",
@@ -36,7 +36,7 @@
     ]
   },
   {
-    "name": "Glucose Converter",
+    "name": "Glucose Unit Converter",
     "id": "glucose_converter",
     "keywords": [
       "blood sugar",
@@ -46,7 +46,7 @@
     ]
   },
   {
-    "name": "Dosage Calc",
+    "name": "Drug Dosage Calculator",
     "id": "dosage_calculator",
     "keywords": [
       "dose",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "name": "(U/mL) ⇒ (mL)",
+    "name": "Drug Volume Calculator",
     "id": "drug_volume_calc",
     "keywords": [
       "volume",
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "name": "(grams ⇔ mmol)",
+    "name": "Drug Unit Converter",
     "id": "electrolyte_unit_conv",
     "keywords": [
       "mmol to mg",
@@ -79,7 +79,7 @@
     ]
   },
   {
-    "name": "IVF Drop Rate",
+    "name": "IV Fluid Drop Rate",
     "id": "iv_infusion_rate",
     "keywords": [
       "iv rate",
@@ -89,7 +89,7 @@
     ]
   },
   {
-    "name": "Body Mass Index (BMI)",
+    "name": "BMI Calculator",
     "id": "bmi_calculator",
     "keywords": [
       "body mass index",
@@ -98,7 +98,7 @@
     ]
   },
   {
-    "name": "qSOFA / mSOFA",
+    "name": "qSOFA & mSOFA",
     "id": "sofa_score",
     "keywords": [
       "qsofa",
@@ -118,7 +118,7 @@
     ]
   },
   {
-    "name": "GCS",
+    "name": "Glasgow Coma Scale",
     "id": "gcs_calculator",
     "keywords": [
       "glasgow coma scale",
@@ -144,7 +144,7 @@
     ]
   },
   {
-    "name": "Rule of 9",
+    "name": "Rule of Nines",
     "id": "rule_of_nines",
     "keywords": [
       "burn",
@@ -192,7 +192,7 @@
     ]
   },
   {
-    "name": "AnionGap / DeltaRatio",
+    "name": "Anion Gap & Delta Ratio",
     "id": "anion_gap_delta_ratio",
     "keywords": [
       "delta ratio",
@@ -201,7 +201,7 @@
     ]
   },
   {
-    "name": "Serum Osmolality Calc",
+    "name": "Serum Osmolality Calculator",
     "id": "serum_osmolality",
     "keywords": [
       "osmolality",
@@ -254,7 +254,7 @@
     ]
   },
   {
-    "name": "Estimated Blood Volume",
+    "name": "Blood Volume Calculator",
     "id": "blood_volume_estimator",
     "keywords": [
       "ebv",
@@ -263,7 +263,7 @@
     ]
   },
   {
-    "name": "Pediatric Weight Calc",
+    "name": "Pediatric Weight Estimator",
     "id": "pediatric_weight_calc",
     "keywords": [
       "weight",
@@ -315,7 +315,7 @@
     ]
   },
   {
-    "name": "IVF + Dextrose Calculator",
+    "name": "IV Fluid + Dextrose Calculator",
     "id": "dextrose_fortifier",
     "keywords": [
       "dextrose",
@@ -329,7 +329,7 @@
     ]
   },
   {
-    "name": "Ballard Score Calc",
+    "name": "Ballard Score Calculator",
     "id": "ballard_score",
     "keywords": [
       "ballard",
@@ -359,7 +359,7 @@
     ]
   },
   {
-    "name": "Well's Score DVT",
+    "name": "Wells Score DVT",
     "id": "wells_dvt_score",
     "keywords": [
       "dvt",
@@ -368,7 +368,7 @@
     ]
   },
   {
-    "name": "Well's Score PE",
+    "name": "Wells Score PE",
     "id": "wells_pe_score",
     "keywords": [
       "pe",
@@ -377,7 +377,7 @@
     ]
   },
   {
-    "name": "Ischemic / Hemmorrhagic",
+    "name": "Siriraj Stroke Score",
     "id": "stroke_score_siriraj",
     "keywords": [
       "cvd",
@@ -386,7 +386,7 @@
     ]
   },
   {
-    "name": "AF Stroke Risk Score",
+    "name": "CHA2DS2-VASc Score",
     "id": "af_stroke_risk_cha2ds2vasc",
     "keywords": [
       "af",
@@ -407,7 +407,7 @@
     ]
   },
   {
-    "name": "Framingham Criteria",
+    "name": "Framingham HF Criteria",
     "id": "heart_failure_framingham",
     "keywords": [
       "heart failure",
@@ -427,7 +427,7 @@
     ]
   },
   {
-    "name": "Cardiac Axis",
+    "name": "ECG Axis Calculator",
     "id": "cardiac_axis",
     "keywords": [
       "ecg axis",
@@ -435,7 +435,7 @@
     ]
   },
   {
-    "name": "ECG Waveforms",
+    "name": "ECG Waveform Guide",
     "id": "ecg_waveforms",
     "keywords": [
       "ecg",
@@ -487,18 +487,6 @@
       "kt/v",
       "urea reduction ratio",
       "hemodialysis"
-    ]
-  },
-  {
-    "name": "(Coming Soon)",
-    "id": "dialysis_prescription",
-    "keywords": [
-      "dialysis prescription",
-      "ultrafiltration goal",
-      "uf rate",
-      "hemodialysis",
-      "hd",
-      "fluid removal"
     ]
   }
 ]

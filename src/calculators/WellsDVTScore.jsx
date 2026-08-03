@@ -41,9 +41,10 @@ export default function WellsDVTScore() {
   const { interpretation, suggests } = useMemo(() => {
     let interp = "";
     let sug = "";
-    if (score >= 3) { interp = "High probability of DVT"; sug = "DVT likely"; }
-    else if (score >= 1) { interp = "Moderate probability of DVT"; sug = score >= 2 ? "DVT likely" : "DVT unlikely"; }
-    else { interp = "Low probability of DVT"; sug = "DVT unlikely"; }
+    if (score >= 3) { interp = "High probability of DVT"; sug = "DVT likely — do Doppler USS"; }
+    else if (score >= 2) { interp = "Moderate probability of DVT"; sug = "DVT likely — do Doppler USS"; }
+    else if (score === 1) { interp = "Moderate probability of DVT"; sug = "DVT unlikely — do D-Dimer"; }
+    else { interp = "Low probability of DVT"; sug = "DVT unlikely — do D-Dimer"; }
 
     return { interpretation: interp, suggests: sug };
   }, [score]);

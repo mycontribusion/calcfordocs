@@ -59,13 +59,13 @@ export default function CHA2DS2VASc() {
     let sug = "";
 
     if (sex === "male") {
-      if (score === 0) { text = "Low risk"; sug = "No anticoagulation needed."; }
-      else if (score === 1) { text = "Intermediate risk"; sug = "Consider anticoagulation."; }
-      else { text = "High risk"; sug = "Anticoagulation recommended."; }
+      if (score === 0) { text = "Low (AF Stroke Risk)"; sug = "No anticoagulation needed."; }
+      else if (score === 1) { text = "Intermediate (AF Stroke Risk)"; sug = "Consider anticoagulation."; }
+      else { text = "High (AF Stroke Risk)"; sug = "Anticoagulation recommended."; }
     } else {
-      if (score === 1) { text = "Low risk"; sug = "No anticoagulation needed."; }
-      else if (score === 2) { text = "Intermediate risk"; sug = "Consider anticoagulation."; }
-      else { text = "High risk"; sug = "Anticoagulation recommended."; }
+      if (score === 1) { text = "Low (AF Stroke Risk)"; sug = "No anticoagulation needed."; }
+      else if (score === 2) { text = "Intermediate (AF Stroke Risk)"; sug = "Consider anticoagulation."; }
+      else { text = "High (AF Stroke Risk)"; sug = "Anticoagulation recommended."; }
     }
     return { interpretation: text, suggests: sug };
   }, [score, values.female]);

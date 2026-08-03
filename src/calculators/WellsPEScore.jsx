@@ -49,9 +49,17 @@ export default function WellsScorePE() {
     .reduce((sum, p) => sum + p, 0);
 
   let interpretation = "";
-  if (totalScore > 6) interpretation = "High probability of PE";
-  else if (totalScore >= 2) interpretation = "Moderate probability of PE";
-  else interpretation = "Low probability of PE";
+  let action = "";
+  if (totalScore > 6) {
+    interpretation = "High probability of PE";
+    action = "Score > 6 — do CTPA";
+  } else if (totalScore >= 2) {
+    interpretation = "Moderate probability of PE";
+    action = "Score ≤ 6 — do D-Dimer";
+  } else {
+    interpretation = "Low probability of PE";
+    action = "Score ≤ 6 — do D-Dimer";
+  }
 
   return (
     <div className="calc-container">
@@ -72,7 +80,11 @@ export default function WellsScorePE() {
 
       {values.selectedIds.length > 0 && (
         <div className="calc-result">
-          Score: {totalScore} → {interpretation}
+          <p><strong>Score:</strong> {totalScore}</p>
+          <p><strong>Interpretation:</strong> {interpretation}</p>
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
+            <p style={{ color: '#0056b3', marginTop: 4 }}>Action: {action}</p>
+          </div>
         </div>
       )}
       <ResetButton onClick={reset} />

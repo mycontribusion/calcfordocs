@@ -64,12 +64,20 @@ export default function SirirajScore() {
       <ResetButton onClick={reset} />
       {score !== null && (
         <div className="calc-result">
-          <p><strong>Score:</strong> {score}</p><p><strong>Interpretation:</strong> {interpretation}</p>
+          <p><strong>Score:</strong> {score}</p>
+          <p><strong>Interpretation:</strong> {interpretation}</p>
           {suggests && (
-            <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
-              <p style={{ color: '#0056b3', marginTop: 4 }}>{suggests}</p>
-            </div>
+            <p style={{ color: '#0056b3', marginTop: 4, fontSize: '0.85rem' }}>{suggests}</p>
           )}
+          <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8 }}>
+            <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4, opacity: 0.7 }}>Siriraj Formula:</p>
+            <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap' }}>
+              <span style={{ fontSize: '0.78rem', fontFamily: 'monospace', opacity: 0.85, display: 'inline-block' }}>
+                SSS = (2.5×C) + (2×V) + (2×H) + (0.1×DBP) − (3×A) − 12
+              </span>
+            </div>
+            <p style={{ fontSize: '0.72rem', opacity: 0.6, marginTop: 4 }}>C=Consciousness · V=Vomiting · H=Headache · DBP=Diastolic BP · A=Atheroma</p>
+          </div>
         </div>
       )}
     </div>
