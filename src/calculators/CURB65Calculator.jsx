@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, SyncSuggestion } from "./CalcFields";
+import { useCalc, SyncSuggestion, FormulaBox, ResetButton } from "./CalcFields";
 
 const INITIAL_STATE = {
   confusion: false,
@@ -50,6 +50,23 @@ export default function CURB65Calculator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="CURB-65 Criteria & Severity Management">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Criteria (1 point each):</p>
+        <ul style={{ margin: "0 0 6px", paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>C:</strong> Confusion (abnormal mental state)</li>
+          <li><strong>U:</strong> Urea ≥ 7 mmol/L (BUN ≥ 20 mg/dL)</li>
+          <li><strong>R:</strong> Respiratory Rate ≥ 30 /min</li>
+          <li><strong>B:</strong> Blood Pressure (SBP &lt; 90 or DBP ≤ 60 mmHg)</li>
+          <li><strong>65:</strong> Age ≥ 65 years</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Management Recommendations:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>0 – 1 point:</strong> Low risk (&lt;3% 30-day mortality) — Home treatment / Outpatient</li>
+          <li><strong>2 points:</strong> Moderate risk (9% mortality) — Consider hospital admission / close outpatient</li>
+          <li><strong>3 – 5 points:</strong> High risk (17–30% mortality) — Hospital admission, assess for ICU if 4–5</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
         <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />
@@ -107,19 +124,16 @@ export default function CURB65Calculator() {
         </label>
       </div>
 
-      <button
-        onClick={reset}
-        className="calc-btn-reset"
-      >
-        Reset Calculator
-      </button>
+      <ResetButton onClick={reset} />
 
       <div className="calc-result" style={{ marginTop: 16 }}>
         Score: {score} / 5
         <div style={{ fontSize: "0.9rem", fontWeight: "normal", marginTop: 4 }}>
           {score <= 1
             ? "Mild CAP — consider outpatient care"
-            : "Severe CAP — recommend hospitalization"}
+            : score === 2
+            ? "Moderate CAP — consider inpatient admission"
+            : "Severe CAP — inpatient admission recommended (assess ICU requirement)"}
         </div>
       </div>
     </div>

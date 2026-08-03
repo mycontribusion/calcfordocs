@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, SyncSuggestion } from "./CalcFields";
+import { useCalc, SyncSuggestion, FormulaBox, ResetButton } from "./CalcFields";
 
 const INITIAL_STATE = {
     preBUN: "",
@@ -40,6 +40,18 @@ export default function DialysisAdequacy() {
 
     return (
         <div className="calc-container">
+            <FormulaBox title="URR Formula & Adequacy Targets">
+                <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+                <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>URR (%) = [(Pre BUN − Post BUN) ÷ Pre BUN] × 100</p>
+                <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Adequacy Targets:</p>
+                <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+                    <li><strong>URR ≥ 65%:</strong> Adequate HD session (KDOQI target)</li>
+                    <li><strong>Kt/V ≥ 1.2:</strong> Equivalent adequacy measure (not calculated here)</li>
+                    <li><strong>URR &lt; 65%:</strong> Inadequate — review session time, blood flow rate, or access</li>
+                </ul>
+                <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>URR = Urea Reduction Ratio. Units cancel — ratio is valid regardless of mmol/L or mg/dL.</p>
+            </FormulaBox>
+
             <div className="calc-box">
                 <label className="calc-label">Pre-Dialysis Urea / BUN:</label>
                 <SyncSuggestion field="preBUN" suggestion={suggestions.preBUN} onSync={syncField} />
@@ -78,22 +90,12 @@ export default function DialysisAdequacy() {
                 </div>
             </div>
 
-            <button onClick={reset} className="calc-btn-reset">
-                Reset Calculator
-            </button>
+            <ResetButton onClick={reset} />
 
             {values.result && (
                 <div className="calc-result" style={{ marginTop: 16 }}>
                     <p><strong>URR:</strong> {values.result.urr}%</p>
-                    <p style={{ marginTop: 4, color: values.result.urrColor }}>{values.result.urrInterp}</p>
-
-                    <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
-                        <strong>Interpretation Guide:</strong>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
-                            <li>• Target Urea Reduction Ratio (URR) is generally ≥ 65%</li>
-                            <li>• URR = ((Pre BUN - Post BUN) / Pre BUN) × 100</li>
-                        </ul>
-                    </div>
+                    <p style={{ marginTop: 4, fontWeight: 700, color: values.result.urrColor }}>{values.result.urrInterp}</p>
                 </div>
             )}
         </div>

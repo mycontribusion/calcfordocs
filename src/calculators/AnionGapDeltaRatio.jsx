@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 import { toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -84,6 +84,21 @@ export default function AnionGapDeltaRatio() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Anion Gap & Delta Ratio Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 2px 0", fontSize: '0.78rem' }}>AG = Na⁺ − (Cl⁻ + HCO₃⁻) [Normal: 8–12]</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 2px 0", fontSize: '0.78rem' }}>AG (with K⁺) = (Na⁺ + K⁺) − (Cl⁻ + HCO₃⁻) [Normal: 12–16]</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Corrected AG = AG + 2.5 × (4 − Albumin g/dL)</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>ΔRatio = (AG − AGNormal) ÷ (24 − HCO₃⁻)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>ΔRatio Interpretation:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>&lt; 0.4: Mixed HAGMA + NAGMA</li>
+          <li>0.4 – 1.0: HAGMA (e.g., RTA, early DKA)</li>
+          <li>1.0 – 2.0: Pure HAGMA (Lactic acidosis, DKA)</li>
+          <li>&gt; 2.0: Mixed HAGMA + Metabolic Alkalosis</li>
+        </ul>
+      </FormulaBox>
+
       <NumberField label="Sodium (Na⁺):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <NumberField label="Potassium (K⁺, optional):" field="potassium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <NumberField label="Chloride (Cl⁻):" field="chloride" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
@@ -96,6 +111,7 @@ export default function AnionGapDeltaRatio() {
           <select value={values.albuminUnit} onChange={(e) => setField("albuminUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="g/dL">g/dL</option><option value="g/L">g/L</option></select>
         </div>
       </div>
+
       <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>

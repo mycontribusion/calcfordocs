@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, NumberField, WeightField, ResetButton, ResultBox, SelectField } from "./CalcFields";
+import { useCalc, NumberField, WeightField, ResetButton, ResultBox, SelectField, FormulaBox } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -66,6 +66,24 @@ export default function HyponatremiaCorrection() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Adrogue-Madias Formula & Reference">
+        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>Adrogue-Madias Equation:</p>
+        <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', marginBottom: 6 }}>
+          <span style={{ fontSize: '0.78rem', fontFamily: 'monospace', opacity: 0.9, display: 'inline-block' }}>
+            Δ Na = (Infusate Na − Serum Na) ÷ (TBW + 1)
+          </span>
+        </div>
+        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>Total Body Water (TBW) Coefficients:</p>
+        <ul style={{ paddingLeft: 18, margin: "0 0 4px", fontSize: '0.75rem' }}>
+          <li>Male non-elderly: 0.60 | Male elderly: 0.50</li>
+          <li>Female non-elderly: 0.50 | Female elderly: 0.45</li>
+        </ul>
+        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 2 }}>Safety Limits:</p>
+        <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.75rem' }}>
+          <li>⚠️ Max safe rise: ≤8–10 mmol/L per 24h</li>
+          <li>⚠️ Rapid correction risks Osmotic Demyelination Syndrome (ODS)</li>
+        </ul>
+      </FormulaBox>
 
       {/* Row 1: Serum Na + Weight */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>

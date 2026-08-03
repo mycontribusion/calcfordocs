@@ -277,7 +277,7 @@
   gap: 10px;
 }
 
-/* Formula indicators */
+/* Formula indicators & Collapsible Reference */
 .calc-formula-box {
   background: var(--bg-app);
   border: 1px solid var(--border-color);
@@ -287,6 +287,48 @@
   font-size: 0.9rem;
   color: var(--text-secondary);
   text-align: center;
+}
+
+.calc-guide-wrapper {
+  margin: 4px 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.calc-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.calc-guide-btn:hover {
+  background: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.calc-guide-content {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  line-height: 1.45;
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
 }
 
 .calc-info-badge {

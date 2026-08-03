@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 import { toCalciumMgdl, toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -60,6 +60,17 @@ export default function CalciumPhosphateProduct() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Ca × PO₄ Product & Risk Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Product (mg²/dL²) = Calcium (mg/dL) × Phosphate (mg/dL)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Risk Cut-offs:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>&lt; 55 mg²/dL²: Low risk</li>
+          <li>55–70 mg²/dL²: Moderate risk</li>
+          <li>&gt; 70 mg²/dL²: High risk of metastatic soft tissue & vascular calcification</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <label className="calc-label">Calcium:</label>
         <SyncSuggestion field="calcium" suggestion={suggestions.calcium} onSync={syncField} />
@@ -93,6 +104,7 @@ export default function CalciumPhosphateProduct() {
           </select>
         </div>
       </div>
+
       <ResetButton onClick={reset} />
       {values.product && (
         <div className="calc-result" style={{ marginTop: 16 }}>

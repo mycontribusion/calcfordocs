@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, WeightField, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, WeightField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -48,7 +48,7 @@ export default function PediatricTransfusionCalculator() {
     if (values.method === "pcv") {
       observed = observed / 3;
       target = target / 3;
-      conversionNote = `Converted PCV to Hb: Observed Hb = ${observed.toFixed(1)}, Target Hb = ${target.toFixed(1)}`;
+      conversionNote = `Converted PCV to Hb: Observed Hb = ${observed.toFixed(1)} g/dL, Target Hb = ${target.toFixed(1)} g/dL`;
     }
 
     const transfusionVolume = w * (target - observed) * (factor ?? 1);
@@ -65,6 +65,21 @@ export default function PediatricTransfusionCalculator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Pediatric Blood Transfusion Formula & Factors">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>
+          Vol (mL) = Weight (kg) × (Target Hb − Observed Hb) × Factor
+        </p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Multiplication Factors by Product:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>Whole Blood:</strong> Factor = 6</li>
+          <li><strong>Sedimented Red Cells:</strong> Factor = 4</li>
+          <li><strong>Packed Red Blood Cells (PRBCs):</strong> Factor = 3</li>
+          <li><strong>Custom Product PCV:</strong> Factor = 3 ÷ (PCV % ÷ 100)</li>
+        </ul>
+        <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>Note: Hb (g/dL) ≈ PCV (%) ÷ 3. PRBC rate is typically 10–15 mL/kg over 2–4 hours.</p>
+      </FormulaBox>
+
       <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <SelectField label="Method:" field="method" values={values} setField={setField} options={[{ value: "pcv", label: "PCV" }, { value: "hb", label: "Hb" }]} />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -94,7 +109,7 @@ export default function PediatricTransfusionCalculator() {
       )}
       <ResetButton onClick={reset} />
       {values.result && (
-        <div className="calc-result">
+        <div className="calc-result" style={{ marginTop: 16 }}>
           {values.result.error ? <p style={{ color: 'red' }}>{values.result.error}</p> : <><p style={{ fontSize: '1.2rem', color: '#0056b3' }}>{values.result.volume}</p>{values.result.note && <p style={{ fontSize: '0.9rem', color: '#555', marginTop: 8 }}>{values.result.note}</p>}<p style={{ fontSize: '0.9rem', color: '#555', marginTop: 4 }}>{values.result.formula}</p><p style={{ fontSize: '0.9rem', color: '#555' }}>Factor used: {values.result.factorUsed}</p></>}
         </div>
       )}

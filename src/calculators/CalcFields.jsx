@@ -11,6 +11,7 @@
  *            CalcBox, ResetButton, ResultBox } from "./CalcFields";
  */
 
+import React, { useState } from "react";
 import "./CalculatorShared.css";          // loaded once, shared by all consumers
 import useCalculator from "./useCalculator";
 import SyncSuggestion from "./SyncSuggestion";
@@ -228,3 +229,34 @@ export function ResultBox({ children, show = true, style }) {
     </div>
   );
 }
+
+// ─── FormulaBox / ShowGuide ───────────────────────────────────────────────────
+/**
+ * Collapsible reference box for clinical formulas & revision explanations.
+ * Can be accessed anytime by clicking the small "Show Guide" button.
+ */
+export function FormulaBox({ title, defaultOpen = false, children, style }) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  if (!children) return null;
+
+  return (
+    <div className="calc-guide-wrapper" style={{ marginBottom: "12px", ...style }}>
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="calc-guide-btn"
+      >
+        <span>📖 {open ? "Hide Guide" : "Show Guide"}</span>
+        <span style={{ fontSize: "0.65rem", opacity: 0.7 }}>{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div className="calc-guide-content">
+          {title && <div style={{ fontWeight: 700, fontSize: "0.82rem", marginBottom: 6, color: "var(--text-primary)" }}>{title}</div>}
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
+

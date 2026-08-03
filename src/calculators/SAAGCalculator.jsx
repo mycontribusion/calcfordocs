@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, SyncSuggestion } from "./CalcFields";
+import { useCalc, SyncSuggestion, FormulaBox, ResetButton } from "./CalcFields";
 
 const INITIAL_STATE = {
     albumin: "",
@@ -43,6 +43,16 @@ export default function SAAGCalculator() {
 
     return (
         <div className="calc-container">
+            <FormulaBox title="SAAG Formula & Differential Diagnosis">
+                <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+                <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>SAAG = Serum Albumin − Ascitic Fluid Albumin</p>
+                <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Interpretation:</p>
+                <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+                    <li><strong>High SAAG (≥ 1.1 g/dL):</strong> Portal Hypertension<br/><span style={{ opacity: 0.75 }}>→ Cirrhosis, Alcoholic Hepatitis, Cardiac Failure, Budd-Chiari Syndrome</span></li>
+                    <li style={{ marginTop: 4 }}><strong>Low SAAG (&lt; 1.1 g/dL):</strong> Non-Portal cause<br/><span style={{ opacity: 0.75 }}>→ Peritoneal Carcinomatosis, TB Peritonitis, Pancreatitis, Nephrotic Syndrome</span></li>
+                </ul>
+            </FormulaBox>
+
             <div className="calc-box">
                 <label className="calc-label">Serum Albumin:</label>
                 <SyncSuggestion field="albumin" suggestion={suggestions.albumin} onSync={syncField} />
@@ -79,7 +89,7 @@ export default function SAAGCalculator() {
                     />
                     <select
                         value={values.albuminUnit}
-                        onChange={(e) => setField("albuminUnit", e.target.value)} // Shares unit state
+                        onChange={(e) => setField("albuminUnit", e.target.value)}
                         className="calc-select"
                         style={{ flex: 1 }}
                     >
@@ -89,9 +99,7 @@ export default function SAAGCalculator() {
                 </div>
             </div>
 
-            <button onClick={reset} className="calc-btn-reset">
-                Reset Calculator
-            </button>
+            <ResetButton onClick={reset} />
 
             {values.result && (
                 <div className="calc-result" style={{ marginTop: 16 }}>
@@ -99,17 +107,9 @@ export default function SAAGCalculator() {
                     <p style={{ marginTop: 4, color: values.result.value.split(' ')[0] >= (values.albuminUnit === "g/dL" ? 1.1 : 11) ? '#b30000' : '#0056b3' }}>
                         {values.result.interpretation}
                     </p>
-                    <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
-                        <p style={{ color: values.result.value.split(' ')[0] >= (values.albuminUnit === "g/dL" ? 1.1 : 11) ? '#b30000' : '#0056b3' }}>
-                            {values.result.suggests}
-                        </p>
-                        <strong style={{ display: 'block', marginTop: 12 }}>Formula:</strong>
-                        <p className="font-mono text-sm" style={{ opacity: 0.8 }}>SAAG = Serum Albumin - Ascitic Fluid Albumin</p>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>
-                            <li>• Portal HTN causes transudative ascites (high gradient).</li>
-                            <li>• Non-portal causes are exudative (low gradient).</li>
-                        </ul>
-                    </div>
+                    <p style={{ marginTop: 8, fontSize: '0.85rem', color: values.result.value.split(' ')[0] >= (values.albuminUnit === "g/dL" ? 1.1 : 11) ? '#b30000' : '#0056b3' }}>
+                        {values.result.suggests}
+                    </p>
                 </div>
             )}
         </div>

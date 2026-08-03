@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -67,6 +67,19 @@ export default function EstimatedBloodVolume() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 360 }}>
+      <FormulaBox title="EBV Reference Constants">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>EBV (mL) = Weight (kg) × Age Constant (mL/kg)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Age-Based Constants:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Premature Neonate: 90–100 mL/kg</li>
+          <li>Term Neonate: 85–90 mL/kg</li>
+          <li>Infant (&lt; 1 yr): 75–80 mL/kg</li>
+          <li>Child (&gt; 1 yr): 70–75 mL/kg</li>
+          <li>Adult Male: ~70 mL/kg</li>
+          <li>Adult Female: ~65 mL/kg</li>
+        </ul>
+      </FormulaBox>
 
       <NumberField label="Weight:" field="weight" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
 

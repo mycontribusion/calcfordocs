@@ -1,5 +1,5 @@
 import React from "react";
-import { useCalc, WeightField, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, WeightField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -43,6 +43,15 @@ export default function FluidCorrection() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 400 }}>
+      <FormulaBox title="Formulas & Reference">
+        <p style={{ fontSize: '0.85rem', marginBottom: 6 }}><strong>Fluid Deficit:</strong> Deficit (mL) = % dehydration × Weight (kg) × 10</p>
+        <p style={{ fontSize: '0.85rem', fontWeight: 600, marginBottom: 4 }}><strong>Maintenance (Holliday–Segar):</strong></p>
+        <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', opacity: 0.9, display: 'inline-block' }}>
+            100 mL/kg (first 10 kg) + 50 mL/kg (next 10 kg) + 20 mL/kg (remainder)
+          </span>
+        </div>
+      </FormulaBox>
 
       {/* Weight */}
       <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
@@ -76,3 +85,4 @@ export default function FluidCorrection() {
     </div>
   );
 }
+

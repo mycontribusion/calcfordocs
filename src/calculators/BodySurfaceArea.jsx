@@ -1,6 +1,5 @@
-// src/calculators/BodySurfaceArea.js
 import React, { useEffect } from "react";
-import { useCalc } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 import { toKg, toCm } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -22,7 +21,6 @@ export default function BodySurfaceArea() {
       updateFields({ bsa: null, interpretation: "" });
       return;
     }
-    // Convert weight to kilograms
     const wKg = toKg(wRaw, values.weightUnit);
     const hCm = toCm(hRaw, values.heightUnit);
     const bsa = Math.sqrt((wKg * hCm) / 3600);
@@ -32,8 +30,20 @@ export default function BodySurfaceArea() {
 
   return (
     <div className="calc-container">
-      <h2 className="calc-formula-title">Mosteller Formula</h2>
-      <p className="calc-formula">BSA = √(Weight × Height / 3600)</p>
+      <FormulaBox title="Mosteller Formula & Normal BSA Tiers">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Mosteller Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>
+          BSA (m²) = √[ Weight (kg) × Height (cm) ÷ 3600 ]
+        </p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Average Reference Values:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>Adult Male:</strong> ~1.9 m²</li>
+          <li><strong>Adult Female:</strong> ~1.6 m²</li>
+          <li><strong>Children (9–12 yrs):</strong> ~1.07 m²</li>
+          <li><strong>Infants:</strong> ~0.25 m²</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <label className="calc-label">Weight:</label>
         <div style={{ display: "flex", gap: "8px" }}>
@@ -80,9 +90,7 @@ export default function BodySurfaceArea() {
         </div>
       </div>
 
-      <button onClick={reset} className="calc-btn-reset">
-        Reset Calculator
-      </button>
+      <ResetButton onClick={reset} />
 
       {values.bsa !== null && (
         <div className="calc-result" style={{ marginTop: 16 }}>

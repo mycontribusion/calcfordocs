@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -60,6 +60,25 @@ function EGFRCalculator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="CKD-EPI 2021 & KDIGO Stages">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>CKD-EPI 2021 Equation:</p>
+        <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', marginBottom: 6 }}>
+          <span style={{ fontSize: '0.78rem', fontFamily: 'monospace' }}>
+            eGFR = 142 × min(SCr/κ, 1)<sup>α</sup> × max(SCr/κ, 1)<sup>−1.200</sup> × 0.9938<sup>Age</sup> × (1.012 if female)
+          </span>
+        </div>
+        <p style={{ margin: "4px 0", fontSize: '0.75rem' }}>κ = 0.7 (F), 0.9 (M) | α = -0.241 (F), -0.302 (M)</p>
+        <p style={{ margin: "6px 0 4px 0", fontWeight: 600 }}>KDIGO CKD Staging:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>G1: ≥90 mL/min/1.73m² (Normal)</li>
+          <li>G2: 60–89 (Mildly decreased)</li>
+          <li>G3a: 45–59 (Mild-moderate)</li>
+          <li>G3b: 30–44 (Moderate-severe)</li>
+          <li>G4: 15–29 (Severe)</li>
+          <li>G5: &lt;15 (Kidney failure)</li>
+        </ul>
+      </FormulaBox>
+
       <h3 style={{ textAlign: 'center', marginBottom: '16px' }}>CKD-EPI 2021</h3>
 
       <NumberField

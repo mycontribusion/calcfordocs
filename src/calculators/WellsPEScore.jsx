@@ -1,6 +1,5 @@
-// src/calculators/WellsScorePE.js
 import React, { useEffect } from "react";
-import { useCalc, ResetButton } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 
 const WELLS_CRITERIA = [
   { id: 1, label: "Clinical signs of DVT", points: 3 },
@@ -63,6 +62,19 @@ export default function WellsScorePE() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Wells PE Criteria & Diagnostic Protocol">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Diagnostic Protocol:</p>
+        <ul style={{ margin: "0 0 6px", paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>Score &gt; 6 (High Risk / PE Likely):</strong> Proceed directly to CT Pulmonary Angiogram (CTPA).</li>
+          <li><strong>Score ≤ 6 (PE Unlikely):</strong> Perform High-sensitivity D-Dimer test. If negative, PE is ruled out. If positive, proceed to CTPA.</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>3-Tier Probability Classification:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>&gt; 6 points:</strong> High Risk (~65% PE probability)</li>
+          <li><strong>2 – 6 points:</strong> Moderate Risk (~30% PE probability)</li>
+          <li><strong>&lt; 2 points:</strong> Low Risk (~10% PE probability)</li>
+        </ul>
+      </FormulaBox>
 
       <div className="calc-box">
         {WELLS_CRITERIA.map((c) => (
@@ -78,8 +90,10 @@ export default function WellsScorePE() {
         ))}
       </div>
 
+      <ResetButton onClick={reset} />
+
       {values.selectedIds.length > 0 && (
-        <div className="calc-result">
+        <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Score:</strong> {totalScore}</p>
           <p><strong>Interpretation:</strong> {interpretation}</p>
           <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
@@ -87,7 +101,6 @@ export default function WellsScorePE() {
           </div>
         </div>
       )}
-      <ResetButton onClick={reset} />
     </div>
   );
 }

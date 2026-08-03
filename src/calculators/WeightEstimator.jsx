@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, CalcBox, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, CalcBox, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 
 const INITIAL_STATE = {
   age: "",
@@ -65,6 +65,21 @@ export default function PediatricWeightEstimator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Pediatric Weight Estimation Rules">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Nelson Formulas:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>3–12 months: (Age in months + 9) ÷ 2</li>
+          <li>1–6 years: (2 × Age in years) + 8</li>
+          <li>7–12 years: (7 × Age in years − 5) ÷ 2</li>
+        </ul>
+        <p style={{ margin: "6px 0 4px 0", fontWeight: 600 }}>Best Guess Formulas:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>&lt; 1 year: (Age in months + 9) ÷ 2</li>
+          <li>1–5 years: (2 × Age in years) + 5</li>
+          <li>5–14 years: 4 × Age in years</li>
+        </ul>
+      </FormulaBox>
+
       <CalcBox label="Age:" field="age" suggestions={suggestions} syncField={syncField}>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input type="number" value={values.age} onChange={(e) => setField("age", Number(e.target.value))} className="calc-input" style={{ flex: 2 }} />
@@ -79,6 +94,7 @@ export default function PediatricWeightEstimator() {
       {values.formula === "default" && ageInMonths() <= 3 && (
         <div className="calc-box"><label className="calc-label">Birth Weight (grams):</label><input type="number" value={values.birthWeight} onChange={(e) => setField("birthWeight", Number(e.target.value))} className="calc-input" /></div>
       )}
+
       <ResetButton onClick={reset} />
       {values.weightResult && <div className="calc-result"><p><strong>{values.weightResult}</strong></p>{values.formulaResult && <p style={{ fontSize: "0.9em", marginTop: 5 }}>{values.formulaResult}</p>}</div>}
     </div>

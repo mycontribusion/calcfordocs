@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, WeightField, ResetButton } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, WeightField, ResetButton, FormulaBox } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -43,11 +43,24 @@ export default function HypokalemiaCorrection() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="K⁺ Deficit & Safety Rules">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 2px 0", fontSize: '0.78rem' }}>K⁺ Deficit (mmol) = (Target − Observed) × Weight (kg) × 0.6</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Daily Maintenance = 1 mmol/kg/day</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Administration Safety Rules:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Ensure <strong>urine output ≥ 0.5 mL/kg/hr</strong> before IV replacement.</li>
+          <li><strong>Max peripheral concentration:</strong> 40 mmol/L</li>
+          <li><strong>Max peripheral infusion rate:</strong> 10 mmol/hr (up to 20 mmol/hr with ECG monitoring in ICU).</li>
+        </ul>
+      </FormulaBox>
+
       <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <NumberField label="Observed Serum K⁺ (mmol/L):" field="potassium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <CalcBox label="Target Serum K⁺ (mmol/L):">
         <input type="number" value={values.desiredK} onChange={(e) => setField("desiredK", e.target.value)} className="calc-input" />
       </CalcBox>
+
       <ResetButton onClick={reset} />
       {values.message && <div className="calc-result" style={{ marginTop: 16, borderColor: values.message.includes("✅") ? '#16a34a' : '#ea580c', color: values.message.includes("✅") ? '#16a34a' : '#ea580c' }}><p>{values.message}</p></div>}
       {values.results && (

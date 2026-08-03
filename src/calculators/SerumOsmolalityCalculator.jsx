@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, ResetButton } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, ResetButton, FormulaBox } from "./CalcFields";
 import { toGlucoseMmol, toUreaMmol } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -48,6 +48,18 @@ export default function SerumOsmolalityCalculator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Serum Osmolality & Osmol Gap">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Osmolality = 2×Na⁺ + Glucose (mmol/L) + Urea (mmol/L)</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Osmol Gap = Measured Osmolality − Calculated Osmolality</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Reference Ranges:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Normal Osmolality: 275–295 mOsm/kg</li>
+          <li>Normal Osmol Gap: ≤ 10 mOsm/kg</li>
+          <li>Elevated Gap (&gt; 10): Toxic alcohols (methanol, ethylene glycol), mannitol, severe DKA/AKA</li>
+        </ul>
+      </FormulaBox>
+
       <NumberField label="Sodium (mmol/L):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <NumberField
         label="Glucose:"
@@ -70,6 +82,7 @@ export default function SerumOsmolalityCalculator() {
       <CalcBox label="Measured Osmolality (optional):">
         <input type="number" value={values.measured} onChange={(e) => setField("measured", e.target.value)} className="calc-input" />
       </CalcBox>
+
       <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">

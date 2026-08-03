@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 import { toBunMgdl, toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -49,6 +49,17 @@ export default function UreaCrRatio() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="BUN/Cr Ratio & Etiology Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Ratio = BUN (mg/dL) ÷ Creatinine (mg/dL)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Differential Diagnosis:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>&gt; 20:1: Prerenal AKI</strong> (Volume depletion, heart failure, GI bleed, high-protein diet).</li>
+          <li><strong>10–20:1: Normal / Postrenal AKI</strong> (Obstruction, baseline normal).</li>
+          <li><strong>&lt; 10:1: Intrarenal AKI</strong> (Acute Tubular Necrosis, rhabdomyolysis, low protein intake).</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <label className="calc-label">Urea / BUN:</label>
         <SyncSuggestion field="urea" suggestion={suggestions.urea} onSync={syncField} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { useCalc, SyncSuggestion } from "./CalcFields";
+import { useCalc, SyncSuggestion, FormulaBox, ResetButton } from "./CalcFields";
 import { toKg } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -27,12 +27,13 @@ export default function ParklandFormula() {
 
     return (
         <div className="calc-container">
-            <div className="calc-formula-box">
-                <strong>Formula:</strong> 4 mL × Weight (kg) × %TBSA
-                <div style={{ fontSize: '0.85em', opacity: 0.8, marginTop: '4px' }}>
-                    *Use 50% max TBSA for fluid calculation.
-                </div>
-            </div>
+            <FormulaBox title="Parkland Formula & Resuscitation Guide">
+                <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+                <p style={{ fontFamily: "monospace", margin: "0 0 4px 0" }}>Total Fluid (24h) = 4 mL × Weight (kg) × %TBSA</p>
+                <p style={{ margin: "4px 0", fontSize: '0.78rem' }}>• <strong>Fluid of Choice:</strong> Ringer's Lactate (RL)</p>
+                <p style={{ margin: "2px 0", fontSize: '0.78rem' }}>• <strong>Timing:</strong> Give 50% in first 8 hours (from time of burn), remaining 50% over next 16 hours.</p>
+                <p style={{ margin: "2px 0", fontSize: '0.78rem' }}>• <strong>Note:</strong> Maximum TBSA capped at 50% for fluid estimation to prevent fluid overload.</p>
+            </FormulaBox>
 
             <div className="calc-grid">
                 <div className="calc-group">

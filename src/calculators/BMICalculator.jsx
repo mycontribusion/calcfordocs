@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, WeightField, HeightField, ResetButton, ResultBox } from "./CalcFields";
+import { useCalc, WeightField, HeightField, ResetButton, ResultBox, FormulaBox } from "./CalcFields";
 import { toKg, toM } from "../utils/unitConversion";
 
 
@@ -38,9 +38,23 @@ export default function BmiCalculator() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="BMI Formula & Cut-offs">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 8px 0" }}>BMI = Weight (kg) ÷ [Height (m)]²</p>
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>WHO Classification:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.78rem' }}>
+          <li>&lt; 18.5: Underweight</li>
+          <li>18.5 – 24.9: Normal weight</li>
+          <li>25.0 – 29.9: Overweight</li>
+          <li>30.0 – 34.9: Obese Class I</li>
+          <li>35.0 – 39.9: Obese Class II</li>
+          <li>≥ 40.0: Obese Class III (Morbid)</li>
+        </ul>
+      </FormulaBox>
 
       <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <HeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+
       <ResetButton onClick={reset} />
 
       {/* Results */}

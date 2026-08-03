@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, ResetButton } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 
 const INITIAL_STATE = {
   consciousness: 0,
@@ -30,6 +30,21 @@ export default function SirirajScore() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Siriraj Formula & Cut-offs">
+        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>Siriraj Stroke Score (SSS):</p>
+        <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', marginBottom: 6 }}>
+          <span style={{ fontSize: '0.78rem', fontFamily: 'monospace', opacity: 0.9, display: 'inline-block' }}>
+            SSS = (2.5×C) + (2×V) + (2×H) + (0.1×DBP) − (3×A) − 12
+          </span>
+        </div>
+        <p style={{ fontSize: '0.72rem', opacity: 0.7, marginBottom: 6 }}>C=Consciousness · V=Vomiting · H=Headache · DBP=Diastolic BP · A=Atheroma</p>
+        <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.75rem' }}>
+          <li><strong>&gt; +1:</strong> Likely Hemorrhagic Stroke</li>
+          <li><strong>&lt; −1:</strong> Likely Ischemic Stroke</li>
+          <li><strong>−1 to +1:</strong> Indeterminate (CT scan required)</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <label className="calc-label">Consciousness:</label>
         <select className="calc-select" value={values.consciousness} onChange={(e) => setField("consciousness", Number(e.target.value))}>
@@ -61,6 +76,7 @@ export default function SirirajScore() {
           Guide: DM, Claudication, Angina/ACS, or History of TIA.
         </div>
       </div>
+
       <ResetButton onClick={reset} />
       {score !== null && (
         <div className="calc-result">

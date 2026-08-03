@@ -1,4 +1,4 @@
-import { useCalc, ResetButton } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 import { useMemo } from "react";
 
 const criteria = [
@@ -51,6 +51,20 @@ export default function WellsDVTScore() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 500 }}>
+      <FormulaBox title="Wells DVT Criteria & Diagnostic Protocol">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>2-Tiered Risk Stratification & Management:</p>
+        <ul style={{ margin: "0 0 6px", paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>Score ≥ 2 (DVT Likely):</strong> Perform Proximal Venous Compression Ultrasonography (Doppler USS).</li>
+          <li><strong>Score ≤ 1 (DVT Unlikely):</strong> Perform High-sensitivity D-Dimer test. If negative, DVT is ruled out.</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>3-Tiered Risk Stratification:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>≥ 3 points:</strong> High probability (53%)</li>
+          <li><strong>1 – 2 points:</strong> Moderate probability (17%)</li>
+          <li><strong>≤ 0 points:</strong> Low probability (5%)</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         {criteria.map((c) => (
           <label key={c.key} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>

@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { useCalc, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 
 const CRITERIA = [
   { label: "Congestive heart failure / LV dysfunction", value: 1, key: "chf" },
@@ -72,6 +72,26 @@ export default function CHA2DS2VASc() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="CHA₂DS₂-VASc Scoring & Anticoagulation Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Point System:</p>
+        <ul style={{ margin: "0 0 6px", paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>C:</strong> CHF / LV dysfunction (1 pt)</li>
+          <li><strong>H:</strong> Hypertension (1 pt)</li>
+          <li><strong>A₂:</strong> Age ≥ 75 (2 pts)</li>
+          <li><strong>D:</strong> Diabetes mellitus (1 pt)</li>
+          <li><strong>S₂:</strong> Stroke / TIA / TE history (2 pts)</li>
+          <li><strong>V:</strong> Vascular disease (1 pt)</li>
+          <li><strong>A:</strong> Age 65–74 (1 pt)</li>
+          <li><strong>Sc:</strong> Sex category (Female = 1 pt)</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Anticoagulation Recommendations:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>Men 0 / Women 1:</strong> Low (AF Stroke Risk) — No OAC recommended</li>
+          <li><strong>Men 1 / Women 2:</strong> Intermediate (AF Stroke Risk) — Consider OAC</li>
+          <li><strong>Men ≥2 / Women ≥3:</strong> High (AF Stroke Risk) — OAC recommended (DOAC preferred over Warfarin)</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <SyncSuggestion field="age" suggestion={suggestions.age} onSync={syncField} />
         <SyncSuggestion field="sex" suggestion={suggestions.sex} onSync={syncField} />

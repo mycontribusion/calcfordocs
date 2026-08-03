@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 import { toCalciumMgdl, fromCalciumMgdl, toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -53,6 +53,18 @@ export default function CorrectedCalcium() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Payne Formula & Reference Ranges">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Payne Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4 − Albumin g/dL)</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Corrected Ca (mmol/L) = Measured Ca + 0.02 × (40 − Albumin g/L)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Reference Ranges:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Normal total Ca: 8.5–10.5 mg/dL (2.12–2.62 mmol/L)</li>
+          <li>Hypocalcemia: &lt; 8.5 mg/dL (&lt; 2.12 mmol/L)</li>
+          <li>Hypercalcemia: &gt; 10.5 mg/dL (&gt; 2.62 mmol/L)</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         <label className="calc-label">Calcium:</label>
         <SyncSuggestion field="calcium" suggestion={suggestions.calcium} onSync={syncField} />

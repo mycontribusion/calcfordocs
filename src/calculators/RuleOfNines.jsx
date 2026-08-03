@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, ResetButton } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 
 const PARTS = [
   { label: "Anterior Head", value: 4.5, key: "ah" }, { label: "Posterior Head", value: 4.5, key: "ph" },
@@ -27,6 +27,18 @@ export default function RuleOfNines() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Wallace Rule of Nines TBSA Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Adult TBSA Breakdown:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Head & Neck: 9% (4.5% Ant, 4.5% Post)</li>
+          <li>Each Arm: 9% (4.5% Ant, 4.5% Post)</li>
+          <li>Anterior Trunk: 18% (Chest 9%, Abdomen 9%)</li>
+          <li>Posterior Trunk: 18% (Upper Back 9%, Lower Back 9%)</li>
+          <li>Each Leg: 18% (9% Ant, 9% Post)</li>
+          <li>Perineum: 1%</li>
+        </ul>
+      </FormulaBox>
+
       <div className="calc-box">
         {PARTS.map((p) => (
           <label key={p.key} style={{ display: 'flex', alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
@@ -34,6 +46,7 @@ export default function RuleOfNines() {
           </label>
         ))}
       </div>
+
       <ResetButton onClick={reset} />
       <div className="calc-result"><strong>Total Burn Area:</strong> {total}%</div>
     </div>

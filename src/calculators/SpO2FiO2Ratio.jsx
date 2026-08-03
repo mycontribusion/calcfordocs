@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useCalc, CalcBox, ResetButton } from "./CalcFields";
+import { useCalc, CalcBox, ResetButton, FormulaBox } from "./CalcFields";
 
 const nasalFiO2Map = { 1: 0.24, 2: 0.28, 3: 0.32, 4: 0.36, 5: 0.40, 6: 0.44 };
 const venturiFiO2Map = {
@@ -80,6 +80,18 @@ export default function SpO2FiO2Ratio() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="SpO₂/FiO₂ Ratio & ARDS Berlin Criteria">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>S/F Ratio = SpO₂ (%) ÷ FiO₂</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Interpretation (ARDS Berlin / BTS):</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>&gt; 315:</strong> Normal oxygenation</li>
+          <li><strong>235 – 315:</strong> Mild hypoxaemia (Mild ARDS)</li>
+          <li><strong>150 – 234:</strong> Moderate hypoxaemia (Moderate ARDS)</li>
+          <li><strong>&lt; 150:</strong> Severe hypoxaemia (Severe ARDS)</li>
+        </ul>
+        <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>SF ratio correlates with PaO₂/FiO₂ (P/F ratio). SF &gt;315 ≈ PF &gt;300 mmHg.</p>
+      </FormulaBox>
 
       <CalcBox label="SpO₂ (%):" field="spo2" suggestions={suggestions} syncField={syncField}>
         <input

@@ -1,4 +1,4 @@
-import { useCalc, ResetButton } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
 import { useMemo } from "react";
 
 const majorCriteria = [
@@ -45,7 +45,26 @@ export default function HeartFailureFramingham() {
 
   return (
     <div className="calc-container" style={{ maxWidth: 500 }}>
-      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: '#333' }}>Major Criteria</h3>
+      <FormulaBox title="Framingham Criteria for Heart Failure">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Diagnosis requires:</p>
+        <ul style={{ margin: "0 0 6px", paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>≥ 2 Major criteria, <strong>OR</strong></li>
+          <li>1 Major + ≥ 2 Minor criteria</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Major Criteria:</p>
+        <ul style={{ margin: "0 0 4px", paddingLeft: 18, fontSize: '0.73rem', opacity: 0.85 }}>
+          <li>PND, JVD, Pulmonary Rales, Cardiomegaly</li>
+          <li>Acute Pulmonary Oedema, S3 Gallop</li>
+          <li>CVP &gt;16 cmH₂O, Circ Time ≥25 sec, Wt loss ≥4.5 kg on Rx</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Minor Criteria:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.73rem', opacity: 0.85 }}>
+          <li>Ankle Oedema, Nocturnal Cough, Dyspnea on Exertion</li>
+          <li>Hepatomegaly, Pleural Effusion, HR ≥120 bpm</li>
+        </ul>
+      </FormulaBox>
+
+      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: 'var(--text-primary)' }}>Major Criteria</h3>
       <div className="calc-box">
         {majorCriteria.map((c) => (
           <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>
@@ -53,7 +72,7 @@ export default function HeartFailureFramingham() {
           </label>
         ))}
       </div>
-      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: '#333' }}>Minor Criteria</h3>
+      <h3 style={{ fontSize: '1rem', marginTop: 16, marginBottom: 8, color: 'var(--text-primary)' }}>Minor Criteria</h3>
       <div className="calc-box">
         {minorCriteria.map((c) => (
           <label key={c.id} style={{ display: "block", marginBottom: 8, cursor: "pointer" }}>

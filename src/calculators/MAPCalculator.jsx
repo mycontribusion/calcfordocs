@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, NumberField, ResetButton } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, FormulaBox } from "./CalcFields";
 
 const INITIAL_STATE = { sbp: "", dbp: "", map: null, pp: null };
 
@@ -18,11 +18,22 @@ export default function MapCalculator() {
 
   return (
     <div className="calc-container">
-      <div className="calc-formula-box">
-        MAP = DBP + (SBP - DBP) / 3
-      </div>
+      <FormulaBox title="MAP & Pulse Pressure Formula">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0" }}>MAP = DBP + ⅓(SBP − DBP)</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 8px 0" }}>Pulse Pressure (PP) = SBP − DBP</p>
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Reference Ranges:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.78rem' }}>
+          <li>MAP &lt; 65 mmHg: Low (organ hypoperfusion risk)</li>
+          <li>MAP 65–100 mmHg: Normal target</li>
+          <li>MAP &gt; 100 mmHg: Elevated</li>
+          <li>Normal Pulse Pressure: ~40 mmHg</li>
+        </ul>
+      </FormulaBox>
+
       <NumberField label="Systolic BP:" field="sbp" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <NumberField label="Diastolic BP:" field="dbp" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
+
       <ResetButton onClick={reset} />
       {values.map && (
         <div className="calc-result" style={{ marginTop: 16 }}>

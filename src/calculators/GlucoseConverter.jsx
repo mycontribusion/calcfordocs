@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 import { toGlucoseMmol, toGlucoseMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 
 export default function GlucoseConverter() {
   const { values, suggestions, updateField: setField, updateFields, syncField, reset } = useCalc(INITIAL_STATE);
+
   const roundTo1Decimal = (num) => Math.round(num * 10) / 10;
 
   useEffect(() => {
@@ -86,6 +87,19 @@ export default function GlucoseConverter() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Glucose Formula & Reference Ranges">
+        <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: 4 }}>Conversion Formula:</p>
+        <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', marginBottom: 6 }}>
+          <span style={{ fontSize: '0.8rem', fontFamily: 'monospace' }}>1 mmol/L = 18.018 mg/dL</span>
+        </div>
+        <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: 4 }}>Fasting Reference Ranges:</p>
+        <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.78rem' }}>
+          <li>Normal: 70–100 mg/dL (3.9–5.6 mmol/L)</li>
+          <li>Prediabetes: 101–125 mg/dL (5.7–6.9 mmol/L)</li>
+          <li>Diabetes: ≥126 mg/dL (≥7.0 mmol/L)</li>
+        </ul>
+      </FormulaBox>
+
       <NumberField
         label="Glucose Value:"
         field="glucose"

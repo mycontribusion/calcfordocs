@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, SyncSuggestion } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
 import { toGlucoseMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -41,6 +41,16 @@ export default function CorrectedSodium() {
 
   return (
     <div className="calc-container">
+      <FormulaBox title="Katz Formula & Hyperglycemia Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Katz: Na + 1.6 × [(Glucose mg/dL − 100) ÷ 100]</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Hillier: Na + 2.4 × [(Glucose mg/dL − 100) ÷ 100]</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Clinical Pearls:</p>
+        <p style={{ margin: 0, fontSize: '0.75rem' }}>
+          Hyperglycemia causes an osmotic shift of water from intracellular fluid (ICF) into extracellular fluid (ECF), diluting serum sodium (translocational hyponatremia).
+        </p>
+      </FormulaBox>
+
       <NumberField label="Sodium (mmol/L):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
       <div className="calc-box">
         <label className="calc-label">Glucose:</label>
@@ -50,6 +60,7 @@ export default function CorrectedSodium() {
           <select value={values.glucoseUnit} onChange={(e) => setField("glucoseUnit", e.target.value)} className="calc-select" style={{ flex: 1 }}><option value="mg/dL">mg/dL</option><option value="mmol/L">mmol/L</option></select>
         </div>
       </div>
+
       <ResetButton onClick={reset} />
       {values.result && (
         <div className="calc-result">
