@@ -523,6 +523,82 @@ textarea::placeholder {
 }
 
 /* ==========================================================================
+   MY OTHER APPS BAR
+   ========================================================================== */
+.other-apps-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-shrink: 0;
+}
+
+.other-apps-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.other-apps-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.other-apps-list {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.other-app-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 20px;
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.other-app-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.other-app-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.other-app-name {
+  line-height: 1;
+}
+
+/* ==========================================================================
    TRANSITIONS & ANIMATIONS
    ========================================================================== */
 @keyframes slideUp {

@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
+import MyOtherApps from "./components/MyOtherApps";
 import { PatientProvider } from './calculators/PatientContext';
 import { FavoritesProvider, useFavorites } from './calculators/FavoritesContext';
 
@@ -263,6 +264,9 @@ function MainApp() {
           setActivePanel={setActivePanel}
         />
       </div>
+
+      {/* 🌐 My Other Apps */}
+      <MyOtherApps />
 
       {/* 🔍 Search */}
       <GlobalSearch
