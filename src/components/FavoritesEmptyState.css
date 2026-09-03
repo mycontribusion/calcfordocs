@@ -59,8 +59,8 @@
   vertical-align: middle;
   padding: 2px 5px;
   border-radius: 6px;
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  background: rgba(71, 85, 107, 0.12);
+  border: 1px solid rgba(71, 85, 107, 0.4);
 }
 
 .favorites-rec-section {
@@ -125,7 +125,7 @@
   padding: 5px;
   border-radius: 6px;
   cursor: pointer;
-  opacity: 0.75;
+  opacity: 0.85;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -136,10 +136,6 @@
   opacity: 1;
   color: var(--text-primary);
   background: rgba(0, 0, 0, 0.04);
-  border-color: var(--border-hover);
+  border-color: var(--border-color);
   transform: scale(1.1);
-}
-
-.calcfordocs.dark .favorites-rec-star-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
 }

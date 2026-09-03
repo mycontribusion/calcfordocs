@@ -251,9 +251,14 @@ textarea::placeholder {
 
 .fav-btn.active {
   opacity: 1;
-  color: var(--primary);
-  background: var(--primary-light);
-  border-color: rgba(0, 114, 206, 0.25);
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.calcfordocs.dark .fav-btn.active {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: rgba(251, 191, 36, 0.45);
 }
 
 /* Base Calculator Button Card */

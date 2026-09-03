@@ -17,7 +17,7 @@ const StarIcon = ({ filled }) => (
     height="16"
     viewBox="0 0 24 24"
     fill={filled ? "#f59e0b" : "none"}
-    stroke="#f59e0b"
+    stroke="currentColor"
     strokeWidth="2.2"
     strokeLinecap="round"
     strokeLinejoin="round"

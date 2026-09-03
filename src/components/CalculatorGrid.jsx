@@ -10,7 +10,7 @@ const StarIcon = ({ filled }) => (
     height="16"
     viewBox="0 0 24 24"
     fill={filled ? "#f59e0b" : "none"}
-    stroke="#f59e0b"
+    stroke="currentColor"
     strokeWidth="2.2"
     strokeLinecap="round"
     strokeLinejoin="round"
@@ -22,7 +22,7 @@ const StarIcon = ({ filled }) => (
 
 const CalculatorItem = React.memo(({ item, activeCalc, toggleCalc, isFav, toggleFav, onFavToggleNotice }) => {
   const isActive = activeCalc === item.id;
-
+  
   return (
     <div id={item.id} className="button-wrapper-container">
       <div className="button-wrapper">
@@ -85,7 +85,7 @@ export default function CalculatorGrid({
   return (
     <div className="button-grid">
       {calcs.map((item) => (
-        <CalculatorItem
+        <CalculatorItem 
           key={item.id}
           item={item}
           activeCalc={activeCalc}
