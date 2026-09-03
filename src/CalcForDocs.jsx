@@ -13,6 +13,22 @@ import { PatientProvider } from './calculators/PatientContext';
 import { FavoritesProvider, useFavorites } from './calculators/FavoritesContext';
 
 
+const TabStarIcon = () => (
+  <svg
+    width="17"
+    height="17"
+    viewBox="0 0 24 24"
+    fill="#f59e0b"
+    stroke="#d97706"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ display: "inline-block", verticalAlign: "-2px", marginRight: "5px" }}
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+
 const ARRANGEMENTS = {
   og: ["pregnancy_calculator", "bishop_score"],
   peds: ["apgar_score", "pediatric_weight_calc", "pediatric_age_estimator", "pediatric_anemia_correction", "dextrose_fortifier", "blood_volume_estimator", "ballard_score"],
@@ -25,8 +41,9 @@ const ARRANGEMENTS = {
 function MainApp() {
   const [activeCalc, setActiveCalc] = useState(() => {
     const path = window.location.pathname;
-    const match = path.match(/^\/calc\/([^/]+)/);
-    return match ? match[1] : null;
+    const calcMatch = path.match(/^\/calc\/([^/]+)/);
+    const favoriteMatch = path.match(/^\/favorite\/([^/]+)/);
+    return calcMatch ? calcMatch[1] : favoriteMatch ? favoriteMatch[1] : null;
   });
   const [theme, setTheme] = useState("light");
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,12 +52,28 @@ function MainApp() {
   }); // dropdown state
   const [view, setView] = useState(() => {
     const path = window.location.pathname;
+    if (path.startsWith("/favorite/")) return "favorites";
     if (path.startsWith("/calc/") || path === "/feedback") return "default";
     const match = path.match(/^\/view\/([^/]+)/);
     return match ? match[1] : "default";
   });
   const { updateAvailable, refreshApp } = useServiceWorkerUpdate();
   const { favorites } = useFavorites();
+  const [toastNotice, setToastNotice] = useState(null);
+
+  const triggerToastNotice = useCallback((calcName, isFav) => {
+    setToastNotice({
+      message: isFav ? `★ Added "${calcName}" to Favorites` : `Removed "${calcName}" from Favorites`,
+      isFav
+    });
+  }, []);
+
+  useEffect(() => {
+    if (toastNotice) {
+      const timer = setTimeout(() => setToastNotice(null), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [toastNotice]);
 
   const [showBanner, setShowBanner] = useState(false); // banner UI state
   const headerRef = useRef(null);
@@ -111,7 +144,6 @@ function MainApp() {
     if (activePanel === "feedback") {
       newPath = "/feedback";
     } else if (activeCalc) {
-      // If currently viewing favorites, prefix with /favorite for SEO-friendly URLs
       if (view === "favorites") {
         newPath = `/favorite/${activeCalc}`;
       } else {
@@ -131,28 +163,6 @@ function MainApp() {
     const handlePopState = () => {
       const path = window.location.pathname;
       const calcMatch = path.match(/^\/calc\/([^/]+)/);
-      const viewMatch = path.match(/^\/view\/([^/]+)/);
-      const isFeedback = path === "/feedback";
-
-      setActivePanel(isFeedback ? "feedback" : null);
-      setActiveCalc(calcMatch ? calcMatch[1] : null);
-
-      if (viewMatch) {
-        setView(viewMatch[1]);
-      } else if (!calcMatch && !isFeedback) {
-        setView("default");
-      }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
-  // Adjust popstate handling to support /favorite/:id routes
-  useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      const calcMatch = path.match(/^\/calc\/([^/]+)/);
       const favoriteMatch = path.match(/^\/favorite\/([^/]+)/);
       const viewMatch = path.match(/^\/view\/([^/]+)/);
       const isFeedback = path === "/feedback";
@@ -162,7 +172,9 @@ function MainApp() {
 
       if (viewMatch) {
         setView(viewMatch[1]);
-      } else if (!calcMatch && !favoriteMatch && !isFeedback) {
+      } else if (favoriteMatch) {
+        setView("favorites");
+      } else if (!calcMatch && !isFeedback) {
         setView("default");
       }
     };
@@ -245,6 +257,13 @@ function MainApp() {
   return (
     <div className={`calcfordocs ${theme}`}>
 
+      {/* Toast Notice */}
+      {toastNotice && (
+        <div className={`fav-toast-notice ${toastNotice.isFav ? "added" : "removed"}`}>
+          {toastNotice.message}
+        </div>
+      )}
+
       {/* Update Banner */}
       <UpdateBanner
         show={showBanner}
@@ -273,7 +292,6 @@ function MainApp() {
         value={searchTerm}
         onChange={setSearchTerm}
       />
-
       {/* 🔘 Speciality Toggle */}
       <div className={`view-toggle-container ${canScrollLeft ? "can-scroll-left" : ""} ${canScrollRight ? "can-scroll-right" : ""}`}>
         <div
@@ -295,13 +313,14 @@ function MainApp() {
             return (
               <button
                 key={v}
-                className={`view-btn ${view === v ? "active" : ""}`}
+                className={`view-btn ${v === "favorites" ? "fav-tab" : ""} ${view === v ? "active" : ""}`}
                 onClick={() => {
                   setView(v);
                   track("category_viewed", { category: labels[v] });
                 }}
               >
-                {labels[v]}
+                {v === "favorites" && <TabStarIcon filled={view === "favorites"} />}
+                <span>{labels[v]}</span>
               </button>
             );
           })}
@@ -313,6 +332,8 @@ function MainApp() {
         calcs={filteredCalcs}
         activeCalc={activeCalc}
         toggleCalc={toggleCalc}
+        view={view}
+        onFavToggleNotice={triggerToastNotice}
       />
       {/* 📜 Footer Disclaimer */}
       <footer className="app-footer">

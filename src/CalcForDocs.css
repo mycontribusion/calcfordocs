@@ -1,43 +1,54 @@
-
 /* ==========================================================================
    CSS CUSTOM PROPERTIES (THEME DESIGN SYSTEM)
    ========================================================================== */
 :root {
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  
+
   /* Brand Clinical Colors */
-  --primary: #015c9c;       /* Brand Blue */
-  --primary-hover: #014a80; /* Darker Blue */
-  --primary-light: #e6f0fa; /* Very Light Blue */
+  --primary: #015c9c;
+  /* Brand Blue */
+  --primary-hover: #014a80;
+  /* Darker Blue */
+  --primary-light: #e6f0fa;
+  /* Very Light Blue */
   --primary-glow: rgba(1, 92, 156, 0.15);
-  
-  --accent: #da0b1f;        /* Brand Red */
-  --accent-light: #fde8ea;  /* Very Light Red */
-  
+
+  --accent: #da0b1f;
+  /* Brand Red */
+  --accent-light: #fde8ea;
+  /* Very Light Red */
+
   /* Base Neutral Theme (Light) */
-  --bg-app: #f8fafc;        /* Slate-50 */
+  --bg-app: #f8fafc;
+  /* Slate-50 */
   --bg-card: #ffffff;
   --bg-input: #ffffff;
-  --border-color: #e2e8f0;   /* Slate-200 */
-  --border-hover: #cbd5e1;   /* Slate-300 */
-  --border-focus: #38bdf8;   /* Sky-400 */
-  
+  --border-color: #e2e8f0;
+  /* Slate-200 */
+  --border-hover: #cbd5e1;
+  /* Slate-300 */
+  --border-focus: #38bdf8;
+  /* Sky-400 */
+
   /* Text Theme */
-  --text-primary: #0f172a;   /* Slate-900 */
-  --text-secondary: #475569; /* Slate-600 */
-  --text-muted: #94a3b8;     /* Slate-400 */
-  
+  --text-primary: #0f172a;
+  /* Slate-900 */
+  --text-secondary: #475569;
+  /* Slate-600 */
+  --text-muted: #94a3b8;
+  /* Slate-400 */
+
   /* Shadows & Glassmorphism */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 12px 20px -8px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
   --shadow-active: 0 0 0 4px rgba(14, 165, 233, 0.12);
-  
+
   --glass-bg: rgba(255, 255, 255, 0.75);
   --glass-border: rgba(255, 255, 255, 0.6);
   --glass-blur: blur(16px);
-  
+
   /* Statuses */
   --status-success: #10b981;
   --status-success-bg: #ecfdf5;
@@ -54,10 +65,10 @@ body.dark {
   --primary-hover: #e5e5e5;
   --primary-light: #1a1a1a;
   --primary-glow: rgba(255, 255, 255, 0.15);
-  
+
   --accent: #ffffff;
   --accent-light: #1a1a1a;
-  
+
   /* Base Neutral Theme (Dark) */
   --bg-app: #000000;
   --bg-card: #000000;
@@ -65,22 +76,22 @@ body.dark {
   --border-color: #333333;
   --border-hover: #666666;
   --border-focus: #ffffff;
-  
+
   /* Text Theme (Dark) */
   --text-primary: #ffffff;
   --text-secondary: #cccccc;
   --text-muted: #888888;
-  
+
   /* Shadows & Glassmorphism */
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-lg: none;
   --shadow-card: 0 0 0 1px #333333;
   --shadow-active: 0 0 0 2px #ffffff;
-  
+
   --glass-bg: rgba(0, 0, 0, 0.9);
   --glass-border: rgba(255, 255, 255, 0.2);
-  
+
   /* Statuses */
   --status-success-bg: rgba(255, 255, 255, 0.1);
   --status-warning-bg: rgba(255, 255, 255, 0.1);
@@ -127,7 +138,7 @@ body {
   margin: 0;
   position: relative;
   /* Add subtle reflection */
-  -webkit-box-reflect: below -8px linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.15));
+  -webkit-box-reflect: below -8px linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
   animation: shine 4s linear infinite;
 }
 
@@ -210,36 +221,45 @@ textarea::placeholder {
 .fav-btn {
   position: absolute;
   top: 50%;
-  right: 12px;
+  right: 10px;
   transform: translateY(-50%);
   background: transparent;
-  border: none;
-  font-size: 1.1rem;
-  color: var(--text-muted);
+  border: 1px solid transparent;
+  color: var(--text-secondary);
   cursor: pointer;
-  padding: 6px;
+  padding: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
   z-index: 5;
-  border-radius: 50%;
+  border-radius: 6px;
+  opacity: 0.75;
 }
 
 .fav-btn:hover {
-  color: #f59e0b;
-  transform: translateY(-50%) scale(1.15);
-  background: rgba(245, 158, 11, 0.08);
+  opacity: 1;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--border-color);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.calcfordocs.dark .fav-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .fav-btn.active {
-  color: #f59e0b;
+  opacity: 1;
+  color: var(--primary);
+  background: var(--primary-light);
+  border-color: rgba(0, 114, 206, 0.25);
 }
 
 /* Base Calculator Button Card */
 .calc-btn {
   width: 100%;
-  padding: 12px 36px 12px 12px;
+  padding: 12px 48px 12px 12px;
   border-radius: 12px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -282,6 +302,107 @@ textarea::placeholder {
   position: relative;
   animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Header inside open calculator */
+.calc-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.calc-row-title-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calc-row-icon {
+  font-size: 1.2rem;
+}
+
+.calc-row-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calc-fav-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calc-fav-toggle-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: #f59e0b;
+  color: #d97706;
+}
+
+.calc-fav-toggle-btn.is-fav {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #b45309;
+}
+
+.calcfordocs.dark .calc-fav-toggle-btn.is-fav {
+  color: #fbbf24;
+}
+
+.calc-fav-toggle-btn .star-icon {
+  font-size: 1rem;
+  color: #f59e0b;
+}
+
+/* Toast Notice */
+.fav-toast-notice {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+.fav-toast-notice.added {
+  border-left: 4px solid var(--primary);
+}
+
+/* Favorite tab styling */
+.view-btn.fav-tab {
+  color: var(--text-secondary);
+}
+
+.view-btn.fav-tab.active {
+  color: var(--primary);
+  background: var(--primary-light);
+  border-color: rgba(0, 114, 206, 0.3);
+}
+
 
 /* ==========================================================================
    UPDATE BANNER
@@ -409,8 +530,10 @@ textarea::placeholder {
   border-radius: 12px;
   gap: 4px;
   overflow-x: auto;
-  scrollbar-width: none; /* Hide scrollbar Firefox */
-  -ms-overflow-style: none; /* Hide scrollbar IE/Edge */
+  scrollbar-width: none;
+  /* Hide scrollbar Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar IE/Edge */
   -webkit-overflow-scrolling: touch;
   width: 100%;
 }
@@ -606,6 +729,7 @@ textarea::placeholder {
     transform: translateY(20px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -617,6 +741,7 @@ textarea::placeholder {
     transform: translateY(-10px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;

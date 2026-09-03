@@ -21,3 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Capacitor generated native platform files
+/android/
+/assets/
+
+# Duplicate or temporary files
+public/og-image copy.png
