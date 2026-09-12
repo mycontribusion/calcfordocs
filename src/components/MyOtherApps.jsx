@@ -40,6 +40,8 @@ export default function MyOtherApps() {
               src={app.icon}
               alt={`${app.name} logo`}
               className="other-app-icon"
+              loading="lazy"
+              decoding="async"
               onError={(e) => { e.target.style.display = "none"; }}
             />
             <span className="other-app-name">{app.name}</span>

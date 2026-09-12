@@ -11,6 +11,7 @@ export default defineConfig({
       filename: 'service-worker.js',
       injectManifest: {
         injectionPoint: 'self.__WB_MANIFEST',
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
       },
     }),
   ],

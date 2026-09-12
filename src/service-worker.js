@@ -1,17 +1,22 @@
 /* eslint-disable no-restricted-globals */
 import { clientsClaim } from 'workbox-core';
-import { precacheAndRoute } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate, NetworkOnly } from 'workbox-strategies';
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+import { registerRoute, NavigationRoute, setCatchHandler } from 'workbox-routing';
+import { CacheFirst, NetworkOnly } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
 
 clientsClaim();
 
-// Auto-inject all build assets (JS, CSS, images, etc.)
+// Auto-inject all build assets (JS, CSS, fonts, icons, etc.)
 precacheAndRoute(self.__WB_MANIFEST);
 
 // ✅ Allow offline deep-links (App Shell pattern)
+const handler = createHandlerBoundToURL('/index.html');
+const navigationRoute = new NavigationRoute(handler, {
+  denylist: [/^\/_/, /^\/api/],
+});
+registerRoute(navigationRoute);
 
 // ✅ Cache images
 registerRoute(
@@ -24,31 +29,12 @@ registerRoute(
   })
 );
 
-// ✅ Cache Google Fonts CSS
-registerRoute(
-  ({ url }) => url.origin === 'https://fonts.googleapis.com',
-  new StaleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets',
-  })
-);
-
-// ✅ Cache Google Fonts (WOFF2 files)
-registerRoute(
-  ({ url }) => url.origin === 'https://fonts.gstatic.com',
-  new CacheFirst({
-    cacheName: 'google-fonts-webfonts',
-    plugins: [
-      new ExpirationPlugin({
-        maxAgeSeconds: 60 * 60 * 24 * 365, // Cache for 1 year
-        maxEntries: 30, // Don't cache more than 30 fonts
-      }),
-    ],
-  })
-);
-
 // ✅ Offline Analytics (Background Sync for Vercel Analytics)
 registerRoute(
-  ({ url }) => url.pathname === '/_analytics',
+  ({ url }) =>
+    url.pathname.startsWith('/_vercel/insights') ||
+    url.pathname.startsWith('/_vercel/speed-insights') ||
+    url.pathname === '/_analytics',
   new NetworkOnly({
     plugins: [
       new BackgroundSyncPlugin('analytics-queue', {
@@ -58,3 +44,17 @@ registerRoute(
   }),
   'POST'
 );
+
+// ✅ Global fallback catch handler
+// Prevents "Uncaught (in promise) no-response" when offline / dead Wi-Fi
+setCatchHandler(async ({ request }) => {
+  if (request.destination === 'image') {
+    // Return a 1x1 transparent SVG so image errors fail cleanly without crashing the Service Worker
+    return new Response(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>',
+      { headers: { 'Content-Type': 'image/svg+xml' } }
+    );
+  }
+  return Response.error();
+});
+
