@@ -5,8 +5,16 @@ import { registerRoute, NavigationRoute, setCatchHandler } from 'workbox-routing
 import { CacheFirst, NetworkOnly } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
+import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
+self.skipWaiting();
 clientsClaim();
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
 
 // Auto-inject all build assets (JS, CSS, fonts, icons, etc.)
 precacheAndRoute(self.__WB_MANIFEST);
@@ -18,13 +26,16 @@ const navigationRoute = new NavigationRoute(handler, {
 });
 registerRoute(navigationRoute);
 
-// ✅ Cache same-origin images
+// ✅ Cache images (both local and cross-origin app icons with status 0)
 registerRoute(
-  ({ request, url }) => request.destination === 'image' && url.origin === self.location.origin,
+  ({ request }) => request.destination === 'image',
   new CacheFirst({
     cacheName: 'image-cache',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 7 * 24 * 60 * 60 }), // 1 week
+      new CacheableResponsePlugin({
+        statuses: [0, 200], // Allows cross-origin opaque images to actually be saved to cache
+      }),
+      new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 30 * 24 * 60 * 60 }), // 30 days
     ],
   })
 );
