@@ -18,9 +18,9 @@ const navigationRoute = new NavigationRoute(handler, {
 });
 registerRoute(navigationRoute);
 
-// ✅ Cache images
+// ✅ Cache same-origin images
 registerRoute(
-  ({ request }) => request.destination === 'image',
+  ({ request, url }) => request.destination === 'image' && url.origin === self.location.origin,
   new CacheFirst({
     cacheName: 'image-cache',
     plugins: [
@@ -29,19 +29,19 @@ registerRoute(
   })
 );
 
-// ✅ Offline Analytics (Background Sync for Vercel Analytics)
+// ✅ Offline Analytics (fail silently with 204 when offline to prevent network error spam)
 registerRoute(
   ({ url }) =>
     url.pathname.startsWith('/_vercel/insights') ||
     url.pathname.startsWith('/_vercel/speed-insights') ||
     url.pathname === '/_analytics',
-  new NetworkOnly({
-    plugins: [
-      new BackgroundSyncPlugin('analytics-queue', {
-        maxRetentionTime: 24 * 60, // Retry for up to 24 hours (in minutes)
-      }),
-    ],
-  }),
+  async ({ request }) => {
+    try {
+      return await fetch(request.clone());
+    } catch {
+      return new Response(null, { status: 204, statusText: 'No Content' });
+    }
+  },
   'POST'
 );
 
