@@ -9,9 +9,20 @@ export default defineConfig({
       strategies: 'injectManifest',
       srcDir: 'src',
       filename: 'service-worker.js',
+      injectRegister: null,
+      manifest: false,
       injectManifest: {
         injectionPoint: 'self.__WB_MANIFEST',
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        // Only precache core assets needed for the app to function offline
+        // Secondary assets (calculator-icon.png, robots.txt, sitemap.xml) will be runtime-cached
+        globPatterns: [
+          'index.html',
+          'manifest.json',
+          'favicon.ico',
+          'logo.png',
+          'assets/*.js',
+          'assets/*.css',
+        ],
       },
     }),
   ],

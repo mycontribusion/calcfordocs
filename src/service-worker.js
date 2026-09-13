@@ -2,7 +2,7 @@
 import { clientsClaim } from 'workbox-core';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute, NavigationRoute, setCatchHandler } from 'workbox-routing';
-import { CacheFirst, NetworkOnly } from 'workbox-strategies';
+import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
@@ -16,7 +16,8 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Auto-inject all build assets (JS, CSS, fonts, icons, etc.)
+// ✅ Precache only core assets (index.html, main JS/CSS, manifest, essential icons)
+// Secondary assets (calculator-icon.png, robots.txt, sitemap.xml) are runtime-cached below
 precacheAndRoute(self.__WB_MANIFEST);
 
 // ✅ Allow offline deep-links (App Shell pattern)
@@ -36,6 +37,22 @@ registerRoute(
         statuses: [0, 200], // Allows cross-origin opaque images to actually be saved to cache
       }),
       new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 30 * 24 * 60 * 60 }), // 30 days
+    ],
+  })
+);
+
+// ✅ Runtime cache for secondary assets (not precached)
+// These are cached on first request, then served from cache
+registerRoute(
+  ({ url }) =>
+    url.pathname === '/calculator-icon.png' ||
+    url.pathname === '/robots.txt' ||
+    url.pathname === '/sitemap.xml',
+  new StaleWhileRevalidate({
+    cacheName: 'secondary-assets',
+    plugins: [
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+      new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 7 * 24 * 60 * 60 }), // 7 days
     ],
   })
 );
