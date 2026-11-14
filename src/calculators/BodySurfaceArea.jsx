@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
+import { useCalc, WeightField, HeightField, ResetButton, FormulaBox } from "./CalcFields";
 import { toKg, toCm } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 };
 
 export default function BodySurfaceArea() {
-  const { values, updateFields, updateField: setField, reset } = useCalc(INITIAL_STATE);
+  const { values, suggestions, updateFields, updateField: setField, syncField, reset } = useCalc(INITIAL_STATE);
 
   useEffect(() => {
     const wRaw = parseFloat(values.weight);
@@ -22,7 +22,9 @@ export default function BodySurfaceArea() {
       return;
     }
     const wKg = toKg(wRaw, values.weightUnit);
-    const hCm = toCm(hRaw, values.heightUnit);
+    // HeightField stores inches as "inch"; normalise to the "in" key toCm expects.
+    const hUnit = values.heightUnit === "inch" ? "in" : values.heightUnit;
+    const hCm = toCm(hRaw, hUnit);
     const bsa = Math.sqrt((wKg * hCm) / 3600);
     const formatted = bsa.toFixed(2);
     updateFields({ bsa: formatted, interpretation: `Body Surface Area = ${formatted} m²` });
@@ -51,51 +53,8 @@ export default function BodySurfaceArea() {
         </ul>
       </FormulaBox>
 
-      <div className="calc-box">
-        <label className="calc-label">Weight:</label>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <input
-            type="number"
-            value={values.weight}
-            onChange={e => setField("weight", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={values.weightUnit}
-            onChange={e => setField("weightUnit", e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="kg">kg</option>
-            <option value="g">g</option>
-            <option value="lb">lb</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="calc-box">
-        <label className="calc-label">Height:</label>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <input
-            type="number"
-            value={values.height}
-            onChange={e => setField("height", e.target.value)}
-            className="calc-input"
-            style={{ flex: 2 }}
-          />
-          <select
-            value={values.heightUnit}
-            onChange={e => setField("heightUnit", e.target.value)}
-            className="calc-select"
-            style={{ flex: 1 }}
-          >
-            <option value="cm">cm</option>
-            <option value="m">m</option>
-            <option value="in">in</option>
-          </select>
-        </div>
-      </div>
+      <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} includeGrams />
+      <HeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />
 
       <ResetButton onClick={reset} />
 

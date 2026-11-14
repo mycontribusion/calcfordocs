@@ -42,11 +42,6 @@ export default function DextroseFortifier() {
                 <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>
                     V_replace = [ Bag Vol × (Target % − Current %) ] ÷ (Stock % − Current %)
                 </p>
-                <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Clinical Indications:</p>
-                <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
-                    <li>Increasing IV glucose delivery (GIR) in neonates or patients with refractory hypoglycemia.</li>
-                    <li>Maintains constant total IV bag volume (e.g. 500 mL bag stays exactly 500 mL after fortification).</li>
-                </ul>
             </FormulaBox>
 
             <div className="calc-box">

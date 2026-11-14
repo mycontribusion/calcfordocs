@@ -34,7 +34,7 @@ export default function EstimatedBloodVolume() {
   // Auto-calc result
   const result = (() => {
     const { weight, weightUnit, ageGroup } = values;
-    if (!validatePositiveNumber(weight)) return "⚠️ Please enter a valid positive weight.";
+    if (!validatePositiveNumber(weight)) return "";
 
     const weightKg = toKg(weight, weightUnit);
 
