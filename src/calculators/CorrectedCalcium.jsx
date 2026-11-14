@@ -57,11 +57,14 @@ export default function CorrectedCalcium() {
         <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Payne Formula:</p>
         <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4 − Albumin g/dL)</p>
         <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Corrected Ca (mmol/L) = Measured Ca + 0.02 × (40 − Albumin g/L)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Calcium (mmol/L) → (mg/dL): × 4.0</li>
+          <li>Albumin (g/L) → (g/dL): ÷ 10</li>
+        </ul>
         <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Reference Ranges:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
-          <li>Normal total Ca: 8.5–10.5 mg/dL (2.12–2.62 mmol/L)</li>
-          <li>Hypocalcemia: &lt; 8.5 mg/dL (&lt; 2.12 mmol/L)</li>
-          <li>Hypercalcemia: &gt; 10.5 mg/dL (&gt; 2.62 mmol/L)</li>
+          <li>Normal: 8.5–10.5 mg/dL (2.12–2.62 mmol/L)</li>
         </ul>
       </FormulaBox>
 

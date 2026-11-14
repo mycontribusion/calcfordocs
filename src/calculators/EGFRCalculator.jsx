@@ -68,6 +68,11 @@ function EGFRCalculator() {
           </span>
         </div>
         <p style={{ margin: "4px 0", fontSize: '0.75rem' }}>κ = 0.7 (F), 0.9 (M) | α = -0.241 (F), -0.302 (M)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Creatinine (µmol/L) → (mg/dL): ÷ 88.4</li>
+          <li>Creatinine (mmol/L) → (mg/dL): × 1000 ÷ 88.4</li>
+        </ul>
         <p style={{ margin: "6px 0 4px 0", fontWeight: 600 }}>KDIGO CKD Staging:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
           <li>G1: ≥90 mL/min/1.73m² (Normal)</li>

@@ -72,12 +72,16 @@ export default function EstimatedBloodVolume() {
         <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>EBV (mL) = Weight (kg) × Age Constant (mL/kg)</p>
         <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Age-Based Constants:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
-          <li>Premature Neonate: 90–100 mL/kg</li>
-          <li>Term Neonate: 85–90 mL/kg</li>
-          <li>Infant (&lt; 1 yr): 75–80 mL/kg</li>
-          <li>Child (&gt; 1 yr): 70–75 mL/kg</li>
+          <li>Neonate: 85–90 mL/kg</li>
+          <li>Infant: 75–80 mL/kg</li>
+          <li>Child: 70–75 mL/kg</li>
           <li>Adult Male: ~70 mL/kg</li>
           <li>Adult Female: ~65 mL/kg</li>
+        </ul>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Weight (lb) → (kg): × 0.453592</li>
+          <li>Weight (g) → (kg): ÷ 1000</li>
         </ul>
       </FormulaBox>
 

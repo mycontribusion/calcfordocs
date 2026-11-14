@@ -29,7 +29,6 @@ export default function ShockIndex() {
           <li>0.8 – 0.9: Borderline — monitor closely</li>
           <li>≥ 1.0: High risk of haemorrhagic shock / need urgent intervention</li>
         </ul>
-        <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>Normal resting SI ≈ 0.5–0.7. Elevated SI suggests inadequate cardiac output relative to HR.</p>
       </FormulaBox>
 
       <NumberField label="Heart Rate (bpm):" field="heartRate" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />

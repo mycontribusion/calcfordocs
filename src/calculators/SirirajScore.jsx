@@ -38,11 +38,6 @@ export default function SirirajScore() {
           </span>
         </div>
         <p style={{ fontSize: '0.72rem', opacity: 0.7, marginBottom: 6 }}>C=Consciousness · V=Vomiting · H=Headache · DBP=Diastolic BP · A=Atheroma</p>
-        <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.75rem' }}>
-          <li><strong>&gt; +1:</strong> Likely Hemorrhagic Stroke</li>
-          <li><strong>&lt; −1:</strong> Likely Ischemic Stroke</li>
-          <li><strong>−1 to +1:</strong> Indeterminate (CT scan required)</li>
-        </ul>
       </FormulaBox>
 
       <div className="calc-box">

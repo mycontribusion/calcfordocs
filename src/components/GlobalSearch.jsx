@@ -4,7 +4,7 @@ export default function GlobalSearch({ value, onChange }) {
   return (
     <div className="global-search-container">
       <input
-        type="text"
+        type="search"
         className="global-search-input"
         placeholder="Search calculators..."
         value={value}

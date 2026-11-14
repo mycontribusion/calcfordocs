@@ -33,22 +33,29 @@ export default function ParklandFormula() {
                 <p style={{ margin: "4px 0", fontSize: '0.78rem' }}>• <strong>Fluid of Choice:</strong> Ringer's Lactate (RL)</p>
                 <p style={{ margin: "2px 0", fontSize: '0.78rem' }}>• <strong>Timing:</strong> Give 50% in first 8 hours (from time of burn), remaining 50% over next 16 hours.</p>
                 <p style={{ margin: "2px 0", fontSize: '0.78rem' }}>• <strong>Note:</strong> Maximum TBSA capped at 50% for fluid estimation to prevent fluid overload.</p>
+                <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+                <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+                  <li>Weight (lb) → (kg): × 0.453592</li>
+                </ul>
             </FormulaBox>
 
-            <div className="calc-grid">
+            <div className="calc-grid" style={{ gridTemplateColumns: '1fr' }}>
                 <div className="calc-group">
-            <label>Weight (kg)</label>
-            <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
-            <input
-                type="number"
-                value={values.weight}
-                onChange={(e) => updateField("weight", e.target.value)}
-                className="calc-input"
-            />
-            <select value={values.weightUnit} onChange={(e) => updateField("weightUnit", e.target.value)} className="calc-select">
-                <option value="kg">kg</option>
-                <option value="lb">lb</option>
-            </select>
+                    <label>Weight (kg)</label>
+                    <SyncSuggestion field="weight" suggestion={suggestions.weight} onSync={syncField} />
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <input
+                            type="number"
+                            value={values.weight}
+                            onChange={(e) => updateField("weight", e.target.value)}
+                            className="calc-input"
+                            style={{ flex: 1 }}
+                        />
+                        <select value={values.weightUnit} onChange={(e) => updateField("weightUnit", e.target.value)} className="calc-select" style={{ width: 'auto', minWidth: 70 }}>
+                            <option value="kg">kg</option>
+                            <option value="lb">lb</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="calc-group">
                     <label>TBSA Burned (%)</label>

@@ -16,7 +16,7 @@ export default function FluidCorrection() {
 
   const result = (() => {
     const weightKg = toKg(values.weight, values.weightUnit);
-    if (isNaN(weightKg) || weightKg <= 0) return { error: "Please enter a valid weight." };
+    if (isNaN(weightKg) || weightKg <= 0) return null;
     let dehydrationPercent = 0;
     if (values.severity === "mild") dehydrationPercent = 5;
     else if (values.severity === "moderate") dehydrationPercent = 10;
@@ -51,6 +51,11 @@ export default function FluidCorrection() {
             100 mL/kg (first 10 kg) + 50 mL/kg (next 10 kg) + 20 mL/kg (remainder)
           </span>
         </div>
+        <p style={{ fontSize: '0.85rem', fontWeight: 600, marginTop: 8, marginBottom: 4 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Weight (lb) → (kg): × 0.453592</li>
+          <li>Weight (g) → (kg): ÷ 1000</li>
+        </ul>
       </FormulaBox>
 
       {/* Weight */}
@@ -61,9 +66,7 @@ export default function FluidCorrection() {
 
       {/* Result */}
       <div style={{ marginTop: 16 }}>
-        {result.error ? (
-          <p className="calc-result" style={{ background: '#fff3cd', color: '#856404', borderColor: '#ffeeba' }}>{result.error}</p>
-        ) : (
+        {result && (
           <div className="calc-result" style={{ textAlign: 'left' }}>
             <p><strong>Deficit ({result.percent}%):</strong> {result.deficit} mL</p>
             <p><strong>Maintenance:</strong> {result.maintenance} mL</p>

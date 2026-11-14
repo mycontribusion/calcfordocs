@@ -24,10 +24,10 @@ export default function MapCalculator() {
         <p style={{ fontFamily: "monospace", margin: "0 0 8px 0" }}>Pulse Pressure (PP) = SBP − DBP</p>
         <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Reference Ranges:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.78rem' }}>
-          <li>MAP &lt; 65 mmHg: Low (organ hypoperfusion risk)</li>
-          <li>MAP 65–100 mmHg: Normal target</li>
-          <li>MAP &gt; 100 mmHg: Elevated</li>
-          <li>Normal Pulse Pressure: ~40 mmHg</li>
+          <li>&lt; 65: Low – organ hypoperfusion risk</li>
+          <li>65 – 100: Normal</li>
+          <li>&gt; 100: Elevated – hypertension</li>
+          <li>Normal Pulse Pressure: 40 mmHg</li>
         </ul>
       </FormulaBox>
 

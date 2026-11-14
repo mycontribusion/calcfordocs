@@ -35,6 +35,13 @@ export default function BodySurfaceArea() {
         <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>
           BSA (m²) = √[ Weight (kg) × Height (cm) ÷ 3600 ]
         </p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Weight (lb) → (kg): × 0.453592</li>
+          <li>Weight (g) → (kg): ÷ 1000</li>
+          <li>Height (m) → (cm): × 100</li>
+          <li>Height (in) → (cm): × 2.54</li>
+        </ul>
         <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Average Reference Values:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
           <li><strong>Adult Male:</strong> ~1.9 m²</li>

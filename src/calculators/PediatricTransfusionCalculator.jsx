@@ -78,6 +78,11 @@ export default function PediatricTransfusionCalculator() {
           <li><strong>Custom Product PCV:</strong> Factor = 3 ÷ (PCV % ÷ 100)</li>
         </ul>
         <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>Note: Hb (g/dL) ≈ PCV (%) ÷ 3. PRBC rate is typically 10–15 mL/kg over 2–4 hours.</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Weight (lb) → (kg): × 0.453592</li>
+          <li>Weight (g) → (kg): ÷ 1000</li>
+        </ul>
       </FormulaBox>
 
       <WeightField values={values} setField={setField} suggestions={suggestions} syncField={syncField} />

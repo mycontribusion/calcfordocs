@@ -74,14 +74,14 @@ export default function HyponatremiaCorrection() {
           </span>
         </div>
         <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 4 }}>Total Body Water (TBW) Coefficients:</p>
-        <ul style={{ paddingLeft: 18, margin: "0 0 4px", fontSize: '0.75rem' }}>
-          <li>Male non-elderly: 0.60 | Male elderly: 0.50</li>
-          <li>Female non-elderly: 0.50 | Female elderly: 0.45</li>
-        </ul>
-        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 2 }}>Safety Limits:</p>
         <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.75rem' }}>
           <li>⚠️ Max safe rise: ≤8–10 mmol/L per 24h</li>
           <li>⚠️ Rapid correction risks Osmotic Demyelination Syndrome (ODS)</li>
+        </ul>
+        <p style={{ fontSize: '0.75rem', fontWeight: 600, marginTop: 8, marginBottom: 4 }}>Unit Conversions:</p>
+        <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.75rem' }}>
+          <li>Weight (lb) → (kg): × 0.453592</li>
+          <li>Weight (g) → (kg): ÷ 1000</li>
         </ul>
       </FormulaBox>
 

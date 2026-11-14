@@ -42,13 +42,13 @@ export default function CorrectedSodium() {
   return (
     <div className="calc-container">
       <FormulaBox title="Katz Formula & Hyperglycemia Guide">
-        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
-        <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Katz: Na + 1.6 × [(Glucose mg/dL − 100) ÷ 100]</p>
-        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Hillier: Na + 2.4 × [(Glucose mg/dL − 100) ÷ 100]</p>
-        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Clinical Pearls:</p>
-        <p style={{ margin: 0, fontSize: '0.75rem' }}>
-          Hyperglycemia causes an osmotic shift of water from intracellular fluid (ICF) into extracellular fluid (ECF), diluting serum sodium (translocational hyponatremia).
-        </p>
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
+        <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Corrected Na = Na + 1.6 × ((Glucose mg/dL − 100) / 100)</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Glucose (mmol/L) → (mg/dL): × 18.0182</li>
+          <li>Glucose (mg/dL) → (mmol/L): ÷ 18.0182</li>
+        </ul>
       </FormulaBox>
 
       <NumberField label="Sodium (mmol/L):" field="sodium" values={values} setField={setField} suggestions={suggestions} syncField={syncField} />

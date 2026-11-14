@@ -90,7 +90,7 @@ export default function GlucoseConverter() {
       <FormulaBox title="Glucose Formula & Reference Ranges">
         <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: 4 }}>Conversion Formula:</p>
         <div style={{ overflowX: 'auto', overflowY: 'hidden', whiteSpace: 'nowrap', marginBottom: 6 }}>
-          <span style={{ fontSize: '0.8rem', fontFamily: 'monospace' }}>1 mmol/L = 18.018 mg/dL</span>
+          <span style={{ fontSize: '0.8rem', fontFamily: 'monospace' }}>1 mmol/L = 18.0182 mg/dL</span>
         </div>
         <p style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: 4 }}>Fasting Reference Ranges:</p>
         <ul style={{ paddingLeft: 18, margin: 0, fontSize: '0.78rem' }}>

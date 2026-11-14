@@ -52,11 +52,15 @@ export default function SerumOsmolalityCalculator() {
         <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formulas:</p>
         <p style={{ fontFamily: "monospace", margin: "0 0 4px 0", fontSize: '0.78rem' }}>Osmolality = 2×Na⁺ + Glucose (mmol/L) + Urea (mmol/L)</p>
         <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>Osmol Gap = Measured Osmolality − Calculated Osmolality</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Unit Conversions:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li>Glucose (mg/dL) → (mmol/L): ÷ 18.0182</li>
+          <li>Urea (mg/dL) → (mmol/L): ÷ 6</li>
+        </ul>
         <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Reference Ranges:</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
-          <li>Normal Osmolality: 275–295 mOsm/kg</li>
-          <li>Normal Osmol Gap: ≤ 10 mOsm/kg</li>
-          <li>Elevated Gap (&gt; 10): Toxic alcohols (methanol, ethylene glycol), mannitol, severe DKA/AKA</li>
+          <li>Normal: 275–295 mOsm/kg</li>
+          <li>Normal osmol gap: &lt; 10 mOsm/kg</li>
         </ul>
       </FormulaBox>
 

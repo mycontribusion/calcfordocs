@@ -78,19 +78,33 @@ export default function SpO2FiO2Ratio() {
     ["Estimated FiO₂", fio2.toFixed(2)],
   ];
 
+  const spo2Num = Number(values.spo2);
+  const isHypoxemic = !isNaN(spo2Num) && spo2Num > 0 && spo2Num < 95;
+  const spo2Class = spo2Num >= 95 ? "95 – 100%: Normal" : spo2Num >= 90 ? "90 – 94%: Mild hypoxemia" : spo2Num >= 85 ? "Below 90%: Significant hypoxemia" : "Below 85%: Severe hypoxemia";
+
   return (
     <div className="calc-container">
-      <FormulaBox title="SpO₂/FiO₂ Ratio & ARDS Berlin Criteria">
+      <FormulaBox title="SpO₂/FiO₂ Ratio">
         <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Formula:</p>
         <p style={{ fontFamily: "monospace", margin: "0 0 6px 0", fontSize: '0.78rem' }}>S/F Ratio = SpO₂ (%) ÷ FiO₂</p>
-        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Interpretation (ARDS Berlin / BTS):</p>
+        <p style={{ margin: "4px 0 2px 0", fontWeight: 600 }}>Interpretation (ARDS oxygenation severity):</p>
         <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
-          <li><strong>&gt; 315:</strong> Normal oxygenation</li>
-          <li><strong>235 – 315:</strong> Mild hypoxaemia (Mild ARDS)</li>
-          <li><strong>150 – 234:</strong> Moderate hypoxaemia (Moderate ARDS)</li>
-          <li><strong>&lt; 150:</strong> Severe hypoxaemia (Severe ARDS)</li>
+          <li><strong>&gt; 315:</strong> Does not meet the S/F oxygenation threshold</li>
+          <li><strong>235 – 315:</strong> Mild</li>
+          <li><strong>148 – 235:</strong> Moderate</li>
+          <li><strong>≤ 148:</strong> Severe</li>
         </ul>
-        <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>SF ratio correlates with PaO₂/FiO₂ (P/F ratio). SF &gt;315 ≈ PF &gt;300 mmHg.</p>
+        <p style={{ margin: "6px 0 2px 0", fontWeight: 600 }}>SpO₂ Reference Ranges:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.75rem' }}>
+          <li><strong>95 – 100%:</strong> Normal</li>
+          <li><strong>90 – 94%:</strong> Mild hypoxemia</li>
+          <li><strong>Below 90%:</strong> Significant hypoxemia</li>
+          <li><strong>Below 85%:</strong> Severe hypoxemia</li>
+        </ul>
+        <p style={{ margin: "6px 0 0", fontSize: '0.73rem', opacity: 0.75 }}>
+          S/F ratio is an approximation — it is not the same as the PaO₂/FiO₂ (P/F) ratio.
+          Most reliable when SpO₂ ≤ 97%.
+        </p>
       </FormulaBox>
 
       <CalcBox label="SpO₂ (%):" field="spo2" suggestions={suggestions} syncField={syncField}>
@@ -99,8 +113,14 @@ export default function SpO2FiO2Ratio() {
           value={values.spo2}
           onChange={(e) => setField("spo2", e.target.value)}
           placeholder="e.g. 92"
-          className="calc-input"
+          max="100"
+          className={`calc-input ${isHypoxemic ? "input-danger" : ""}`}
         />
+        {(isHypoxemic || spo2Num > 100) && (
+          <span style={{ fontSize: '0.72rem', color: '#dc2626', marginTop: 4, display: 'block', fontWeight: 600 }}>
+            {spo2Num > 100 ? "⚠️ Maximum value is 100%" : `⚠️ ${spo2Class}`}
+          </span>
+        )}
       </CalcBox>
 
       <div className="calc-box">
@@ -137,10 +157,38 @@ export default function SpO2FiO2Ratio() {
         </div>
       </div>
 
-      {ratio && (
+      {ratio && spo2Num <= 100 && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p><strong>SpO₂ / FiO₂ ratio:</strong> {ratio}</p>
-          <p><strong>Interpretation:</strong> {interpretSF(ratio)}</p>
+          {spo2Num > 97 ? (
+            <p style={{ color: '#ea580c', marginTop: 8, fontSize: '0.8rem' }}>
+              ⚠️ SpO₂/FiO₂ Ratio not reliable when SpO₂ &gt; 97%.
+            </p>
+          ) : (
+            <>
+              <p><strong>SpO₂ / FiO₂ ratio:</strong> {ratio}</p>
+              <p style={{ fontSize: '0.72rem', color: '#666', marginTop: 8, fontStyle: 'italic' }}>
+                S/F ratio is an approximation — it is not the same as the PaO₂/FiO₂ (P/F) ratio.
+              </p>
+            </>
+          )}
+        </div>
+      )}
+
+      {isHypoxemic && !ratio && (
+        <div
+          className="calc-warning-banner"
+          style={{
+            marginTop: 16,
+            border: '2px solid #dc2626',
+            color: '#dc2626',
+            background: '#fef2f2',
+            padding: '10px 14px',
+            borderRadius: 8,
+            fontSize: '0.85rem',
+            fontWeight: 600,
+          }}
+        >
+          ⚠️ SpO₂ below 95% — hypoxemia. Consider supplemental oxygen.
         </div>
       )}
 
