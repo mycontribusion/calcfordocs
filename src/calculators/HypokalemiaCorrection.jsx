@@ -79,7 +79,7 @@ export default function HypokalemiaCorrection() {
           border: "1px solid rgba(0,0,0,0.06)",
         }}
       >
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: "10px", alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 0.6fr 1.4fr", gap: "10px", alignItems: "start" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "3px", minWidth: 0 }}>
             <label className="calc-label" htmlFor="k-target" style={{ marginBottom: 0, fontSize: "0.7rem", fontWeight: 500, opacity: 0.6 }}>Target Serum</label>
             <div style={{ position: "relative", width: "100%", minWidth: 0 }}>

@@ -74,10 +74,10 @@ export function CalcBox({ label, field, suggestions, syncField, style, children 
 export function NumberField({
   label, field, values, setField,
   suggestions, syncField,
-  placeholder, min = "0",
+  placeholder, min = "0", max,
   inputStyle, inputFlex = 1,
   units, unitField, unitFlex = 1,
-  style,
+  style, disabled,
 }) {
   const uField = unitField || `${field}Unit`;
   const hasUnit = Array.isArray(units) && units.length > 0;
@@ -89,17 +89,20 @@ export function NumberField({
           <input
             type="number"
             min={min}
+            max={max}
+            disabled={disabled}
             value={values[field]}
-            onChange={(e) => setField(field, e.target.value)}
+            onChange={(e) => !disabled && setField(field, e.target.value)}
             className="calc-input"
             placeholder={placeholder}
             style={{ flex: inputFlex, ...inputStyle }}
           />
           <select
             value={values[uField]}
-            onChange={(e) => setField(uField, e.target.value)}
+            onChange={(e) => !disabled && setField(uField, e.target.value)}
             className="calc-select"
             style={{ flex: unitFlex, minWidth: "90px" }}
+            disabled={disabled}
           >
             {units.map((u) => (
               <option key={u.value} value={u.value}>{u.label}</option>
@@ -110,8 +113,10 @@ export function NumberField({
         <input
           type="number"
           min={min}
+          max={max}
+          disabled={disabled}
           value={values[field]}
-          onChange={(e) => setField(field, e.target.value)}
+          onChange={(e) => !disabled && setField(field, e.target.value)}
           className="calc-input"
           placeholder={placeholder}
           style={inputStyle}
