@@ -2,6 +2,7 @@
   {
     "name": "Timer & Calculator",
     "id": "timer_calculator",
+    "description": "A timer and stopwatch calculator for time-based measurements, countdown, and chronometer functions.",
     "keywords": [
       "timer",
       "stopwatch",
@@ -9,21 +10,25 @@
       "chronometer",
       "time",
       "ahmad"
-    ]
+    ],
+    "guide": "Tap to count beats or breaths over a set duration (default 15 seconds). Calculates rate per minute from taps and elapsed time. Useful for heart rate and respiratory rate measurement."
   },
   {
     "name": "Basic Calculator",
     "id": "simple_calculator",
+    "description": "A simple calculator for basic arithmetic operations including addition, subtraction, multiplication, and division.",
     "keywords": [
       "basic",
       "simple",
       "math",
       "calculator"
-    ]
+    ],
+    "guide": "Basic arithmetic calculator supporting addition, subtraction, multiplication, division, percentages, and square roots. Use for general math calculations."
   },
   {
     "name": "Laboratory Unit Converter",
     "id": "lab_converter",
+    "description": "Convert between SI and conventional units for laboratory values including glucose, creatinine, urea, and other blood tests.",
     "keywords": [
       "lab",
       "converter",
@@ -33,42 +38,50 @@
       "glucose",
       "creatinine",
       "urea"
-    ]
+    ],
+    "guide": "Convert between SI and conventional units for laboratory values including sodium, potassium, creatinine, urea, and other blood tests using hydrated molecular weights and valence."
   },
   {
     "name": "Glucose Unit Converter",
     "id": "glucose_converter",
+    "description": "Convert blood glucose values between mg/dL and mmol/L units.",
     "keywords": [
       "blood sugar",
       "glucose",
       "mg to mmol",
       "mmol to mg"
-    ]
+    ],
+    "guide": "Convert blood glucose between mg/dL and mmol/L with fasting/random category interpretation: hypoglycemia (<70), normal (70-100 fasting), prediabetes (100-125), diabetes (≥126)."
   },
   {
     "name": "Drug Dosage Calculator",
     "id": "dosage_calculator",
+    "description": "Calculate drug dosage based on patient weight and prescribed dose per kg.",
     "keywords": [
       "dose",
       "drug",
       "medication",
       "meds"
-    ]
+    ],
+    "guide": "Calculate drug dosage based on patient weight and prescribed dose per kg. Supports per-kg, per-kg-per-day, per-minute, and per-kg-per-minute infusion rates with duration input."
   },
   {
     "name": "Drug Volume Calculator",
     "id": "drug_volume_calc",
+    "description": "Calculate the volume of medication to administer based on concentration and required dose.",
     "keywords": [
       "volume",
       "drug",
       "medication",
       "meds",
       "ml"
-    ]
+    ],
+    "guide": "Calculate the volume of medication to administer using the formula: Volume (mL) = Dose × (Supply Volume ÷ Supply Amount)."
   },
   {
     "name": "Drug Unit Converter",
     "id": "electrolyte_unit_conv",
+    "description": "Convert electrolyte units between mmol/L, mg/dL, and other common measurements for potassium, sodium, chloride, and more.",
     "keywords": [
       "mmol to mg",
       "mg to mmol",
@@ -76,224 +89,261 @@
       "kcl",
       "nacl",
       "electrolyte units"
-    ]
+    ],
+    "guide": "Convert electrolyte units between mmol/L, mg/dL, grams, and mEq for potassium, sodium, chloride, magnesium, and calcium salts using hydrated molecular weights and valence."
   },
   {
     "name": "IV Fluid Drop Rate",
     "id": "iv_infusion_rate",
+    "description": "Calculate IV infusion rate and drip rate for fluid therapy administration.",
     "keywords": [
       "iv rate",
       "infusion",
       "drip rate",
       "fluid rate"
-    ]
+    ],
+    "guide": "Calculate IV infusion rate and drip rate in drops per minute using drop factors: IV set 20 gtt/mL, blood set 15 gtt/mL, soluset 60 gtt/mL. Formula: drops/min = Volume × drop factor ÷ time in minutes."
   },
   {
     "name": "BMI Calculator",
     "id": "bmi_calculator",
+    "description": "Calculate Body Mass Index (BMI) from weight and height, with WHO classification categories.",
     "keywords": [
       "body mass index",
       "weight height ratio",
       "bmi"
-    ]
+    ],
+    "guide": "BMI = Weight (kg) ÷ [Height (m)]². WHO Classification: <18.5 Underweight, 18.5–24.9 Normal weight, 25–29.9 Overweight, 30–34.9 Obese Class I, 35–39.9 Obese Class II, ≥40 Obese Class III (Morbid)."
   },
   {
     "name": "qSOFA & mSOFA",
     "id": "sofa_score",
+    "description": "Sequential Organ Failure Assessment (SOFA) score for sepsis and organ dysfunction evaluation.",
     "keywords": [
       "qsofa",
       "msofa",
       "sepsis score",
       "sofa"
-    ]
+    ],
+    "guide": "qSOFA: RR ≥22, SBP ≤100, GCS <15 (score 0-3). mSOFA: respiratory (SpO2/FiO2), liver (jaundice), cardiovascular (MAP/vasopressor), CNS (GCS), renal (creatinine) subscores. Interpretation: No organ dysfunction, Mild, Moderate, or Severe dysfunction."
   },
   {
     "name": "SpO₂ / FiO₂ Ratio",
     "id": "spo2_fio2_ratio",
+    "description": "Calculate the oxygenation index (SpO2/FiO2 ratio) for assessing respiratory function.",
     "keywords": [
       "spo2",
       "fio2",
       "oxygen ratio",
       "oxygenation"
-    ]
+    ],
+    "guide": "S/F Ratio = SpO₂ (%) ÷ FiO₂. ARDS oxygenation severity: >315 does not meet threshold, 235–315 mild, 148–235 moderate, ≤148 severe. SpO₂ reference: 95–100% normal, 90–94% mild hypoxemia, below 90% significant, below 85% severe."
   },
   {
     "name": "Glasgow Coma Scale",
     "id": "gcs_calculator",
+    "description": "Glasgow Coma Scale (GCS) for assessing level of consciousness in patients with brain injury.",
     "keywords": [
       "glasgow coma scale",
       "coma",
       "gcs score"
-    ]
+    ],
+    "guide": "Glasgow Coma Scale: Eye response (1-4), Verbal response (1-5), Motor response (1-6). Total score 3-15. Interpretation: ≤8 Severe head injury, 9-12 Moderate, 13-15 Mild."
   },
   {
     "name": "Shock Index",
     "id": "shock_index",
+    "description": "Calculate Shock Index (heart rate divided by systolic blood pressure) to assess hemodynamic stability.",
     "keywords": [
       "shock",
       "heart rate/bp",
       "si"
-    ]
+    ],
+    "guide": "Shock Index = Heart Rate ÷ Systolic BP. Interpretation: <0.5 Low, 0.5–0.7 Normal, 0.8–0.9 Borderline (monitor closely), ≥1.0 High risk of haemorrhagic shock / need urgent intervention."
   },
   {
     "name": "Mean Arterial Pressure (MAP)",
     "id": "map_calculator",
+    "description": "Calculate Mean Arterial Pressure from systolic and diastolic blood pressure values.",
     "keywords": [
       "mean arterial pressure",
       "blood pressure"
-    ]
+    ],
+    "guide": "MAP = DBP + ⅓(SBP − DBP). Pulse Pressure = SBP − DBP. Reference ranges: <65 Low (organ hypoperfusion risk), 65–100 Normal, >100 Elevated (hypertension). Normal pulse pressure ~40 mmHg."
   },
   {
     "name": "Rule of Nines",
     "id": "rule_of_nines",
+    "description": "Estimate total body surface area (TBSA) burned using the Rule of Nines for adult and pediatric patients.",
     "keywords": [
       "burn",
       "body surface area",
       "rule 9",
       "burn percentage"
-    ]
+    ],
+    "guide": "Wallace Rule of Nines adult TBSA breakdown: Head & Neck 9% (4.5% anterior, 4.5% posterior), Each Arm 9% (4.5% ant, 4.5% post), Anterior Trunk 18% (chest 9%, abdomen 9%), Posterior Trunk 18% (upper back 9%, lower back 9%), Each Leg 18% (9% ant, 9% post), Perineum 1%."
   },
   {
     "name": "Parkland Formula",
     "id": "parkland_formula",
+    "description": "Calculate fluid resuscitation requirements for burn patients using the Parkland formula.",
     "keywords": [
       "burn",
       "fluid resuscitation",
       "parkland",
       "resuscitation"
-    ]
+    ],
+    "guide": "Total Fluid (24h) = 4 mL × Weight (kg) × %TBSA. Give 50% in the first 8 hours (from time of burn), remaining 50% over the next 16 hours. Fluid of choice: Ringer's Lactate. Maximum TBSA capped at 50% to prevent fluid overload."
   },
   {
     "name": "Fluid Correction",
     "id": "fluid_correction",
+    "description": "Calculate maintenance fluid therapy and fluid correction requirements.",
     "keywords": [
       "fluids",
       "maintenance",
       "fluid therapy"
-    ]
+    ],
+    "guide": "Fluid Deficit = % dehydration × Weight (kg) × 10. Maintenance (Holliday–Segar): 100 mL/kg for first 10 kg + 50 mL/kg for next 10 kg + 20 mL/kg for remainder. Dehydration severity: mild 5%, moderate 10%, severe 15%."
   },
   {
     "name": "eGFR Calculator",
     "id": "egfr_calculator",
+    "description": "Estimate Glomerular Filtration Rate (eGFR) for assessing kidney function.",
     "keywords": [
       "kidney",
       "gfr",
       "renal function",
       "egfr"
-    ]
+    ],
+    "guide": "CKD-EPI 2021 Equation: eGFR = 142 × min(SCr/κ, 1)^α × max(SCr/κ, 1)^-1.200 × 0.9938^Age × (1.012 if female), where κ = 0.7 (female) / 0.9 (male), α = -0.241 (female) / -0.302 (male). KDIGO stages: G1 ≥90 normal, G2 60-89 mild, G3a 45-59, G3b 30-44, G4 15-29 severe, G5 <15 kidney failure."
   },
   {
     "name": "Urea-Creatinine Ratio (UCR)",
     "id": "urea_creatinine_ratio",
+    "description": "Calculate the urea-to-creatinine ratio for evaluating kidney function and prerenal azotemia.",
     "keywords": [
       "ucr",
       "urea creatinine",
       "kidney ratio"
-    ]
+    ],
+    "guide": "BUN/Cr Ratio (BUN mg/dL : Cr mg/dL): >20:1 Prerenal (e.g., severe dehydration), 10–20:1 Normal or Postrenal, <10:1 Intrarenal (e.g., acute tubular necrosis). Urea/Cr Ratio (mmol/L : mmol/L): >100:1 Prerenal, 40–100:1 Normal/Postrenal, <40:1 Intrarenal."
   },
   {
     "name": "Anion Gap & Delta Ratio",
     "id": "anion_gap_delta_ratio",
+    "description": "Calculate anion gap and delta ratio for evaluating acid-base disorders and metabolic acidosis.",
     "keywords": [
       "delta ratio",
       "anion gap ratio",
       "gap ratio"
-    ]
+    ],
+    "guide": "Calculate anion gap and delta ratio for evaluating acid-base disorders and metabolic acidosis. Anion gap = Na − (Cl + HCO3). Delta ratio = delta gap / delta HCO3 to distinguish high vs normal anion gap acidosis and mixed disorders."
   },
   {
     "name": "Serum Osmolality Calculator",
     "id": "serum_osmolality",
+    "description": "Calculate serum osmolality from sodium, glucose, and BUN values.",
     "keywords": [
       "osmolality",
       "serum osmol",
       "osmolarity"
-    ]
+    ],
+    "guide": "Calculated Osmolality = 2×Na⁺ + Glucose (mmol/L) + Urea (mmol/L). Osmol Gap = Measured Osmolality − Calculated Osmolality. Reference: Normal 275–295 mOsm/kg, normal osmol gap <10 mOsm/kg. Elevated gap suggests toxic alcohols, mannitol, or ketoacidosis."
   },
   {
     "name": "Hypokalemia Correction",
     "id": "hypokalemia_correction",
+    "description": "Calculate potassium replacement for hypokalemia correction.",
     "keywords": [
       "potassium",
       "k correction",
       "hypokalemia"
-    ]
+    ],
+    "guide": "Potassium Deficit = (Target − Observed K⁺) × Weight (kg) × Constant (default 0.4). Maintenance = Weight (kg) × Rate (default 1 mmol/kg/day). Safety rules: ensure urine output ≥0.5 mL/kg/hr before IV replacement; max daily dose 120 mmol/day; max infusion rate 10–20 mmol/hr; max concentration 40 mmol/L (peripheral line)."
   },
   {
     "name": "Hyponatremia Correction",
     "id": "hyponatremia_correction",
+    "description": "Calculate sodium correction for hyponatremia management.",
     "keywords": [
       "na correction",
       "low sodium",
       "hyponatremia"
-    ]
+    ],
+    "guide": "Adrogue–Madias formula for sodium correction: change in Na per liter = (Infusate Na − Patient Na) ÷ (TBW + 1). TBW factor: male nonelderly 0.6, male elderly 0.5, female nonelderly 0.5, female elderly 0.45. Aim for ≤8 mmol/L rise in 24 hours to avoid osmotic demyelination."
   },
   {
     "name": "Corrected Sodium",
     "id": "corrected_sodium",
+    "description": "Calculate corrected sodium values for patients with hyperglycemia.",
     "keywords": [
       "na corrected",
       "sodium",
       "hyponatremia"
-    ]
+    ],
+    "guide": "Corrected Sodium = Measured Na + 1.6 × ((Glucose mg/dL − 100) ÷ 100). Use for patients with hyperglycemia to obtain the true serum sodium concentration."
   },
   {
     "name": "Corrected Calcium",
     "id": "corrected_calcium",
+    "description": "Calculate corrected calcium values based on serum albumin levels.",
     "keywords": [
       "ca corrected",
       "albumin corrected calcium"
-    ]
+    ],
+    "guide": "Payne Formula: Corrected Ca (mg/dL) = Measured Ca + 0.8 × (4 − Albumin g/dL); Corrected Ca (mmol/L) = Measured Ca + 0.02 × (40 − Albumin g/L). Reference range: Normal 8.5–10.5 mg/dL (2.12–2.62 mmol/L). <8.5 hypocalcemia, >10.5 hypercalcemia."
   },
   {
     "name": "Calcium Phosphate Product",
     "id": "calcium_phosphate_product",
+    "description": "Calculate the calcium-phosphate product for assessing mineral metabolism disorders.",
     "keywords": [
       "ca phosphate",
       "ca x phosphate",
       "calcium phosphate"
-    ]
+    ],
+    "guide": "Calcium-Phosphate Product = Calcium (mg/dL) × Phosphate (mg/dL). Risk cut-offs: <55 Low risk, 55–70 Moderate risk, >70 High risk of vascular calcification. Corrected calcium can be applied using albumin adjustment."
   },
   {
     "name": "Blood Volume Calculator",
     "id": "blood_volume_estimator",
+    "description": "Estimate total blood volume based on patient weight and height.",
     "keywords": [
       "ebv",
       "blood volume",
       "ml/kg"
-    ]
+    ],
+    "guide": "Estimated Blood Volume = Weight (kg) × Age Constant (mL/kg). Age-based constants: Neonate 85–90, Infant 75–80, Child 70–75, Adult Male ~70, Adult Female ~65 mL/kg."
   },
   {
     "name": "Pediatric Weight Estimator",
     "id": "pediatric_weight_calc",
+    "description": "Estimate weight for pediatric patients based on age.",
     "keywords": [
       "weight",
       "paed weight",
       "child weight",
       "pediatric weight"
-    ]
+    ],
+    "guide": "Pediatric weight estimation formulas based on age. Default (neonate ≤3 months): (age in days − 10) × 30 + birth weight ÷ 1000. Nelson: (months + 9) ÷ 2 (3-11 months), 2×years + 8 (1-6 years), 7×years − 5 (7-12 years). Best Guess: (months + 9) ÷ 2 (<12 months), 2×years + 5 (1-5 years), 4×years (5-14 years)."
   },
   {
     "name": "Pediatric Age Estimator",
     "id": "pediatric_age_estimator",
+    "description": "Estimate age for pediatric patients based on weight and height.",
     "keywords": [
       "pediatric age",
       "child age",
       "baby age",
       "paed age"
-    ]
-  },
-  {
-    "name": "Pediatric Anemia Correction",
-    "id": "pediatric_anemia_correction",
-    "keywords": [
-      "anemia correction",
-      "paed anemia",
-      "hemoglobin correction"
-    ]
+    ],
+    "guide": "Estimate age for pediatric patients based on weight and height using growth reference data."
   },
   {
     "name": "APGAR Score",
     "id": "apgar_score",
+    "description": "APGAR score for assessing newborn health immediately after birth.",
     "keywords": [
       "apgar",
       "newborn",
@@ -301,22 +351,26 @@
       "birth assessment",
       "pediatric",
       "neonatology"
-    ]
+    ],
+    "guide": "APGAR score assessed at 1, 5, and 10 minutes after birth. Five criteria: Appearance, Pulse, Grimace, Activity, Respiration (each scored 0-2). Total 0-10. Interpretation: ≥8 Excellent, 4-7 Fair, ≤3 Depressed."
   },
   {
     "name": "Body Surface Area (BSA)",
     "id": "bsa_calculator",
+    "description": "Calculate Body Surface Area (BSA) using various formulas for medication dosing.",
     "keywords": [
       "bsa",
       "body surface area",
       "surface",
       "area",
       "calc"
-    ]
+    ],
+    "guide": "Mosteller Formula: BSA (m²) = √[Weight (kg) × Height (cm) ÷ 3600]. Average reference values: Adult male ~1.9 m², Adult female ~1.6 m², Children 9-12 years ~1.07 m², Infants ~0.25 m²."
   },
   {
     "name": "IV Fluid + Dextrose Calculator",
     "id": "dextrose_fortifier",
+    "description": "Calculate dextrose concentration and volume for IV fluid fortification in pediatric patients.",
     "keywords": [
       "dextrose",
       "sugar",
@@ -326,20 +380,24 @@
       "D50",
       "D10",
       "D12.5"
-    ]
+    ],
+    "guide": "Withdraw and Replace Method (constant volume): Volume to replace = [Bag Volume × (Target % − Current %)] ÷ (Stock % − Current %). Withdraw the calculated volume from the bag, then add the same volume of stock dextrose (e.g., D50)."
   },
   {
     "name": "Ballard Score Calculator",
     "id": "ballard_score",
+    "description": "Ballard Score for assessing gestational age of newborns.",
     "keywords": [
       "ballard",
       "gestational age",
       "newborn assessment"
-    ]
+    ],
+    "guide": "New Ballard Score assesses neuromuscular and physical maturity to estimate gestational age in newborns. Score -10 to 50 maps to 20-44 weeks. Formula: Gestational Age (weeks) = 20 + [0.4 × (Total Score + 10)], rounded down."
   },
   {
     "name": "Pregnancy Calculator",
     "id": "pregnancy_calculator",
+    "description": "Calculate estimated gestational age (EGA) and estimated due date (EDD) from LMP or ultrasound.",
     "keywords": [
       "ega",
       "edd",
@@ -347,96 +405,116 @@
       "lmp",
       "ultrasound",
       "uss"
-    ]
+    ],
+    "guide": "Calculate estimated gestational age (EGA) and estimated due date (EDD) from last menstrual period (LMP). EDD = LMP + 280 days. Trimester: <13 weeks First, 13–27 weeks Second, ≥28 weeks Third."
   },
   {
     "name": "Bishop Score",
     "id": "bishop_score",
+    "description": "Bishop Score for assessing cervical readiness for labor induction.",
     "keywords": [
       "bishop",
       "cervical score",
       "labor readiness"
-    ]
+    ],
+    "guide": "Traditional Bishop Score: cervical dilation, effacement, station, position, consistency (total 0-13). Modified Bishop Score: dilation, cervical length, station. Interpretation: >8 (traditional) or ≥5 (modified) = favorable cervix, high likelihood of successful induction; ≤8 / <5 = unfavorable."
   },
   {
     "name": "Wells Score DVT",
     "id": "wells_dvt_score",
+    "description": "Wells Score for assessing probability of deep vein thrombosis (DVT).",
     "keywords": [
       "dvt",
       "wells dvt",
       "deep vein thrombosis"
-    ]
+    ],
+    "guide": "Wells DVT criteria (each +1 unless noted): active cancer, paralysis/immobilization, bedridden ≥3 days or surgery ≤12 weeks, localized tenderness, entire leg swollen, calf swelling ≥3cm, pitting edema, collateral superficial veins, previous DVT, alternative diagnosis more likely (-2). Score ≥2 = DVT likely (Doppler USS); ≤1 = DVT unlikely (D-Dimer). 3-tier: ≥3 high (53%), 1-2 moderate (17%), ≤0 low (5%)."
   },
   {
     "name": "Wells Score PE",
     "id": "wells_pe_score",
+    "description": "Wells Score for assessing probability of pulmonary embolism (PE).",
     "keywords": [
       "pe",
       "wells pe",
       "pulmonary embolism"
-    ]
+    ],
+    "guide": "Wells PE criteria: clinical signs of DVT (3), PE most likely diagnosis (3), HR >100 (1.5), immobilization ≥3 days or surgery ≤4 weeks (1.5), previous DVT/PE (1.5), hemoptysis (1), malignancy (1). Score >6 = high risk (CTPA); ≤6 = unlikely (D-Dimer). 3-tier: >6 high (~65%), 2-6 moderate (~30%), <2 low (~10%)."
   },
   {
     "name": "Siriraj Stroke Score",
     "id": "stroke_score_siriraj",
+    "description": "Siriraj Stroke Score for differentiating hemorrhagic from ischemic stroke.",
     "keywords": [
       "cvd",
       "stroke",
       "siriraj"
-    ]
+    ],
+    "guide": "Siriraj Stroke Score (SSS) = (2.5 × Consciousness) + (2 × Vomiting) + (2 × Headache) + (0.1 × Diastolic BP) − (3 × Atheroma) − 12. Interpretation: >1 likely hemorrhagic stroke, <−1 likely ischemic stroke, −1 to 1 indeterminate (imaging required). Atheroma: DM, claudication, angina/ACS, or history of TIA."
   },
   {
     "name": "CHA2DS2-VASc Score",
     "id": "af_stroke_risk_cha2ds2vasc",
+    "description": "CHA2DS2-VASc score for assessing stroke risk in atrial fibrillation patients.",
     "keywords": [
       "af",
       "atrial fibrillation",
       "stroke risk",
       "cha2ds2vasc"
-    ]
+    ],
+    "guide": "CHA2DS2-VASc score for stroke risk in atrial fibrillation: Congestive heart failure (1), Hypertension (1), Age ≥75 (2), Diabetes (1), Stroke/TIA/thromboembolism (2), Vascular disease (1), Age 65-74 (1), Sex category female (1). Maximum score 9. Higher score = higher annual stroke risk, anticoagulation considered."
   },
   {
     "name": "CURB-65 Score",
     "id": "curb65_score",
+    "description": "CURB-65 score for assessing severity of community-acquired pneumonia (CAP).",
     "keywords": [
       "curb",
       "pneumonia",
       "risk score",
       "cap",
       "severity"
-    ]
+    ],
+    "guide": "CURB-65 criteria (1 point each): Confusion, Urea >7 mmol/L, Respiratory rate ≥30/min, Blood pressure (SBP <90 or DBP ≤60), Age ≥65 years. Score 0-5. Higher score = higher 30-day mortality risk; guides inpatient vs outpatient management."
   },
   {
     "name": "Framingham HF Criteria",
     "id": "heart_failure_framingham",
+    "description": "Framingham criteria for diagnosing heart failure.",
     "keywords": [
       "heart failure",
       "framingham",
       "hf criteria"
-    ]
+    ],
+    "guide": "Framingham criteria for heart failure: Diagnosis requires ≥2 Major criteria OR 1 Major + ≥2 Minor criteria. Major: paroxysmal nocturnal dyspnea, jugular venous distension, pulmonary rales, cardiomegaly, acute pulmonary edema, S3 gallop, CVP >16 cmH2O, circulation time ≥25 sec, weight loss ≥4.5 kg on therapy. Minor: ankle edema, nocturnal cough, dyspnea on exertion, hepatomegaly, pleural effusion, heart rate ≥120 bpm."
   },
   {
     "name": "DAR Risk Assessment (2026)",
     "id": "dar_risk_assessment",
+    "description": "DAR Risk Assessment for diabetes risk during Ramadan fasting.",
     "keywords": [
       "fasting",
       "dar",
       "risk assessment",
       "diabetes",
       "Ramadan"
-    ]
+    ],
+    "guide": "DAR Risk Assessment scores diabetes-related risk during Ramadan fasting across 14 domains: pregnancy, diabetes type, duration, treatment, hypoglycemia, HbA1c, monitoring, emergencies, macrovascular disease, eGFR, microvascular complications, frailty, physical labor, education, fasting hours. Score ≤3 Low risk, ≤6 Moderate risk, >6 High risk (do not fast)."
   },
   {
     "name": "ECG Axis Calculator",
     "id": "cardiac_axis",
+    "description": "Calculate cardiac axis from ECG leads to determine normal, left, or right axis deviation.",
     "keywords": [
       "ecg axis",
       "heart axis"
-    ]
+    ],
+    "guide": "3-lead method estimates cardiac axis from net QRS deflection in Lead I and Lead aVF. I positive + aVF positive = Normal axis (−30° to +90°); I positive + aVF negative = Left axis deviation (<−30°); I negative + aVF positive = Right axis deviation (>+90°); I negative + aVF negative = Extreme axis (beyond ±150°). Hexaxial dial reference included."
   },
   {
     "name": "ECG Waveform Guide",
     "id": "ecg_waveforms",
+    "description": "ECG waveform reference guide with intervals, segments, and cardiac rhythm interpretation.",
     "keywords": [
       "ecg",
       "ekg",
@@ -445,29 +523,35 @@
       "rr",
       "interval",
       "qt"
-    ]
+    ],
+    "guide": "ECG wave measurement guide: P wave (start to end of P), PR interval (start of P to start of QRS), QRS complex (start of Q to end of S), QT interval (start of Q to end of T), ST segment (end of S/J point to start of T), T wave (start to end of T), heart rate (one R wave to next R). Voltage references: P wave <2.5 mm limb / <1.5 mm chest; QRS ≥5 mm limb / ≥10 mm chest. ST elevation/depression criteria included."
   },
   {
     "name": "IPSS",
     "id": "ipss_score",
+    "description": "International Prostate Symptom Score (IPSS) for assessing benign prostatic hyperplasia (BPH) symptoms.",
     "keywords": [
       "incontinence",
       "ipss",
       "urinary incontinence"
-    ]
+    ],
+    "guide": "IPSS assesses lower urinary tract symptoms: incomplete emptying, frequency, intermittency, urgency, weak stream, straining, nocturia (each scored 0-5). Total 0-35. Interpretation: ≤7 Mild, 8-19 Moderate, 20-35 Severe. Quality of life question also included."
   },
   {
     "name": "Mini-Mental State Exam",
     "id": "mmse_calculator",
+    "description": "Mini-Mental State Examination (MMSE) for assessing cognitive impairment and dementia.",
     "keywords": [
       "mini mental state exam",
       "mmse",
       "cognitive impairment"
-    ]
+    ],
+    "guide": "MMSE assesses cognitive function across 11 domains: orientation (10), registration (3), attention (5), recall (3), naming (2), repetition (1), 3-stage command (3), reading (1), writing (1), copying (1). Total 0-30. Interpretation: 24-30 Normal, 18-23 Mild impairment, 0-17 Severe impairment."
   },
   {
     "name": "SAAG Calculator",
     "id": "saag_calculator",
+    "description": "Serum Ascites Albumin Gradient (SAAG) for evaluating the cause of ascites.",
     "keywords": [
       "saag",
       "serum ascites albumin gradient",
@@ -475,11 +559,13 @@
       "ascites",
       "portal hypertension",
       "gradient"
-    ]
+    ],
+    "guide": "SAAG = Serum Albumin − Ascitic Fluid Albumin. High SAAG (≥1.1 g/dL) indicates portal hypertension: cirrhosis, alcoholic hepatitis, cardiac failure, Budd-Chiari syndrome. Low SAAG (<1.1 g/dL) indicates non-portal cause: peritoneal carcinomatosis, TB peritonitis, pancreatitis, nephrotic syndrome."
   },
   {
     "name": "Dialysis Adequacy",
     "id": "dialysis_adequacy",
+    "description": "Calculate dialysis adequacy using URR (urea reduction ratio) and Kt/V for hemodialysis patients.",
     "keywords": [
       "dialysis adequacy",
       "urr",
@@ -487,6 +573,7 @@
       "kt/v",
       "urea reduction ratio",
       "hemodialysis"
-    ]
+    ],
+    "guide": "URR (Urea Reduction Ratio) = [(Pre BUN − Post BUN) ÷ Pre BUN] × 100. Units cancel — valid regardless of mmol/L or mg/dL. Adequacy targets: URR ≥65% = adequate HD session (KDOQI target); URR <65% = inadequate — review session time, blood flow rate, or access. Kt/V ≥1.2 equivalent adequacy measure."
   }
 ]

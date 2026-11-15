@@ -233,7 +233,10 @@ function MainApp() {
     let base = calcinfo.filter(
       (item) =>
         item.name.toLowerCase().includes(lowerTerm) ||
-        item.keywords?.some((k) => k.toLowerCase().includes(lowerTerm))
+        item.id.toLowerCase().includes(lowerTerm) ||
+        item.description?.toLowerCase().includes(lowerTerm) ||
+        item.keywords?.some((k) => k.toLowerCase().includes(lowerTerm)) ||
+        item.guide?.toLowerCase().includes(lowerTerm)
     );
 
     if (view === "favorites") {
@@ -287,11 +290,6 @@ function MainApp() {
       {/* 🌐 My Other Apps */}
       <MyOtherApps />
 
-      {/* 🔍 Search */}
-      <GlobalSearch
-        value={searchTerm}
-        onChange={setSearchTerm}
-      />
       {/* 🔘 Speciality Toggle */}
       <div className={`view-toggle-container ${canScrollLeft ? "can-scroll-left" : ""} ${canScrollRight ? "can-scroll-right" : ""}`}>
         <div
@@ -366,6 +364,13 @@ function MainApp() {
         </p>
         <p className="copyright">© {new Date().getFullYear()} CalcForDocs</p>
       </footer>
+
+      {/* 🔍 Floating Search — edge-docked, so it never covers the calculator.
+          The inline search bar is hidden for now, so this is always shown. */}
+      <GlobalSearch
+        value={searchTerm}
+        onChange={setSearchTerm}
+      />
     </div>
   );
 }

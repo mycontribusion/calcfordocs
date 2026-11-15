@@ -1,20 +1,108 @@
 /* ==========================================================================
-   GLOBAL SEARCH INPUT BAR
+   INLINE GLOBAL SEARCH (in-flow, above the specialty toggle)
+   Previously unstyled, which rendered a full-width 1040px pill.
    ========================================================================== */
 .global-search-container {
-  margin: 10px 0 14px 0;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 8px;
+}
+
+/* ==========================================================================
+   EDGE-DOCKED GLOBAL SEARCH
+   A slim handle hugging the right edge of the viewport, vertically centred.
+   It sits in the container's side padding / the desktop gutter, so it never
+   covers calculator cards or their favourite-star buttons.
+   ========================================================================== */
+.global-search-floating {
+  position: fixed;
+  top: 50%;
+  right: env(safe-area-inset-right, 0px);
+  transform: translateY(-50%);
+  z-index: 1100;
+  display: flex;
+  align-items: flex-end;
+  font-family: inherit;
+}
+
+/* ---- Slim edge handle ---------------------------------------------------- */
+.global-search-toggle {
+  position: relative;
+  width: 14px;
+  height: 72px;
+  border-radius: 10px 0 0 10px;
+  border: 1px solid var(--border-color);
+  border-right: none;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  padding: 0;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shrink the icon to suit the narrow handle */
+.global-search-toggle svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+/* The handle is deliberately slim, so widen the hit area invisibly to keep
+   it comfortably tappable without making it look bigger. */
+.global-search-toggle::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: -16px;
+  right: 0;
+}
+
+.global-search-toggle:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+  transform: translateX(-3px);
+}
+
+.global-search-toggle:active {
+  transform: translateX(-1px);
+}
+
+.global-search-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-active);
+}
+
+/* ---- Expanding search panel -------------------------------------------- */
+/* Out of flow so the handle stays pinned at the vertical centre and does
+   not jump when the panel opens. */
+.global-search-expand {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: 280px;
+  max-width: calc(100vw - 24px);
+  animation: searchExpand 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .global-search-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 12px 18px;
-  border-radius: 99px; /* Modern capsule shape */
+  padding: 12px 16px;
+  border-radius: 99px;
   border: 1px solid var(--border-color);
   background-color: var(--bg-card);
   color: var(--text-primary);
   font-size: 1rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -23,5 +111,67 @@
   background-color: var(--bg-card);
   outline: none;
   box-shadow: var(--shadow-active), var(--shadow-md);
-  transform: translateY(-1px);
+}
+
+@keyframes searchExpand {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 520px) {
+  .global-search-toggle {
+    width: 12px;
+    height: 64px;
+    border-radius: 9px 0 0 9px;
+  }
+
+  .global-search-expand {
+    width: calc(100vw - 24px);
+    max-width: 280px;
+  }
+}
+
+/* ---- Wide screens: gutter beside the 1040px column --------------------- */
+/* There is dead space out here, so the panel opens sideways instead of
+   upwards and never touches the content column. */
+@media (min-width: 1200px) {
+  .global-search-expand {
+    bottom: auto;
+    top: 50%;
+    right: calc(100% + 10px);
+    width: 300px;
+    max-width: none;
+    animation-name: searchExpandLeft;
+  }
+}
+
+@keyframes searchExpandLeft {
+  from {
+    opacity: 0;
+    transform: translate(10px, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, -50%) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .global-search-toggle,
+  .global-search-input {
+    transition: none;
+  }
+
+  .global-search-expand {
+    animation: none;
+  }
 }
