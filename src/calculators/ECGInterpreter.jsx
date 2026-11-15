@@ -110,9 +110,12 @@ function colorizeResult(text) {
 export default function ECGInterpreter() {
   const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
-  // Unit conversion, heart rate, and PR interval use duration units only.
+  // Unit conversion, heart rate, PR interval, and QT interval use duration units only.
   const unitType =
-    values.wave === "heartRate" || values.wave === "unitConversion" || values.wave === "prInterval"
+    values.wave === "heartRate" ||
+    values.wave === "unitConversion" ||
+    values.wave === "prInterval" ||
+    values.wave === "qtInterval"
       ? "duration"
       : values.measurementType;
   const unitOptions = UNITS_BY_TYPE[unitType];
@@ -120,15 +123,26 @@ export default function ECGInterpreter() {
 
   // Keep the selected unit valid for the current measurement type.
   useEffect(() => {
+    if (unitType === "elevation" || unitType === "depression") return;
     if (!VALID_UNITS[unitType].includes(values.valueType)) {
       setField("valueType", unitType === "voltage" ? "millivolts" : "seconds");
     }
   }, [unitType, values.valueType, setField]);
 
-  // PR interval is duration-only — force measurement type back to duration.
+  // PR interval and QT interval are duration-only — force measurement type back to duration.
   useEffect(() => {
-    if (values.wave === "prInterval" && values.measurementType !== "duration") {
+    if (
+      (values.wave === "prInterval" || values.wave === "qtInterval") &&
+      values.measurementType !== "duration"
+    ) {
       setField("measurementType", "duration");
+    }
+  }, [values.wave, values.measurementType, setField]);
+
+  // ST segment defaults to Elevation measurement type.
+  useEffect(() => {
+    if (values.wave === "stSegment" && values.measurementType === "duration") {
+      setField("measurementType", "elevation");
     }
   }, [values.wave, values.measurementType, setField]);
 
@@ -150,6 +164,17 @@ export default function ECGInterpreter() {
 
   useEffect(() => {
     const { wave, measurementType, valueType, numericalValue, rrInterval, rrUnit } = values;
+
+    // ST segment elevation/depression shows clinical note only — no value input needed.
+    if (wave === "stSegment" && (measurementType === "elevation" || measurementType === "depression")) {
+      const note =
+        measurementType === "elevation"
+          ? `ST Elevation Criteria\n\n1. Conventional STEMI Criteria\n   ≥ 1 mm in limb leads.\n   ≥ 2 mm in precordial (chest) leads.\n   Present in ≥ 2 anatomically contiguous leads.\n   Measured at the J point.\n\n2. Fourth Universal Definition of MI (2018)\n   ≥ 1 mm in all leads except V2–V3.\n   V2–V3 thresholds:\n     • Men ≥ 40 years: ≥ 2 mm.\n     • Men < 40 years: ≥ 2.5 mm.\n     • Women (all ages): ≥ 1.5 mm.\n   Present in ≥ 2 anatomically contiguous leads.\n   Measured at the J point.\n\nContiguous Lead Groups\n   • Septal: V1–V2\n   • Anterior: V3–V4\n   • Lateral: I, aVL, V5–V6\n   • Inferior: II, III, aVF`
+          : `ST Depression Criteria\n\n1. ≥ 0.5 mm in all standard leads\n2. Horizontal or downsloping morphology\n3. Present in ≥ 2 anatomically contiguous leads.\n4. Measured at the J-point\n\nContiguous Lead Groups\n\n• Septal: V1–V2 (Note: ST depression in V1–V3 may indicate a posterior STEMI)\n• Anterior: V3–V4\n• Lateral: I, aVL, V5–V6\n• Inferior: II, III, aVF`;
+      updateFields({ result: note, resultData: null });
+      return;
+    }
+
     const val = parseFloat(numericalValue);
     if (isNaN(val)) {
       updateFields({ result: numericalValue ? "Please enter a valid numerical value." : "" });
@@ -268,10 +293,10 @@ export default function ECGInterpreter() {
                       : rrVal;
 
             const qtc = baseValue / Math.sqrt(rrSeconds); // Bazett formula
-            finalInterp += ` | QTc (Bazett): ${qtc.toFixed(2)} s → ${qtc >= 0.36 && qtc <= 0.44 ? "Normal" : "Abnormal"
-              } (Formula: QTc = QT / √RR)`;
+            const qtcNormal = qtc >= 0.36 && qtc <= 0.44;
+            finalInterp += `\nQTc (Bazett): ${qtc.toFixed(2)} s → ${qtcNormal ? "Normal" : "Abnormal"}\n(Normal: 0.36 - 0.44 s)\n(Formula: QTc = QT / √RR)`;
           } else {
-            finalInterp += " | QTc: Enter valid RR interval";
+            finalInterp += "\nQTc: Enter valid RR interval";
           }
         }
       }
@@ -320,35 +345,51 @@ export default function ECGInterpreter() {
           field="measurementType"
           values={values}
           setField={setField}
-          disabled={values.wave === "prInterval"}
+          disabled={values.wave === "prInterval" || values.wave === "qtInterval"}
           options={
-            values.wave === "prInterval"
+            values.wave === "prInterval" || values.wave === "qtInterval"
               ? [{ value: "duration", label: "Duration" }]
-              : [
-                  { value: "duration", label: "Duration" },
-                  { value: "voltage", label: "Voltage" },
-                ]
+              : values.wave === "stSegment"
+                ? [
+                    { value: "elevation", label: "Elevation" },
+                    { value: "depression", label: "Depression" },
+                    { value: "duration", label: "Duration" },
+                  ]
+                : [
+                    { value: "duration", label: "Duration" },
+                    { value: "voltage", label: "Voltage" },
+                  ]
           }
         />
       )}
 
-      <SelectField
-        label="Unit:"
-        field="valueType"
-        values={values}
-        setField={setField}
-        options={unitOptions}
-      />
-
-      <div className="calc-box">
-        <input
-          type="number"
-          placeholder="Enter value"
-          value={values.numericalValue}
-          onChange={(e) => setField("numericalValue", e.target.value)}
-          className="calc-input"
+      {!(
+        values.wave === "stSegment" &&
+        (values.measurementType === "elevation" || values.measurementType === "depression")
+      ) && (
+        <SelectField
+          label="Unit:"
+          field="valueType"
+          values={values}
+          setField={setField}
+          options={unitOptions}
         />
-      </div>
+      )}
+
+      {!(
+        values.wave === "stSegment" &&
+        (values.measurementType === "elevation" || values.measurementType === "depression")
+      ) && (
+        <div className="calc-box">
+          <input
+            type="number"
+            placeholder="Enter value"
+            value={values.numericalValue}
+            onChange={(e) => setField("numericalValue", e.target.value)}
+            className="calc-input"
+          />
+        </div>
+      )}
 
       {/* RR interval for QTc */}
       {values.wave === "qtInterval" && (
