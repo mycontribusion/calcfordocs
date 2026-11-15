@@ -169,13 +169,14 @@ export function HeightField({ values, setField, suggestions, syncField, label = 
  * @param {Array}    options    - [{value, label}]
  * @param {object}   [style]    - Extra styles on the outer CalcBox
  */
-export function SelectField({ label, field, values, setField, options, style }) {
+export function SelectField({ label, field, values, setField, options, style, disabled }) {
   return (
     <CalcBox label={label} style={style}>
       <select
         value={values[field]}
         onChange={(e) => setField(field, e.target.value)}
         className="calc-select"
+        disabled={disabled}
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>{o.label}</option>

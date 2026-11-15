@@ -106,6 +106,7 @@
   border-right: 4px solid var(--accent);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
+  white-space: pre-line;
 }
 
 /* Primary and reset buttons */
