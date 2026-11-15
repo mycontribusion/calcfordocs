@@ -104,10 +104,10 @@ export default function SAAGCalculator() {
             {values.result && (
                 <div className="calc-result" style={{ marginTop: 16 }}>
                     <p><strong>SAAG:</strong> {values.result.value}</p>
-                    <p style={{ marginTop: 4, color: values.result.value.split(' ')[0] >= (values.albuminUnit === "g/dL" ? 1.1 : 11) ? '#b30000' : '#0056b3' }}>
+                    <p style={{ marginTop: 4, color: 'var(--text-primary)' }}>
                         {values.result.interpretation}
                     </p>
-                    <p style={{ marginTop: 8, fontSize: '0.85rem', color: values.result.value.split(' ')[0] >= (values.albuminUnit === "g/dL" ? 1.1 : 11) ? '#b30000' : '#0056b3' }}>
+                    <p style={{ marginTop: 8, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                         {values.result.suggests}
                     </p>
                 </div>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
+import { useCalc, ResetButton, SyncSuggestion, FormulaBox, InterpText } from "./CalcFields";
 import { toCalciumMgdl, fromCalciumMgdl, toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -111,7 +111,7 @@ export default function CorrectedCalcium() {
           <p>
             <strong>Corrected Calcium:</strong> {values.result} {values.calciumUnit}
           </p>
-          <p style={{ marginTop: 4 }}><strong>Status:</strong> {values.interpretation}</p>
+          <p style={{ marginTop: 4 }}><strong>Status:</strong> <InterpText text={values.interpretation} good={["Normal"]} bad={["Low (Hypocalcemia)", "High (Hypercalcemia)"]} /></p>
           <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
             <span style={{ opacity: 0.7 }}>Formula: Corrected Ca = Measured Ca + 0.8 × (4 – Albumin g/dL)</span>
             <ul style={{ listStyle: 'none', padding: 0, margin: '6px 0 0', opacity: 0.8 }}>

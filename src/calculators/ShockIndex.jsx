@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, FormulaBox } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, FormulaBox, InterpText } from "./CalcFields";
 
 const INITIAL_STATE = { heartRate: "", sbp: "", result: null };
 
@@ -12,8 +12,7 @@ export default function ShockIndex() {
     if (!hr || !sbp) { if (values.result !== null) updateFields({ result: null }); return; }
     const si = hr / sbp;
     const interp = si < 0.5 ? "Low" : si <= 0.7 ? "Normal" : si < 1.0 ? "Borderline" : "High risk of shock";
-    const color = si < 0.5 ? "#16a34a" : si <= 0.7 ? "#16a34a" : si < 1.0 ? "#ea580c" : "#dc2626";
-    updateFields({ result: { index: si.toFixed(2), interp, color } });
+    updateFields({ result: { index: si.toFixed(2), interp } });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.heartRate, values.sbp]);
 
@@ -37,7 +36,9 @@ export default function ShockIndex() {
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Shock Index:</strong> {values.result.index}</p>
-          <p style={{ marginTop: 4, fontWeight: 700, color: values.result.color }}>{values.result.interp}</p>
+          <p style={{ marginTop: 4, fontWeight: 700 }}>
+            <InterpText text={values.result.interp} good={["Normal"]} bad={["Low", "High risk of shock"]} />
+          </p>
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, WeightField, HeightField, ResetButton, ResultBox, FormulaBox } from "./CalcFields";
+import { useCalc, WeightField, HeightField, ResetButton, ResultBox, FormulaBox, InterpText } from "./CalcFields";
 import { toKg, toM } from "../utils/unitConversion";
 
 
@@ -31,7 +31,7 @@ export default function BmiCalculator() {
 
     const finalRes = `BMI: ${bmi.toFixed(2)} - ${category}`;
     if (values.result !== finalRes) {
-      updateFields({ result: finalRes });
+      updateFields({ result: finalRes, category });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.weight, values.weightUnit, values.height, values.heightUnit]);
@@ -68,7 +68,9 @@ export default function BmiCalculator() {
       <ResultBox show={!!values.result}>
         {values.result && (
           <>
-            <p className="font-medium">{values.result}</p>
+            <p className="font-medium">
+              BMI: {values.result.split(" - ")[0]} - <InterpText text={values.category} good={["Normal weight"]} bad={["Underweight", "Overweight", "Obese"]} />
+            </p>
             <p className="text-sm text-gray-600 mt-2" style={{ fontSize: '0.9rem', color: '#555' }}>
               Formula: <span className="font-mono">BMI = weight (kg) ÷ [height (m)]²</span>
             </p>

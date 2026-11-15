@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, NumberField, ResetButton, SyncSuggestion, FormulaBox } from "./CalcFields";
+import { useCalc, NumberField, ResetButton, SyncSuggestion, FormulaBox, InterpText } from "./CalcFields";
 import { toAlbuminGdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -121,14 +121,14 @@ export default function AnionGapDeltaRatio() {
         <div className="calc-result" style={{ marginTop: 16 }}>
           <div style={{ marginBottom: 12 }}>
             <p><strong>Anion Gap:</strong> {values.result.ag} mmol/L</p>
-            <p style={{ fontSize: '0.9rem', color: '#0056b3', marginTop: 4 }}>{values.result.agInterp}</p>
+            <p style={{ fontSize: '0.9rem', color: '#0056b3', marginTop: 4 }}><InterpText text={values.result.agInterp} good={["Normal Anion Gap", "Normal Anion Gap (with K⁺)"]} bad={["Low Anion Gap", "Low Anion Gap (with K⁺)", "High Anion Gap", "High Anion Gap (with K⁺)"]} /></p>
             <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7 }}>Formula: AG = {values.result.usedK ? "(Na + K) – (Cl + HCO₃)" : "Na – (Cl + HCO₃)"}</span>
             <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7, marginTop: 2 }}>Normal Range: {values.result.usedK ? "12 – 16 mmol/L" : "8 – 12 mmol/L"}</span>
           </div>
           {values.result.agCorr && (
             <div style={{ marginBottom: 12, borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: 8 }}>
               <p><strong>Corrected AG:</strong> {values.result.agCorr} mmol/L</p>
-              <p style={{ fontSize: '0.9rem', color: '#0056b3', marginTop: 4 }}>{values.result.agCorrInterp}</p>
+              <p style={{ fontSize: '0.9rem', color: '#0056b3', marginTop: 4 }}><InterpText text={values.result.agCorrInterp} good={["Normal Anion Gap", "Normal Anion Gap (with K⁺)"]} bad={["Low Anion Gap", "Low Anion Gap (with K⁺)", "High Anion Gap", "High Anion Gap (with K⁺)"]} /></p>
               <span style={{ display: 'block', fontSize: '0.8rem', opacity: 0.7 }}>Formula: AG + 2.5 × (4 – Albumin g/dL)</span>
             </div>
           )}

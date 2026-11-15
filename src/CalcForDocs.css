@@ -101,6 +101,9 @@ body.dark {
   --glass-border: rgba(255, 255, 255, 0.2);
 
   /* Statuses */
+  --status-success: #4ade80;
+  --status-warning: #fbbf24;
+  --status-error: #f87171;
   --status-success-bg: rgba(255, 255, 255, 0.1);
   --status-warning-bg: rgba(255, 255, 255, 0.1);
   --status-error-bg: rgba(255, 255, 255, 0.1);

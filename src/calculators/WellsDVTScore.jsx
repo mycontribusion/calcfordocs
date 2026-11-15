@@ -1,4 +1,4 @@
-import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox, InterpText } from "./CalcFields";
 import { useMemo } from "react";
 
 const criteria = [
@@ -84,7 +84,7 @@ export default function WellsDVTScore() {
       {(score !== 0 || Object.values(values).some(v => v)) && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <strong>Total Score:</strong> {score} <br />
-          <strong>Interpretation:</strong> {interpretation}
+          <strong>Interpretation:</strong> <InterpText text={interpretation} good={["Low probability of DVT"]} bad={["High probability of DVT"]} />
           {suggests && (
             <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
               <p style={{ color: '#0056b3', marginTop: 4 }}>Action: {suggests}</p>

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, SelectField } from "./CalcFields";
+import { useCalc, ResetButton, SelectField, FormulaBox } from "./CalcFields";
 
 const INITIAL_STATE = {
   wave: "unitConversion",
@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   rrInterval: "",
   rrUnit: "seconds",
   result: "",
+  resultData: null,
 };
 
 // Units are only valid for one measurement type — switching type resets the unit
@@ -57,11 +58,53 @@ const WAVE_OPTIONS = [
   { value: "heartRate", label: "RR Interval" },
 ];
 
+// Guide text: where each wave/interval is measured from → to
+const WAVE_GUIDES = {
+  unitConversion: "Convert between duration and voltage units.",
+  pWave: "From start of P wave to end of P wave",
+  prInterval: "From start of P wave to start of QRS complex",
+  qrsWave: "From start of Q wave to end of S wave",
+  qtInterval: "From start of Q wave to end of T wave",
+  stSegment: "From end of S wave (J point) to start of T wave",
+  tWave: "From start of T wave to end of T wave",
+  heartRate: "From one R wave to the next R wave",
+};
+
+// Voltage reference guide (for the FormulaBox)
+const VOLTAGE_GUIDE = {
+  pWave: "P Wave: < 2.5 mm (limb), < 1.5 mm (chest)",
+  qrsWave: "QRS Complex: ≥ 5 mm (limb), ≥ 10 mm (chest); < LVH limits",
+};
+
 function formatConverted(value) {
   if (!Number.isFinite(value)) return "-";
   const abs = Math.abs(value);
   if (abs !== 0 && (abs < 0.001 || abs >= 10000)) return value.toExponential(4);
   return parseFloat(value.toFixed(4)).toString();
+}
+
+// Wrap status keywords (Normal / Abnormal / Bradycardia / Tachycardia)
+// with red/green status classes so the entire ECG result is color-coded.
+function colorizeResult(text) {
+  if (!text) return text;
+  return text
+    .split("\n")
+    .map((line) => {
+      const parts = line.split(/(\([^)]*\)|≤[^)]*)/);
+      return parts
+        .map((part, j) => {
+          if (/^\(.*\)$/.test(part) || /^≤/.test(part)) {
+            return `<span class="calc-result-range">${part}</span>`;
+          }
+          return part
+            .replace(/\bNormal\b/g, '<span class="calc-status-normal">Normal</span>')
+            .replace(/\bAbnormal\b/g, '<span class="calc-status-abnormal">Abnormal</span>')
+            .replace(/\bBradycardia\b/g, '<span class="calc-status-abnormal">Bradycardia</span>')
+            .replace(/\bTachycardia\b/g, '<span class="calc-status-abnormal">Tachycardia</span>');
+        })
+        .join("");
+    })
+    .join("\n");
 }
 
 export default function ECGInterpreter() {
@@ -89,7 +132,7 @@ export default function ECGInterpreter() {
     }
   }, [values.wave, values.measurementType, setField]);
 
-  // Normal ranges (base units)
+  // Normal ranges (base units: seconds for duration, millivolts for voltage)
   const normalRanges = {
     duration: {
       pWave: [0, 0.12],
@@ -99,9 +142,9 @@ export default function ECGInterpreter() {
       stSegment: [0.08, 0.12],
     },
     voltage: {
-      pWave: [0, 0.25],
-      qrsWave: [0.5, 2.0],
-      tWave: [0.1, 0.3],
+      pWave: { limb: [0, 0.25], chest: [0, 0.15] },
+      qrsWave: { limb: [0.5, 2.0], chest: [1.0, 2.0] },
+      tWave: [0, 0.3],
     },
   };
 
@@ -157,10 +200,47 @@ export default function ECGInterpreter() {
       }
       const factor = factors[valueType];
       const baseValue = val * factor;
-      const range = normalRanges[measurementType][wave];
-      if (!range) {
+      const waveLabel = WAVE_OPTIONS.find((o) => o.value === wave)?.label || wave;
+
+      // Lead-type-specific voltage ranges for P wave and QRS complex
+      const rawRange = normalRanges[measurementType][wave];
+      if (!rawRange) {
         finalInterp = "No normal range defined for this measurement.";
+      } else if (measurementType === "voltage" && (wave === "pWave" || wave === "qrsWave")) {
+        // Show both limb and chest lead interpretations
+        const limbRange = rawRange.limb;
+        const chestRange = rawRange.chest;
+        const limbLow = limbRange[0] / factor;
+        const limbHigh = limbRange[1] / factor;
+        const chestLow = chestRange[0] / factor;
+        const chestHigh = chestRange[1] / factor;
+
+        const limbLabel =
+          limbRange[0] === 0
+            ? `≤ ${limbHigh.toFixed(2)} ${valueType}`
+            : `${limbLow.toFixed(2)} - ${limbHigh.toFixed(2)} ${valueType}`;
+        const chestLabel =
+          chestRange[0] === 0
+            ? `≤ ${chestHigh.toFixed(2)} ${valueType}`
+            : `${chestLow.toFixed(2)} - ${chestHigh.toFixed(2)} ${valueType}`;
+
+        const limbNormal = baseValue >= limbRange[0] && baseValue <= limbRange[1];
+        const chestNormal = baseValue >= chestRange[0] && baseValue <= chestRange[1];
+
+        finalInterp =
+          `${waveLabel}\n` +
+          `Limb: ${limbNormal ? "Normal" : "Abnormal"}\n${limbLabel}\n` +
+          `Chest: ${chestNormal ? "Normal" : "Abnormal"}\n${chestLabel}`;
+        // Store structured data for colored rendering
+        var structuredResult = {
+          title: waveLabel,
+          rows: [
+            { label: "Limb", normal: limbNormal, range: limbLabel },
+            { label: "Chest", normal: chestNormal, range: chestLabel },
+          ],
+        };
       } else {
+        const range = rawRange;
         const displayLow = range[0] / factor;
         const displayHigh = range[1] / factor;
         const rangeLabel =
@@ -168,7 +248,6 @@ export default function ECGInterpreter() {
             ? `≤ ${displayHigh.toFixed(2)} ${valueType}`
             : `${displayLow.toFixed(2)} - ${displayHigh.toFixed(2)} ${valueType}`;
 
-        const waveLabel = WAVE_OPTIONS.find((o) => o.value === wave)?.label || wave;
         finalInterp =
           baseValue >= range[0] && baseValue <= range[1]
             ? `${waveLabel} is Normal\n(${rangeLabel})`
@@ -198,14 +277,31 @@ export default function ECGInterpreter() {
       }
     }
 
-    if (finalInterp !== values.result) {
-      updateFields({ result: finalInterp });
+    if (finalInterp !== values.result || structuredResult !== values.resultData) {
+      updateFields({ result: finalInterp, resultData: structuredResult || null });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.wave, values.measurementType, values.valueType, values.numericalValue, values.rrInterval, values.rrUnit]);
 
   return (
     <div className="calc-container">
+      <FormulaBox title="ECG Wave Measurement Guide">
+        <p style={{ margin: "0 0 4px 0", fontWeight: 600 }}>Where each wave/interval is measured:</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: "0.78rem", lineHeight: 1.5 }}>
+          {Object.entries(WAVE_GUIDES).map(([key, text]) => (
+            <li key={key}>
+              <strong>{WAVE_OPTIONS.find((o) => o.value === key)?.label}:</strong> {text}
+            </li>
+          ))}
+        </ul>
+        <p style={{ margin: "8px 0 4px 0", fontWeight: 600 }}>Voltage Reference (limb vs chest leads):</p>
+        <ul style={{ margin: 0, paddingLeft: 18, fontSize: "0.78rem", lineHeight: 1.5 }}>
+          {Object.entries(VOLTAGE_GUIDE).map(([key, text]) => (
+            <li key={key}>{text}</li>
+          ))}
+        </ul>
+      </FormulaBox>
+
       <SelectField
         label="Wave/Interval:"
         field="wave"
@@ -213,6 +309,10 @@ export default function ECGInterpreter() {
         setField={setField}
         options={WAVE_OPTIONS}
       />
+
+      {WAVE_GUIDES[values.wave] && (
+        <p className="calc-guide-text">{WAVE_GUIDES[values.wave]}</p>
+      )}
 
       {values.wave !== "heartRate" && (
         <SelectField
@@ -280,10 +380,33 @@ export default function ECGInterpreter() {
 
       {values.result && (
         <div className="calc-result" style={{ marginTop: 16 }}>
-          {values.result}
+          {values.resultData ? (
+            <>
+              <div className="calc-result-title">{values.resultData.title}</div>
+              {values.resultData.rows.map((row, i) => (
+                <div key={i} className="calc-result-row">
+                  <span className="calc-result-lead">{row.label}:</span>{" "}
+                  <span className={row.normal ? "calc-status-normal" : "calc-status-abnormal"}>
+                    {row.normal ? "Normal" : "Abnormal"}
+                  </span>
+                  <div className="calc-result-range">{row.range}</div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <span
+              key="ecg-colorized"
+              dangerouslySetInnerHTML={{ __html: colorizeResult(values.result) }}
+            />
+          )}
         </div>
       )}
+
       <ResetButton onClick={reset} />
+
+      <p className="calc-disclaimer">
+        Disclaimer: Interpret ECG measurements alongside the overall ECG and clinical context.
+      </p>
     </div>
   );
 }

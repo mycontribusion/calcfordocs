@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, SyncSuggestion, FormulaBox, ResetButton } from "./CalcFields";
+import { useCalc, SyncSuggestion, FormulaBox, ResetButton, InterpText } from "./CalcFields";
 
 const INITIAL_STATE = {
   confusion: false,
@@ -129,11 +129,17 @@ export default function CURB65Calculator() {
       <div className="calc-result" style={{ marginTop: 16 }}>
         Score: {score} / 5
         <div style={{ fontSize: "0.9rem", fontWeight: "normal", marginTop: 4 }}>
-          {score <= 1
-            ? "Mild CAP — consider outpatient care"
-            : score === 2
-            ? "Moderate CAP — consider inpatient admission"
-            : "Severe CAP — inpatient admission recommended (assess ICU requirement)"}
+          <InterpText
+            text={
+              score <= 1
+                ? "Mild CAP — consider outpatient care"
+                : score === 2
+                ? "Moderate CAP — consider inpatient admission"
+                : "Severe CAP — inpatient admission recommended (assess ICU requirement)"
+            }
+            good={["Mild CAP"]}
+            bad={["Severe CAP"]}
+          />
         </div>
       </div>
     </div>

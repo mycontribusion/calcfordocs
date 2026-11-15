@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, SelectField, SyncSuggestion } from "./CalcFields";
+import { useCalc, ResetButton, SelectField, SyncSuggestion, InterpText } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -149,7 +149,7 @@ export default function SOFA() {
           </div>
           <div className="calc-result">
             <p><strong>Score:</strong> {values.qsofaScore} / 3</p>
-            <p>{values.qsofaInterp}</p>
+            <p><InterpText text={values.qsofaInterp} good={["Low immediate risk"]} bad={["High risk"]} /></p>
             {values.qsofaSuggests && (
               <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
                 <p style={{ color: '#0056b3', marginTop: 4 }}>{values.qsofaSuggests}</p>
@@ -264,7 +264,7 @@ export default function SOFA() {
 
           <div className="calc-result">
             <p><strong>Score:</strong> {values.msofaResult.total} / 19</p>
-            <p>{values.msofaResult.interpretation}</p>
+            <p><InterpText text={values.msofaResult.interpretation} good={["No organ dysfunction detected"]} bad={["Severe dysfunction"]} /></p>
             {values.msofaResult.msofaSuggests && (
               <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
                 <p style={{ color: '#0056b3', marginTop: 4 }}>{values.msofaResult.msofaSuggests}</p>

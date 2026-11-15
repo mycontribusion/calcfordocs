@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useCalc, ResetButton, SelectField, FormulaBox } from "./CalcFields";
+import { useCalc, ResetButton, SelectField, FormulaBox, InterpText } from "./CalcFields";
 
 function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = (angleDeg * Math.PI) / 180;
@@ -186,7 +186,7 @@ function ThreeLeadMethod() {
         </div>
         <ResetButton onClick={reset} />
         <div className="calc-result" style={{ marginTop: 16 }}>
-          <p><strong>Interpretation:</strong> {result.interpretation}</p>
+          <p><strong>Interpretation:</strong> <InterpText text={result.interpretation} good={["Normal Axis"]} bad={["Left Axis Deviation", "Right Axis Deviation", "Extreme Axis"]} /></p>
           <p><strong>Equiphasic lead:</strong> {result.equiphasic}</p>
         </div>
       </div>
@@ -463,7 +463,7 @@ function EquiphasicMethod() {
             <>
               {result.entries.map(renderEntry)}
               <p style={{ marginTop: 8 }}><strong>Final cardiac axis:</strong> {Math.round(result.axis * 10) / 10}°</p>
-              <p><strong>Interpretation:</strong> {result.sector === "normal" ? "Normal Axis" : result.sector === "left" ? "Left Axis Deviation" : result.sector === "right" ? "Right Axis Deviation" : "Extreme Axis"}</p>
+              <p><strong>Interpretation:</strong> <InterpText text={result.sector === "normal" ? "Normal Axis" : result.sector === "left" ? "Left Axis Deviation" : result.sector === "right" ? "Right Axis Deviation" : "Extreme Axis"} good={["Normal Axis"]} bad={["Left Axis Deviation", "Right Axis Deviation", "Extreme Axis"]} /></p>
               {result.status === "average" && (
                 <p style={{ fontSize: "0.8rem", opacity: 0.85 }}>{result.note}</p>
               )}

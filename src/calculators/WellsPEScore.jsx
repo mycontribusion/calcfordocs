@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox, InterpText } from "./CalcFields";
 
 const WELLS_CRITERIA = [
   { id: 1, label: "Clinical signs of DVT", points: 3 },
@@ -95,7 +95,7 @@ export default function WellsScorePE() {
       {values.selectedIds.length > 0 && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>Score:</strong> {totalScore}</p>
-          <p><strong>Interpretation:</strong> {interpretation}</p>
+          <p><strong>Interpretation:</strong> <InterpText text={interpretation} good={["Low probability of PE"]} bad={["High probability of PE"]} /></p>
           <div style={{ marginTop: 12, borderTop: '1px dashed rgba(0,0,0,0.1)', paddingTop: 8, fontSize: '0.85rem' }}>
             <p style={{ color: '#0056b3', marginTop: 4 }}>Action: {action}</p>
           </div>

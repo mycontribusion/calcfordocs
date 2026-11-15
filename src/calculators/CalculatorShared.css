@@ -95,19 +95,81 @@
    ========================================================================== */
 .calc-result {
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   margin-bottom: 12px;
-  padding: 16px;
+  padding: 10px 14px;
   background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
-  border-radius: 10px;
-  text-align: center;
+  border-radius: 8px;
+  text-align: left;
   border: 1px solid var(--border-color);
   border-left: 4px solid var(--primary);
-  border-right: 4px solid var(--accent);
   color: var(--text-primary);
   box-shadow: var(--shadow-sm);
   white-space: pre-line;
+  line-height: 1.5;
 }
+
+.calc-result-range {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #6b7280);
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.calc-result-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+}
+
+.calc-result-row {
+  margin-bottom: 6px;
+}
+
+.calc-result-lead {
+  font-weight: 600;
+}
+
+.calc-status-normal {
+  color: var(--status-success);
+  font-weight: 600;
+}
+
+.calc-status-abnormal {
+  color: var(--status-error);
+  font-weight: 600;
+}
+
+/* Light/dark theme support for status colors */
+.calcfordocs.dark .calc-status-normal {
+  color: #4ade80;
+}
+
+.calcfordocs.dark .calc-status-abnormal {
+  color: #f87171;
+}
+
+.calc-guide-text {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6b7280);
+  margin: -4px 0 8px;
+  padding: 0 4px;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.calc-disclaimer {
+  margin-top: 16px;
+  padding: 8px 12px;
+  font-size: 0.72rem;
+  color: var(--text-secondary, #6b7280);
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+  border-left: 3px solid var(--text-secondary, #6b7280);
+  line-height: 1.4;
+  font-style: italic;
+}
+
 
 /* Primary and reset buttons */
 .calc-btn-primary {
@@ -496,6 +558,53 @@
 .calcfordocs.dark [style*="background-color: rgba(0,123,255,0.05)"],
 .calcfordocs.dark [style*="background-color: rgba(0, 123, 255, 0.05)"] {
   background-color: var(--primary-glow) !important;
+}
+
+/* ==========================================================================
+   GLOBAL RED/GREEN STATUS COLOR OVERRIDES
+   Many calculators hardcode green (#16a34a, #27ae60, #10b981) and red
+   (#dc2626, #c0392b, #ef4444) inline styles. Route them through the theme
+   status variables so normal/abnormal results stay consistent across the
+   whole app and respect light/dark mode.
+   ========================================================================== */
+
+/* Green (Normal / success) */
+.calcfordocs [style*="color: #16a34a"],
+.calcfordocs [style*="color:#16a34a"],
+.calcfordocs [style*="color: #27ae60"],
+.calcfordocs [style*="color:#27ae60"],
+.calcfordocs [style*="color: #10b981"],
+.calcfordocs [style*="color:#10b981"] {
+  color: var(--status-success) !important;
+}
+
+/* Red (Abnormal / danger / high risk) */
+.calcfordocs [style*="color: #dc2626"],
+.calcfordocs [style*="color:#dc2626"],
+.calcfordocs [style*="color: #c0392b"],
+.calcfordocs [style*="color:#c0392b"],
+.calcfordocs [style*="color: #ef4444"],
+.calcfordocs [style*="color:#ef4444"] {
+  color: var(--status-error) !important;
+}
+
+/* Dark theme overrides for the green/red status colors */
+.calcfordocs.dark [style*="color: #16a34a"],
+.calcfordocs.dark [style*="color:#16a34a"],
+.calcfordocs.dark [style*="color: #27ae60"],
+.calcfordocs.dark [style*="color:#27ae60"],
+.calcfordocs.dark [style*="color: #10b981"],
+.calcfordocs.dark [style*="color:#10b981"] {
+  color: #4ade80 !important;
+}
+
+.calcfordocs.dark [style*="color: #dc2626"],
+.calcfordocs.dark [style*="color:#dc2626"],
+.calcfordocs.dark [style*="color: #c0392b"],
+.calcfordocs.dark [style*="color:#c0392b"],
+.calcfordocs.dark [style*="color: #ef4444"],
+.calcfordocs.dark [style*="color:#ef4444"] {
+  color: #f87171 !important;
 }
 
 .calcfordocs.dark [style*="border-top: 1px solid rgba(0,0,0,0.05)"],

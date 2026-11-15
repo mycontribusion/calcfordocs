@@ -222,6 +222,49 @@ export function ResetButton({ onClick, label = "Reset Calculator", style }) {
   );
 }
 
+// ─── InterpText ───────────────────────────────────────────────────────────────
+/**
+ * Colorize clinical interpretation text by keyword.
+ *
+ * Wraps "good" keywords (Normal, Low risk, No Heart Failure, …) in green
+ * `.calc-status-normal` spans and "bad" keywords (High risk, Severe, Heart
+ * Failure Present, …) in red `.calc-status-abnormal` spans. Everything else
+ * stays neutral. Keywords are matched longest-first and case-insensitively,
+ * preserving the original casing in the output.
+ *
+ * @param {string} text  - The interpretation string to render.
+ * @param {Array}  good  - Keywords that should be colored green.
+ * @param {Array}  bad   - Keywords that should be colored red.
+ * @param {object} [style]- Extra inline styles on the wrapper <span>.
+ */
+export function InterpText({ text, good = [], bad = [], style }) {
+  if (!text) return null;
+  const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const uniq = [...new Set([...good, ...bad])];
+  if (uniq.length === 0) return <span style={style}>{text}</span>;
+  // Longest-first so multi-word phrases aren't partially matched.
+  uniq.sort((a, b) => b.length - a.length);
+  const re = new RegExp(`(${uniq.map(escape).join("|")})`, "gi");
+  const goodLower = new Set(good.map((g) => g.toLowerCase()));
+  const parts = [];
+  let last = 0;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(<span key={`t${last}`}>{text.slice(last, m.index)}</span>);
+    const kw = m[0];
+    const isGood = goodLower.has(kw.toLowerCase());
+    parts.push(
+      <span key={`k${m.index}`} className={isGood ? "calc-status-normal" : "calc-status-abnormal"}>
+        {m[0]}
+      </span>
+    );
+    last = m.index + m[0].length;
+    re.lastIndex = last; // prevent infinite loop on zero-width matches
+  }
+  if (last < text.length) parts.push(<span key={`t${last}`}>{text.slice(last)}</span>);
+  return <span style={style}>{parts}</span>;
+}
+
 // ─── ResultBox ────────────────────────────────────────────────────────────────
 /**
  * Standard result display wrapper.

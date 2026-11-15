@@ -1,4 +1,4 @@
-import { useCalc, ResetButton, FormulaBox } from "./CalcFields";
+import { useCalc, ResetButton, FormulaBox, InterpText } from "./CalcFields";
 import { useMemo } from "react";
 
 const majorCriteria = [
@@ -81,7 +81,7 @@ export default function HeartFailureFramingham() {
         ))}
       </div>
       <ResetButton onClick={reset} style={{ marginTop: 10 }} />
-      <div className="calc-result" style={{ marginTop: 15 }}><strong>Diagnosis:</strong> {result}</div>
+      <div className="calc-result" style={{ marginTop: 15 }}><strong>Diagnosis:</strong> <InterpText text={result} good={["No Heart Failure (criteria not met)"]} bad={["Heart Failure Present (≥2 Major criteria)", "Heart Failure Present (1 Major + ≥2 Minor)", "Heart Failure Present"]} /></div>
     </div>
   );
 }

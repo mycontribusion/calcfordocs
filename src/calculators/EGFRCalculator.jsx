@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCalc, CalcBox, NumberField, ResetButton, SelectField, FormulaBox } from "./CalcFields";
+import { useCalc, CalcBox, NumberField, ResetButton, SelectField, FormulaBox, InterpText } from "./CalcFields";
 import { toCrMgdl } from "../utils/unitConversion";
 
 const INITIAL_STATE = {
@@ -113,7 +113,7 @@ function EGFRCalculator() {
       {values.egfr !== null && (
         <div className="calc-result" style={{ marginTop: 16 }}>
           <p><strong>eGFR:</strong> {values.egfr} mL/min/1.73m²</p>
-          <p><strong>Interpretation:</strong> {values.interpretation}</p>
+          <p><strong>Interpretation:</strong> <InterpText text={values.interpretation} good={["Normal kidney function"]} bad={["Kidney failure"]} /></p>
 
           <div
             style={{
