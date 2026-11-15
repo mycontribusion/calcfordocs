@@ -18,6 +18,14 @@
   transition: all 0.3s ease;
 }
 
+.favorites-empty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
 .favorites-empty-badge {
   display: inline-flex;
   align-items: center;
@@ -42,7 +50,30 @@
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 8px 0;
+  margin: 0;
+  flex: 1;
+}
+
+.favorites-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.favorites-dismiss-btn:hover {
+  opacity: 1;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .favorites-empty-desc {
@@ -50,6 +81,7 @@
   color: var(--text-secondary);
   margin: 0 0 24px 0;
   line-height: 1.5;
+  text-align: center;
 }
 
 .inline-star-icon {

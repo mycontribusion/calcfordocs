@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import calcinfo from "../calculators/calcinfo.json";
+import { useFavorites } from "../calculators/FavoritesContext";
 import "./FavoritesEmptyState.css";
 
 const RECOMMENDED_IDS = [
@@ -10,6 +11,8 @@ const RECOMMENDED_IDS = [
   "pediatric_weight_calc",
   "serum_osmolality"
 ];
+
+const DISMISSED_STORAGE_KEY = "calcfordocs_favorites_suggestions_dismissed";
 
 const StarIcon = ({ filled }) => (
   <svg
@@ -27,15 +30,72 @@ const StarIcon = ({ filled }) => (
   </svg>
 );
 
+const CloseIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
 export default function FavoritesEmptyState({ toggleFav, onSelectCalc }) {
-  const recommendations = RECOMMENDED_IDS.map((id) =>
-    calcinfo.find((item) => item.id === id)
-  ).filter(Boolean);
+  const { favorites, isFavorite } = useFavorites();
+  const [dismissed, setDismissed] = useState(false);
+
+  // Load dismissed state from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(DISMISSED_STORAGE_KEY);
+      if (stored === "true") {
+        setDismissed(true);
+      }
+    } catch (e) {
+      console.error("Failed to load dismissed state:", e);
+    }
+  }, []);
+
+  // Persist dismissed state
+  const handleDismiss = useCallback(() => {
+    setDismissed(true);
+    try {
+      localStorage.setItem(DISMISSED_STORAGE_KEY, "true");
+    } catch (e) {
+      console.error("Failed to save dismissed state:", e);
+    }
+  }, []);
+
+  // Get all recommended items
+  const allRecommendations = useMemo(() =>
+    RECOMMENDED_IDS.map((id) =>
+      calcinfo.find((item) => item.id === id)
+    ).filter(Boolean),
+    []
+  );
+
+  // Filter out already favorited items from suggestions
+  const remainingRecommendations = useMemo(() =>
+    allRecommendations.filter((item) => !isFavorite(item.id)),
+    [allRecommendations, isFavorite]
+  );
+
+  // Don't show suggestions if dismissed or no remaining recommendations
+  if (dismissed || remainingRecommendations.length === 0) {
+    return null;
+  }
 
   return (
     <div className="favorites-empty-container">
       <div className="favorites-empty-card">
-        <h2 className="favorites-empty-title">No Favorites Added Yet</h2>
+        <div className="favorites-empty-header">
+          <h2 className="favorites-empty-title">No Favorites Added Yet</h2>
+          <button
+            className="favorites-dismiss-btn"
+            onClick={handleDismiss}
+            title="Dismiss suggestions"
+            aria-label="Dismiss suggestions"
+          >
+            <CloseIcon />
+          </button>
+        </div>
         <p className="favorites-empty-desc">
           Click the star (<span className="inline-star-icon"><StarIcon filled={false} /></span>) icon on any calculator card to save your most frequently used clinical decision tools for 1-tap quick access during shifts.
         </p>
@@ -43,7 +103,7 @@ export default function FavoritesEmptyState({ toggleFav, onSelectCalc }) {
         <div className="favorites-rec-section">
           <h3 className="favorites-rec-heading">Popular Clinical Tools to Star:</h3>
           <div className="favorites-rec-grid">
-            {recommendations.map((item) => (
+            {remainingRecommendations.map((item) => (
               <div key={item.id} className="favorites-rec-card">
                 <div
                   className="favorites-rec-info"

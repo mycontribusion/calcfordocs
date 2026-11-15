@@ -68,19 +68,7 @@ export default function CalculatorGrid({
 }) {
   const { isFavorite, toggleFavorite } = useFavorites();
 
-  if (view === "favorites" && calcs.length === 0) {
-    return (
-      <FavoritesEmptyState
-        toggleFav={(id, name) => {
-          toggleFavorite(id);
-          if (onFavToggleNotice) {
-            onFavToggleNotice(name, true);
-          }
-        }}
-        onSelectCalc={toggleCalc}
-      />
-    );
-  }
+  const renderFavoritesSuggestions = view === "favorites";
 
   return (
     <div className="button-grid">
@@ -95,6 +83,17 @@ export default function CalculatorGrid({
           onFavToggleNotice={onFavToggleNotice}
         />
       ))}
+      {renderFavoritesSuggestions && (
+        <FavoritesEmptyState
+          toggleFav={(id, name) => {
+            toggleFavorite(id);
+            if (onFavToggleNotice) {
+              onFavToggleNotice(name, true);
+            }
+          }}
+          onSelectCalc={toggleCalc}
+        />
+      )}
     </div>
   );
 }
