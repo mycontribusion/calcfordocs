@@ -1,6 +1,5 @@
 /* ==========================================================================
-   INLINE GLOBAL SEARCH (in-flow, above the specialty toggle)
-   Previously unstyled, which rendered a full-width 1040px pill.
+   INLINE GLOBAL SEARCH (in-flow variant, kept for reference)
    ========================================================================== */
 .global-search-container {
   width: 100%;
@@ -9,10 +8,9 @@
 }
 
 /* ==========================================================================
-   EDGE-DOCKED GLOBAL SEARCH
-   A slim handle hugging the right edge of the viewport, vertically centred.
-   It sits in the container's side padding / the desktop gutter, so it never
-   covers calculator cards or their favourite-star buttons.
+   EDGE-DOCKED HANDLE
+   A slim tab hugging the right edge of the viewport, vertically centred.
+   It sits in the container's side padding, so it never covers cards.
    ========================================================================== */
 .global-search-floating {
   position: fixed;
@@ -81,16 +79,25 @@
   box-shadow: var(--shadow-active);
 }
 
-/* ---- Expanding search panel -------------------------------------------- */
-/* Out of flow so the handle stays pinned at the vertical centre and does
-   not jump when the panel opens. */
+/* ==========================================================================
+   EXPANDING SEARCH PANEL
+   Pinned to the top of the viewport, sized to match the original inline
+   search bar (max 480px, centred) so it feels like the same control
+   returning to where it used to live.
+   ========================================================================== */
 .global-search-expand {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 10px);
-  width: 280px;
-  max-width: calc(100vw - 24px);
-  animation: searchExpand 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: fixed;
+  /* Leave a gap above roughly equal to the input's own height (~46px),
+     so the panel hangs below the top edge rather than butting against it. */
+  top: calc(env(safe-area-inset-top, 0px) + 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  z-index: 1200;
+  animation: searchExpandTop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .global-search-input {
@@ -102,7 +109,7 @@
   background-color: var(--bg-card);
   color: var(--text-primary);
   font-size: 1rem;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -110,17 +117,17 @@
   border-color: var(--border-focus);
   background-color: var(--bg-card);
   outline: none;
-  box-shadow: var(--shadow-active), var(--shadow-md);
+  box-shadow: var(--shadow-active), var(--shadow-lg);
 }
 
-@keyframes searchExpand {
+@keyframes searchExpandTop {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.95);
+    transform: translate(-50%, -12px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate(-50%, 0) scale(1);
   }
 }
 
@@ -135,33 +142,9 @@
   }
 
   .global-search-expand {
-    width: calc(100vw - 24px);
-    max-width: 280px;
-  }
-}
-
-/* ---- Wide screens: gutter beside the 1040px column --------------------- */
-/* There is dead space out here, so the panel opens sideways instead of
-   upwards and never touches the content column. */
-@media (min-width: 1200px) {
-  .global-search-expand {
-    bottom: auto;
-    top: 50%;
-    right: calc(100% + 10px);
-    width: 300px;
+    top: calc(env(safe-area-inset-top, 0px) + 44px);
+    padding: 0 12px;
     max-width: none;
-    animation-name: searchExpandLeft;
-  }
-}
-
-@keyframes searchExpandLeft {
-  from {
-    opacity: 0;
-    transform: translate(10px, -50%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, -50%) scale(1);
   }
 }
 

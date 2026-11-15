@@ -1,5 +1,5 @@
 import "./GlobalSearch.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -15,8 +15,34 @@ const CloseIcon = () => (
   </svg>
 );
 
-export default function GlobalSearch({ value, onChange, hidden, variant = "floating", containerRef }) {
+export default function GlobalSearch({
+  value,
+  onChange,
+  hidden,
+  variant = "floating",
+  containerRef,
+  collapseSignal,
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const panelRef = useRef(null);
+
+  /* Collapse whenever the parent signals a navigation (e.g. a calculator
+     button was clicked), so the panel never lingers over new content. */
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [collapseSignal]);
+
+  /* Escape closes the panel */
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setIsExpanded(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isExpanded]);
 
   if (hidden) return null;
 
@@ -35,17 +61,20 @@ export default function GlobalSearch({ value, onChange, hidden, variant = "float
   }
 
   return (
-    <div className="global-search-floating">
-      <button
-        className="global-search-toggle"
-        onClick={() => setIsExpanded(!isExpanded)}
-        aria-label={isExpanded ? "Close search" : "Open search"}
-      >
-        {isExpanded ? <CloseIcon /> : <SearchIcon />}
-      </button>
+    <>
+      <div className="global-search-floating">
+        <button
+          className="global-search-toggle"
+          onClick={() => setIsExpanded((prev) => !prev)}
+          aria-label={isExpanded ? "Close search" : "Open search"}
+          aria-expanded={isExpanded}
+        >
+          {isExpanded ? <CloseIcon /> : <SearchIcon />}
+        </button>
+      </div>
 
       {isExpanded && (
-        <div className="global-search-expand">
+        <div className="global-search-expand" ref={panelRef}>
           <input
             type="search"
             className="global-search-input"
@@ -56,6 +85,6 @@ export default function GlobalSearch({ value, onChange, hidden, variant = "float
           />
         </div>
       )}
-    </div>
+    </>
   );
 }

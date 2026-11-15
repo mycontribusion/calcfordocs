@@ -365,11 +365,12 @@ function MainApp() {
         <p className="copyright">© {new Date().getFullYear()} CalcForDocs</p>
       </footer>
 
-      {/* 🔍 Floating Search — edge-docked, so it never covers the calculator.
-          The inline search bar is hidden for now, so this is always shown. */}
+      {/* 🔍 Floating Search — edge-docked handle, panel opens at the top.
+          Collapses whenever a calculator or specialty button is clicked. */}
       <GlobalSearch
         value={searchTerm}
         onChange={setSearchTerm}
+        collapseSignal={`${activeCalc ?? ""}|${view}`}
       />
     </div>
   );
