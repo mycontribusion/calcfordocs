@@ -74,6 +74,23 @@ const WAVE_GUIDES = {
 const VOLTAGE_GUIDE = {
   pWave: "P Wave: < 2.5 mm (limb), < 1.5 mm (chest)",
   qrsWave: "QRS Complex: ≥ 5 mm (limb), ≥ 10 mm (chest); < LVH limits",
+  tWave: "T Wave: < 5 mm (limb), < 10 mm (chest); tall if ≥ 5 mm (limb) / ≥ 10 mm (chest)",
+};
+
+// Waves interpreted by voltage only — measurement type is locked to Voltage and
+// no numeric value is required (reference text is shown instead).
+const VOLTAGE_ONLY_WAVES = ["tWave"];
+
+// Clinical reference text shown in place of the value input for voltage-only waves.
+const VOLTAGE_ONLY_NOTES = {
+  tWave:
+    "T Wave (voltage only)\n\n" +
+    "Normal T waves: Upright in I, II, V3–V6; may be inverted in III, aVR, V1–V2. Asymmetric, with gradual upstroke and faster downstroke.\n\n" +
+    "Tall T wave\n" +
+    "1. Limb leads: > 5 mm\n" +
+    "2. Precordial leads: > 10 mm\n" +
+    "3. Relative voltage: Taller than the R wave or > 50–75% of the total QRS height in either lead group.\n\n" +
+    "T-wave inversion: Pathological if > 1 mm in leads normally showing upright T waves.",
 };
 
 function formatConverted(value) {
@@ -110,6 +127,9 @@ function colorizeResult(text) {
 export default function ECGInterpreter() {
   const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
 
+  // T wave is voltage-only: measurement type is locked and no value is entered.
+  const isVoltageOnlyWave = VOLTAGE_ONLY_WAVES.includes(values.wave);
+
   // Unit conversion, heart rate, PR interval, and QT interval use duration units only.
   const unitType =
     values.wave === "heartRate" ||
@@ -117,7 +137,9 @@ export default function ECGInterpreter() {
     values.wave === "prInterval" ||
     values.wave === "qtInterval"
       ? "duration"
-      : values.measurementType;
+      : isVoltageOnlyWave
+        ? "voltage"
+        : values.measurementType;
   const unitOptions = UNITS_BY_TYPE[unitType];
   const factors = unitType === "duration" ? DURATION_FACTORS : VOLTAGE_FACTORS;
 
@@ -146,6 +168,13 @@ export default function ECGInterpreter() {
     }
   }, [values.wave, values.measurementType, setField]);
 
+  // Voltage-only waves (e.g. T wave) always use the Voltage measurement type.
+  useEffect(() => {
+    if (isVoltageOnlyWave && values.measurementType !== "voltage") {
+      setField("measurementType", "voltage");
+    }
+  }, [isVoltageOnlyWave, values.measurementType, setField]);
+
   // Normal ranges (base units: seconds for duration, millivolts for voltage)
   const normalRanges = {
     duration: {
@@ -164,6 +193,12 @@ export default function ECGInterpreter() {
 
   useEffect(() => {
     const { wave, measurementType, valueType, numericalValue, rrInterval, rrUnit } = values;
+
+    // Voltage-only waves (e.g. T wave) show clinical reference text only — no value input needed.
+    if (isVoltageOnlyWave) {
+      updateFields({ result: VOLTAGE_ONLY_NOTES[wave] || "", resultData: null });
+      return;
+    }
 
     // ST segment elevation/depression shows clinical note only — no value input needed.
     if (wave === "stSegment" && (measurementType === "elevation" || measurementType === "depression")) {
@@ -306,7 +341,7 @@ export default function ECGInterpreter() {
       updateFields({ result: finalInterp, resultData: structuredResult || null });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.wave, values.measurementType, values.valueType, values.numericalValue, values.rrInterval, values.rrUnit]);
+  }, [values.wave, values.measurementType, values.valueType, values.numericalValue, values.rrInterval, values.rrUnit, isVoltageOnlyWave]);
 
   return (
     <div className="calc-container">
@@ -345,28 +380,29 @@ export default function ECGInterpreter() {
           field="measurementType"
           values={values}
           setField={setField}
-          disabled={values.wave === "prInterval" || values.wave === "qtInterval"}
+          disabled={
+            values.wave === "prInterval" || values.wave === "qtInterval" || isVoltageOnlyWave
+          }
           options={
             values.wave === "prInterval" || values.wave === "qtInterval"
               ? [{ value: "duration", label: "Duration" }]
-              : values.wave === "stSegment"
-                ? [
-                    { value: "elevation", label: "Elevation" },
-                    { value: "depression", label: "Depression" },
-                    { value: "duration", label: "Duration" },
-                  ]
-                : [
-                    { value: "duration", label: "Duration" },
-                    { value: "voltage", label: "Voltage" },
-                  ]
+              : isVoltageOnlyWave
+                ? [{ value: "voltage", label: "Voltage" }]
+                : values.wave === "stSegment"
+                  ? [
+                      { value: "elevation", label: "Elevation" },
+                      { value: "depression", label: "Depression" },
+                      { value: "duration", label: "Duration" },
+                    ]
+                  : [
+                      { value: "duration", label: "Duration" },
+                      { value: "voltage", label: "Voltage" },
+                    ]
           }
         />
       )}
 
-      {!(
-        values.wave === "stSegment" &&
-        (values.measurementType === "elevation" || values.measurementType === "depression")
-      ) && (
+      {!isVoltageOnlyWave && (
         <SelectField
           label="Unit:"
           field="valueType"
@@ -376,10 +412,7 @@ export default function ECGInterpreter() {
         />
       )}
 
-      {!(
-        values.wave === "stSegment" &&
-        (values.measurementType === "elevation" || values.measurementType === "depression")
-      ) && (
+      {!isVoltageOnlyWave && (
         <div className="calc-box">
           <input
             type="number"
