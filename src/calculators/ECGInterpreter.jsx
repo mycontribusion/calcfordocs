@@ -11,8 +11,40 @@ const INITIAL_STATE = {
   result: "",
 };
 
+// Units are only valid for one measurement type — switching type resets the unit
+// so the calculator never ends up with e.g. "millivolts" for a duration.
+const UNITS_BY_TYPE = {
+  duration: [
+    { value: "milliseconds", label: "Milliseconds" },
+    { value: "seconds", label: "Seconds" },
+    { value: "smallSquares", label: "Small Squares" },
+    { value: "largeSquares", label: "Large Squares" },
+  ],
+  voltage: [
+    { value: "millivolts", label: "Millivolts" },
+    { value: "smallSquares", label: "Small Squares" },
+    { value: "largeSquares", label: "Large Squares" },
+  ],
+};
+
+const VALID_UNITS = {
+  duration: UNITS_BY_TYPE.duration.map((u) => u.value),
+  voltage: UNITS_BY_TYPE.voltage.map((u) => u.value),
+};
+
 export default function ECGInterpreter() {
   const { values, updateField: setField, updateFields, reset } = useCalc(INITIAL_STATE);
+
+  // Heart rate is always measured in time units, never voltage.
+  const unitType = values.wave === "heartRate" ? "duration" : values.measurementType;
+  const unitOptions = UNITS_BY_TYPE[unitType];
+
+  // Keep the selected unit valid for the current measurement type.
+  useEffect(() => {
+    if (!VALID_UNITS[unitType].includes(values.valueType)) {
+      setField("valueType", unitType === "voltage" ? "millivolts" : "seconds");
+    }
+  }, [unitType, values.valueType, setField]);
 
   // Conversion factors
   const durationFactors = {
@@ -133,7 +165,13 @@ export default function ECGInterpreter() {
         <SelectField label="Measurement Type:" field="measurementType" values={values} setField={setField} options={[{value: "duration", label: "Duration"}, {value: "voltage", label: "Voltage"}]} />
       )}
 
-      <SelectField label="Unit:" field="valueType" values={values} setField={setField} options={[{value: "milliseconds", label: "Milliseconds"}, {value: "seconds", label: "Seconds"}, {value: "smallSquares", label: "Small Squares"}, {value: "largeSquares", label: "Large Squares"}, {value: "millivolts", label: "Millivolts"}, {value: "smallSquares", label: "Small Squares"}, {value: "largeSquares", label: "Large Squares"}]} />
+      <SelectField
+        label="Unit:"
+        field="valueType"
+        values={values}
+        setField={setField}
+        options={unitOptions}
+      />
 
       <div className="calc-box">
         <input type="number" placeholder="Enter value" value={values.numericalValue} onChange={(e) => setField("numericalValue", e.target.value)} className="calc-input" />

@@ -108,6 +108,12 @@ function HexaxialDial({ size = 300, sectorKey = "", axis = null, estimates = [] 
         return <text key={`deg-${a}`} x={p.x} y={p.y} fontSize="7" fill="#6b7280" textAnchor="middle" dominantBaseline="middle">{text}</text>;
       })}
 
+      {/* −180° label at the left end of the Lead I (0°) line */}
+      {(() => {
+        const p = polarToCartesian(cx, cy, r - 10, 180);
+        return <text x={p.x} y={p.y} fontSize="7" fill="#6b7280" textAnchor="middle" dominantBaseline="middle">−180°</text>;
+      })()}
+
       {/* individual estimate vectors (dashed) */}
       {estimates.map((est) => {
         const p = polarToCartesian(cx, cy, r - 6, est.angle);

@@ -23,7 +23,11 @@
   /* Slate-50 */
   --bg-card: #ffffff;
   --bg-input: #ffffff;
+  --bg-calc-active: #e0edfc;
+  /* Pale blue for opened calculator */
   --border-color: #e2e8f0;
+  --border-calc-active: #93bce8;
+  /* Coordinating visible border */
   /* Slate-200 */
   --border-hover: #cbd5e1;
   /* Slate-300 */
@@ -73,7 +77,11 @@ body.dark {
   --bg-app: #000000;
   --bg-card: #000000;
   --bg-input: #000000;
+  --bg-calc-active: #1e293b;
+  /* Blue-charcoal, lighter than page/buttons */
   --border-color: #333333;
+  --border-calc-active: #334155;
+  /* Coordinating visible border */
   --border-hover: #666666;
   --border-focus: #ffffff;
 
@@ -298,9 +306,9 @@ textarea::placeholder {
   grid-column: 1 / -1;
   margin-top: 8px;
   padding: 16px;
-  background: var(--bg-card);
+  background: var(--bg-calc-active);
   border-radius: 16px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-calc-active);
   border-top: 4px solid var(--primary);
   border-bottom: 4px solid var(--accent);
   box-shadow: var(--shadow-lg);
