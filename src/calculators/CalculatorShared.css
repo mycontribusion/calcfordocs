@@ -507,3 +507,52 @@
 .calcfordocs.dark [style*="background:rgba(0,0,0,0.02)"] {
   background-color: rgba(255, 255, 255, 0.03) !important;
 }
+
+/* ==========================================================================
+   IN-CALCULATOR METHOD TABS (segmented control)
+   ========================================================================== */
+.calc-method-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.calc-method-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.calc-method-tab:hover {
+  color: var(--text-primary);
+  background: var(--border-color);
+}
+
+.calc-method-tab.active {
+  color: var(--primary);
+  background: var(--bg-card);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 380px) {
+  .calc-method-tab {
+    font-size: 0.78rem;
+    padding: 7px 6px;
+  }
+}
