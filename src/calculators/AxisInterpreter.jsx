@@ -14,13 +14,119 @@ function describeArc(cx, cy, radius, startAngle, endAngle) {
 }
 
 const SECTORS = {
-  left: { start: 270, end: 330, color: "#60a5fa" },
-  normal: { start: 330, end: 450, color: "#34d399" },
-  right: { start: 90, end: 180, color: "#fb923c" },
-  extreme: { start: 180, end: 270, color: "#f87171" },
+  left: { start: 270, end: 330, color: "#60a5fa", label: "LAD", mid: 300 },
+  normal: { start: 330, end: 450, color: "#34d399", label: "NORMAL", mid: 30 },
+  right: { start: 90, end: 180, color: "#fb923c", label: "RAD", mid: 135 },
+  extreme: { start: 180, end: 270, color: "#f87171", label: "EAD", mid: 225 },
 };
 
 const INITIAL_STATE = { lead1: "positive", leadAvf: "positive" };
+
+// 12-angle hexaxial reference dial (every 30°), with the six limb-lead axes.
+// Clockwise from 0°: +30, +60, +90, +120, +150 (right/inferior side).
+// Anticlockwise from 0°: -30, -60, -90, -120, -150, -180 (left/superior side).
+const DIAL_ANGLES = [0, 30, 60, 90, 120, 150, -150, -120, -90, -60, -30];
+const DIAL_LABELS = [0, 30, 60, 90, 120, 150, "−150°", "−120°", "−90°", "−60°", "−30°"];
+const LEAD_AXES = [
+  { angle: 0, label: "I" },
+  { angle: 60, label: "II" },
+  { angle: 120, label: "III" },
+  { angle: -150, label: "aVR" },
+  { angle: -30, label: "aVL" },
+  { angle: 90, label: "aVF" },
+];
+
+// Shared detailed hexaxial dial used by both methods.
+function HexaxialDial({ size = 300, sectorKey = "", axis = null, estimates = [] }) {
+  const cx = size / 2, cy = size / 2, r = size * 0.37;
+
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {/* reference circle */}
+      <circle cx={cx} cy={cy} r={r} stroke="#374151" strokeWidth="1" fill="#fff" />
+
+      {/* horizontal 0° / ±180° reference line */}
+      <line x1={cx - r} y1={cy} x2={cx + r} y2={cy} stroke="#d1d5db" strokeWidth="1" />
+
+      {/* diagnosis sectors */}
+      {Object.entries(SECTORS).map(([key, s]) => (
+        <path
+          key={key}
+          d={describeArc(cx, cy, r, s.start, s.end)}
+          fill={key === sectorKey ? s.color : "#fff"}
+          opacity={key === sectorKey ? 0.22 : 0.07}
+          stroke={key === sectorKey ? s.color : "#e5e7eb"}
+        />
+      ))}
+
+      {/* sector abbreviations: LAD / NORMAL / RAD / EAD */}
+      {Object.entries(SECTORS).map(([key, s]) => {
+        const p = polarToCartesian(cx, cy, r * 0.62, s.mid);
+        const active = key === sectorKey;
+        return (
+          <text
+            key={`sector-${key}`}
+            x={p.x}
+            y={p.y}
+            fontSize={s.label === "NORMAL" ? 7 : 8}
+            fontWeight="700"
+            fill={active ? s.color : "#9ca3af"}
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            {s.label}
+          </text>
+        );
+      })}
+
+      {/* 12 spokes every 30° */}
+      {DIAL_ANGLES.map((a) => {
+        const outer = polarToCartesian(cx, cy, r, a);
+        const inner = polarToCartesian(cx, cy, r * 0.18, a);
+        return <line key={`spoke-${a}`} x1={inner.x} y1={inner.y} x2={outer.x} y2={outer.y} stroke="#e5e7eb" strokeWidth="1" />;
+      })}
+
+      {/* limb-lead axes (full diameter) + labels */}
+      {LEAD_AXES.map((axisDef) => {
+        const pos = polarToCartesian(cx, cy, r, axisDef.angle);
+        const neg = polarToCartesian(cx, cy, r, axisDef.angle + 180);
+        const posLbl = polarToCartesian(cx, cy, r + 14, axisDef.angle);
+        const negLbl = polarToCartesian(cx, cy, r + 14, axisDef.angle + 180);
+        return (
+          <g key={`axis-${axisDef.label}`}>
+            <line x1={neg.x} y1={neg.y} x2={pos.x} y2={pos.y} stroke="#d1d5db" strokeWidth="1" />
+            <text x={posLbl.x} y={posLbl.y} fontSize="9" fontWeight="700" fill="#015c9c" textAnchor="middle" dominantBaseline="middle">{axisDef.label}</text>
+            <text x={negLbl.x} y={negLbl.y} fontSize="8" fill="#9ca3af" textAnchor="middle" dominantBaseline="middle">{axisDef.label}</text>
+          </g>
+        );
+      })}
+
+      {/* 30° tick labels — clockwise positive (+30..+150), anticlockwise negative (−30..−180) */}
+      {DIAL_ANGLES.map((a, i) => {
+        const p = polarToCartesian(cx, cy, r - 10, a);
+        const text = typeof DIAL_LABELS[i] === "number" ? `${DIAL_LABELS[i]}°` : DIAL_LABELS[i];
+        return <text key={`deg-${a}`} x={p.x} y={p.y} fontSize="7" fill="#6b7280" textAnchor="middle" dominantBaseline="middle">{text}</text>;
+      })}
+
+      {/* individual estimate vectors (dashed) */}
+      {estimates.map((est) => {
+        const p = polarToCartesian(cx, cy, r - 6, est.angle);
+        return <line key={`est-${est.key}`} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#93c5fd" strokeWidth="1.5" strokeDasharray="4 3" strokeLinecap="round" />;
+      })}
+
+      {/* final axis vector (solid) */}
+      {axis !== null && axis !== undefined && (() => {
+        const p = polarToCartesian(cx, cy, r - 6, axis);
+        return (
+          <>
+            <line x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx={cx} cy={cy} r={3} fill="#dc2626" />
+          </>
+        );
+      })()}
+    </svg>
+  );
+}
 
 /* ==========================================================================
    3-LEAD METHOD — existing implementation, preserved unchanged.
@@ -36,9 +142,6 @@ function ThreeLeadMethod() {
     if (lead1 === "negative" && leadAvf === "negative") return { interpretation: "Extreme Axis", equiphasic: "aVR", sector: "extreme" };
     return { interpretation: "Indeterminate", equiphasic: "", sector: "" };
   }, [values]);
-
-  const size = 260, cx = 130, cy = 130, r = 96;
-  const labels = [{ angle: 0, text: "0° (I)" }, { angle: 90, text: "90° (aVF)" }, { angle: 180, text: "180°" }, { angle: 270, text: "-90°" }, { angle: 330, text: "-30° (aVL)" }];
 
   return (
     <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
@@ -81,17 +184,8 @@ function ThreeLeadMethod() {
           <p><strong>Equiphasic lead:</strong> {result.equiphasic}</p>
         </div>
       </div>
-      <div style={{ width: 320, textAlign: "center", margin: 'auto' }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <circle cx={cx} cy={cy} r={r} stroke="#374151" strokeWidth="1" fill="#fff" />
-          {Object.entries(SECTORS).map(([key, s]) => (
-            <path key={key} d={describeArc(cx, cy, r, s.start, s.end)} fill={key === result.sector ? s.color : "#fff"} opacity={key === result.sector ? 0.22 : 0.08} stroke={key === result.sector ? s.color : "#e5e7eb"} />
-          ))}
-          {labels.map(lbl => {
-            const p = polarToCartesian(cx, cy, r + 16, lbl.angle);
-            return <text key={lbl.angle} x={p.x} y={p.y} fontSize="10" fill="#374151" textAnchor="middle" dominantBaseline="middle">{lbl.text}</text>;
-          })}
-        </svg>
+      <div style={{ flex: "1 1 300px", minWidth: 280, textAlign: "center", margin: 'auto' }}>
+        <HexaxialDial size={300} sectorKey={result.sector} axis={null} />
       </div>
     </div>
   );
@@ -240,9 +334,6 @@ function EquiphasicMethod() {
     };
   }, [lead1, lead2, hasTwo, values.polarity1, values.polarity2, angle1, angle2]);
 
-  const size = 260, cx = 130, cy = 130, r = 96;
-  const labels = [{ angle: 0, text: "0° (I)" }, { angle: 90, text: "90° (aVF)" }, { angle: 180, text: "180°" }, { angle: 270, text: "-90°" }, { angle: 330, text: "-30° (aVL)" }];
-
   const leadOptions = [
     { value: "", label: "— Select lead —" },
     ...LIMB_LEADS.map((l) => ({ value: l, label: `Lead ${l}` })),
@@ -303,7 +394,16 @@ function EquiphasicMethod() {
         </FormulaBox>
 
         {/* Each equiphasic lead is immediately followed by its own perpendicular-lead polarity dropdown. */}
-        <SelectField label="1st Equiphasic lead: " field="lead1" values={values} setField={setField} options={leadOptions} />
+        <SelectField
+          label="1st Equiphasic lead: "
+          field="lead1"
+          values={values}
+          setField={(field, value) => {
+            setField(field, value);
+            setField("polarity1", "");
+          }}
+          options={leadOptions}
+        />
         {lead1 && (
           <SelectField
             label={`${HEXAXIAL[lead1].perpendicular} (Perpendicular Lead):`}
@@ -314,7 +414,16 @@ function EquiphasicMethod() {
           />
         )}
 
-        <SelectField label="2nd Equiphasic lead (optional): " field="lead2" values={values} setField={setField} options={lead2Options} />
+        <SelectField
+          label="2nd Equiphasic lead (optional): "
+          field="lead2"
+          values={values}
+          setField={(field, value) => {
+            setField(field, value);
+            setField("polarity2", "");
+          }}
+          options={lead2Options}
+        />
         {hasTwo && (
           <SelectField
             label={`${HEXAXIAL[lead2].perpendicular} (Perpendicular Lead):`}
@@ -357,28 +466,13 @@ function EquiphasicMethod() {
         </div>
       </div>
 
-      <div style={{ width: 320, textAlign: "center", margin: 'auto' }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-          <circle cx={cx} cy={cy} r={r} stroke="#374151" strokeWidth="1" fill="#fff" />
-          {Object.entries(SECTORS).map(([key, s]) => (
-            <path key={key} d={describeArc(cx, cy, r, s.start, s.end)} fill={key === sectorKey ? s.color : "#fff"} opacity={key === sectorKey ? 0.22 : 0.08} stroke={key === sectorKey ? s.color : "#e5e7eb"} />
-          ))}
-          {labels.map(lbl => {
-            const p = polarToCartesian(cx, cy, r + 16, lbl.angle);
-            return <text key={lbl.angle} x={p.x} y={p.y} fontSize="10" fill="#374151" textAnchor="middle" dominantBaseline="middle">{lbl.text}</text>;
-          })}
-          {/* Individual estimate vectors (dashed) when two leads are used. */}
-          {result.entries && result.entries.length === 2 && result.entries.map((entry) => {
-            const p = polarToCartesian(cx, cy, r - 8, entry.angle);
-            return <line key={`est-${entry.lead}`} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#93c5fd" strokeWidth="1.5" strokeDasharray="4 3" strokeLinecap="round" />;
-          })}
-          {/* Final axis vector (solid). */}
-          {(result.status === "single" || result.status === "average") && (() => {
-            const p = polarToCartesian(cx, cy, r - 8, result.axis);
-            return <line x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="#dc2626" strokeWidth="2.5" strokeLinecap="round" />;
-          })()}
-          {(result.status === "single" || result.status === "average") && <circle cx={cx} cy={cy} r={3} fill="#dc2626" />}
-        </svg>
+      <div style={{ flex: "1 1 300px", minWidth: 280, textAlign: "center", margin: 'auto' }}>
+        <HexaxialDial
+          size={300}
+          sectorKey={sectorKey}
+          axis={result.status === "single" || result.status === "average" ? result.axis : null}
+          estimates={result.entries ? result.entries.map((e) => ({ key: e.lead, angle: e.angle })) : []}
+        />
       </div>
     </div>
   );
