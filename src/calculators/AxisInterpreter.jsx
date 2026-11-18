@@ -154,14 +154,6 @@ function ThreeLeadMethod() {
       <div style={{ flex: "1 1 280px" }}>
         <FormulaBox title="How the 3-Lead Method works">
           <p style={{ margin: "0 0 6px" }}>
-            The <strong>3-lead method</strong> estimates the cardiac axis from the net QRS deflection
-            in two leads: <strong>Lead I</strong> and <strong>Lead aVF</strong>.
-          </p>
-          <p style={{ margin: "0 0 6px" }}>
-            <strong>Reading the leads:</strong> a <strong>Positive</strong> deflection means the net QRS
-            points toward that lead's positive pole; <strong>Negative</strong> means it points away.
-          </p>
-          <p style={{ margin: "0 0 6px" }}>
             <strong>Quadrant method:</strong> Lead I is 0° and aVF is +90°.
           </p>
           <ul style={{ margin: "0 0 6px", paddingLeft: 18 }}>
@@ -374,15 +366,11 @@ function EquiphasicMethod() {
     <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
       <div style={{ flex: "1 1 280px" }}>
         <FormulaBox title="How the Equiphasic Lead Method works">
-          <p style={{ margin: "0 0 6px" }}>
-            The <strong>equiphasic (isoelectric) lead</strong> is the limb lead whose QRS complex is
-            closest to zero — the smallest net deflection. The electrical axis lies roughly
-            perpendicular to that lead.
-          </p>
+          
           <p style={{ margin: "0 0 6px" }}>
             <strong>Steps:</strong> (1) pick the equiphasic lead; (2) the perpendicular lead appears
-            automatically; (3) set that perpendicular lead's polarity — the axis points toward its
-            positive pole (Positive) or the opposite direction (Negative).
+            automatically; (3) Select the perpendicular lead's QRS polarity: Positive (upright) or
+            Negative (downward).
           </p>
           <p style={{ margin: "0 0 6px" }}>
             <strong>Perpendicular pairs (hexaxial reference):</strong> I ↔ aVF, II ↔ aVL, III ↔ aVR.
