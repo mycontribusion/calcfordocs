@@ -206,8 +206,8 @@ function ThreeLeadMethod() {
 // lead that is perpendicular to it (with that perpendicular lead's own angle).
 const HEXAXIAL = {
   I:   { angle: 0,    perpendicular: "aVF", perpAngle: 90,   perpAxis: "aVF axis" },
-  II:  { angle: 60,   perpendicular: "aVR", perpAngle: -150, perpAxis: "aVR axis" },
-  III: { angle: 120,  perpendicular: "aVL", perpAngle: -30,  perpAxis: "aVL axis" },
+  II:  { angle: 60,   perpendicular: "aVL", perpAngle: -30,  perpAxis: "aVL axis" },
+  III: { angle: 120,  perpendicular: "aVR", perpAngle: -150, perpAxis: "aVR axis" },
   aVR: { angle: -150, perpendicular: "III", perpAngle: 120,  perpAxis: "III axis" },
   aVL: { angle: -30,  perpendicular: "II",  perpAngle: 60,   perpAxis: "II axis" },
   aVF: { angle: 90,   perpendicular: "I",   perpAngle: 0,    perpAxis: "I axis" },
@@ -385,7 +385,7 @@ function EquiphasicMethod() {
             positive pole (Positive) or the opposite direction (Negative).
           </p>
           <p style={{ margin: "0 0 6px" }}>
-            <strong>Perpendicular pairs (hexaxial reference):</strong> I ↔ aVF, II ↔ aVR, III ↔ aVL.
+            <strong>Perpendicular pairs (hexaxial reference):</strong> I ↔ aVF, II ↔ aVL, III ↔ aVR.
           </p>
           <p style={{ margin: "0 0 6px" }}>
             <strong>Two equiphasic leads:</strong> each lead is calculated independently, then the two
