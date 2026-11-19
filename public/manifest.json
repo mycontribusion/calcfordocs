@@ -26,5 +26,11 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://calcfordocs.vercel.app/manifest.json"
+    }
+  ]
 }
