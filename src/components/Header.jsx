@@ -82,15 +82,15 @@ export default function Header({ theme, toggleTheme, activePanel, setActivePanel
           </button>
 
           <div className="contact-links">
-            <div
-              className={`contactus install-btn-head ${showInstallGuidance ? "install-hint" : ""}`}
-              onClick={handleInstallClick}
-            >
-              <InstallIcon />
-              {showInstallGuidance && (
+            {!isInstalled && (
+              <div
+                className={`contactus install-btn-head ${showInstallGuidance ? "install-hint" : ""}`}
+                onClick={handleInstallClick}
+              >
+                <InstallIcon />
                 <span className="install-btn-label">Install</span>
-              )}
-            </div>
+              </div>
+            )}
             <div className="contactus feedback-btn-head" onClick={() => toggle("feedback")}>
               <FeedbackIcon />
             </div>
