@@ -1,121 +1,91 @@
-import { useState } from "react";
 import "./components/Dropdowns.css";
 
 const LinkedInIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 8 }}>
-    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path fill="#0A66C2" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </svg>
+);
+
+const EmailIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 193" width="24" height="18" fill="currentColor" aria-hidden="true">
+    <path fill="#4285F4" d="M58.182 192.05V93.14L27.507 65.077 0 49.504v125.091c0 9.658 7.825 17.455 17.455 17.455h40.727z"/>
+    <path fill="#34A853" d="M197.818 192.05h40.727c9.659 0 17.455-7.826 17.455-17.455V49.505l-31.156 17.837-27.026 25.798v98.91z"/>
+    <path fill="#EA4335" d="m58.182 93.14-4.174-38.647 4.174-36.989L128 69.868l69.818-52.364 4.669 34.992-4.669 40.644L128 145.504z"/>
+    <path fill="#FBBC04" d="M197.818 17.504V93.14L256 49.504V26.231c0-21.585-24.64-33.89-41.89-20.945l-16.292 12.218z"/>
+    <path fill="#C5221F" d="m0 49.504 26.759 20.07L58.182 93.14V17.504L41.89 5.286C24.61-7.66 0 4.646 0 26.23v23.273z"/>
   </svg>
 );
 
 const WhatsAppIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: 8 }}>
-    <path d="M12.031 6.172c-2.32 0-4.525 1.232-5.717 3.208-.557.924-.844 1.99-.844 3.09 0 1.238.358 2.454 1.037 3.5l-1.092 3.987 4.085-1.072a7.17 7.17 0 0 0 3.531.917c2.321 0 4.525-1.232 5.717-3.208s1.144-4.32-.424-6.32a7.152 7.152 0 0 0-6.293-3.098v-.004zm0 1.018c1.942 0 3.805 1.03 4.811 2.68 1.31 2.147.962 4.962-1.123 6.643-1.011 1.66-2.874 2.69-4.816 2.69-.971 0-1.928-.246-2.775-.724l-2.39.627.632-2.305a5.137 5.137 0 0 1-.894-2.859c0-1.94 1.031-3.804 2.68-4.81a5.137 5.137 0 0 1 3.875-.94v-.002zm2.67 3.298c-.146-.073-.865-.427-.999-.475s-.232-.073-.329.073-.378.475-.463.573-.17.11-.316.037c-.146-.073-.618-.228-1.178-.727-.435-.389-.728-.868-.813-1.015s-.009-.227.064-.3s.146-.17.219-.256c.073-.085.097-.146.146-.244s.024-.183-.012-.256-.329-.793-.451-1.086c-.12-.288-.242-.248-.332-.253-.085-.005-.183-.005-.281-.005s-.256.037-.39.183c-.134.146-.512.5-.512 1.22s.524 1.415.597 1.512 1.03 1.574 2.508 2.212c.35.15.624.241.838.31.352.112.673.096.926.059.282-.041.865-.354 1.085-.695s.22-.634.152-.756-.25-.183-.396-.256z" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path fill="#25D366" d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+    <path fill="#25D366" d="M12 0C5.373 0 0 5.373 0 12c0 2.125.553 4.198 1.604 6.026L.057 23.68l5.804-1.522A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.77 9.77 0 0 1-4.985-1.365l-.358-.213-3.702.971.988-3.608-.233-.371A9.775 9.775 0 0 1 2.182 12C2.182 6.586 6.586 2.182 12 2.182S21.818 6.586 21.818 12 17.414 21.818 12 21.818z"/>
   </svg>
 );
 
 export default function FeedbackDropdown() {
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [rating, setRating] = useState(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const body = `Rating: ${rating || "N/A"}\n\n${message}`;
+  const handleSubmit = () => {
     const mailtoLink = `mailto:ahmadmusamuhd@gmail.com?subject=${encodeURIComponent(
-      subject || "CalcForDocs Feedback"
-    )}&body=${encodeURIComponent(body)}`;
-
+      "CalcForDocs Feedback"
+    )}&body=${encodeURIComponent("")}`;
     window.location.href = mailtoLink;
   };
 
   const handleWhatsApp = () => {
-    const text = `CalcForDocs Feedback%0A%0ARating: ${rating || "N/A"}%0A%0AMessage: ${message || "I have some feedback..."}`;
+    const text = `CalcForDocs Feedback%0A%0A`;
     window.open(`https://wa.me/2347030061764?text=${text}`, "_blank");
   };
 
   return (
     <div className="dropdown-container">
-      <p className="dropdown-text">
-        💡 Found a bug or have suggestions? Share your thoughts below.
-      </p>
-
-      <div style={{ marginBottom: 16 }}>
-        <p className="dropdown-title" style={{ fontSize: '0.85rem', marginBottom: 8 }}>How's your experience?</p>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          {['😠', '😐', '😊', '😍'].map((emoji, idx) => (
-            <button
-              key={idx}
-              onClick={() => setRating(idx + 1)}
-              style={{
-                fontSize: '1.5rem',
-                background: rating === idx + 1 ? 'rgba(0,123,255,0.1)' : 'transparent',
-                border: rating === idx + 1 ? '1px solid #007bff' : '1px solid transparent',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                padding: '4px 8px',
-                transition: 'all 0.2s'
-              }}
-            >
-              {emoji}
-            </button>
-          ))}
-        </div>
+      <div style={{ marginTop: 24, textAlign: 'left' }}>
+        <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+          Ahmad Musa Muhammad, MD
+        </h3>
+        <p style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+          About the creator
+        </p>
+        <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--text-secondary)',  }}>
+          He studied Medicine and Surgery at Bayero University Kano (BUK) and completed his housemanship at the Federal Teaching Hospital, Birnin Kebbi.
+        </p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--text-secondary)',  }}>
+          He is the founder of <strong>BlueReyd HealthTech Solutions</strong>, developer of CalcForDocs, HOsNote, HausaClerking, and Likita Ba Boka Ba.
+        </p>
+        <p style={{ margin: '8px 0 0 0', fontSize: '0.85rem', lineHeight: 1.5, color: 'var(--text-secondary)',  }}>
+          CalcForDocs focuses on practical medical calculators and clinical tools using parameters readily accessible, even in resource-limited settings.
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          className="dropdown-input"
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          placeholder="Subject (optional)"
-        />
-
-        <textarea
-          className="dropdown-textarea"
-          rows="3"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your feedback here..."
-          required
-        ></textarea>
-
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button type="submit" className="dropdown-btn" style={{ flex: 1 }}>📨 Email</button>
-          <button
-            type="button"
-            className="dropdown-btn"
-            onClick={handleWhatsApp}
-            style={{ flex: 1, backgroundColor: '#25D366', background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
-          >
-            <WhatsAppIcon /> WhatsApp
-          </button>
-        </div>
-      </form>
-
-      <div style={{ marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(0,0,0,0.08)', textAlign: 'center' }}>
-        <p className="dropdown-title" style={{ fontSize: '0.8rem', marginBottom: 12, opacity: 0.7 }}>Developer</p>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <button type="button" className="dropdown-btn" onClick={handleSubmit} style={{ flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'white', border: '1px solid rgba(0,0,0,0.1)' }}>
+          <EmailIcon />
+        </button>
+        <button
+          type="button"
+          className="dropdown-btn"
+          onClick={handleWhatsApp}
+          style={{ flex: 1, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'white', border: '1px solid rgba(0,0,0,0.1)' }}
+        >
+          <WhatsAppIcon />
+        </button>
         <a
           href="https://www.linkedin.com/in/ahmad-m-musa-b93587156/"
           target="_blank"
           rel="noopener noreferrer"
           className="dropdown-btn"
           style={{
+            flex: 1,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#0077b5',
-            background: 'linear-gradient(135deg, #0077b5, #005a87)',
+            background: 'white',
+            border: '1px solid rgba(0,0,0,0.1)',
             textDecoration: 'none',
-            color: '#fff',
-            padding: '8px 20px',
             borderRadius: '8px',
-            fontSize: '0.9rem',
-            width: '100%',
             boxSizing: 'border-box'
           }}
         >
-          <LinkedInIcon /> Connect on LinkedIn
+          <LinkedInIcon />
         </a>
       </div>
     </div>

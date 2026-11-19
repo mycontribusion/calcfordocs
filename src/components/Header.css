@@ -81,12 +81,12 @@
 }
 
 .feedback-btn-head:hover {
-  background: var(--accent-light) !important;
-  border-color: var(--accent) !important;
+  background: var(--primary-light) !important;
+  border-color: var(--primary) !important;
 }
 
 .feedback-btn-head:hover .header-icon {
-  stroke: var(--accent);
+  stroke: var(--primary);
 }
 
 /* Pulsing action attention for feedback when inactive/loaded */
@@ -109,7 +109,7 @@
 }
 
 .calcfordocs.dark .feedback-btn-head:hover {
-  background: var(--accent-light) !important;
+  background: var(--primary-light) !important;
 }
 
 /* ==========================================================================
