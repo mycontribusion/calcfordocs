@@ -34,6 +34,14 @@ const writeInstalledFlag = () => {
   }
 };
 
+const clearInstalledFlag = () => {
+  try {
+    window.localStorage.removeItem(INSTALLED_KEY);
+  } catch {
+    /* ignore */
+  }
+};
+
 export default function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(
@@ -60,8 +68,9 @@ export default function usePWAInstall() {
       setIsInstalled(true);
     }
 
-    // Ask the browser whether a related app is already installed. This catches
-    // the case where the PWA is installed but the user opened it in a tab.
+    // Positive confirmation: the browser reports a related app is installed.
+    // We only trust a non-empty result (a false negative here is common), so
+    // this never wrongly hides the prompt.
     if (typeof navigator.getInstalledRelatedApps === "function") {
       navigator
         .getInstalledRelatedApps()
@@ -78,6 +87,11 @@ export default function usePWAInstall() {
 
     const handler = (e) => {
       e.preventDefault();
+      // `beforeinstallprompt` only fires when the app is NOT installed, so this
+      // is a definitive signal that it was uninstalled (or never installed).
+      // Clear the cached flag so the install banner shows again.
+      clearInstalledFlag();
+      setIsInstalled(false);
       setDeferredPrompt(e);
     };
     window.addEventListener("beforeinstallprompt", handler);
