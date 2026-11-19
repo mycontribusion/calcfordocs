@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import CalculatorGrid from "./components/CalculatorGrid";
 import GlobalSearch from "./components/GlobalSearch";
 import UpdateBanner from "./components/UpdateBanner";
+import InstallPrompt from "./components/InstallPrompt";
 import MyOtherApps from "./components/MyOtherApps";
 import { PatientProvider } from './calculators/PatientContext';
 import { FavoritesProvider, useFavorites } from './calculators/FavoritesContext';
@@ -276,6 +277,9 @@ function MainApp() {
         }}
         onClose={() => setShowBanner(false)} // Later button hides banner
       />
+
+      {/* 📲 Auto-showing PWA install prompt (hidden once installed) */}
+      <InstallPrompt />
 
       {/* 🧭 Header */}
       <div ref={headerRef}>
