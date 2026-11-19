@@ -5,37 +5,56 @@ import usePWAInstall from "../hooks/usePWAInstall";
 /**
  * Auto-showing PWA install prompt.
  *
- * Appears on every visit while the app is NOT installed (i.e. not running in
- * standalone mode). On browsers that support `beforeinstallprompt` it offers a
- * one-tap "Install App" button; on iOS (and browsers without the event) it
- * shows the manual "Add to Home Screen" instructions instead.
+ * Shows once on the first visit while the app is NOT installed. If the user
+ * chooses "Not now" we remember it, scroll to the top, and open the header
+ * install panel — where a guidance message ("You can install it from here any
+ * time") is shown right next to the install action.
+ *
+ * On browsers that support `beforeinstallprompt` it offers a one-tap
+ * "Install App" button; on iOS (and browsers without the event) it shows the
+ * manual "Add to Home Screen" instructions instead.
  */
 export default function InstallPrompt() {
-  const { canInstall, isInstalled, promptInstall, isIOS } = usePWAInstall();
+  const {
+    canInstall,
+    isInstalled,
+    promptDismissed,
+    dismissPrompt,
+    promptInstall,
+  } = usePWAInstall();
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    if (isInstalled || dismissed) return;
+    if (isInstalled || promptDismissed) return;
     // Small delay so the prompt doesn't interrupt the initial paint.
     const timer = setTimeout(() => setVisible(true), 1200);
     return () => clearTimeout(timer);
-  }, [isInstalled, dismissed]);
+  }, [isInstalled, promptDismissed]);
 
-  if (isInstalled || dismissed || !visible) return null;
+  if (isInstalled || !visible) return null;
+
+  // Dismiss the auto prompt, scroll to the header, and open the install panel
+  // (which shows the guidance message next to the install action).
+  const handleDismiss = () => {
+    dismissPrompt();
+    setVisible(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.dispatchEvent(new CustomEvent("pwa-install-hint"));
+  };
 
   const handleInstall = async () => {
     const outcome = await promptInstall();
     if (outcome === "accepted") {
-      setDismissed(true);
+      setVisible(false);
+    } else {
+      // User dismissed the native prompt — treat it like "Not now".
+      handleDismiss();
     }
   };
 
-  const subtitle = isIOS
-    ? "Tap the Share button, then choose “Add to Home Screen” for quick, offline access."
-    : canInstall
+  const subtitle = canInstall
     ? "Add CalcForDocs to your device for faster, offline access."
-    : "Open your browser menu and choose “Install app” or “Add to Home screen”.";
+    : "Tap the Share button, then choose “Add to Home Screen” for quick, offline access.";
 
   return (
     <div
@@ -46,7 +65,7 @@ export default function InstallPrompt() {
     >
       <button
         className="install-prompt-close"
-        onClick={() => setDismissed(true)}
+        onClick={handleDismiss}
         aria-label="Dismiss install prompt"
       >
         ×
@@ -75,7 +94,7 @@ export default function InstallPrompt() {
             </button>
             <button
               className="install-prompt-btn ghost"
-              onClick={() => setDismissed(true)}
+              onClick={handleDismiss}
             >
               Not now
             </button>
@@ -83,7 +102,7 @@ export default function InstallPrompt() {
         ) : (
           <button
             className="install-prompt-btn primary"
-            onClick={() => setDismissed(true)}
+            onClick={handleDismiss}
           >
             Got it
           </button>

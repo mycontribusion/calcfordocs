@@ -24,6 +24,34 @@
   }
 }
 
+/* Guidance callout shown inside the install panel after the auto prompt is
+   dismissed — keeps the message visually connected to the install action. */
+.install-guidance-callout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary);
+  color: var(--text-primary);
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.install-guidance-arrow {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.install-guidance-text {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 /* Typography Inside Dropdowns */
 .dropdown-title {
   margin: 0 0 10px;
@@ -107,4 +135,11 @@
 
 .dropdown-btn:active {
   transform: translateY(0);
+}
+
+/* In dark mode the primary gradient becomes white, so the white text would be
+   unreadable — switch to dark text for contrast. */
+.calcfordocs.dark .dropdown-btn,
+body.dark .dropdown-btn {
+  color: #000;
 }

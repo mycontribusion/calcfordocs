@@ -1,8 +1,40 @@
 import "./Dropdowns.css";
 
-export default function InstallGuide({ canInstall, isIOS, isAndroid, isDesktop, onInstall }) {
+export default function InstallGuide({
+  canInstall,
+  isInstalled = false,
+  isIOS,
+  isAndroid,
+  isDesktop,
+  onInstall,
+  showGuidance = false,
+}) {
+  // Already installed — no need to show install steps.
+  if (isInstalled) {
+    return (
+      <div className="dropdown-container">
+        <div className="install-guidance-callout" role="status">
+          <span className="install-guidance-arrow" aria-hidden="true">✅</span>
+          <p className="install-guidance-text">
+            CalcForDocs is already installed on this device.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="dropdown-container">
+      {/* Guidance shown when the user dismissed the auto install prompt */}
+      {showGuidance && (
+        <div className="install-guidance-callout" role="status">
+          <span className="install-guidance-arrow" aria-hidden="true">⬆</span>
+          <p className="install-guidance-text">
+            You can install it from here any time.
+          </p>
+        </div>
+      )}
+
       {/* iOS Instructions */}
       {isIOS && (
         <div className="install-steps">

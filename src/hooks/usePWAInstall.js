@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
 const INSTALLED_KEY = "calcfordocs:pwa-installed";
+const EVER_INSTALLED_KEY = "calcfordocs:pwa-ever-installed";
+const DISMISSED_KEY = "calcfordocs:install-prompt-dismissed";
 
 // Detect whether the app is currently running as an installed PWA
 // (standalone / fullscreen / minimal-ui) or launched from the iOS home screen.
@@ -16,27 +18,25 @@ const detectStandalone = () => {
   );
 };
 
-// Persist the fact that the app was installed so we don't nag the user with
-// install instructions again when they later open the site in a browser tab.
-const readInstalledFlag = () => {
+const readFlag = (key) => {
   try {
-    return window.localStorage.getItem(INSTALLED_KEY) === "true";
+    return window.localStorage.getItem(key) === "true";
   } catch {
     return false;
   }
 };
 
-const writeInstalledFlag = () => {
+const writeFlag = (key) => {
   try {
-    window.localStorage.setItem(INSTALLED_KEY, "true");
+    window.localStorage.setItem(key, "true");
   } catch {
     /* localStorage may be unavailable (private mode) — ignore */
   }
 };
 
-const clearInstalledFlag = () => {
+const clearFlag = (key) => {
   try {
-    window.localStorage.removeItem(INSTALLED_KEY);
+    window.localStorage.removeItem(key);
   } catch {
     /* ignore */
   }
@@ -45,7 +45,12 @@ const clearInstalledFlag = () => {
 export default function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(
-    () => detectStandalone() || readInstalledFlag()
+    () => detectStandalone() || readFlag(INSTALLED_KEY)
+  );
+  // Whether the user has already dismissed the auto install prompt. When true
+  // we stop auto-showing it and instead point them to the header install icon.
+  const [promptDismissed, setPromptDismissed] = useState(() =>
+    readFlag(DISMISSED_KEY)
   );
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
@@ -64,7 +69,8 @@ export default function usePWAInstall() {
 
     // If we're already running standalone, remember it for future visits.
     if (detectStandalone()) {
-      writeInstalledFlag();
+      writeFlag(INSTALLED_KEY);
+      writeFlag(EVER_INSTALLED_KEY);
       setIsInstalled(true);
     }
 
@@ -76,7 +82,8 @@ export default function usePWAInstall() {
         .getInstalledRelatedApps()
         .then((apps) => {
           if (Array.isArray(apps) && apps.length > 0) {
-            writeInstalledFlag();
+            writeFlag(INSTALLED_KEY);
+            writeFlag(EVER_INSTALLED_KEY);
             setIsInstalled(true);
           }
         })
@@ -89,15 +96,22 @@ export default function usePWAInstall() {
       e.preventDefault();
       // `beforeinstallprompt` only fires when the app is NOT installed, so this
       // is a definitive signal that it was uninstalled (or never installed).
-      // Clear the cached flag so the install banner shows again.
-      clearInstalledFlag();
+      clearFlag(INSTALLED_KEY);
+      // If it was previously installed, this is an uninstall: allow the
+      // first-visit prompt to show again on this visit.
+      if (readFlag(EVER_INSTALLED_KEY)) {
+        clearFlag(EVER_INSTALLED_KEY);
+        clearFlag(DISMISSED_KEY);
+        setPromptDismissed(false);
+      }
       setIsInstalled(false);
       setDeferredPrompt(e);
     };
     window.addEventListener("beforeinstallprompt", handler);
 
     const installedHandler = () => {
-      writeInstalledFlag();
+      writeFlag(INSTALLED_KEY);
+      writeFlag(EVER_INSTALLED_KEY);
       setDeferredPrompt(null);
       setIsInstalled(true);
     };
@@ -107,7 +121,8 @@ export default function usePWAInstall() {
     let mql;
     const displayModeHandler = (e) => {
       if (e.matches) {
-        writeInstalledFlag();
+        writeFlag(INSTALLED_KEY);
+        writeFlag(EVER_INSTALLED_KEY);
         setIsInstalled(true);
       }
     };
@@ -132,16 +147,25 @@ export default function usePWAInstall() {
     deferredPrompt.prompt();
     const choice = await deferredPrompt.userChoice;
     if (choice.outcome === "accepted") {
-      writeInstalledFlag();
+      writeFlag(INSTALLED_KEY);
+      writeFlag(EVER_INSTALLED_KEY);
       setIsInstalled(true);
     }
     setDeferredPrompt(null);
     return choice.outcome;
   };
 
+  // Persist that the user dismissed the auto prompt so it only shows once.
+  const dismissPrompt = () => {
+    writeFlag(DISMISSED_KEY);
+    setPromptDismissed(true);
+  };
+
   return {
     canInstall: !!deferredPrompt,
     isInstalled,
+    promptDismissed,
+    dismissPrompt,
     promptInstall,
     isIOS,
     isAndroid,

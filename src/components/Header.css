@@ -113,6 +113,42 @@
 }
 
 /* ==========================================================================
+   INSTALL HINT (pulse after dismissing the auto prompt)
+   ========================================================================== */
+.install-btn-head {
+  position: relative;
+}
+
+.install-btn-head.install-hint {
+  gap: 6px;
+  border-color: var(--primary) !important;
+  background: var(--primary) !important;
+  color: var(--bg-card) !important;
+  animation: installHintPulse 1.2s ease-in-out 3;
+}
+
+.install-btn-head.install-hint .header-icon {
+  stroke: var(--bg-card);
+}
+
+.install-btn-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@keyframes installHintPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--primary-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 6px var(--primary-glow);
+  }
+}
+
+/* ==========================================================================
    RESPONSIVE LAYOUT
    ========================================================================== */
 @media (max-width: 520px) {
