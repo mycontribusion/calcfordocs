@@ -161,13 +161,6 @@ export default function ECGInterpreter() {
     }
   }, [values.wave, values.measurementType, setField]);
 
-  // ST segment defaults to Elevation measurement type.
-  useEffect(() => {
-    if (values.wave === "stSegment" && values.measurementType === "duration") {
-      setField("measurementType", "elevation");
-    }
-  }, [values.wave, values.measurementType, setField]);
-
   // Voltage-only waves (e.g. T wave) always use the Voltage measurement type.
   useEffect(() => {
     if (isVoltageOnlyWave && values.measurementType !== "voltage") {
@@ -402,7 +395,7 @@ export default function ECGInterpreter() {
         />
       )}
 
-      {!isVoltageOnlyWave && (
+      {!isVoltageOnlyWave && unitType !== "elevation" && unitType !== "depression" && (
         <SelectField
           label="Unit:"
           field="valueType"
@@ -412,7 +405,8 @@ export default function ECGInterpreter() {
         />
       )}
 
-      {!isVoltageOnlyWave && (
+      {!isVoltageOnlyWave &&
+        !(values.wave === "stSegment" && (values.measurementType === "elevation" || values.measurementType === "depression")) && (
         <div className="calc-box">
           <input
             type="number"

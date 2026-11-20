@@ -23,7 +23,7 @@ const FeedbackIcon = () => (
 );
 
 export default function Header({ theme, toggleTheme, activePanel, setActivePanel }) {
-  const { canInstall, promptInstall, isInstalled, isIOS, isAndroid, isDesktop } = usePWAInstall();
+  const { canInstall, promptInstall, isInstalled, isIOS, isAndroid, isDesktop, isNative } = usePWAInstall();
   const [showInstallGuidance, setShowInstallGuidance] = useState(false);
   const prevPanelRef = useRef(activePanel);
 
@@ -82,7 +82,7 @@ export default function Header({ theme, toggleTheme, activePanel, setActivePanel
           </button>
 
           <div className="contact-links">
-            {!isInstalled && (
+            {!isInstalled && !isNative && (
               <div
                 className={`contactus install-btn-head ${showInstallGuidance ? "install-hint" : ""}`}
                 onClick={handleInstallClick}

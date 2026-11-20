@@ -55,6 +55,7 @@ export default function usePWAInstall() {
   const [isIOS, setIsIOS] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isNative, setIsNative] = useState(false);
 
   useEffect(() => {
     const ua = window.navigator.userAgent.toLowerCase();
@@ -66,6 +67,13 @@ export default function usePWAInstall() {
     setIsIOS(ios);
     setIsAndroid(android);
     setIsDesktop(!ios && !android);
+
+    // Detect native Capacitor/Cordova wrapper so the PWA install button can
+    // be hidden in the release APK (the app is already installed natively).
+    const isNativeEnv =
+      typeof window !== "undefined" &&
+      !!(window.Capacitor || window.capacitor || window.cordova);
+    setIsNative(isNativeEnv);
 
     // If we're already running standalone, remember it for future visits.
     if (detectStandalone()) {
@@ -170,5 +178,6 @@ export default function usePWAInstall() {
     isIOS,
     isAndroid,
     isDesktop,
+    isNative,
   };
 }
