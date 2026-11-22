@@ -24,19 +24,17 @@ export default function GlobalSearch({
   collapseSignal,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [calculatorIsOpen, setCalculatorIsOpen] = useState(false);
   const panelRef = useRef(null);
+
+  /* Derive whether a calculator is currently open from the collapseSignal.
+     Format: "${activeCalc ?? ''}|${view}" — if the part before '|' is non-empty,
+     a calculator is active and the handle should shrink. */
+  const isCalculatorOpen = collapseSignal.split("|")[0] !== "";
 
   /* Collapse whenever the parent signals a navigation (e.g. a calculator
      button was clicked), so the panel never lingers over new content. */
   useEffect(() => {
     setIsExpanded(false);
-  }, [collapseSignal]);
-
-  /* Track whether a calculator is currently open, so the handle
-     can shrink when a calculator is active and widen when idle. */
-  useEffect(() => {
-    setCalculatorIsOpen((prev) => !prev);
   }, [collapseSignal]);
 
   /* Escape closes the panel */
@@ -71,7 +69,7 @@ export default function GlobalSearch({
     <>
       <div className="global-search-floating">
         <button
-          className={`global-search-toggle ${calculatorIsOpen ? "calculator-open" : ""}`}
+          className={`global-search-toggle ${isCalculatorOpen ? "calculator-open" : ""}`}
           onClick={() => setIsExpanded((prev) => !prev)}
           aria-label={isExpanded ? "Close search" : "Open search"}
           aria-expanded={isExpanded}
