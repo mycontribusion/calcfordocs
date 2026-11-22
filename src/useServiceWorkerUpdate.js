@@ -56,5 +56,22 @@ export default function useServiceWorkerUpdate() {
     }
   };
 
+  // Auto-activate new service worker when an update is available (silent background update)
+  useEffect(() => {
+    if (updateAvailable && waitingSW) {
+      waitingSW.postMessage({ type: "SKIP_WAITING" });
+
+      const onControllerChange = () => {
+        window.location.reload();
+      };
+
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
+      } else {
+        window.location.reload();
+      }
+    }
+  }, [updateAvailable, waitingSW]);
+
   return { updateAvailable, refreshApp };
 }
