@@ -23,44 +23,60 @@
   font-family: inherit;
 }
 
-/* ---- Slim edge handle ---------------------------------------------------- */
+/* ---- Edge-docked handle -------------------------------------------------- */
 .global-search-toggle {
   position: relative;
-  width: 14px;
+  width: 70px;
   height: 72px;
   border-radius: 10px 0 0 10px;
   border: 1px solid var(--border-color);
   border-right: none;
   background: var(--bg-card);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-md);
   padding: 0;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
               background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Shrink the icon to suit the narrow handle */
-.global-search-toggle svg {
-  width: 11px;
-  height: 11px;
-  flex-shrink: 0;
+/* Narrow the handle when a calculator is open so it stays out of the way. */
+.global-search-toggle.calculator-open {
+  width: 14px;
+  color: var(--text-secondary);
 }
 
-/* The handle is deliberately slim, so widen the hit area invisibly to keep
-   it comfortably tappable without making it look bigger. */
-.global-search-toggle::after {
+/* Icon size adapts to handle width */
+.global-search-toggle svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: width 0.2s, height 0.2s;
+}
+
+.global-search-toggle.calculator-open svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* Extended hit area only when the handle is narrow (calculator open). */
+.global-search-toggle.calculator-open::after {
   content: "";
   position: absolute;
   top: -8px;
   bottom: -8px;
   left: -16px;
   right: 0;
+}
+
+.global-search-toggle:not(.calculator-open)::after {
+  content: none;
 }
 
 .global-search-toggle:hover {
@@ -136,9 +152,13 @@
    ========================================================================== */
 @media (max-width: 520px) {
   .global-search-toggle {
-    width: 12px;
+    width: 56px;
     height: 64px;
     border-radius: 9px 0 0 9px;
+  }
+
+  .global-search-toggle.calculator-open {
+    width: 12px;
   }
 
   .global-search-expand {
