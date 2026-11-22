@@ -1,10 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/calc/:slug",
-      "destination": "/api/preview?slug=:slug"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
