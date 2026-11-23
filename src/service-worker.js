@@ -7,12 +7,11 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
-clientsClaim();
-
-// Only skip waiting when explicitly told to (triggered by useServiceWorkerUpdate.js)
+// Only skip waiting and claim clients when explicitly told to (triggered by useServiceWorkerUpdate.js)
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
+    clientsClaim();
   }
 });
 
