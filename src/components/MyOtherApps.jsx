@@ -9,7 +9,7 @@ const APPS = [
     icon: "https://hosnote.vercel.app/icon-192.png",
   },
   {
-    name: "Hausa Clerking",
+    name: "Hausa-Clerking",
     tagline: "Clinical Hausa",
     url: "https://hausaclerking.vercel.app/",
     icon: "https://hausaclerking.vercel.app/logo192.png",
