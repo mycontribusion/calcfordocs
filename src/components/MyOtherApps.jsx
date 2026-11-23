@@ -15,7 +15,7 @@ const APPS = [
     icon: "https://hausaclerking.vercel.app/logo192.png",
   },
   {
-    name: "Likita Ba Boka Ba",
+    name: "Likita-Ba-Boka-Ba",
     tagline: "Health Education",
     url: "https://likita-ba-boka-ba.vercel.app/",
     icon: "https://likita-ba-boka-ba.vercel.app/favicon.ico",
