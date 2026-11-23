@@ -7,11 +7,13 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
-// Only skip waiting and claim clients when explicitly told to (triggered by useServiceWorkerUpdate.js)
+// Fix: clientsClaim() must be at the top level so it registers on the activate event
+// BEFORE activate fires. Inside a message handler it would register too late for first-time users.
+clientsClaim();
+
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
-    clientsClaim();
   }
 });
 
