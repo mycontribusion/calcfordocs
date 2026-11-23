@@ -28,5 +28,8 @@ export default defineConfig({
   ],
   build: {
     outDir: 'build',
+    // No entryFileNames override — Vite's default content-hashed filenames
+    // (e.g. assets/index-B4f7x2kd.js) are essential for cache busting.
+    // The preview API (api/preview.js) does not reference this file directly.
   },
 });

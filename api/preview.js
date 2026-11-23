@@ -43,6 +43,7 @@ export default function handler(req, res) {
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${title}</title>
 
   <!-- Open Graph -->
@@ -62,15 +63,11 @@ export default function handler(req, res) {
   <script type="application/ld+json">
     ${JSON.stringify(structuredData)}
   </script>
-
-  <script>
-    // After meta tags are read by crawlers, redirect real users to the SPA
-    if (typeof window !== 'undefined') {
-      window.location.replace("${url}");
-    }
-  </script>
 </head>
-<body></body>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/assets/index.js"></script>
+</body>
 </html>`;
 
   res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');

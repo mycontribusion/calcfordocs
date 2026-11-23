@@ -20,23 +20,34 @@ export function register(config) {
   }
 }
 
+// Fix Problem 3: extracted so we can attach to an already-installing worker
+// AND to future workers found via onupdatefound — without duplicating logic.
+function trackInstallingWorker(installingWorker, registration, config) {
+  if (!installingWorker) return;
+  installingWorker.onstatechange = () => {
+    if (installingWorker.state === 'installed') {
+      if (navigator.serviceWorker.controller) {
+        if (config && config.onUpdate) {
+          config.onUpdate(registration, installingWorker);
+        }
+      }
+    }
+  };
+}
+
 function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      // Fix Problem 3: if the browser already started installing an update
+      // before this .then() ran, onupdatefound already fired and was missed.
+      // Catch it here by checking registration.installing directly.
+      if (registration.installing) {
+        trackInstallingWorker(registration.installing, registration, config);
+      }
+
       registration.onupdatefound = () => {
-        const installingWorker = registration.installing;
-        if (installingWorker == null) return;
-        installingWorker.onstatechange = () => {
-          if (installingWorker.state === 'installed') {
-            if (navigator.serviceWorker.controller) {
-              // Execute the callback to show the banner
-              if (config && config.onUpdate) {
-                config.onUpdate(registration);
-              }
-            }
-          }
-        };
+        trackInstallingWorker(registration.installing, registration, config);
       };
     })
     .catch((error) => console.error('Error during SW registration:', error));
