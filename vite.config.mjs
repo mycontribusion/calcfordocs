@@ -28,11 +28,5 @@ export default defineConfig({
   ],
   build: {
     outDir: 'build',
-    rollupOptions: {
-      output: {
-        // Non-hashed entry point so preview API can reference it directly
-        entryFileNames: 'assets/index.js',
-      },
-    },
   },
 });

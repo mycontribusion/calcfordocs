@@ -7,8 +7,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { BackgroundSyncPlugin } from 'workbox-background-sync';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 
-// Fix: clientsClaim() must be at the top level so it registers on the activate event
-// BEFORE activate fires. Inside a message handler it would register too late for first-time users.
+self.skipWaiting();
 clientsClaim();
 
 self.addEventListener('message', (event) => {
