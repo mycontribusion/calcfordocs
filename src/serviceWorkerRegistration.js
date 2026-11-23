@@ -30,7 +30,7 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // Execute the callback to show the banner
+              // A new SW is installed and an old one is still controlling the page
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }

@@ -59,17 +59,13 @@ export default function useServiceWorkerUpdate() {
   // Auto-activate new service worker when an update is available (silent background update)
   useEffect(() => {
     if (updateAvailable && waitingSW) {
-      waitingSW.postMessage({ type: "SKIP_WAITING" });
-
+      // Always attach the listener BEFORE posting SKIP_WAITING,
+      // so we never miss the controllerchange event.
       const onControllerChange = () => {
         window.location.reload();
       };
-
-      if (navigator.serviceWorker.controller) {
-        navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
-      } else {
-        window.location.reload();
-      }
+      navigator.serviceWorker.addEventListener("controllerchange", onControllerChange);
+      waitingSW.postMessage({ type: "SKIP_WAITING" });
     }
   }, [updateAvailable, waitingSW]);
 
