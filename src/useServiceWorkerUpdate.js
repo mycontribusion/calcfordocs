@@ -8,9 +8,11 @@ export default function useServiceWorkerUpdate() {
   useEffect(() => {
     // 1. Check if a SW is already waiting on initial load
     serviceWorkerRegistration.register({
-      onUpdate: (reg) => {
-        if (reg.waiting) {
-          setWaitingSW(reg.waiting);
+      onUpdate: (reg, installedWorker) => {
+        // Use the direct worker reference — reg.waiting may not be set yet at this moment
+        const sw = installedWorker || reg.waiting;
+        if (sw) {
+          setWaitingSW(sw);
           setUpdateAvailable(true);
         }
       },
@@ -37,7 +39,28 @@ export default function useServiceWorkerUpdate() {
       });
     }
 
-    return () => window.removeEventListener("swUpdateAvailable", handleSWUpdate);
+    // 4. Force an update check every time the user returns to the tab
+    //    This catches users who had the tab open for a long time
+    const handleVisibility = () => {
+      if (!document.hidden && "serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistration().then((reg) => {
+          if (reg) {
+            reg.update(); // ask browser to re-fetch SW file now
+            if (reg.waiting) {
+              setWaitingSW(reg.waiting);
+              setUpdateAvailable(true);
+            }
+          }
+        });
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      window.removeEventListener("swUpdateAvailable", handleSWUpdate);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, []);
 
   const refreshApp = () => {

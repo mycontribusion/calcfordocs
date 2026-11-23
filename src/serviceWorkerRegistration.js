@@ -30,9 +30,10 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              // A new SW is installed and an old one is still controlling the page
+              // A new SW is installed and an old one is still controlling the page.
+              // Pass installingWorker directly — reg.waiting may not be populated yet.
               if (config && config.onUpdate) {
-                config.onUpdate(registration);
+                config.onUpdate(registration, installingWorker);
               }
             }
           }
