@@ -11,66 +11,159 @@ try {
   console.error('Failed to load calcinfo.json', e);
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function injectMetadata(html, { title, description, url, image, structuredData }) {
+  let updatedHtml = html;
+
+  // Replace <title>...</title>
+  if (title) {
+    updatedHtml = updatedHtml.replace(/<title>.*?<\/title>/is, `<title>${escapeHtml(title)}</title>`);
+  }
+
+  // Replace or inject Open Graph tags
+  if (title) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']og:title["'][^>]*>/i,
+      `<meta property="og:title" content="${escapeHtml(title)}" />`
+    );
+  }
+  if (description) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']og:description["'][^>]*>/i,
+      `<meta property="og:description" content="${escapeHtml(description)}" />`
+    );
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+name=["']description["'][^>]*>/i,
+      `<meta name="description" content="${escapeHtml(description)}" />`
+    );
+  }
+  if (url) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']og:url["'][^>]*>/i,
+      `<meta property="og:url" content="${escapeHtml(url)}" />`
+    );
+    updatedHtml = updatedHtml.replace(
+      /<link\s+rel=["']canonical["'][^>]*>/i,
+      `<link rel="canonical" href="${escapeHtml(url)}" />`
+    );
+  }
+  if (image) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']og:image["'][^>]*>/i,
+      `<meta property="og:image" content="${escapeHtml(image)}" />`
+    );
+  }
+
+  // Replace or inject Twitter tags
+  if (title) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']twitter:title["'][^>]*>/i,
+      `<meta property="twitter:title" content="${escapeHtml(title)}" />`
+    );
+  }
+  if (description) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']twitter:description["'][^>]*>/i,
+      `<meta property="twitter:description" content="${escapeHtml(description)}" />`
+    );
+  }
+  if (url) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']twitter:url["'][^>]*>/i,
+      `<meta property="twitter:url" content="${escapeHtml(url)}" />`
+    );
+  }
+  if (image) {
+    updatedHtml = updatedHtml.replace(
+      /<meta\s+property=["']twitter:image["'][^>]*>/i,
+      `<meta property="twitter:image" content="${escapeHtml(image)}" />`
+    );
+  }
+
+  // Replace Structured Data JSON-LD
+  if (structuredData) {
+    const jsonLdScript = `<script type="application/ld+json">\n${JSON.stringify(structuredData, null, 2)}\n</script>`;
+    updatedHtml = updatedHtml.replace(
+      /<script\s+type=["']application\/ld\+json["']>[\s\S]*?<\/script>/i,
+      jsonLdScript
+    );
+  }
+
+  return updatedHtml;
+}
+
 export default function handler(req, res) {
-  const { slug } = req.query; // e.g., ?slug=parkland_formula
-  const calc = calculators.find(c => c.id === slug);
+  // Read built index.html with fallback
+  const indexPath = path.join(process.cwd(), 'build', 'index.html');
+  let rawHtml = '';
+  try {
+    rawHtml = fs.readFileSync(indexPath, 'utf-8');
+  } catch (err) {
+    console.error('Failed to read build/index.html:', err);
+  }
 
-  const title = calc ? `${calc.name} – CalcForDocs` : 'CalcForDocs';
-  const description = calc?.description || (calc ? `${calc.name} calculator for healthcare professionals. ${calc.keywords?.join(", ")}` : 'Clinical decision‑support calculator');
-  const url = `https://${req.headers.host}/calc/${slug || ''}`;
-  // Use shared calculator icon for all previews
-  const image = `https://${req.headers.host}/calculator-icon.png`;
+  // If built index.html cannot be read, fallback to a safe baseline
+  if (!rawHtml) {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.status(500).send('<h1>Server Error: built assets missing</h1>');
+  }
 
-  const structuredData = calc ? {
-    "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": title,
-    "description": description,
-    "url": url,
-    "medicalAudience": "Healthcare Professionals",
-    "keywords": calc.keywords?.join(", ") || "medical calculator"
-  } : {
-    "@context": "https://schema.org",
-    "@type": "MedicalWebPage",
-    "name": "CalcForDocs",
-    "description": "Professional medical calculators for healthcare providers.",
-    "url": `https://${req.headers.host}/`,
-    "medicalAudience": "Healthcare Professionals",
-    "keywords": "medical calculator, doctor tools, clinical scores, GCS, eGFR, BMI"
-  };
+  try {
+    const { slug } = req.query || {};
+    const calc = calculators.find(c => c.id === slug);
 
-  const html = `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${title}</title>
+    // Host header handling
+    const host = req.headers['x-forwarded-host'] || req.headers.host || 'calcfordocs.vercel.app';
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const baseUrl = `${proto}://${host}`;
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="${title}" />
-  <meta property="og:description" content="${description}" />
-  <meta property="og:url" content="${url}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="${image}" />
+    const title = calc ? `${calc.name} – CalcForDocs` : 'CalcForDocs';
+    const description = calc?.description || (calc ? `${calc.name} calculator for healthcare professionals. ${calc.keywords?.join(', ')}` : 'Free, professional medical calculators for doctors and healthcare professionals.');
+    const url = slug ? `${baseUrl}/calc/${slug}` : `${baseUrl}/`;
+    const image = `${baseUrl}/calculator-icon.png`;
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${title}" />
-  <meta name="twitter:description" content="${description}" />
-  <meta name="twitter:image" content="${image}" />
+    const structuredData = calc ? {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": title,
+      "description": description,
+      "url": url,
+      "medicalAudience": "Healthcare Professionals",
+      "keywords": calc.keywords?.join(', ') || "medical calculator"
+    } : {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": "CalcForDocs",
+      "description": "Professional medical calculators for healthcare providers.",
+      "url": baseUrl,
+      "medicalAudience": "Healthcare Professionals",
+      "keywords": "medical calculator, doctor tools, clinical scores, GCS, eGFR, BMI"
+    };
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-    ${JSON.stringify(structuredData)}
-  </script>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="module" src="/assets/index.js"></script>
-</body>
-</html>`;
+    const finalHtml = injectMetadata(rawHtml, {
+      title,
+      description,
+      url,
+      image,
+      structuredData
+    });
 
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
-  res.setHeader('Content-Type', 'text/html');
-  res.status(200).send(html);
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.status(200).send(finalHtml);
+  } catch (injectError) {
+    console.error('Error injecting metadata, serving raw build/index.html:', injectError);
+    // Requirement 6: If metadata injection fails, serve original built HTML
+    res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    return res.status(200).send(rawHtml);
+  }
 }

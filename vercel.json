@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/preview.js": {
+      "includeFiles": "build/index.html"
+    }
+  },
   "rewrites": [
     {
       "source": "/calc/:slug",
